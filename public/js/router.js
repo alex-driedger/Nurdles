@@ -4,8 +4,9 @@ define([
   'underscore',
   'backbone',
   'views/pages/HomeView',
-  'views/partials/HeaderView'
-], function($, _, Backbone, HomeView, HeaderView) {
+  'views/partials/HeaderView',
+  'views/partials/FooterView'
+], function($, _, Backbone, HomeView, HeaderView, FooterView) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
@@ -17,6 +18,8 @@ define([
         this.mainEl = $("#main");
         var headerView = new HeaderView({el: this.mainEl});
         headerView.render();
+        var footerView = new FooterView();
+        footerView.render();
     },
 
     index: function() {
