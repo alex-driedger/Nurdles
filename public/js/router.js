@@ -4,34 +4,67 @@ define([
   'underscore',
   'backbone',
   'views/pages/HomeView',
+  'views/pages/SignInView',
   'views/partials/HeaderView',
   'views/partials/FooterView'
-], function($, _, Backbone, HomeView, HeaderView, FooterView) {
+], function($, _, Backbone, HomeView, SignInView, HeaderView, FooterView) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
-      '': 'index',
+      '': 'signin',
+      'home': 'home'
     },
 
     initialize: function() {
-        console.log("TEST");
         this.mainEl = $("#main");
         var headerView = new HeaderView({el: this.mainEl});
         headerView.render();
         var footerView = new FooterView();
         footerView.render();
+
+        this.bind("all", this.checkAuth);
     },
 
-    index: function() {
+    signin: function (id) {
+        var signinView = new SignInView({el: this.mainEl});
+        AppView.showView(signinView);
+    },
+
+    home: function() {
         var homeView = new HomeView({el: this.mainEl});
-        AppView.showView(homeView, this.mainEl);
+        AppView.showView(homeView);
+    },
+
+    checkAuth: function(eventString) {
+        switch (eventString) {
+            case ("route:registration"):
+            case ("route:signin"):
+                //No need to auth on these routes
+                break;
+            default:
+                var that = this;
+                $.ajax({
+                    type: "GET",
+                    url: "/api/user/checkAuth",
+                    success: function(user) {
+                        if (!user) {
+                            alert("You are not signed in!");
+                            that.navigate('');
+                        }
+                        else
+                            window.user = user;
+                    },
+                    error: function(err) { console.log(err); }
+                });
+        }
     }
+
   });
 
   var AppView = {
       currentView: null,
       previousView: null,
-      showView: function(view, mainEl) {
+      showView: function(view) {
           if (this.currentView)
               this.previousView = this.currentView;
 
