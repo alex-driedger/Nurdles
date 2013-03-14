@@ -17,22 +17,26 @@ define([
                     {layers: "basic"}
             );
 
+            console.log("STUFF: ", map.size);
+
             var dm_wms = new OpenLayers.Layer.WMS(
-                "Canadian Data",
-                "http://www2.dmsolutions.ca/cgi-bin/mswms_gmap",
-                    {
-                    layers: "bathymetry,land_fn,park,drain_fn,drainage," +
-                        "prov_bound,fedlimit,rail,road,popplace",
-                    transparent: "true",
-                    format: "image/png"
+                "Exact Earth Data",
+                "https://owsdemo.exactearth.com/wms?service=WMS&version=1.3.0&request=GetMap&authKey=tokencoin",
+                {
+                    layers: "exactAIS:LVI",
+                    crs: "crs:84",
+                    height: map.size.h,
+                    width: map.size.w,
+                    format: "image/png",
+                    transparent: true
                 },
-                {isBaseLayer: false, visibility: false}
+                {isBaseLayer: false, visibility: true}
             );
 
             map.addLayers([ol_wms, dm_wms]);
-            map.addControl(new OpenLayers.Control.LayerSwitcher());
             map.zoomToMaxExtent();
 
+            console.log(map);
             return this;
         }
     });

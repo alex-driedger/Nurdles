@@ -3,9 +3,8 @@ define([
   'jquery', 
   'underscore', 
   'backbone',
-  'bootstrap',
   'router'
-], function($, _, Backbone, Bootstrap, Router){
+], function($, _, Backbone, Router){
   var initialize = function(){
     Router.initialize();
   };
