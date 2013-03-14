@@ -10,11 +10,8 @@ function bind(app, passport) {
 }
 
 function ensureAuthenticated(req, res, next) {
-    console.log("Starting to authenticate");
   if (req.isAuthenticated()) { return next(); }
-  else {
       res.send(null);
-  }
 }
 
 module.exports = {

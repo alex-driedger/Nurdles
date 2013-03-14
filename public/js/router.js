@@ -16,8 +16,8 @@ define([
     },
 
     initialize: function() {
-        this.mainEl = $("#main");
-        var headerView = new HeaderView({el: this.mainEl});
+        this.mainEl = $("#content");
+        var headerView = new HeaderView({el: $("#header")});
         headerView.render();
         var footerView = new FooterView();
         footerView.render();
@@ -26,11 +26,12 @@ define([
     },
 
     signin: function (id) {
-        var signinView = new SignInView({el: this.mainEl});
+        var signinView = new SignInView({el: this.mainEl, router: this});
         AppView.showView(signinView);
     },
 
     home: function() {
+        console.log("ROUTE HIT");
         var homeView = new HomeView({el: this.mainEl});
         AppView.showView(homeView);
     },
@@ -69,12 +70,12 @@ define([
               this.previousView = this.currentView;
 
           this.currentView = view;
-          //This uses the el set in the view when we initialize it. AppView is here only to swap entire views.
-          this.currentView.render();
 
           if (this.previousView){
               this.previousView.close();
           }
+          //This uses the el set in the view when we initialize it. AppView is here only to swap entire views.
+          this.currentView.render();
       }
   }
 

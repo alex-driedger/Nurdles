@@ -8,7 +8,7 @@ define([
 
         render: function () {
             console.log(this.$el);
-            this.$el.append(headerTemplate);
+            this.$el.html(headerTemplate);
         }
     });
 

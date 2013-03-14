@@ -1,5 +1,6 @@
 var self = {
     loginSuccess: function(req, res) {
+        console.log("SUCCESS!");
         res.writeHead("200", {
             'Content-Type': 'text/json'
         });

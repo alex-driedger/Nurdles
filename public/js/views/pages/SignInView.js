@@ -7,11 +7,13 @@ define([
 
     var SignInView = Backbone.View.extend({
 
-        initialize:function () {
+        initialize:function (opts) {
+            this.router = opts.router;
+            console.log(this.router);
         },
 
         render:function () {
-            this.$el.append(signInTemplate);
+            this.$el.html(signInTemplate);
 
             return this;
         },
@@ -27,11 +29,14 @@ define([
 
         loginUser: function(e) {
             e.preventDefault();
+            var view = this;
             $.ajax( {
                 type: "POST",
                 url: "/api/user/login",
                 data: {"username": $("#username").val(), "password": $("#password").val()},
-                success: this.loginSuccessful,
+                success: function(data, status, xhr) {
+                    view.loginSuccessful(data, view);
+                },
                 error: this.loginFail,
             });
 
@@ -39,8 +44,10 @@ define([
             $(".controls-group").addClass("hide");
         },
 
-        loginSuccessful: function(data, status, xhr) {
+        loginSuccessful: function(data, context) {
             window.user = data;
+            console.log(context.router);
+            context.router.navigate("home", true);
 
         },
 

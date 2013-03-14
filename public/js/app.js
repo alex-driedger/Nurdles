@@ -3,20 +3,22 @@ define([
   'jquery', 
   'underscore', 
   'backbone',
+  'bootstrap',
   'router'
-], function($, _, Backbone, Router){
+], function($, _, Backbone, Bootstrap, Router){
   var initialize = function(){
     Router.initialize();
   };
 
   Backbone.View.prototype.close = function(){
-      this.$el.remove();
+      this.$el.empty();
       this.unbind();
-      _.each(this.subviews, function(subview){
-          if (subview.close){
-              subview.close();
-          }
-      });
+      if (this.subviews)
+          _.each(this.subviews, function(subview){
+              if (subview.close){
+                  subview.close();
+              }
+          });
   };
 
   return { 
