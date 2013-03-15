@@ -9,6 +9,7 @@ function bind(app, passport) {
     app.get('/api/user/checkAuth', ensureAuthenticated, function(req, res) {res.send(req.user);});
     app.post("/api/user/login", passport.authenticate("local"), user.loginSuccess);
     app.get("/api/map/basic", ensureAuthenticated, map.getBasic);
+    app.post("/proxy/test", function(res, req) {console.log("RECEIVED CALL");});
 }
 
 function ensureAuthenticated(req, res, next) {
