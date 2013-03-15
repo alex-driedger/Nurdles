@@ -1,5 +1,6 @@
 function bind(app, passport) {
-    var user = require('./user');
+    var user = require('./user'),
+    map = require('./map');
 
     app.get('/', ensureAuthenticated, function(res, req) {
         res.send(req.user);

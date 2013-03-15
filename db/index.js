@@ -55,8 +55,14 @@ function initSettings (previous, baton) {
         }
         else {
             console.log("Blank slate -- initializing...");
-            //Do your db initialization here. Normally that means settings a initialized flag
-            baton.pass();
+            Setting.create({type: "init", value: true}, function(err, setting) {
+                if (err) {
+                    console.log("Error setting init value: ", err);
+                    baton.drop();
+                }
+                else
+                    baton.pass();
+            });
         }
     });
 }
