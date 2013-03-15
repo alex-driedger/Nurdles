@@ -15,7 +15,7 @@ define([
     render: function(){
       this.$el.html(homeTemplate);
 
-console.log(this.el);
+        console.log(this.el);
 
       var mapView = new MapView({el: $("#openLayersImage")});
       mapView.render();

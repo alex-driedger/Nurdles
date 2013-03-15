@@ -6,7 +6,6 @@ module.exports = {
         server: 4010
     },
     auth: {
-        user: "username",
-        password: "password"
+        key: "tokencoin",
     }
 };

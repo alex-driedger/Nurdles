@@ -16,9 +16,22 @@ define([
             },
 
             setHTML: function(response) {
+                console.log("TEST: ", response);
                 if (response.text.indexOf("MMSI") >= 0) {
-                    $("#dialog").wijdialog("open");
-                    document.getElementById('info').innerHTML = response.text;
+                    $("#dialog").html(response.text);
+                    $("#dialog").addClass("onTop").removeClass("hide");
+                }
+            },
+
+            showInfo: function(evt) {
+                console.log("TEST");
+                if (evt.features && evt.features.length) {
+                    _Layer_Highlight.destroyFeatures();
+                    _Layer_Highlight.addFeatures(evt.features);
+                    _Layer_Highlight.redraw();
+                }
+                else {
+                    private.setHTML(evt);
                 }
             }
     };
@@ -30,7 +43,7 @@ define([
             
             var _Map;
             var _Layer_WMS, _Layer_Highlight, _Layer_Hover, _Layer_Select;
-            OpenLayers.ProxyHost = "proxy/test?url=";
+            OpenLayers.ProxyHost = "proxy?url=";
 
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
@@ -86,7 +99,7 @@ define([
                 };
 
                 for (var i in oInfoControl) {
-                    oInfoControl[i].events.register("getfeatureinfo", this, showInfo);
+                    oInfoControl[i].events.register("getfeatureinfo", this, private.showInfo);
                     _Map.addControl(oInfoControl[i]);
                 }
                 oInfoControl.click.activate();
@@ -125,16 +138,6 @@ define([
 
                 _Map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
 
-            var showInfo = function(evt) {
-                if (evt.features && evt.features.length) {
-                    _Layer_Highlight.destroyFeatures();
-                    _Layer_Highlight.addFeatures(evt.features);
-                    _Layer_Highlight.redraw();
-                }
-                else {
-                    private.setHTML(evt);
-                }
-            }
 
 
         /*

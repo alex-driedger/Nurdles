@@ -53,3 +53,12 @@
 .hide {
     display: none;
 }
+
+.onTop {
+    position: absolute;
+    left: 300px;
+    top: 400px;
+    z-index: 1010;
+    height: 400px;
+    width: 300px;
+}
