@@ -84,7 +84,7 @@ define([
                 _Layer_WMS.setVisibility(true);
 
                 OpenLayers.Util.onImageLoadError = function () { }
-                var basicMapLayer = new OpenLayers.Layer.WMS("Basic Base Map", "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: "basic"}); //, { isBaseLayer: true, wrapDateLine: true });
+                var basicMapLayer = new OpenLayers.Layer.WMS("Basic Base Map", "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: "basic"}, { isBaseLayer: true, wrapDateLine: true });
 
                 _Layer_Highlight = new OpenLayers.Layer.Vector("Highlighted Features", { displayInLayerSwitcher: false, isBaseLayer: false });
                 _Layer_Select = new OpenLayers.Layer.Vector("Selected Features", { displayInLayerSwitcher: false, isBaseLayer: false });
@@ -141,6 +141,7 @@ define([
 
                 _Map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
 
+                _Map.zoomToMaxExtent();
 
 
         /*
