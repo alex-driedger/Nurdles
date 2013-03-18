@@ -12,6 +12,7 @@ define([
   var AppRouter = Backbone.Router.extend({
     routes: {
       '': 'signin',
+      'signin': 'signin',
       'home': 'home'
     },
 
@@ -31,7 +32,6 @@ define([
     },
 
     home: function() {
-        console.log("ROUTE HIT");
         var homeView = new HomeView({el: this.mainEl});
         AppView.showView(homeView);
     },
@@ -50,7 +50,7 @@ define([
                     success: function(user) {
                         if (!user) {
                             alert("You are not signed in!");
-                            that.navigate('');
+                            that.navigate('', true);
                         }
                         else
                             window.user = user;

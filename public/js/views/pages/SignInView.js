@@ -2,7 +2,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/pages/SignInView.html'
+  'text!templates/pages/SignInView.html',
+  'bootstrap'
 ], function($, _, Backbone, signInTemplate){
 
     var SignInView = Backbone.View.extend({

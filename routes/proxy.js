@@ -10,7 +10,6 @@ var self = {
             });
 
             response.on("end", function() {
-                console.log(req);
                 res.send(output);
             });
         });

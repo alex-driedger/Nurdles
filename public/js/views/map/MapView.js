@@ -5,6 +5,10 @@ define([
   'text!templates/map/MapView.html'
 ], function($, _, Backbone, mapTemplate){
     var private = {
+        /*-----
+        * These are methods taken from the demo site.
+        * TODO: Either replace the functions with something nicer or use actual MATH values rather than hard coded numbers
+        * ---*/
             Lon2Merc: function(lon) {
                 return 20037508.34 * lon / 180;
             },
@@ -24,7 +28,6 @@ define([
             },
 
             showInfo: function(evt) {
-                console.log("TEST");
                 if (evt.features && evt.features.length) {
                     _Layer_Highlight.destroyFeatures();
                     _Layer_Highlight.addFeatures(evt.features);
