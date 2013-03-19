@@ -62,7 +62,7 @@ define([
             });
 
             _Map.addControl(new OpenLayers.Control.LayerSwitcher({ 'ascending': false, 'useLegendGraphics': true, 'div': OpenLayers.Util.getElement('layerswitcher') }));
-            _Map.addControl(new OpenLayers.Control.Zoom({ 'position': new OpenLayers.Pixel(15, 10) }));
+            _Map.addControl(new OpenLayers.Control.Zoom({ 'position': new OpenLayers.Pixel(50, 10) }));
             _Map.addControl(new OpenLayers.Control.Navigation());
 
             _Layer_WMS = new OpenLayers.Layer.WMS(

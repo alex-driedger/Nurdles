@@ -81,7 +81,7 @@
 }
 
 .hide {
-    display: none;
+    display: none !important;
 }
 
 .onTop {
@@ -93,14 +93,13 @@
     width: 300px;
 }
 
-
 //-------------Sidebar----------------
 
 #content, #sidebar {
     text-align: center;
     border: 1px solid;
 }
- 
+
 #sidebar {
     border-color: #BCD;
     display: none;
@@ -112,6 +111,7 @@
 .use-sidebar #content {
     width: 65%;
     height: 100%;
+    -webkit-transition: width 0.4s; /* Safari and Chrome */
 }
 
 .use-sidebar #sidebar {
@@ -123,7 +123,12 @@
 .sidebar-at-left #sidebar {margin-right: 1%;}
 .sidebar-at-right #sidebar {margin-left: 1%;}
 
-.use-sidebar.side-at-left #content, .use-sidebar.side-at-right #sidebar {float: right;}
+.use-sidebar.side-at-left #content {
+    float: right;
+}
+
+.use-sidebar.side-at-right #sidebar {float: right;
+}
 .use-sidebar.side-at-right #content, .use-sidebar.side-at-left #sidebar {float: left;}
 
 .separator-arrow {
@@ -135,29 +140,11 @@
     cursor:pointer;
 }
 
-.separator-arrow .extended {
-    left: 3%;
+.extended {
+    left: 2%;
     height: 50px;
     width: 50px;
-    z-index: 15;
-}
-
-#separator {
-    background-color: #EEE;
-    border: 1px solid #CCC;
-    display: block;
-    outline: none;
-    width: 1%;
-}
-
-.use-sidebar #separator {
-    background: url('img/vertical-separator.gif') repeat-y center top;
-    border-color: #FFF;
-}
-
-#separator:hover {
-    border-color: #ABC;
-    background: #DEF;
+    z-index: 900;
 }
 
 //---------------End Sidebar-----------------

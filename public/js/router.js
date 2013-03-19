@@ -17,7 +17,7 @@ define([
     },
 
     initialize: function() {
-        this.mainEl = $("#content");
+        this.mainEl = $("#main-content");
         var headerView = new HeaderView({el: $("#header")});
         headerView.render();
         var footerView = new FooterView();
