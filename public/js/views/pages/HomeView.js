@@ -13,7 +13,7 @@ define([
     },
 
     render: function(){
-      this.$el.html(homeTemplate);
+      this.$el.append(homeTemplate);
 
         console.log(this.el);
 
