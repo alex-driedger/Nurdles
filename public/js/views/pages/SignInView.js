@@ -14,7 +14,7 @@ define([
         },
 
         render:function () {
-            this.$el.html(signInTemplate);
+            this.$el.append(signInTemplate);
 
             return this;
         },
