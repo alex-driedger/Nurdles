@@ -55,7 +55,7 @@ define([
                     this.isHeaderViewable = false;
                 }
                 else {
-                    $("#main-content").css("top", "5%");
+                    $("#main-content").css("top", "7%");
                     $("#collapseHeaderIcon").attr("src", "../../img/arrow-up.png");
                     this.isHeaderViewable = true;
                 }
