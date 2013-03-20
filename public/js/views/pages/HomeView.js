@@ -3,8 +3,9 @@ define([
   'underscore',
   'backbone',
   '../map/MapView',
+  '../partials/SideBarView',
   'text!templates/pages/HomeView.html'
-], function($, _, Backbone, MapView, homeTemplate){
+], function($, _, Backbone, MapView, SideBarView, homeTemplate){
 
   var HomeView = Backbone.View.extend({
     initialize: function() {
@@ -40,10 +41,13 @@ define([
     render: function(){
       this.$el.append(homeTemplate);
 
-      var mapView = new MapView({el: $("#openLayersImage")});
+      var mapView = new MapView({el: $("#openLayersImage")}),
+            sidebarView = new SideBarView();
 
       mapView.render();
+      sidebarView.render();
       this.subviews.push(mapView);
+      this.subviews.push(sidebarView);
     }
 
   });

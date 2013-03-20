@@ -46,6 +46,11 @@
     background-color: rgba(50, 50, 50, 0.5);
 }
 
+.side-controls-container{
+    position: relative;
+    width: auto;
+}
+
 .mobile-container {
     margin-left: 5%;
     margin-right: 5%;
@@ -136,7 +141,7 @@
 
 .use-sidebar #sidebar {
     display: block;
-    width: 32%;
+    width: 35%;
     height: 100%;
 }
 
