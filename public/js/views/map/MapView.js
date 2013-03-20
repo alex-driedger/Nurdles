@@ -133,6 +133,12 @@ define([
             }
             oInfoControl.click.activate();
 
+            _Map.events.register("mousemove", _Map, function(e) { 
+                var latlon = _Map.getLonLatFromViewPortPx(e.xy) ;
+                latlon.transform( _Map.projection, _Map.displayProjection);
+                OpenLayers.Util.getElement("coordinates").innerHTML = latlon.lat + ", " + latlon.lon;
+            });
+
             _Map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
 
             _Map.zoomToMaxExtent();
