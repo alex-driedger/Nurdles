@@ -6,6 +6,7 @@ define([
   'router'
 ], function($, _, Backbone, Router){
   var initialize = function(){
+    Backbone.globalEvents = _.extend({}, Backbone.Events);
     Router.initialize();
   };
 

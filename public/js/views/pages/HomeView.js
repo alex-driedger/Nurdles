@@ -26,6 +26,7 @@ define([
                 $("#separator").removeClass("extended");
                 $("#collapseImage").attr("src", "../../img/arrow-right.png");
                 this.sidebarActive = false;
+                Backbone.globalEvents.trigger("sidebarIn");
             }
             else {
                 $("#main").addClass("use-sidebar");
@@ -34,6 +35,7 @@ define([
                 $("#content").width("");
                 $("#collapseImage").attr("src", "../../img/arrow-left.png");
                 this.sidebarActive = true;
+                Backbone.globalEvents.trigger("sidebarOut");
             }
         }
     },

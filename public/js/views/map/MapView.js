@@ -45,6 +45,9 @@ define([
         initialize: function(args) {
             this.isHeaderViewable = true;
             this.subviews = [];
+
+            Backbone.globalEvents.on("sidebarOut", this.refreshViewPort, this);
+            Backbone.globalEvents.on("sidebarIn", this.refreshViewPort, this);
         },
 
         events: {
@@ -60,6 +63,11 @@ define([
                     this.isHeaderViewable = true;
                 }
             }
+        },
+
+        refreshViewPort: function(e) {
+            console.log(this.model);
+            this.model.redraw();
         },
 
         render: function () {
@@ -87,6 +95,8 @@ define([
                 maxResolution: 156543,
                 units: 'meters'
             });
+
+            this.model = _Map;
 
             _Map.addControl(new OpenLayers.Control.Zoom({ 'position': new OpenLayers.Pixel(50, 50) }));
             _Map.addControl(new OpenLayers.Control.Navigation());
