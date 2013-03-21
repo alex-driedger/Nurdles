@@ -37,7 +37,9 @@ define([
             else {
                 private.setHTML(evt);
             }
-        }
+        },
+
+        loadingLayers: 0
     };
 
     var MapView = Backbone.View.extend({
@@ -60,6 +62,17 @@ define([
                     this.isHeaderViewable = true;
                 }
             }
+        },
+
+        showLoader: function(e) {
+            private.loadingLayers++
+            $("#loader").removeClass("hide");
+        },
+
+        hideLoader: function(e) {
+            private.loadingLayers--;
+            if (private.loadingLayers === 0)
+                $("#loader").addClass("hide");
         },
 
         render: function () {
@@ -147,6 +160,11 @@ define([
                 latlon.transform( _Map.projection, _Map.displayProjection);
                 OpenLayers.Util.getElement("coordinates").innerHTML = latlon.lat + ", " + latlon.lon;
             });
+
+            basicMapLayer.events.register("loadstart", _Map, this.showLoader);
+            basicMapLayer.events.register("loadend", _Map, this.hideLoader);
+            _Layer_WMS.events.register("loadstart", _Map, this.showLoader);
+            _Layer_WMS.events.register("loadend", _Map, this.hideLoader);
 
             _Map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
 

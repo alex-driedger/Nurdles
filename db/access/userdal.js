@@ -1,4 +1,4 @@
-var User = require('../models/user').User;
+var User = require('../models/User').User;
 
 var self = {
     create: function(username, password, callback) {
