@@ -7,7 +7,7 @@ define([
   var FilterOperator = Backbone.Model.extend({
     initialize: function(attributes) {
         if (attributes)
-            create(attributes);
+            return create(attributes);
         else {
             this.type = "";
             this.operator = "";
@@ -22,6 +22,7 @@ define([
 
         return this;
     }
+  });
 
   return FilterOperator;
   
