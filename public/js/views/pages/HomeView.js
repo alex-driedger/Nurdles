@@ -28,7 +28,7 @@ define([
             }
             else {
                 $("#sidebar").removeClass("hide");
-                $("#controlsContainer").css("width", "70%");
+                $("#controlsContainer").css("width", "60%");
                 $("#separator").addClass("extended");
                 $("#collapseImage").attr("src", "../../img/arrow-left.png");
                 this.sidebarActive = true;

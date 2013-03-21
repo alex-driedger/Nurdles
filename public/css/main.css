@@ -1,3 +1,13 @@
+h4 {
+    padding-left: 5px;
+}
+
+select {
+    padding: 0;
+    margin-bottom: 0;
+    width: 100%;
+}
+
 .bar {
     position: fixed;
     right: 0;
@@ -164,17 +174,11 @@
     background-color: #fff;
     z-index: 1100;
     height: 100%;
-    width: 30%;
+    width: 40%;
     -webkit-transition: width 0.2s; /* Safari and Chrome */
 }
 #content {
     border-color: #CDC;
-}
- 
-.use-sidebar #sidebar {
-    display: block;
-    width: 35%;
-    height: 100%;
 }
 
 .sidebar-at-left #sidebar {margin-right: 1%;}
@@ -202,7 +206,7 @@
 }
 
 .extended {
-    left: 30%;
+    left: 40%;
 }
 
 .loader {
@@ -210,3 +214,15 @@
 }
 
 //---------------End Sidebar-----------------
+
+.wide-30 {
+    width: 30%;
+}
+
+.wide-90 {
+    width: 90%
+}
+
+.vertical-5 {
+    padding-top: 5px;
+}
