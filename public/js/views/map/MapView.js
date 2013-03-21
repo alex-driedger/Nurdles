@@ -66,9 +66,17 @@ define([
         },
 
         refreshViewPort: function(e) {
-            var center = this.model.getCenter();
-            this.model.updateSize();
-            //this.model.setCenter(center);
+            var context = this;
+            //We need a timeout due to the css transition of moving the sidebar in and out
+            //Without this, OpenLayers read the wrong width attribute on the div and this causes
+            //slight but noticeable rendering issues.
+            setTimeout(function() {
+                console.log("BEFORE: ", context.model.size);
+                var width = context.$el.width();
+                console.log(width);
+                context.model.updateSize();
+                console.log("AFTER: ", context.model.size);
+            }, 200);
         },
 
         render: function () {
