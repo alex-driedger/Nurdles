@@ -67,7 +67,7 @@ define([
 
         refreshViewPort: function(e) {
             console.log(this.model);
-            this.model.redraw();
+            this.model.updateSize();
         },
 
         render: function () {
