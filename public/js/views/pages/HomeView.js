@@ -16,26 +16,22 @@ define([
     events: {
         "click #separator": function(e) { 
             if (this.sidebarActive) {
-                $("#content").width("100%");
                 //Doing this because I'm setting width's on multiple divs so a simple transition 
                 //renders an animation in the wrong direction. Here, I can set the width and then
                 //disappear the sidebar after the animation for the width change is done.
                 //TODO: Make this not suck as much.
-                setTimeout(function(){ $("#main").removeClass("use-sidebar");}, 200);
+                $("#controlsContainer").css("width", "100%");
                 $("#sidebar").addClass("hide");
                 $("#separator").removeClass("extended");
                 $("#collapseImage").attr("src", "../../img/arrow-right.png");
                 this.sidebarActive = false;
-                Backbone.globalEvents.trigger("sidebarIn");
             }
             else {
-                $("#main").addClass("use-sidebar");
-                setTimeout(function(){ $("#sidebar").fadeIn(500);}, 200);
+                $("#sidebar").removeClass("hide");
+                $("#controlsContainer").css("width", "70%");
                 $("#separator").addClass("extended");
-                $("#content").width("");
                 $("#collapseImage").attr("src", "../../img/arrow-left.png");
                 this.sidebarActive = true;
-                Backbone.globalEvents.trigger("sidebarOut");
             }
         }
     },
