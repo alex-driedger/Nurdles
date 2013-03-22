@@ -2,7 +2,7 @@
 
 <input type="text" placeholder="Name" style="margin-left: 5px;"/>
 
-<table class="table table-condensed">
+<table class="table table-condensed" style="margin-bottom: 0px;">
     <th>
         <tr>
             <td colspan="2">
@@ -29,14 +29,14 @@
         </td>
         <td>
             <div class="plusMinusContainer">
-                <img src="../../img/minus.png" class="icon-small vertical-5" />
+                <img src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
             </div>
         </td>
     </tr>
     <tr>
         <td>
             <select class="wide-30">
-                <option value="sdf">asd</option>
+                <option value="sog">sog</option>
             </select>
         </td>
         <td>
@@ -49,11 +49,15 @@
         </td>
         <td>
             <div class="plusMinusContainer">
-                <img src="../../img/plus.png" class="icon-small vertical-5" />
+                <img src="../../img/plus.png" class="icon-small vertical-5 add-row" />
             </div>
         </td>
     </tr>
-
 </table>
+
+<div class="pull-right padded">
+    <button id="clearFilter" class="btn"> Clear </button>
+    <button id="createFilter" class="btn"> Create </button>
+</div>
 
 
