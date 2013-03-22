@@ -12,15 +12,21 @@ define([
                 this.$el = $("#newFilter");
 
             this.model = new Filter();
-            this.model.on("change", this.render, this);
 
+            //If anything happens to our operators collection, show the user.
+            this.listenTo(this.model.get("operators"), "all", this.render);
         },
 
         template: _.template(editFiltersTemplate),
 
         events: {
             "click .delete-row": "deleteRow",
-            "click .add-row": "addRow"
+            "click .add-row": "addRow",
+            "click #clearFilter": "clearFilter"
+        },
+
+        clearFilter: function() {
+            this.model.clearOperators();
         },
 
         deleteRow: function(e) {

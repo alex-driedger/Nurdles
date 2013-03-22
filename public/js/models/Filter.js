@@ -18,14 +18,16 @@ define([
     addOperator: function(filterOperator) {
         console.log("ADDING: ", filterOperator);
         this.get("operators").add(filterOperator);
-        this.trigger("change");
     },
 
     removeOperator: function(cid) {
         var operator = this.get("operators").findWhere({cid: cid})
         console.log("REMOVING: ", operator);
         this.get("operators").remove(operator);
-        this.trigger("change");
+    },
+
+    clearOperators: function() {
+        this.get("operators").reset();
     }
   });
 
