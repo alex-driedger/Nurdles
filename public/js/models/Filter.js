@@ -8,8 +8,8 @@ define([
 
   var Filter = Backbone.Model.extend({
     initialize: function(attributes) {
-        this.operators = new FilterOperatorsCollection();
-        this.operators.add(new FilterOperator());
+        this.set("operators", new FilterOperatorsCollection());
+        this.get("operators").add(new FilterOperator());
     },
 
     save: function(parameters) {

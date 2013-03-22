@@ -41,8 +41,8 @@ define([
         },
 
         render: function () {
-            console.log("MODEL: ", this.model);
-            this.$el.html(this.template(this.model));;
+            console.log("MODEL: ", this.model.toJSON());
+            this.$el.html(this.template(this.model.toJSON()));;
         }
     });
 
