@@ -2,11 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/partials/FooterView.html'
+  'text!templates/partials/static/HeaderView.html'
 ], function($, _, Backbone, headerTemplate){
     var HeaderView = Backbone.View.extend({
-
-        el: $("#footer"),
 
         render: function () {
             console.log(this.$el);
@@ -16,4 +14,3 @@ define([
 
     return HeaderView;
 });
-

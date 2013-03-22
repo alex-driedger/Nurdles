@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/partials/TopToolsRow.html'
+  'text!templates/partials/map/TopToolsRow.html'
 ], function($, _, Backbone, topToolsTemplate){
     var TopToolsRow = Backbone.View.extend({
         initialize: function(args) {

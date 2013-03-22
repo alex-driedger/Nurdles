@@ -2,12 +2,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'FilterOperator'
-], function($, _, Backbone, FilterOperator){
+  '../collections/FilterOperatorsCollection',
+  './FilterOperator'
+], function($, _, Backbone, FilterOperatorsCollection, FilterOperator){
 
   var Filter = Backbone.Model.extend({
     initialize: function(attributes) {
-        this.operators = [];
+        this.operators = new FilterOperatorsCollection();
+        this.operators.add(new FilterOperator());
     },
 
     save: function(parameters) {
@@ -15,7 +17,7 @@ define([
     },
 
     addOperator: function(parameters) {
-        this.operators.push(new FilterOperator(parameters));
+        this.operators.add(new FilterOperator(parameters));
     }
   });
 

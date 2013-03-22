@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   '../map/MapView',
-  '../partials/SidebarView',
+  '../partials/sidebar/SidebarView',
   'text!templates/pages/HomeView.html'
 ], function($, _, Backbone, MapView, SideBarView, homeTemplate){
 

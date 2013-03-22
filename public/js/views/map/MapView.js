@@ -2,7 +2,7 @@ define([
        'jquery',
        'underscore',
        'backbone',
-       '../partials/TopToolsRow',
+       '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html'
 ], function($, _, Backbone, TopToolsRow, mapTemplate){
     var private = {

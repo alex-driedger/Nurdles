@@ -2,9 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  '../partials/SideBarToolsRow',
-  '../partials/EditFiltersView',
-  'text!templates/partials/SidebarView.html'
+  '../sidebar/SideBarToolsRow',
+  '../filters/EditFiltersView',
+  'text!templates/partials/sidebar/SidebarView.html'
 ], function($, _, Backbone, SideBarToolsRow, EditFiltersView, sidebarViewTemplate){
     var SidebarView = Backbone.View.extend({
         initialize: function(args) {

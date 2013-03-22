@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/partials/SideBarToolsRow.html'
+  'text!templates/partials/sidebar/SideBarToolsRow.html'
 ], function($, _, Backbone, sidebarToolsRow){
     var SideBarToolsRow = Backbone.View.extend({
         initialize: function(args) {
