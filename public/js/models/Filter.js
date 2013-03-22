@@ -9,15 +9,23 @@ define([
   var Filter = Backbone.Model.extend({
     initialize: function(attributes) {
         this.set("operators", new FilterOperatorsCollection());
-        this.get("operators").add(new FilterOperator());
     },
 
     save: function(parameters) {
         //ajax request to server will go here
     },
 
-    addOperator: function(parameters) {
-        this.operators.add(new FilterOperator(parameters));
+    addOperator: function(filterOperator) {
+        console.log("ADDING: ", filterOperator);
+        this.get("operators").add(filterOperator);
+        this.trigger("change");
+    },
+
+    removeOperator: function(cid) {
+        var operator = this.get("operators").findWhere({cid: cid})
+        console.log("REMOVING: ", operator);
+        this.get("operators").remove(operator);
+        this.trigger("change");
     }
   });
 

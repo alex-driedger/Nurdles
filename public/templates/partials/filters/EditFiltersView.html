@@ -16,7 +16,7 @@
 
         <% _.each(operators.models, function(operator) { console.log(operator); %>
 
-    <tr>
+        <tr id="<%= operator.cid %>">
         <td>
             <select class="wide-30">
                 <option value="<%= operator.type %>"><%= operator.type %></option>
