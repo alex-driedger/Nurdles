@@ -21,7 +21,6 @@ define([
         },
 
         setHTML: function(response) {
-            console.log("TEST: ", response);
             if (response.text.indexOf("MMSI") >= 0) {
                 $("#dialog").html(response.text);
                 $("#dialog").addClass("onTop").removeClass("hide");

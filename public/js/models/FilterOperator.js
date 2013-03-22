@@ -6,7 +6,6 @@ define([
 
   var FilterOperator = Backbone.Model.extend({
     initialize: function(attributes) {
-        console.log("NEW FILTER OPERATOR:", attributes);
         if (attributes)
             return this.create(attributes);
         else {
