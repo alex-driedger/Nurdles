@@ -14,25 +14,25 @@
         </tr>
     </th>
 
-        <% _.each(operators.models, function(operator) { console.log(operator); %>
+        <% _.each(operators.models, function(operator) { %>
 
-        <tr id="<%= operator.cid %>">
+        <tr>
         <td>
-            <select class="wide-30">
+            <select id="<%= operator.cid + '-type' %>" class="wide-30">
                 <option value="<%= operator.type %>"><%= operator.type %></option>
             </select>
         </td>
         <td>
-            <select class="wide-30">
+            <select id="<%= operator.cid + '-operator' %>" class="wide-30">
                 <option value="<%= operator.operator %>"><%= operator.operator %></option>
             </select>
         </td>
         <td> 
-            <input type="text" class="wide-90" value="<%= operator.value %>" />
+            <input id="<%= operator.cid + '-value' %>" type="text" class="wide-90" value="<%= operator.value %>" />
         </td>
         <td>
             <div class="plusMinusContainer">
-                <img src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                <img id="<%=operator.cid%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
             </div>
         </td>
     </tr>
@@ -41,17 +41,17 @@
 
     <tr>
         <td>
-            <select class="wide-30">
+            <select id="newType" class="wide-30">
                 <option value="type">type</option>
             </select>
         </td>
         <td>
-            <select class="wide-30">
+            <select id="newOperator" class="wide-30">
                 <option value="euqlas">=</option>
             </select>
         </td>
         <td> 
-            <input type="text" class="wide-90" />
+            <input id="newValue" type="text" class="wide-90" />
         </td>
         <td>
             <div class="plusMinusContainer">

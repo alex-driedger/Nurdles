@@ -10,7 +10,6 @@ define([
 
         initialize:function (opts) {
             this.router = opts.router;
-            console.log(this.router);
         },
 
         render:function () {
@@ -47,7 +46,6 @@ define([
 
         loginSuccessful: function(data, context) {
             window.user = data;
-            console.log(context.router);
             context.router.navigate("home", true);
 
         },

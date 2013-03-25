@@ -8,7 +8,7 @@ define([
 
   var Filter = Backbone.Model.extend({
     initialize: function(attributes) {
-        this.set("operators", new FilterOperatorsCollection());
+        this.set("operators", []);
     },
 
     save: function(parameters) {
@@ -19,14 +19,29 @@ define([
         this.get("operators").add(filterOperator);
     },
 
-    removeOperator: function(cid) {
-        var operator = this.get("operators").findWhere({cid: cid})
-        this.get("operators").remove(operator);
+    removeOperator: function(id) {
+        var operatorWithIndex = this.findOperatorById(id)
+        this.get("operators").slice(operatorWithIndex.index, 1);
+    },
+
+    findOperatorById: function(id) {
+        var operators = this.get("operators");
+        _.each(operators, function(operator, index) {
+            if (operator.id === id)
+                return {
+                    operator: operator,
+                    index: index
+                }
+        });
     },
 
     clearOperators: function() {
         this.get("operators").reset();
-    }
+    },
+
+    getOperators: function(attribute) {
+        return this.get("operators");
+    },
   });
 
   return Filter;
