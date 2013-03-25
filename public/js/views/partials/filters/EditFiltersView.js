@@ -26,7 +26,9 @@ define([
         events: {
             "click .delete-row": "deleteRow",
             "click .add-row": "addRow",
-            "click #clearFilter": "clearFilter"
+            "click #clearFilter": "clearFilter",
+            "click #createFilter": "createFilter",
+            "change #newOperator": "updateValueTextFields"
         },
 
         cacheOperators: function() {
@@ -43,6 +45,18 @@ define([
             this.model.clearOperators();
         },
 
+        createFilter: function(e) {
+            Backbone.globalEvents.trigger("filtersChanged", [this.model]);
+        },
+
+        updateValueTextFields: function(e) {
+            console.log(e);
+            if ($(e.target).val() == "=")
+                $("#newValue2").addClass("hide");
+            else
+                $("#newValue2").removeClass("hide");
+        },
+
         deleteRow: function(e) {
             this.model.removeOperator(e.target.id.toString());
         },
@@ -50,17 +64,23 @@ define([
         addRow: function(e) {
             var newOperator = {
                 id: private.operatorCounter++,
-                type: $("#newType").val(),
-                operator: $("#newOperator").val(),
-                values: [$("#newValue1").val()]
+                property: $("#newType").val(),
+                type: $("#newOperator").val(),
+                lowerBoundary: $("#newValue1").val(),
+                upperBoundary: $("#newValue2").val()
             };
 
-            if ($("#newValue2").val() != "")
-                newOperator.values.push($("#newValue2").val());
+            if ($("#newValue2").val() != "") {
+                newOperator.upperBoundary = ($("#newValue2").val());
+            }
+            else {
+                newOperator.value = newOperator.lowerBoundary;
+                delete newOperator.lowerBoundary;
+            }
 
             console.log(newOperator);
+
             this.model.addOperator(newOperator);
-            console.log("Operators: ", this.model.get("operators"));
         },
 
         render: function () {

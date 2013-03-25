@@ -19,19 +19,19 @@
         <tr>
         <td>
             <select id="<%= operator.id + '-type' %>" class="wide-30">
-                <option value="<%= operator.type %>"><%= operator.type %></option>
+                <option value="<%= operator.property %>"><%= operator.property %></option>
             </select>
         </td>
         <td>
             <select id="<%= operator.id + '-operator' %>" class="wide-30">
-                <option value="<%= operator.operator %>"><%= operator.operator %></option>
+                <option value="<%= operator.type %>"><%= operator.type %></option>
             </select>
         </td>
         <td> 
-            <input id="<%= operator.id + '-value1' %>" type="text" class="wide-90" value="<%= operator.values[0] %>" />
+            <input id="<%= operator.id + '-value1' %>" type="text" class="wide-90" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
         </td>
         <td> 
-            <input id="<%= operator.id + '-value2' %>" type="text" class="wide-90" value="<%= operator.values[1] ? operator.values[1] : '' %>" />
+            <input id="<%= operator.id + '-value2' %>" type="text" class="wide-90" value="<%= operator.upperBoundary %>" />
         </td>
         <td>
             <div class="plusMinusContainer">
@@ -45,12 +45,13 @@
     <tr>
         <td>
             <select id="newType" class="wide-30">
-                <option value="type">type</option>
+                <option value="sog">sog</option>
             </select>
         </td>
         <td>
             <select id="newOperator" class="wide-30">
                 <option value="=">=</option>
+                <option value="..">..</option>
             </select>
         </td>
         <td> 

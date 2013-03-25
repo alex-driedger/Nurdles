@@ -46,6 +46,8 @@ define([
         initialize: function(args) {
             this.isHeaderViewable = true;
             this.subviews = [];
+
+            Backbone.globalEvents.on("filtersChanged", this.updateFilters, this);
         },
 
         events: {
@@ -72,6 +74,33 @@ define([
             private.loadingLayers--;
             if (private.loadingLayers === 0)
                 $("#loader").addClass("hide");
+        },
+
+        updateFilters: function(filters) {
+            var map = this.model;
+
+            var exactAISLayer = map.getLayersByName("exactAIS")[0];
+
+            exactAISLayer.params["FILTER"] = this.createOpenLayersFilters(filters);
+            exactAISLayer.redraw();
+        },
+
+        createOpenLayersFilters: function(filters) {
+            var olFilters = new OpenLayers.Filter.Logical({
+                type: OpenLayers.Filter.Logical.AND 
+            });
+
+            for (var i = 0, len = filters.length; i< len; i++) {
+                for (var j = 0, olen = filters[i].get("operators").length; j < olen; j++) {
+                    olFilters.filters.push(filters[i].get("operators")[j]);
+                }
+            }
+
+            var filter_1_0 = new OpenLayers.Format.Filter({version: "1.0.0"});
+            var xml = new OpenLayers.Format.XML(); 
+            var filter_param = xml.write(filter_1_0.write(olFilters));
+
+            return filter_param;
         },
 
         render: function () {
@@ -106,7 +135,7 @@ define([
             _Map.addControl(new OpenLayers.Control.Navigation());
 
             _Layer_WMS = new OpenLayers.Layer.WMS(
-                "exactAIS WMS - Dev", "https://owsdemo.exactearth.com/wms?authKey=9178ef5a-8ccd-45d3-8786-38901966a291",
+                "exactAIS", "https://owsdemo.exactearth.com/wms?authKey=9178ef5a-8ccd-45d3-8786-38901966a291",
                     {
                 LAYERS: "exactAIS:LVI",
                 STYLES: "VesselByType",
