@@ -14,25 +14,25 @@
         </tr>
     </th>
 
-        <% _.each(operators.models, function(operator) { %>
+        <% _.each(operators, function(operator) { %>
 
         <tr>
         <td>
-            <select id="<%= operator.cid + '-type' %>" class="wide-30">
+            <select id="<%= operator.id + '-type' %>" class="wide-30">
                 <option value="<%= operator.type %>"><%= operator.type %></option>
             </select>
         </td>
         <td>
-            <select id="<%= operator.cid + '-operator' %>" class="wide-30">
+            <select id="<%= operator.id + '-operator' %>" class="wide-30">
                 <option value="<%= operator.operator %>"><%= operator.operator %></option>
             </select>
         </td>
         <td> 
-            <input id="<%= operator.cid + '-value' %>" type="text" class="wide-90" value="<%= operator.value %>" />
+            <input id="<%= operator.id + '-value' %>" type="text" class="wide-90" value="<%= operator.value %>" />
         </td>
         <td>
             <div class="plusMinusContainer">
-                <img id="<%=operator.cid%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                <img id="<%=operator.id%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
             </div>
         </td>
     </tr>

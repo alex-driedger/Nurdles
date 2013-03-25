@@ -3,9 +3,8 @@ define([
   'underscore',
   'backbone',
   '../../../models/Filter',
-  '../../../models/FilterOperator',
   'text!templates/partials/filters/EditFiltersView.html'
-], function($, _, Backbone, Filter, FilterOperator, editFiltersTemplate){
+], function($, _, Backbone, Filter, editFiltersTemplate){
     var EditFiltersView = Backbone.View.extend({
         initialize: function(args) {
             if (!args)
@@ -14,7 +13,8 @@ define([
             this.model = new Filter();
 
             //If anything happens to our operators collection, show the user.
-            this.listenTo(this.model.get("operators"), "all", this.cacheOperators);
+            this.listenTo(this.model, "change", this.cacheOperators);
+            this.listenTo(this.model, "addOperator", this.render);
         },
 
         template: _.template(editFiltersTemplate),
@@ -26,14 +26,13 @@ define([
         },
 
         cacheOperators: function() {
-            this.model.getOperators().forEach(function(operator) {
-                operator.type = $("#" + operator.cid + "-type").val();
-                operator.operator = $("#" + operator.cid + "-operator").val();
-                operator.value = $("#" + operator.cid + "-value").val();
+            _.each(this.model.getOperators(), function(operator) {
+                operator.type = $("#" + operator.id + "-type").val();
+                operator.operator = $("#" + operator.id + "-operator").val();
+                operator.value = $("#" + operator.id + "-value").val();
             });
 
             this.render();
-            
         },
 
         clearFilter: function() {
@@ -46,12 +45,15 @@ define([
 
         addRow: function(e) {
             var newOperator = {
+                id: this.model.get("operators").length + 1,
                 type: $("#newType").val(),
                 operator: $("#newOperator").val(),
                 value: [$("#newValue").val()]
             };
 
+            console.log(newOperator);
             this.model.addOperator(newOperator);
+            console.log("Operators: ", this.model.get("operators"));
         },
 
         render: function () {

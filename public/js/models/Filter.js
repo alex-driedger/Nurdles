@@ -2,9 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  '../collections/FilterOperatorsCollection',
-  './FilterOperator'
-], function($, _, Backbone, FilterOperatorsCollection, FilterOperator){
+], function($, _, Backbone){
 
   var Filter = Backbone.Model.extend({
     initialize: function(attributes) {
@@ -15,13 +13,15 @@ define([
         //ajax request to server will go here
     },
 
-    addOperator: function(filterOperator) {
-        this.get("operators").add(filterOperator);
+    addOperator: function(operator) {
+        this.get("operators").push(operator);
+        this.trigger("addOperator");
     },
 
     removeOperator: function(id) {
         var operatorWithIndex = this.findOperatorById(id)
         this.get("operators").slice(operatorWithIndex.index, 1);
+        this.trigger("change");
     },
 
     findOperatorById: function(id) {
@@ -37,6 +37,7 @@ define([
 
     clearOperators: function() {
         this.get("operators").reset();
+        this.trigger("change");
     },
 
     getOperators: function(attribute) {
