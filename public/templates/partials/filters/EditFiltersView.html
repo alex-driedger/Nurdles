@@ -28,7 +28,10 @@
             </select>
         </td>
         <td> 
-            <input id="<%= operator.id + '-value' %>" type="text" class="wide-90" value="<%= operator.value %>" />
+            <input id="<%= operator.id + '-value1' %>" type="text" class="wide-90" value="<%= operator.values[0] %>" />
+        </td>
+        <td> 
+            <input id="<%= operator.id + '-value2' %>" type="text" class="wide-90" value="<%= operator.values[1] ? operator.values[1] : '' %>" />
         </td>
         <td>
             <div class="plusMinusContainer">
@@ -51,7 +54,10 @@
             </select>
         </td>
         <td> 
-            <input id="newValue" type="text" class="wide-90" />
+            <input id="newValue1" type="text" class="wide-90" />
+        </td>
+        <td> 
+            <input id="newValue2" type="text" class="wide-90" />
         </td>
         <td>
             <div class="plusMinusContainer">

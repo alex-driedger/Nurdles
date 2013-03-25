@@ -52,8 +52,11 @@ define([
                 id: private.operatorCounter++,
                 type: $("#newType").val(),
                 operator: $("#newOperator").val(),
-                value: [$("#newValue").val()]
+                values: [$("#newValue1").val()]
             };
+
+            if ($("#newValue2").val() != "")
+                newOperator.values.push($("#newValue2").val());
 
             console.log(newOperator);
             this.model.addOperator(newOperator);
