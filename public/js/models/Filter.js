@@ -20,19 +20,20 @@ define([
 
     removeOperator: function(id) {
         var operatorWithIndex = this.findOperatorById(id)
-        this.get("operators").slice(operatorWithIndex.index, 1);
+        this.get("operators").splice(operatorWithIndex.index, 1);
         this.trigger("change");
+        console.log("Now have " + this.get("operators").length + " operators");
     },
 
     findOperatorById: function(id) {
         var operators = this.get("operators");
-        _.each(operators, function(operator, index) {
-            if (operator.id === id)
+        for (var i = 0, len = operators.length; i < len; i++) {
+            if (operators[i].id == id)
                 return {
-                    operator: operator,
-                    index: index
+                    operator: operators[i],
+                    index: i
                 }
-        });
+        }
     },
 
     clearOperators: function() {
