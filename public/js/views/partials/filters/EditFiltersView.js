@@ -5,6 +5,10 @@ define([
   '../../../models/Filter',
   'text!templates/partials/filters/EditFiltersView.html'
 ], function($, _, Backbone, Filter, editFiltersTemplate){
+    var private = {
+        operatorCounter: 0
+    };
+
     var EditFiltersView = Backbone.View.extend({
         initialize: function(args) {
             if (!args)
@@ -45,7 +49,7 @@ define([
 
         addRow: function(e) {
             var newOperator = {
-                id: this.model.get("operators").length + 1,
+                id: private.operatorCounter++,
                 type: $("#newType").val(),
                 operator: $("#newOperator").val(),
                 value: [$("#newValue").val()]
