@@ -343,9 +343,9 @@ select {
     -webkit-box-shadow: 0 3px 14px #999;
 }
 .leaflet-popup-content-wrapper, .olTipFrameContentWrapper {
-    -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    border-radius: 20px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
 .leaflet-popup-content, .olTipFrameContent {
     font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
@@ -353,3 +353,36 @@ select {
 .leaflet-popup-close-button, .olTipFrameCloseButton {
     background: white url(images/popup-close.png);
 }
+
+//----------------------------Popup Styles ExactEarth----------------------------//
+table.wms, td.wms
+{
+    border-collapse: collapse;
+    font-family: arial;
+    font-size: 11px;
+    color: #333333;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    }
+    table.wms{
+        table-layout: fixed;
+        width: 381px;
+    }
+    td.wms
+    {
+        valign: bottom;
+        text-align: left;
+        word-wrap:break-word;
+        overflow: hidden;
+    }
+    #copyright{
+        font-size: 9px;
+        font-weight: bold;
+        text-align: right;
+    }
+    #vessel_name{
+        font-size: 14px;
+        font-weight: bold;
+        color: rgb(0,101,162);
+        text-align: left;
+    }

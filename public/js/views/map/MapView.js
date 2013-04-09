@@ -4,8 +4,9 @@ define([
        'backbone',
        './popup',
        '../partials/map/TopToolsRow',
-       'text!templates/map/MapView.html'
-], function($, _, Backbone, featurePopup, TopToolsRow, mapTemplate){
+       'text!templates/map/MapView.html',
+       'text!templates/partials/map/popup.html'
+], function($, _, Backbone, featurePopup, TopToolsRow, mapTemplate, popupTemplate){
     console.log(featurePopup)
     var private = {
         /*-----
@@ -58,8 +59,7 @@ define([
 
         onFeatureSelect: function(evt, map) {
             var PopupClass = featurePopup;
-            console.log(PopupClass);
-            var size = new OpenLayers.Size(300,100);
+            var size = new OpenLayers.Size(420,330);
             var latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y));
 
             feature = evt.feature;
@@ -67,8 +67,10 @@ define([
                                    latLongOfClick,
                                    size,
                                    "<h2>TEST</h2>" + "Description here",
-                                   undefined, true, function(e){console.log("CLOSING!")});
-               map.addPopup(popup);
+                                   undefined, true, function(e){this.destroy()}
+                                  );
+            popup.setContentHTML(popupTemplate);
+            map.addPopup(popup);
         },
 
         onFeatureUnselect: function() {
@@ -211,11 +213,10 @@ define([
             var oInfoControl = {
                 click: new OpenLayers.Control.WMSGetFeatureInfo({
                     url: 'https://owsdemo.exactearth.com/wms?authKey=9178ef5a-8ccd-45d3-8786-38901966a291',
-                        title: 'Identify features by clicking',
+                    title: 'Identify features by clicking',
                     layers: [_Layer_WMS],
                     queryVisible: true,
-                    output: "object",
-                    infoFormat: "application/vnd.ogc.gml"
+                    maxFeatures: 1
                 })
             };
 
