@@ -1,6 +1,7 @@
 var self = {
     proxyIt: function(req, res) {
-        var https = require("follow-redirects").https;
+        var https = require("follow-redirects").https,
+            xmlParser = require("xml2json");
 
         https.get(req.query["url"], function(response) {
             var output = "";
@@ -10,7 +11,17 @@ var self = {
             });
 
             response.on("end", function() {
-                res.send(output);
+                try {
+                    console.log("trying to parse json");
+                    console.log(output);
+                    var jsonOutput = xmlParser.toJson(output);
+                    jsonOutput.isJson = true;
+                    console.log(jsonOutput);
+                    res.send(jsonOutput);
+                } catch (e) {
+                    console.log("Failed!", e);
+                    res.send(output);
+                }
             });
         });
     }

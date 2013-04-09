@@ -2,9 +2,11 @@ define([
        'jquery',
        'underscore',
        'backbone',
+       './popup',
        '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html'
-], function($, _, Backbone, TopToolsRow, mapTemplate){
+], function($, _, Backbone, featurePopup, TopToolsRow, mapTemplate){
+    console.log(featurePopup)
     var private = {
         /*-----
         * These are methods taken from the demo site.
@@ -20,7 +22,8 @@ define([
                                     return 20037508.34 * lat / 180;
         },
 
-        setHTML: function(response) {
+        setHtml: function(response) {
+            console.log($.parseJSON(response.text));
             if (response.text.indexOf("MMSI") >= 0) {
                 $("#dialog").html(response.text);
                 $("#dialog").addClass("onTop").removeClass("hide");
@@ -28,17 +31,55 @@ define([
         },
 
         showInfo: function(evt) {
+            console.log(evt);
             if (evt.features && evt.features.length) {
                 _Layer_Highlight.destroyFeatures();
                 _Layer_Highlight.addFeatures(evt.features);
                 _Layer_Highlight.redraw();
             }
             else {
-                private.setHTML(evt);
+                private.onFeatureSelect(evt, this.model);
             }
         },
 
-        loadingLayers: 0
+        loadingLayers: 0,
+
+        // Needed only for interaction, not for the display.
+        onPopupClose: function(evt) {
+            // 'this' is the popup.
+            var feature = this.feature;
+            if (feature.layer) { // The feature is not destroyed
+                selectControl.unselect(feature);
+            } else { // After "moveend" or "refresh" events on POIs layer all
+                //     features have been destroyed by the Strategy.BBOX
+                this.destroy();
+            }
+        },
+
+        onFeatureSelect: function(evt, map) {
+            var PopupClass = featurePopup;
+            console.log(PopupClass);
+            var size = new OpenLayers.Size(300,100);
+            var latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y));
+
+            feature = evt.feature;
+            popup = new PopupClass("featurePopup",
+                                   latLongOfClick,
+                                   size,
+                                   "<h2>TEST</h2>" + "Description here",
+                                   undefined, true, function(e){console.log("CLOSING!")});
+               map.addPopup(popup);
+        },
+
+        onFeatureUnselect: function() {
+            feature = evt.feature;
+            if (feature.popup) {
+                popup.feature = null;
+                map.removePopup(feature.popup);
+                feature.popup.destroy();
+                feature.popup = null;
+            }
+        }
     };
 
     var MapView = Backbone.View.extend({
@@ -147,8 +188,7 @@ define([
                 ratio: 1,
                 isBaseLayer: false,
                 yx: { 'EPSG:4326': true },
-                wrapDateLine: true,
-                transitionEffect: "resize"
+                wrapDateLine: true
             }
             );
             _Layer_WMS.setVisibility(true);
@@ -173,7 +213,9 @@ define([
                     url: 'https://owsdemo.exactearth.com/wms?authKey=9178ef5a-8ccd-45d3-8786-38901966a291',
                         title: 'Identify features by clicking',
                     layers: [_Layer_WMS],
-                    queryVisible: true
+                    queryVisible: true,
+                    output: "object",
+                    infoFormat: "application/vnd.ogc.gml"
                 })
             };
 
