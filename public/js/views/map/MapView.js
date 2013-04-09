@@ -2,12 +2,10 @@ define([
        'jquery',
        'underscore',
        'backbone',
-       './popup',
+       './FeaturePopup',
        '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html',
-       'text!templates/partials/map/popup.html'
-], function($, _, Backbone, featurePopup, TopToolsRow, mapTemplate, popupTemplate){
-    console.log(featurePopup)
+], function($, _, Backbone, FeaturePopup, TopToolsRow, mapTemplate){
     var private = {
         /*-----
         * These are methods taken from the demo site.
@@ -39,7 +37,7 @@ define([
                 _Layer_Highlight.redraw();
             }
             else {
-                private.onFeatureSelect(evt, this.model);
+                private.onFeatureSelect(evt, this.model, this);
             }
         },
 
@@ -57,20 +55,19 @@ define([
             }
         },
 
-        onFeatureSelect: function(evt, map) {
-            var PopupClass = featurePopup;
-            var size = new OpenLayers.Size(420,330);
+        onFeatureSelect: function(evt, map, view) {
             var latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y));
 
-            feature = evt.feature;
-            popup = new PopupClass("featurePopup",
-                                   latLongOfClick,
-                                   size,
-                                   "<h2>TEST</h2>" + "Description here",
-                                   undefined, true, function(e){this.destroy()}
-                                  );
-            popup.setContentHTML(popupTemplate);
-            map.addPopup(popup);
+            var featurePopup = new FeaturePopup({
+                shipInformation:  {
+                    shipName: "This is the data"
+                },
+                map: map,
+                position: latLongOfClick
+            }, view);
+
+            view.subviews.push(featurePopup);
+            featurePopup.render(evt);
         },
 
         onFeatureUnselect: function() {
@@ -215,8 +212,8 @@ define([
                     url: 'https://owsdemo.exactearth.com/wms?authKey=9178ef5a-8ccd-45d3-8786-38901966a291',
                     title: 'Identify features by clicking',
                     layers: [_Layer_WMS],
-                    queryVisible: true,
-                    maxFeatures: 1
+                    infoFormat: "application/vnd.ogc.gml",
+                    queryVisible: true
                 })
             };
 
