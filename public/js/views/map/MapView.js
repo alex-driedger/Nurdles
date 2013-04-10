@@ -20,7 +20,7 @@ define([
         },
 
         setHtml: function(response) {
-            console.log($.parseJSON(response.text));
+            console.log();
             if (response.text.indexOf("MMSI") >= 0) {
                 $("#dialog").html(response.text);
                 $("#dialog").addClass("onTop").removeClass("hide");
@@ -28,7 +28,6 @@ define([
         },
 
         showInfo: function(evt) {
-            console.log(evt);
             if (evt.features && evt.features.length) {
                 _Layer_Highlight.destroyFeatures();
                 _Layer_Highlight.addFeatures(evt.features);
@@ -56,9 +55,13 @@ define([
         onFeatureSelect: function(evt, map, view) {
             var latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y));
 
+            var gmlInfo = $.parseJSON(evt.text),
+                featureInfo = gmlInfo["wfs:FeatureCollection"]["gml:featureMember"]["exactAIS:LVI"];
+
+                console.log(featureInfo);
             var featurePopup = new FeaturePopup({
                 shipInformation:  {
-                    shipName: "This is the data"
+                    data: featureInfo
                 },
                 map: map,
                 position: latLongOfClick

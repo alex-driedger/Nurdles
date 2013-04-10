@@ -50,6 +50,8 @@ define([
                 binding.object.off(binding.event, binding.callback, self);
             });
 
+            //Here, I can just reset the array and the garbarge collection will take care of the rest
+            //Remember, I switched the event off so we should be ok
             this.bindings = [];
         },
         
@@ -57,15 +59,17 @@ define([
             this.subviews || (this.subviews = {});
             this.subviews[view.cid] = view;
 
+            //We're binding to the child's close action
+            //That way we can unbind any (other) events we're listening for on the child
+            //as well as remove it from our subviews
+            //Normally I don't like coupling like this but, here, it makes a lot of sense
             this.bindTo(view, "close", this.removeSubView, this);
         },
 
         removeSubView: function(view) {
             this.unbindEventsToView(view);
-            console.log(this.subviews);
+            //I want to free up the memory so I'm deleting
             delete this.subviews[view.cid];
-            console.log(this.subviews);
-
         },
         
         closeSubviews: function() {

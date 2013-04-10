@@ -1,58 +1,57 @@
-<%= shipName %> <br/>
 <table class="wms">
     <col width="173px" />
     <col width="173px" />
     <col width="35px" />
-            <tr class="wms"><td colspan="2" id="vessel_name" class="wms"><strong>LIAOD NGYU 525      </strong></td></tr>
+            <tr class="wms"><td colspan="2" id="vessel_name" class="wms"><strong><%= data["exactAIS:vessel_name"] %></strong></td></tr>
         <tr class="wms">
-            <td class="wms"><strong>Type: </strong>Unknown</td>
-            <td class="wms"><strong>Flag: </strong>China</td>
-            <td><img src="https://owsdemo.exactearth.com/www/flags/China.png" alt="China" width="32" height="32" align="absmiddle" />
+            <td class="wms"><strong>Type: </strong><%= data["exactAIS:vessel_type"] %></td>
+            <td class="wms"><strong>Flag: </strong><%= data["exactAIS:flag_country"] %></td>
+            <td><img src="https://owsdemo.exactearth.com/www/flags/<%= data["exactAIS:flag_country"].replace(" ", "") %>.png" alt="China" width="32" height="32" align="absmiddle" />
             </td>
         </tr>
         <tr class="wms">
             <td colspan="3" class="wms"><img src="https://owsdemo.exactearth.com/www/gfi_line.png" alt="" width="381" height="8" align="absmiddle" /></td>
         </tr>
         <tr class="wms">
-            <td class="wms"><strong>IMO: </strong></td>
-            <td class="wms"><strong>MMSI: </strong>412211196</td>
+            <td class="wms"><strong>IMO: </strong><%= data["exactAIS:imo"] %></td>
+            <td class="wms"><strong>MMSI: </strong><%= data["exactAIS:mmsi"] %></td>
         </tr>
         <tr class="wms">
-            <td class="wms"><strong>Call Sign: </strong></td>
-            <td class="wms"><strong>Size: </strong>49.0m x 9.0m</td>
+            <td class="wms"><strong>Call Sign: </strong><%= data["exactAIS:callsign"] %></td>
+            <td class="wms"><strong>Size: </strong><%= data["exactAIS:length"] %>m x <%= data["exactAIS:width"] %>m</td>
         </tr>
         <tr class="wms">
             <td bgcolor="#99CCFF" class="wms"><strong>Latest Position at:</strong></td>
-            <td bgcolor="#99CCFF" class="wms">2013-04-04 23:53:00</td>
+            <td bgcolor="#99CCFF" class="wms"><%= data["exactAIS:ts_pos_utc"].toString().replace(/T|\:\d\dZ/g, " ") %></td>
             <td bgcolor="#99CCFF" class="wms"></td>
         </tr>
         <tr class="wms">
-            <td class="wms"><strong>Latitude: </strong>-52.683108 </td>
-            <td class="wms"><strong>Longitude: </strong>13.449658</td>
+            <td class="wms"><strong>Latitude: </strong><%= data["exactAIS:latitude"] %></td>
+            <td class="wms"><strong>Longitude: </strong><%= data["exactAIS:longitude"] %></td>
         </tr>
         <tr class="wms">
-            <td class="wms"><strong>Course: </strong>155.9&deg;</td>
-            <td class="wms"><strong>Speed: </strong>9.7kn</td>
+            <td class="wms"><strong>Course: </strong><%= data["exactAIS:cog"] %>&deg;</td>
+            <td class="wms"><strong>Speed: </strong><%= data["exactAIS:sog"] %>kn</td>
         </tr>
         <tr class="wms">
-            <td class="wms"><strong>Heading: </strong>0.0&deg;</td>
-            <td class="wms"><strong>Rate of Turn: </strong>0.0&deg; /min</td>
+            <td class="wms"><strong>Heading: </strong><%= data["exactAIS:heading"] %>&deg;</td>
+            <td class="wms"><strong>Rate of Turn: </strong><%= data["exactAIS:rot"] %>&deg; /min</td>
         </tr>
         <tr class="wms">
             <td colspan="3" class="wms"><em>Status: Under Way Using Engine</em></td>
         </tr>
         <tr class="wms">
             <td nowrap bgcolor="#99CCFF" class="wms"><strong>Latest Report at:</strong></td>
-            <td bgcolor="#99CCFF" class="wms">2013-04-04 09:53:14</td>
+            <td bgcolor="#99CCFF" class="wms"><%= data["exactAIS:ts_pos_utc"].toString().replace(/T|\:\d\dZ/g, " ") %></td>
             <td bgcolor="#99CCFF" class="wms"></td>
         </tr>
         <tr class="wms">
-            <td class="wms"><strong>Destination: </strong> </td>
-            <td class="wms"><strong>Est. Arrival: </strong></td>            
+            <td class="wms"><strong>Destination: </strong> <%= data["exactAIS:destination"] %></td>
+            <td class="wms"><strong>Est. Arrival: </strong><%= data["exactAIS:eta"] %></td>            
         </tr>
         <tr class="wms">
-            <td class="wms"><strong>Cargo: </strong></td>
-            <td class="wms"><strong>Draught: </strong></td></td>
+            <td class="wms"><strong>Cargo: </strong><%= data["exactAIS:vessel_type_cargo"] %></td>
+            <td class="wms"><strong>Draught: </strong><%= data["exactAIS:draught"] %></td>
         </tr>
         <tr class="wms">
             <td colspan="3" class="wms"><img src="https://owsdemo.exactearth.com/www/gfi_line.png" alt="" width="381" height="8" /></td>
