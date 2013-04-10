@@ -32,15 +32,25 @@ define([
         },
 
         unbindEventsToView: function(view) {
-            console.log("I will unbind events to closed view");
+            console.log(this.bindings);
+            var self = this;
+            var bindingsToRemove = _.where(this.bindings, {object: view});
+            _.each(bindingsToRemove, function(binding, index, list) {
+                binding.object.off(binding.event, binding.callback, self);
+            });
+
+            this.bindings = _.difference(this.bindings, bindingsToRemove);
+            console.log(this.bindings);
         },
         
         unbindFromAll: function() {
             var self = this;
             
-            _.each(this.bindings, function(binding) {
+            _.each(this.bindings, function(binding, index, list) {
                 binding.object.off(binding.event, binding.callback, self);
             });
+
+            this.bindings = [];
         },
         
         addSubView: function(view) {
