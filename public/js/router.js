@@ -37,9 +37,13 @@ define([
     },
 
     checkAuth: function(eventString) {
+        console.log("ROUTE: ", eventString);
         switch (eventString) {
             case ("route:registration"):
+                break;
             case ("route:signin"):
+                break;
+            case ("route"):
                 //No need to auth on these routes
                 break;
             default:
@@ -47,16 +51,18 @@ define([
                 $.ajax({
                     type: "GET",
                     url: "/api/user/checkAuth",
+                    cache: false,
                     success: function(user) {
-                        if (!user) {
-                            alert("You are not signed in!");
-                            that.navigate('', true);
-                        }
-                        else
-                            window.user = user;
+                        window.user = user;
                     },
-                    error: function(err) { console.log(err); }
+                    error: function(err) { 
+                        alert("You are not signed in!");
+                        that.navigate('', true);
+                        console.log(err); 
+                    }
                 });
+
+                break;
         }
     }
 

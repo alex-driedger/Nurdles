@@ -1,11 +1,9 @@
 define([
-       'jquery',
-       'underscore',
-       'backbone',
+       'baseview',
        './FeaturePopup',
        '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html',
-], function($, _, Backbone, FeaturePopup, TopToolsRow, mapTemplate){
+], function(BaseView, FeaturePopup, TopToolsRow, mapTemplate){
     var private = {
         /*-----
         * These are methods taken from the demo site.
@@ -81,13 +79,13 @@ define([
         }
     };
 
-    var MapView = Backbone.View.extend({
+    var MapView = BaseView.extend({
 
         initialize: function(args) {
             this.isHeaderViewable = true;
             this.subviews = [];
 
-            Backbone.globalEvents.on("filtersChanged", this.updateFilters, this);
+            this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
         },
 
         events: {
@@ -98,7 +96,7 @@ define([
                     this.isHeaderViewable = false;
                 }
                 else {
-                    $("#main-content").css("top", "7%");
+                    $("#main-content").css("top", "55px");
                     $("#collapseHeaderIcon").attr("src", "../../img/arrow-up.png");
                     this.isHeaderViewable = true;
                 }
