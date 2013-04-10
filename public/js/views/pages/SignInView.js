@@ -1,12 +1,10 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
+  'baseview',
   'text!templates/pages/SignInView.html',
   'bootstrap'
-], function($, _, Backbone, signInTemplate){
+], function(Baseview, signInTemplate){
 
-    var SignInView = Backbone.View.extend({
+    var SignInView = Baseview.extend({
 
         initialize:function (opts) {
             this.router = opts.router;

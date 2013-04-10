@@ -1,15 +1,13 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
+  'baseview',
   '../../../models/Filter',
   'text!templates/partials/filters/EditFiltersView.html'
-], function($, _, Backbone, Filter, editFiltersTemplate){
+], function(Baseview, Filter, editFiltersTemplate){
     var private = {
         operatorCounter: 0
     };
 
-    var EditFiltersView = Backbone.View.extend({
+    var EditFiltersView = Baseview.extend({
         initialize: function(args) {
             if (!args)
                 this.$el = $("#newFilter");

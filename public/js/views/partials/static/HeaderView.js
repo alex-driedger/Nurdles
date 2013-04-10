@@ -1,10 +1,8 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
+  'baseview',
   'text!templates/partials/static/HeaderView.html'
-], function($, _, Backbone, headerTemplate){
-    var HeaderView = Backbone.View.extend({
+], function(Baseview, headerTemplate){
+    var HeaderView = Baseview.extend({
 
         render: function () {
             console.log(this.$el);

@@ -1,12 +1,10 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
+  'baseview',
   '../sidebar/SideBarToolsRow',
   '../filters/EditFiltersView',
   'text!templates/partials/sidebar/SidebarView.html'
-], function($, _, Backbone, SideBarToolsRow, EditFiltersView, sidebarViewTemplate){
-    var SidebarView = Backbone.View.extend({
+], function(Baseview, SideBarToolsRow, EditFiltersView, sidebarViewTemplate){
+    var SidebarView = Baseview.extend({
         initialize: function(args) {
             this.subviews = [];
             this.$el = args || $("#sidebar");

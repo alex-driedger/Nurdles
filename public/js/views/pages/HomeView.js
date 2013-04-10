@@ -1,13 +1,11 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
+  'baseview',
   '../map/MapView',
   '../partials/sidebar/SidebarView',
   'text!templates/pages/HomeView.html'
-], function($, _, Backbone, MapView, SideBarView, homeTemplate){
+], function(Baseview, MapView, SideBarView, homeTemplate){
 
-  var HomeView = Backbone.View.extend({
+  var HomeView = Baseview.extend({
     initialize: function() {
         this.subviews = [];
         this.sidebarActive = false;

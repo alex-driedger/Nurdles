@@ -64,18 +64,8 @@ define([
                 position: latLongOfClick
             }, view);
 
-            view.subviews.push(featurePopup);
+            view.addSubView(featurePopup);
             featurePopup.render(evt);
-        },
-
-        onFeatureUnselect: function() {
-            feature = evt.feature;
-            if (feature.popup) {
-                popup.feature = null;
-                map.removePopup(feature.popup);
-                feature.popup.destroy();
-                feature.popup = null;
-            }
         }
     };
 
@@ -83,8 +73,6 @@ define([
 
         initialize: function(args) {
             this.isHeaderViewable = true;
-            this.subviews = [];
-
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
         },
 
@@ -150,7 +138,7 @@ define([
 
 
             controlsView.render();
-            this.subviews.push(controlsView);
+            this.addSubView(controlsView);
 
             OpenLayers.ProxyHost = "proxy?url=";
 

@@ -1,11 +1,9 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
+  'baseview',
    '../../components/OpenLayersPopup',
   'text!templates/partials/map/FeaturePopup.html'
-], function($, _, Backbone, PopupClass, featurePopupTemplate){
-    var FeaturePopupView = Backbone.View.extend({
+], function(Baseview, PopupClass, featurePopupTemplate){
+    var FeaturePopupView = Baseview.extend({
         initialize: function(data, parentView) {
             this.data = {};
             this.data.shipInformation = data.shipInformation;
@@ -39,12 +37,6 @@ define([
         },
 
         disposeOfView: function() {
-            //THIS SHOULD BE REFACTORED OUT
-            //Notify the parent view that you're closing and they'll take care of it
-            //In fact, instead of pushing to a subviews array, we should extend backbone to handle that
-            //MotherView.addSubview(new ChildView())
-            //On close, childView.mother.orphan()
-            console.log(this.parentView.subviews);
             this.close();
         }
     });

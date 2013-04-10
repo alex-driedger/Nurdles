@@ -6,12 +6,12 @@ define([
     var BaseView = Backbone.View.extend({
         
         close: function() {
+            this.trigger("close", this);
             this.closeSubviews();
             this.unbindFromAll();
             this.undelegateEvents();
             this.off();
             this.remove();
-            this.trigger("close", this);
             
             if (this.onClose) this.onClose();
         },
@@ -26,6 +26,14 @@ define([
             this.bindings || (this.bindings = []);
             this.bindings.push({ object: object, event: e, callback: callback });
         },
+
+        eachSubview: function(iterator) {
+            _.each(this.subviews, iterator);
+        },
+
+        unbindEventsToView: function(view) {
+            console.log("I will unbind events to closed view");
+        },
         
         unbindFromAll: function() {
             var self = this;
@@ -35,7 +43,7 @@ define([
             });
         },
         
-        appendSubview: function(view) {
+        addSubView: function(view) {
             this.subviews || (this.subviews = {});
             this.subviews[view.cid] = view;
 
@@ -43,13 +51,11 @@ define([
         },
 
         removeSubView: function(view) {
-            var parent = this;
-            this.eachSubview(function(subView) {
-                if (subView.id == view.id) {
-                    subview.close();
-                    parent.subviews[subview.id] = null;
-                }
-            });
+            this.unbindEventsToView(view);
+            console.log(this.subviews);
+            delete this.subviews[view.cid];
+            console.log(this.subviews);
+
         },
         
         closeSubviews: function() {

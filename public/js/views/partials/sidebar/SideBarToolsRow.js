@@ -1,10 +1,8 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
+  'baseview',
   'text!templates/partials/sidebar/SideBarToolsRow.html'
-], function($, _, Backbone, sidebarToolsRow){
-    var SideBarToolsRow = Backbone.View.extend({
+], function(Baseview, sidebarToolsRow){
+    var SideBarToolsRow = Baseview.extend({
         initialize: function(args) {
             if (!args) {
                 this.$el = $("#sidebarToolsContainer");

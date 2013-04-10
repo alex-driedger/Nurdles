@@ -1,10 +1,8 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
+  'baseview',
   'text!templates/partials/map/TopToolsRow.html'
-], function($, _, Backbone, topToolsTemplate){
-    var TopToolsRow = Backbone.View.extend({
+], function(Baseview, topToolsTemplate){
+    var TopToolsRow = Baseview.extend({
         initialize: function(args) {
             this.$el = args || $("#controlsContainer");
         },
