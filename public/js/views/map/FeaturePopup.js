@@ -4,12 +4,11 @@ define([
   'text!templates/partials/map/FeaturePopup.html'
 ], function(Baseview, PopupClass, featurePopupTemplate){
     var FeaturePopupView = Baseview.extend({
-        initialize: function(data, parentView) {
+        initialize: function(data) {
             this.data = {};
             this.data.shipInformation = data.shipInformation;
             this.data.map = data.map;
             this.data.position = data.position;
-            this.parentView = parentView;
         },
 
         template: _.template(featurePopupTemplate),

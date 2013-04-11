@@ -28,7 +28,8 @@ define([
         },
 
         showInfo: function(evt) {
-            private.onFeatureSelect(evt, this.model, this);
+            if (evt.features && evt.features.length > 0)
+                private.onFeatureSelect(evt, this.model, this);
         },
 
         loadingLayers: 0,
@@ -48,15 +49,29 @@ define([
         onFeatureSelect: function(evt, map, view) {
             var latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y));
 
-            console.log(evt);
-            var featureInfo = evt.features[0];
+            var featureInfo = evt.features[0],
+                bounds = null;
+
+            //We need to transform the points to properly place the popup
+            featureInfo.geometry.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"))
+
+            //If we're dealing with a point feature, we won't have getBounds so 
+            //We'll need to create our bounds before grabbing the center LonLat
+            //TODO: Maybe make this suck less
+            if (featureInfo.geometry.getBounds())
+                bounds = featureInfo.geometry.getBounds();
+            else
+                bounds = featureInfo.geometry.createBounds();
+
+            console.log(latLongOfClick);
+            console.log(bounds.getCenterLonLat());
 
             var featurePopup = new FeaturePopup({
                 shipInformation:  {
                     data: featureInfo
                 },
                 map: map,
-                position: latLongOfClick
+                position: bounds.getCenterLonLat()
             }, view);
 
             view.addSubView(featurePopup);
