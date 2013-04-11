@@ -11,17 +11,7 @@ var self = {
             });
 
             response.on("end", function() {
-                try {
-                    console.log("trying to parse json");
-                    console.log(output);
-                    var jsonOutput = xmlParser.toJson(output);
-                    jsonOutput.isJson = true;
-                    console.log(jsonOutput);
-                    res.send(output);
-                } catch (e) {
-                    console.log("Failed!", e);
-                    res.send(output);
-                }
+                res.send(output);
             });
         });
     }

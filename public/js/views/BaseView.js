@@ -11,7 +11,10 @@ define([
             this.unbindFromAll();
             this.undelegateEvents();
             this.off();
-            this.remove();
+            if ($(this.$el)[0].id == "main-content")
+                this.$el.empty();
+            else
+                this.remove();
             
             if (this.onClose) this.onClose();
         },
