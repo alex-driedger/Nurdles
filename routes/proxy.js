@@ -17,7 +17,7 @@ var self = {
                     var jsonOutput = xmlParser.toJson(output);
                     jsonOutput.isJson = true;
                     console.log(jsonOutput);
-                    res.send(jsonOutput);
+                    res.send(output);
                 } catch (e) {
                     console.log("Failed!", e);
                     res.send(output);

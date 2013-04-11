@@ -14,10 +14,9 @@ define([
 
         template: _.template(featurePopupTemplate),
 
-        render: function(evt) {
+        render: function() {
             var size = new OpenLayers.Size(420,330);
 
-            feature = evt.feature;
             var context = this;
             popup = new PopupClass("featurePopup",
                                    this.data.position,

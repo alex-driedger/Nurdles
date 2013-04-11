@@ -28,14 +28,7 @@ define([
         },
 
         showInfo: function(evt) {
-            if (evt.features && evt.features.length) {
-                _Layer_Highlight.destroyFeatures();
-                _Layer_Highlight.addFeatures(evt.features);
-                _Layer_Highlight.redraw();
-            }
-            else {
-                private.onFeatureSelect(evt, this.model, this);
-            }
+            private.onFeatureSelect(evt, this.model, this);
         },
 
         loadingLayers: 0,
@@ -55,10 +48,9 @@ define([
         onFeatureSelect: function(evt, map, view) {
             var latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y));
 
-            var gmlInfo = $.parseJSON(evt.text),
-                featureInfo = gmlInfo["wfs:FeatureCollection"]["gml:featureMember"]["exactAIS:LVI"];
+            console.log(evt);
+            var featureInfo = evt.features[0];
 
-                console.log(featureInfo);
             var featurePopup = new FeaturePopup({
                 shipInformation:  {
                     data: featureInfo
@@ -68,7 +60,7 @@ define([
             }, view);
 
             view.addSubView(featurePopup);
-            featurePopup.render(evt);
+            featurePopup.render();
         }
     };
 
