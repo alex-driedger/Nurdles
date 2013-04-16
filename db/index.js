@@ -99,7 +99,6 @@ var self = {
             console.log("STARTING");
             var initWorkflow = jWorkflow.order(createDb)
                 .andThen(createModels)
-                .andThen(initSettings)
                 .andThen(initPassport)
                 .andThen(mapData); //Include if you need to bootstrap data, remove otherwise
 
