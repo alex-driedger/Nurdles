@@ -12,6 +12,10 @@ define([
     var FiltersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
+
+            this.filters = new Backbone.Collection.extend({
+                model: Filter 
+            });
         },
 
         template: _.template(showFiltersTemplate),
