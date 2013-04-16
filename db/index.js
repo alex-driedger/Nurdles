@@ -35,8 +35,10 @@ function createDb(initialValue, baton) {
 
 function createModels (previous, baton) {
     baton.take();
-    Setting = require("./models/setting").Setting;
-    User = require("./models/user").User;
+    Setting = require("./models/Setting").Setting;
+    User = require("./models/User").User;
+    Filter = require("./models/Filter").Filter;
+    FilterOperator = require("./models/FilterOperator").FilterOperator;
     baton.pass();
 }
 
@@ -99,8 +101,8 @@ var self = {
             console.log("STARTING");
             var initWorkflow = jWorkflow.order(createDb)
                 .andThen(createModels)
-                .andThen(initPassport)
-                .andThen(mapData); //Include if you need to bootstrap data, remove otherwise
+                .andThen(initPassport);
+                //.andThen(mapData); //Include if you need to bootstrap data, remove otherwise
 
             initWorkflow.start({initialValue: passport}); //Get rid of passport if not using auth
         }

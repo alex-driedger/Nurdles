@@ -8,10 +8,10 @@ var self = {
         });
     },
 
-    getAllForUser: function(id) {
+    getAllForUser: function(id, callback) {
         var ObjectId = mongoose.Types.ObjectId;
-        Filter.find(ObjectId(id), function(err, filters) {
-            callback(err, filter);
+        Filter.find({owner: new ObjectId(id.toString())}, function(err, filters) {
+            callback(err, filters);
         });
     }
 };

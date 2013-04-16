@@ -1,11 +1,12 @@
 define([
   'baseview',
   './EditFiltersView',
+  './SavedFiltersView',
   '../../../models/Filter',
   '../../../collections/FilterCollection',
   'text!templates/partials/filters/EditFiltersView.html',
   'text!templates/partials/filters/FiltersView.html'
-], function(Baseview, EditFiltersView, Filter, FilterCollection, editFiltersTemplate, showFiltersTemplate){
+], function(Baseview, SavedFiltersView, EditFiltersView, Filter, FilterCollection, editFiltersTemplate, showFiltersTemplate){
     var private = {
     };
 
@@ -28,9 +29,13 @@ define([
         },
 
         render: function () {
-            var editFilters = new EditFiltersView({$el: $("#editFilter")});
+            var editFilters = new EditFiltersView({$el: $("#editFilter")}),
+                savedFilters = new SavedFiltersView({$el: $("#savedFilters")});
+
             this.addSubView(editFilters);
+            this.addSubView(savedFilters);
             editFilters.render();
+            savedFilters.render();
 
             return this;
         }

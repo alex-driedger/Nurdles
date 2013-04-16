@@ -4,7 +4,7 @@ module.exports = {
         var userDAL = require("./access/userdal"),
             filterDAL = require("./access/filterdal");
 
-        userDAL.create("chris", "password", function(user) {
+        userDAL.create("chris", "password", function(err, user) {
             filterDAL.create({
                 owner: user._id,
                 name: "Sample",
@@ -22,8 +22,6 @@ module.exports = {
                 if (err)
                     console.log("ERROR CREATING FILTER: ", err);
             });
-
-            console.log(user);
         });
     }
 };

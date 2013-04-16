@@ -2,7 +2,6 @@ var User = require('../models/User').User;
 
 var self = {
     create: function(username, password, callback) {
-        console.log(username, password);
         User.register(new User({ username : username}), password, function(err, user) {
                 if (err) {
                     console.log("ERROR SAVING:", err);
