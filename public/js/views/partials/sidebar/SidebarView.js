@@ -1,25 +1,24 @@
 define([
   'baseview',
+  '../filters/FiltersView',
   '../sidebar/SideBarToolsRow',
-  '../filters/EditFiltersView',
   'text!templates/partials/sidebar/SidebarView.html'
-], function(Baseview, SideBarToolsRow, EditFiltersView, sidebarViewTemplate){
+], function(Baseview, FiltersView, SideBarToolsRow, sidebarViewTemplate){
     var SidebarView = Baseview.extend({
         initialize: function(args) {
-            this.subviews = [];
             this.$el = args || $("#sidebar");
         },
 
         render: function () {
             this.$el.html(sidebarViewTemplate);
 
-            var sidebarTools = new SideBarToolsRow();
-                editFilters = new EditFiltersView();
-            sidebarTools.render();
-            editFilters.render();
+            var sidebarTools = new SideBarToolsRow(),
+                filtersView = new FiltersView();
 
-            this.subviews.push(sidebarTools);
-            this.subviews.push(editFilters);
+            sidebarTools.render();
+            filtersView.render();
+            this.addSubView(sidebarTools);
+            this.addSubView(filtersView);
         }
     });
 

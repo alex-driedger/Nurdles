@@ -11,6 +11,8 @@ define([
         initialize: function(args) {
             if (!args)
                 this.$el = $("#newFilter");
+            else
+                this.$el = args.$el;
 
             this.model = new Filter();
 
