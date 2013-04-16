@@ -9,10 +9,7 @@ define([
 
     var EditFiltersView = Baseview.extend({
         initialize: function(args) {
-            if (!args)
-                this.$el = $("#newFilter");
-            else
-                this.$el = args.$el;
+            this.initArgs(args);
 
             this.model = new Filter();
 
@@ -85,6 +82,8 @@ define([
 
         render: function () {
             this.$el.html(this.template(this.model.toJSON()));;
+
+            return this;
         }
     });
 

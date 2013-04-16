@@ -11,19 +11,24 @@ define([
 
     var FiltersView = Baseview.extend({
         initialize: function(args) {
-            this.$el = args || $("#filter");
+            this.initArgs(args);
         },
 
         template: _.template(showFiltersTemplate),
 
         events: {},
 
-        render: function () {
-            this.$el.html(this.template);
+        preRender: function() {
+            this.$el.html(this.template());
+            return this;
+        },
 
+        render: function () {
             var editFilters = new EditFiltersView({$el: $("#editFilter")});
             this.addSubView(editFilters);
             editFilters.render();
+
+            return this;
         }
     });
 

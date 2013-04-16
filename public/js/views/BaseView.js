@@ -4,6 +4,16 @@ define([
        'backbone',
 ], function($, _, Backbone){
     var BaseView = Backbone.View.extend({
+
+        initArgs: function(args) {
+            var view = this;
+
+            if (args) {
+                _.each(_.keys(args), function(key) {
+                    view[key] = args[key];
+                });
+            }
+        },
         
         close: function() {
             this.trigger("close", this);
