@@ -1,7 +1,7 @@
 define([
   'baseview',
-  './EditFiltersView',
   './SavedFiltersView',
+  './EditFiltersView',
   '../../../models/Filter',
   '../../../collections/FilterCollection',
   'text!templates/partials/filters/EditFiltersView.html',

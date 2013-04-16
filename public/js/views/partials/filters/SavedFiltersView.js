@@ -30,7 +30,7 @@ define([
                 },
                 success: function(filters) {
                     console.log("FILTERS :", filters);
-                    view.$el.html(view.template({filter: filters[0]}));
+                    view.$el.html(view.template({filters: filters}));
                 },
                 error: function(err) {
                     console.log("ERROR: ", err);
