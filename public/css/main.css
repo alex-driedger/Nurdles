@@ -423,15 +423,18 @@ table.wms, td.wms
 .collapsed {
     height: 30px;
     overflow: hidden;
-    background-color: #eee;
-    border-bottom: 1px solid #ddd; 
+    border: 1px solid #ddd; 
     padding-left: 5px;
     line-height: 2.1em;
 }
 
+.collapsed.selected {
+    background-color: #eee;
+}
+
 .accordion {
     margin: 10px 0; 
-    width: 99%;
+    width: 100%;
 }
 
 .collapsed-checkbox {

@@ -36,6 +36,11 @@ define([
 
                     $(".checkbox").on("click", function(e) {
                         e.stopPropagation();
+
+                        if ($(e.target).prop("checked"))
+                            $(e.target).closest(".collapsed").addClass("selected");
+                        else
+                            $(e.target).closest(".collapsed").removeClass("selected");
                     });
                 },
                 error: function(err) {
