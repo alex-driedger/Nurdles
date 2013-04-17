@@ -37,7 +37,6 @@ define([
     },
 
     checkAuth: function(eventString) {
-        console.log("ROUTE: ", eventString);
         switch (eventString) {
             case ("route:registration"):
                 break;

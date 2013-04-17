@@ -25,9 +25,6 @@ define([
             $.ajax({
                 url: "/api/filters/getAllForUser",
                 type: "GET",
-                data: {
-                    user: window.user
-                },
                 success: function(filters) {
                     console.log("FILTERS :", filters);
                     view.$el.html(view.template({filters: filters}));
