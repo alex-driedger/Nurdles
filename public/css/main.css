@@ -8,6 +8,14 @@ select {
     width: auto;
 }
 
+/*-------------------------Padding-------------------------------*/
+
+.vpadded10 {
+    padding: 10px 0;
+}
+
+/*--------------------------General-------------------------------*/
+
 .bar {
     position: fixed;
     right: 0;
@@ -158,6 +166,15 @@ select {
 .btn-toolbar {
     margin-top: 0px;
     margin-bottom: 0px;
+}
+
+.header {
+    font-size: 1.3em;
+    padding: 10px 5px;
+}
+
+.bordered {
+    border: 1px solid #ddd;
 }
 
 //-------------Sidebar----------------
@@ -354,7 +371,7 @@ select {
     background: white url(images/popup-close.png);
 }
 
-//----------------------------Popup Styles ExactEarth----------------------------//
+/*----------------------------Popup Styles ExactEarth----------------------------*/
 table.wms, td.wms
 {
     border-collapse: collapse;
@@ -393,13 +410,30 @@ table.wms, td.wms
     height: 100%;
 }
 
+.filter-operands-container {
+    border-bottom: 1px solid #ddd;
+}
+
 .saved-filter {
 
 }
 
+/*-------------------------Accordion--------------------------------*/
+
 .collapsed {
-    height: 20px;
+    height: 30px;
     overflow: hidden;
     background-color: #eee;
+    border-bottom: 1px solid #ddd; 
+    padding-left: 5px;
+    line-height: 2.1em;
 }
 
+.accordion {
+    margin: 10px 0; 
+    width: 99%;
+}
+
+.collapsed-checkbox {
+    padding-right: 5px;
+}

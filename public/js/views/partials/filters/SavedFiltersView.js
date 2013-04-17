@@ -17,10 +17,12 @@ define([
 
         preRender: function() {
             this.$el.html(this.template());
+
             return this;
         },
 
         render: function () {
+
             var view = this;
             $.ajax({
                 url: "/api/filters/getAllForUser",
@@ -28,6 +30,13 @@ define([
                 success: function(filters) {
                     console.log("FILTERS :", filters);
                     view.$el.html(view.template({filters: filters}));
+                    $('.filters-wrapper').find('.collapsed').on("click", function(e){
+                            $(this).next().slideToggle(200);
+                    }).next().hide();
+
+                    $(".checkbox").on("click", function(e) {
+                        e.stopPropagation();
+                    });
                 },
                 error: function(err) {
                     console.log("ERROR: ", err);

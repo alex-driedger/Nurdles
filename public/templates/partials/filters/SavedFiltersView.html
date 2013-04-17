@@ -1,11 +1,19 @@
-This is where all the saved filters will goes
+<div class="header bordered">
+    Your Filters
+</div> 
 
-
-<div class="filters-wrapper">
+<div class="filters-wrapper accordion">
     <% _.each(filters, function(filter) { %>
-    <div class="saved-filter collapsed">
-        <%=filter.name %>
-
+    <div class="saved-filter clearfix collapsed ">
+        <div class="pull-left">
+            <%=filter.name %>
+        </div>
+        <div class="pull-right">
+            <div class="collapsed-checkbox">
+                <input class="checkbox" type="checkbox" />
+            </div>
+        </div>
+    </div>
         <div class="filter-operands-container">
             <table class="table table-condensed" style="margin-bottom: 0px;">
                     <tr>
@@ -45,6 +53,5 @@ This is where all the saved filters will goes
                 <% }); %>
             </table>
         </div>
-    </div>
     <% }); %>
 </div>
