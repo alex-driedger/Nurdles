@@ -14,6 +14,7 @@ function bind(app, passport) {
     app.get("/api/map/basic", ensureAuthenticated, map.getBasic);
 
     app.get("/api/filters/getAllForUser", ensureAuthenticated, filter.getAllForUser);
+    app.post("/api/filters/save", ensureAuthenticated, filter.create);
     app.post("/proxy", proxy.proxyIt);
     app.get("/proxy", proxy.proxyIt);
 }

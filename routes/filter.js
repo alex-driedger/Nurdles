@@ -13,7 +13,7 @@ var self = {
     },
 
     create: function(req, res) {
-        
+        console.log(req.body);
     },
 
     delete: function(req, res) {

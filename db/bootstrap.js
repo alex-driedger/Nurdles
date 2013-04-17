@@ -8,14 +8,14 @@ module.exports = {
             filterDAL.create({
                 owner: user._id,
                 name: "Sample",
-                operators: [{
-                    type: "sog",
-                    operands: {
-                        operation: "..",
-                        min: 10,
-                        max: 11 
+                operators: [
+                    {
+                        type: "sog",
+                        operator: "..",
+                        lowerBoundary: 10,
+                        upperBoundary: 11 
                     }
-                }]
+                ]
             }, function(err, filter) {
                 user.filters.push(filter);
                 user.save();

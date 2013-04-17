@@ -43,6 +43,18 @@ define([
         },
 
         createFilter: function(e) {
+            console.log(this.model);
+            $.ajax({
+                url: "/api/filters/save",
+                type: "POST",
+                data: this.model.attributes,
+                success: function(response) {
+                    console.log("Success!: ", response);
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
             Backbone.globalEvents.trigger("filtersChanged", [this.model]);
         },
 
