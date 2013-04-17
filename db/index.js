@@ -38,7 +38,6 @@ function createModels (previous, baton) {
     Setting = require("./models/Setting").Setting;
     User = require("./models/User").User;
     Filter = require("./models/Filter").Filter;
-    FilterOperator = require("./models/FilterOperator").FilterOperator;
     baton.pass();
 }
 

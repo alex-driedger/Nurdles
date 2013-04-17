@@ -1,3 +1,50 @@
-    This is where all the saved filters will go
-<%= filters %>
+This is where all the saved filters will goes
 
+
+<div class="filters-wrapper">
+    <% _.each(filters, function(filter) { %>
+    <div class="saved-filter collapsed">
+        <%=filter.name %>
+
+        <div class="filter-operands-container">
+            <table class="table table-condensed" style="margin-bottom: 0px;">
+                    <tr>
+                        <td colspan="2">
+                            Type:
+                        </td>
+                        <td colspan="2">
+                            Value:
+                        </td>
+                    </tr>
+
+                    <% _.each(filter.operators, function(operator) { %>
+
+                    <tr>
+                    <td>
+                        <select id="<%= operator.id + '-property' %>" class="wide-30">
+                            <option value="<%= operator.property %>"><%= operator.property %></option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="<%= operator.id + '-type' %>" class="wide-30">
+                            <option value="<%= operator.type %>"><%= operator.type %></option>
+                        </select>
+                    </td>
+                    <td> 
+                        <input id="<%= operator.id + '-lower' %>" type="text" class="wide-90" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                    </td>
+                    <td> 
+                        <input id="<%= operator.id + '-upper' %>" type="text" class="wide-90" value="<%= operator.upperBoundary %>" />
+                    </td>
+                    <td>
+                        <div class="plusMinusContainer">
+                            <img id="<%=operator.id%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                        </div>
+                    </td>
+                </tr>
+                <% }); %>
+            </table>
+        </div>
+    </div>
+    <% }); %>
+</div>

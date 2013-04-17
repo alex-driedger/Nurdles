@@ -8,8 +8,14 @@ define([
             this.set("operators", []);
         },
 
-        save: function(parameters) {
-            //ajax request to server will go here
+        save: function(success, error) {
+            $.ajax({
+                url: "/api/filters/save",
+                type: "POST",
+                data: this.attributes,
+                success: success,
+                error: error
+            });
         },
 
         addOperator: function(operator) {

@@ -13,7 +13,15 @@ var self = {
     },
 
     create: function(req, res) {
-        console.log(req.body);
+        filterdal.create(req.user._id, req.body, function(err, filter) {
+            if (err) {
+                res.statusCode = 500;
+                res.send({error: err});
+            }
+            else {
+                res.send(filter);
+            }
+        });
     },
 
     delete: function(req, res) {

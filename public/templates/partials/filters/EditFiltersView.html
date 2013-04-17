@@ -1,6 +1,6 @@
 <h4>Add New Filter</h4>
 
-<input id="filterName" type="text" placeholder="Name" style="margin-left: 5px;"/>
+<input id="filterName" type="text" placeholder="Name" value="<%= name %>" style="margin-left: 5px;"/>
 
 <table class="table table-condensed" style="margin-bottom: 0px;">
         <tr>
@@ -16,20 +16,20 @@
 
         <tr>
         <td>
-            <select id="<%= operator.id + '-type' %>" class="wide-30">
+            <select id="<%= operator.id + '-property' %>" class="wide-30">
                 <option value="<%= operator.property %>"><%= operator.property %></option>
             </select>
         </td>
         <td>
-            <select id="<%= operator.id + '-operator' %>" class="wide-30">
+            <select id="<%= operator.id + '-type' %>" class="wide-30">
                 <option value="<%= operator.type %>"><%= operator.type %></option>
             </select>
         </td>
         <td> 
-            <input id="<%= operator.id + '-value1' %>" type="text" class="wide-90" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+            <input id="<%= operator.id + '-lower' %>" type="text" class="wide-90" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
         </td>
         <td> 
-            <input id="<%= operator.id + '-value2' %>" type="text" class="wide-90" value="<%= operator.upperBoundary %>" />
+            <input id="<%= operator.id + '-upper' %>" type="text" class="wide-90" value="<%= operator.upperBoundary %>" />
         </td>
         <td>
             <div class="plusMinusContainer">
@@ -53,10 +53,10 @@
             </select>
         </td>
         <td> 
-            <input id="newValue1" type="text" class="wide-90" />
+            <input id="newLower" type="text" class="wide-90" />
         </td>
         <td> 
-            <input id="newValue2" type="text" class="wide-90" />
+            <input id="newUpper" type="text" class="wide-90" />
         </td>
         <td>
             <div class="plusMinusContainer">

@@ -122,6 +122,7 @@ define([
         },
 
         createOpenLayersFilters: function(filters) {
+            console.log(filters);
             var olFilters = new OpenLayers.Filter.Logical({
                 type: OpenLayers.Filter.Logical.AND 
             });

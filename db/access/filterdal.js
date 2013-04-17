@@ -2,7 +2,8 @@ var Filter = require('../models/Filter').Filter,
     mongoose = require('../index').getMongoose();
 
 var self = {
-    create: function(filter, callback) {
+    create: function(userId, filter, callback) {
+        filter.owner = userId;
         Filter.create(filter, function(err, filter) {
             callback(null, filter);
         });

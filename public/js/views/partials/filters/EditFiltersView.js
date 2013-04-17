@@ -30,10 +30,13 @@ define([
 
         cacheOperators: function() {
             _.each(this.model.getOperators(), function(operator) {
+                operator.property = $("#" + operator.id + "-property").val();
                 operator.type = $("#" + operator.id + "-type").val();
-                operator.operator = $("#" + operator.id + "-operator").val();
-                operator.value = $("#" + operator.id + "-value").val();
+                operator.lowerBoundary = $("#" + operator.id + "-lower").val();
+                operator.upperBoundary = $("#" + operator.id + "-upper").val();
             });
+
+            this.model.set("name", $("#filterName").val());
 
             this.render();
         },
@@ -43,27 +46,17 @@ define([
         },
 
         createFilter: function(e) {
-            console.log(this.model);
-            $.ajax({
-                url: "/api/filters/save",
-                type: "POST",
-                data: this.model.attributes,
-                success: function(response) {
-                    console.log("Success!: ", response);
-                },
-                error: function(err) {
-                    console.log(err);
-                }
-            });
+            this.model.set("name", $("#filterName").val());
+            this.model.save(function(response){console.log(response);}, function(err){console.log(err);});
             Backbone.globalEvents.trigger("filtersChanged", [this.model]);
         },
 
         updateValueTextFields: function(e) {
             console.log(e);
             if ($(e.target).val() == "=")
-                $("#newValue2").addClass("hide");
+                $("#newUpper").addClass("hide");
             else
-                $("#newValue2").removeClass("hide");
+                $("#newUpper").removeClass("hide");
         },
 
         deleteRow: function(e) {
@@ -75,18 +68,17 @@ define([
                 id: private.operatorCounter++,
                 property: $("#newType").val(),
                 type: $("#newOperator").val(),
-                lowerBoundary: $("#newValue1").val(),
-                upperBoundary: $("#newValue2").val()
+                lowerBoundary: $("#newLower").val(),
+                upperBoundary: $("#newUpper").val()
             };
 
-            if ($("#newValue2").val() != "") {
-                newOperator.upperBoundary = ($("#newValue2").val());
-            }
-            else {
+            if (!$("#newUpper").val() != "") {
                 newOperator.value = newOperator.lowerBoundary;
                 delete newOperator.lowerBoundary;
+                delete newOperator.upperBoundary;
             }
 
+            this.model.set("name", $("#filterName").val());
             console.log(newOperator);
 
             this.model.addOperator(newOperator);

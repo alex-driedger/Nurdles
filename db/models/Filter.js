@@ -1,5 +1,4 @@
-var mongoose = require('../index').getMongoose(),
-    filterOperator = require('./FilterOperator').FilterOperator;
+var mongoose = require('../index').getMongoose();
 
 var FilterSchema = new mongoose.Schema({
     owner: {type: mongoose.Schema.ObjectId, required: true },

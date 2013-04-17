@@ -386,3 +386,20 @@ table.wms, td.wms
         color: rgb(0,101,162);
         text-align: left;
     }
+
+/*-------------------------Filters------------------------------- */
+
+.filters-wrapper {
+    height: 100%;
+}
+
+.saved-filter {
+
+}
+
+.collapsed {
+    height: 20px;
+    overflow: hidden;
+    background-color: #eee;
+}
+
