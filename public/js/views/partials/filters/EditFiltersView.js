@@ -47,8 +47,9 @@ define([
 
         createFilter: function(e) {
             this.model.set("name", $("#filterName").val());
-            this.model.save(function(response){console.log(response);}, function(err){console.log(err);});
-            Backbone.globalEvents.trigger("filtersChanged", [this.model]);
+            this.model.save( function(response){
+                Backbone.globalEvents.trigger("addedFilter", response);
+            }, function(err){console.log(err);});
         },
 
         updateValueTextFields: function(e) {

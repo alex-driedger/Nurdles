@@ -10,6 +10,8 @@ define([
     var FiltersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
+
+            this.bindTo(Backbone.globalEvents, "addedFilter", this.render, this);
         },
 
         template: _.template(editFiltersTemplate),
