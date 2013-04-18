@@ -52,7 +52,7 @@ select {
 
 .search-form {
     position: absolute;
-    left: 30%;
+    left: 40%;
 }
 
 .search-help {
@@ -414,7 +414,8 @@ table.wms, td.wms
 }
 
 .filter-operands-container {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #aaa;
+    background-color: #eee;
 }
 
 .saved-filter {
@@ -432,7 +433,8 @@ table.wms, td.wms
 }
 
 .collapsed.selected {
-    background-color: #eee;
+    background-color: #bababa;
+    border: 1px solid #888;
 }
 
 .accordion {
