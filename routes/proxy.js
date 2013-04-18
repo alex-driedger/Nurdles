@@ -1,7 +1,6 @@
 var self = {
     proxyIt: function(req, res) {
-        var https = require("follow-redirects").https,
-            xmlParser = require("xml2json");
+        var https = require("follow-redirects").https;
 
         https.get(req.query["url"], function(response) {
             var output = "";
@@ -15,7 +14,6 @@ var self = {
             });
         });
     }
-
 };
 
 module.exports = self;
