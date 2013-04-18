@@ -4,15 +4,20 @@ define([
     var private = {};
 
     var Parser = {
-        getFilterFeatures: function(callback) {
-            var request = OpenLayers.Request.GET({
-                url: 'https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=DescribeFeatureType&typeName=exactAIS:LVI&authKey=tokencoin',
-                success: function (response) {
-                    var parser = new OpenLayers.Format.WFSDescribeFeatureType();
-                    console.log(parser.read(response.responseText));
-                }
+        parseFeautures: function(data) {
+            var featureTypes = data.featureTypes,
+                features = [];
+
+            _.each(featureTypes, function(type) {
+                _.each(type.properties, function(property) {
+                    features.push({
+                        name: property.name,
+                        type: property.localType
+                    });
+                });
             });
 
+            return features;
         },
                 
 

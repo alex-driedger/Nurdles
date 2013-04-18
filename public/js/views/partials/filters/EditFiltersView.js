@@ -86,7 +86,12 @@ define([
         },
 
         render: function () {
-            this.$el.html(this.template(this.model.toJSON()));;
+            var templateData = {
+                features: this.features,
+                model: this.model.toJSON()
+            };
+
+            this.$el.html(this.template(templateData));;
 
             return this;
         }

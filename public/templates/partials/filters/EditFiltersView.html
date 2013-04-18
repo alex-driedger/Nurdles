@@ -16,7 +16,7 @@
             </td>
         </tr>
 
-        <% _.each(operators, function(operator) { %>
+        <% _.each(model.operators, function(operator) { %>
 
         <tr>
         <td>
@@ -47,7 +47,9 @@
     <tr>
         <td>
             <select id="newType" class="wide-30">
-                <option value="sog">sog</option>
+                <% _.each(features, function(feature) { %>
+                    <option value="<%= feature.name %>"><%= feature.name %></option>
+                <% }); %>
             </select>
         </td>
         <td>

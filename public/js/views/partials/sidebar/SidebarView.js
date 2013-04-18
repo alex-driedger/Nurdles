@@ -16,8 +16,10 @@ define([
                 filtersView = new FiltersView();
 
             sidebarTools.render();
-            filtersView.preRender().$el.appendTo("#toolContainer");
-            filtersView.render();
+            filtersView.preRender(function() {
+                filtersView.$el.appendTo("#toolContainer");
+                filtersView.render();
+            });
             this.addSubView(sidebarTools);
             this.addSubView(filtersView);
 
