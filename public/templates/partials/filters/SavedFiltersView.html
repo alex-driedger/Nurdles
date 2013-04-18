@@ -10,12 +10,12 @@
         </div>
         <div class="pull-right">
             <div class="collapsed-checkbox">
-                <input class="checkbox" type="checkbox" />
+                <input id="<%= filter._id %>" class="checkbox" type="checkbox" />
             </div>
         </div>
     </div>
         <div class="filter-operands-container">
-            <table class="table table-condensed" style="margin-bottom: 0px;">
+            <table id="<%= filter._id %>-table" class="table table-condensed" style="margin-bottom: 0px;">
                     <tr>
                         <td colspan="2">
                             Type:
@@ -25,31 +25,34 @@
                         </td>
                     </tr>
 
+                    <% var counter = 0; %>
                     <% _.each(filter.operators, function(operator) { %>
 
                     <tr>
                     <td>
-                        <select id="<%= operator.id + '-property' %>" class="wide-30">
+                    <select id="<%= counter + '-' + filter._id + '-property' %>" class="wide-30 savedFilter">
                             <option value="<%= operator.property %>"><%= operator.property %></option>
                         </select>
                     </td>
                     <td>
-                        <select id="<%= operator.id + '-type' %>" class="wide-30">
+                        <select id="<%= counter + '-' + filter._id + '-type' %>" class="wide-30 savedFilter">
                             <option value="<%= operator.type %>"><%= operator.type %></option>
                         </select>
                     </td>
                     <td> 
-                        <input id="<%= operator.id + '-lower' %>" type="text" class="wide-90" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                        <input id="<%=counter + '-' + filter._id + '-lower' %>" type="text" class="wide-90 savedFilter" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                     </td>
                     <td> 
-                        <input id="<%= operator.id + '-upper' %>" type="text" class="wide-90" value="<%= operator.upperBoundary %>" />
+                        <input id="<%=counter + '-' + filter._id + '-upper' %>" type="text" class="wide-90 savedFilter" value="<%= operator.upperBoundary %>" />
                     </td>
                     <td>
-                        <div class="plusMinusContainer">
-                            <img id="<%=operator.id%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                        <div class="plus-minus-container savedFilter">
+                            <img id="<%=filter._id%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                         </div>
                     </td>
                 </tr>
+
+                    <% counter++; %>
                 <% }); %>
             </table>
         </div>

@@ -18,6 +18,10 @@ define([
             });
         },
 
+        setOperators: function(operators) {
+            this.set("operators", operators);
+        },
+
         addOperator: function(operator) {
             this.get("operators").push(operator);
             this.trigger("addOperator");

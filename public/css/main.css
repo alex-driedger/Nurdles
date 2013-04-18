@@ -16,6 +16,10 @@ select {
 
 /*--------------------------General-------------------------------*/
 
+.plus-minus-container {
+    min-width: 15px;
+}
+
 .bar {
     position: fixed;
     right: 0;
@@ -252,7 +256,6 @@ select {
     padding: 0;
 }
 
-//-------------------Map Popup------------------------/
 /**
  * Leaflet Popup layout
  */
