@@ -1,0 +1,67 @@
+<table class="wms">
+    <col width="173px" />
+    <col width="173px" />
+    <col width="35px" />
+            <tr class="wms"><td colspan="2" id="vessel_name" class="wms"><strong><%= data.attributes["vessel_name"] %></strong></td></tr>
+        <tr class="wms">
+            <td class="wms"><strong>Type: </strong><%= data.attributes["vessel_type"] %></td>
+            <td class="wms"><strong>Flag: </strong><%= data.attributes["flag_country"] %></td>
+            <td><img src="https://owsdemo.exactearth.com/www/flags/<%= data.attributes["flag_country"].replace(" ", "") %>.png" alt="China" width="32" height="32" align="absmiddle" />
+            </td>
+        </tr>
+        <tr class="wms">
+            <td colspan="3" class="wms"><img src="https://owsdemo.exactearth.com/www/gfi_line.png" alt="" width="381" height="8" align="absmiddle" /></td>
+        </tr>
+        <tr class="wms">
+            <td class="wms"><strong>IMO: </strong><%= data.attributes["imo"] %></td>
+            <td class="wms"><strong>MMSI: </strong><%= data.attributes["mmsi"] %></td>
+        </tr>
+        <tr class="wms">
+            <td class="wms"><strong>Call Sign: </strong><%= data.attributes["callsign"] %></td>
+            <td class="wms"><strong>Size: </strong><%= data.attributes["length"] %>m x <%= data.attributes["width"] %>m</td>
+        </tr>
+        <tr class="wms">
+            <td bgcolor="#99CCFF" class="wms"><strong>Latest Position at:</strong></td>
+            <td bgcolor="#99CCFF" class="wms"><%= data.attributes["ts_pos_utc"].toString().replace(/T|\:\d\dZ/g, " ") %></td>
+            <td bgcolor="#99CCFF" class="wms"></td>
+        </tr>
+        <tr class="wms">
+            <td class="wms"><strong>Latitude: </strong><%= data.attributes["latitude"] %></td>
+            <td class="wms"><strong>Longitude: </strong><%= data.attributes["longitude"] %></td>
+        </tr>
+        <tr class="wms">
+            <td class="wms"><strong>Course: </strong><%= data.attributes["cog"] %>&deg;</td>
+            <td class="wms"><strong>Speed: </strong><%= data.attributes["sog"] %>kn</td>
+        </tr>
+        <tr class="wms">
+            <td class="wms"><strong>Heading: </strong><%= data.attributes["heading"] %>&deg;</td>
+            <td class="wms"><strong>Rate of Turn: </strong><%= data.attributes["rot"] %>&deg; /min</td>
+        </tr>
+        <tr class="wms">
+            <td colspan="3" class="wms"><em>Status: Under Way Using Engine</em></td>
+        </tr>
+        <tr class="wms">
+            <td nowrap bgcolor="#99CCFF" class="wms"><strong>Latest Report at:</strong></td>
+            <td bgcolor="#99CCFF" class="wms"><%= data.attributes["ts_pos_utc"].toString().replace(/T|\:\d\dZ/g, " ") %></td>
+            <td bgcolor="#99CCFF" class="wms"></td>
+        </tr>
+        <tr class="wms">
+            <td class="wms"><strong>Destination: </strong> <%= data.attributes["destination"] %></td>
+            <td class="wms"><strong>Est. Arrival: </strong><%= data.attributes["eta"] %></td>            
+        </tr>
+        <tr class="wms">
+            <td class="wms"><strong>Cargo: </strong><%= data.attributes["vessel_type_cargo"] %></td>
+            <td class="wms"><strong>Draught: </strong><%= data.attributes["draught"] %></td>
+        </tr>
+        <tr class="wms">
+            <td colspan="3" class="wms"><img src="https://owsdemo.exactearth.com/www/gfi_line.png" alt="" width="381" height="8" /></td>
+        </tr>
+</table>
+<table class="wms">
+    <col width="190.5px" />
+    <col width="190.5px" />
+    <tr class="wms">
+        <td class="wms"><img src="https://owsdemo.exactearth.com/www/exactais_logo.png" alt="" width="70" height="32" align="absmiddle"/></td>
+        <td class="wms" id="copyright">&copy; 2013 exactEarth Ltd.</td>
+    </tr>
+</table>
