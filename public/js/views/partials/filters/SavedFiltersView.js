@@ -28,7 +28,7 @@ define([
         },
 
         handleExpand: function(e) {
-            $(e.target).next().slideToggle(200);
+            $(e.target).closest("div .collapsed").next().slideToggle(200);
         },
 
         handleFilterToggle: function(e) {
