@@ -1,8 +1,9 @@
 define([
   'baseview',
+  'openlayersutil',
   '../../../models/Filter',
   'text!templates/partials/filters/EditFiltersView.html'
-], function(Baseview, Filter, editFiltersTemplate){
+], function(Baseview, Utils, Filter, editFiltersTemplate){
     var private = {
         operatorCounter: 0
     };
@@ -25,7 +26,8 @@ define([
             "click .add-row": "addRow",
             "click #clearFilter": "clearFilter",
             "click #createFilter": "createFilter",
-            "change #newOperator": "updateValueTextFields"
+            "change #newOperator": "updateValueTextFields",
+            "change #newType": "updateNewOperator"
         },
 
         cacheOperators: function() {
@@ -50,6 +52,13 @@ define([
             this.model.save( function(response){
                 Backbone.globalEvents.trigger("addedFilter", response);
             }, function(err){console.log(err);});
+        },
+
+        updateNewOperator: function(e) {
+            var selectedVal = $(e.target).val(),
+                type = _.findWhere(this.features, {name:selectedVal}).type;
+
+            console.log(Utils.determineNumberOfInputs(type));
         },
 
         updateValueTextFields: function(e) {

@@ -18,14 +18,13 @@ function bind(app, passport) {
 
     app.post("/proxy", proxy.proxyIt);
     app.get("/proxy", proxy.proxyIt);
+    app.get("/proxy/features", proxy.getFeatures);
 }
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { 
-        console.log("Auth successful!");
         return next(); 
     }
-    console.log("Auth NOT Successful!");
     res.writeHead("401", {
         'Content-Type': 'text/json'
     });

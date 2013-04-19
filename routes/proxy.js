@@ -13,6 +13,23 @@ var self = {
                 res.send(output);
             });
         });
+    },
+
+    getFeatures: function(req, res) {
+        var https = require("follow-redirects").https;
+
+        https.get(req.query["url"], function(response) {
+            var output = "";
+
+            response.on("data", function(chunk) {
+                output += chunk;
+            });
+
+            response.on("end", function() {
+                //Save to DB here
+                res.send(output);
+            });
+        });
     }
 };
 
