@@ -33,12 +33,11 @@ select {
 }
 
 .content {
-    top: 7%;
+    top: 55px;
     position: fixed;
     right: 0;
     bottom: 0;
     left: 0;
-    overflow: auto;
     z-index: 15;
     background: #fff;
     -webkit-transition-property: top, bottom;
@@ -190,15 +189,20 @@ select {
 
 #sidebar {
     border-color: #BCD;
-    position: fixed;
-    top: 55px;
+    position: absolute;
+    top: 0;
     background-color: #fff;
     z-index: 1100;
     height: 95%;
-    overflow: auto;
-    width: 39.5%; //WHY?!?!? Figure this out
+    width: 40%;
     -webkit-transition: width 0.2s; /* Safari and Chrome */
 }
+
+#toolContainer {
+    overflow: auto;
+    height: 100%;
+}
+
 #content {
     border-color: #CDC;
 }
