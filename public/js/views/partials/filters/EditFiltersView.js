@@ -60,15 +60,18 @@ define([
 
         updateAssociatedTypes: function(target) {
             var selectedVal = target.val(),
-                type = _.findWhere(this.features, {name:selectedVal}).type;
-
-            var types = Utils.getTypeDropdownValues(type);
+                type = _.findWhere(this.features, {name:selectedVal}).type,
+                types = Utils.getTypeDropdownValues(type),
+                selecteProperty = $("#newType").val();
+                 
             this.types = types;
 
             $("#newType").html("");
             _.each(types, function(type) {
                 $('<option/>').val(type).text(type).appendTo($('#newType'));
             });
+
+            $("#newType").val(selecteProperty);
 
             this.updateValueTextFields($("#newType"), $("#newUpper"));
         },
@@ -80,8 +83,10 @@ define([
         updateValueTextFields: function(target, fieldToToggle) {
             if (target.val() == "..")
                 fieldToToggle.removeClass("hide");
-            else
+            else {
                 fieldToToggle.addClass("hide");
+                fieldToToggle.html("");
+            }
         },
 
         deleteRow: function(e) {
@@ -109,7 +114,7 @@ define([
             this.model.addOperator(newOperator);
         },
 
-        render: function () {
+        render: function (firstTime) {
             var templateData = {
                 types: this.types,
                 features: this.features,
@@ -117,8 +122,12 @@ define([
             };
 
             this.$el.html(this.template(templateData));
-            this.updateAssociatedTypes($("#newProperty"));
-            this.updateValueTextFields($("#newType"), $("#newUpper"));
+            //Only call these if it's an initial load of the pages
+            //Otherwise we need to deal with state persistence
+            if (firstTime) {
+                this.updateAssociatedTypes($("#newProperty"));
+                this.updateValueTextFields($("#newType"), $("#newUpper"));
+            }
 
             return this;
         }

@@ -52,7 +52,7 @@ define([
 
             this.addSubView(editFilters);
             this.addSubView(savedFilters);
-            editFilters.render();
+            editFilters.render(true);
             savedFilters.render();
 
             return this;
