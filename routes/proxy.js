@@ -1,9 +1,5 @@
 var parser = require("xml2json");
 
-var extractFilterFeatures = function(parsedResponse, callback) {
-    var objectifyResponse = JSON.parse(parsedResponse.responseText);
-};
-
 var self = {
     proxyIt: function(req, res, passInfo, callback) {
         var https = require("follow-redirects").https;
@@ -24,6 +20,12 @@ var self = {
         });
     },
 
+    defaultProxy: function(req, res) {
+        self.proxyIt(req, res, true, function(output) {
+            res.send(output);
+        });
+    },
+
     getFeatures: function(req, res) {
         self.proxyIt(req, res, true, function(output) {
             res.send(output);
@@ -33,7 +35,7 @@ var self = {
     getCapabilities: function(req, res) {
         self.proxyIt(req, res, true, function(output) {
             var parsedResponse = parser.toJson(output);
-                JSON.parse(parsedResponse.responseText);
+
             res.send(parser.toJson(output));
         });
     }

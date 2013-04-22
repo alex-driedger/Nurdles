@@ -26,8 +26,14 @@ define([
             "click .add-row": "addRow",
             "click #clearFilter": "clearFilter",
             "click #createFilter": "createFilter",
+            "click #applyFilter": "applyFilter",
             "change #newType": "handleTextFieldsChange",
             "change #newProperty": "handlePropertyChange"
+        },
+
+        applyFilter: function(e) {
+            Backbone.globalEvents.trigger("filtersChanged", [this.model]);
+            console.log(this.model);
         },
 
         cacheOperators: function() {
@@ -65,14 +71,13 @@ define([
                 selecteProperty = $("#newType").val();
                  
             this.types = types;
-
             $("#newType").html("");
+
             _.each(types, function(type) {
                 $('<option/>').val(type).text(type).appendTo($('#newType'));
             });
 
             $("#newType").val(selecteProperty);
-
             this.updateValueTextFields($("#newType"), $("#newUpper"));
         },
 
@@ -81,12 +86,19 @@ define([
         },
 
         updateValueTextFields: function(target, fieldToToggle) {
-            if (target.val() == "..")
+            $("#editFilter .staged").toggleClass("wide-95");
+            if (target.val() == "..") {
+                target.closest("td").next().prop("colspan", "1")
                 fieldToToggle.removeClass("hide");
+                fieldToToggle.parent().removeClass("hide");
+            }
             else {
                 fieldToToggle.addClass("hide");
+                fieldToToggle.parent().addClass("hide");
                 fieldToToggle.html("");
+                target.closest("td").next().prop("colspan", "2")
             }
+
         },
 
         deleteRow: function(e) {
@@ -94,6 +106,7 @@ define([
         },
 
         addRow: function(e) {
+
             var newOperator = {
                 id: private.operatorCounter++,
                 property: $("#newProperty").val(),
@@ -102,7 +115,7 @@ define([
                 upperBoundary: $("#newUpper").val()
             };
 
-            if (!$("#newUpper").val() != "") {
+            if ($("#newUpper").val() == "") {
                 newOperator.value = newOperator.lowerBoundary;
                 delete newOperator.lowerBoundary;
                 delete newOperator.upperBoundary;
@@ -111,6 +124,7 @@ define([
             this.model.set("name", $("#filterName").val());
             console.log(newOperator);
 
+            this.cacheOperators();
             this.model.addOperator(newOperator);
         },
 
@@ -122,12 +136,8 @@ define([
             };
 
             this.$el.html(this.template(templateData));
-            //Only call these if it's an initial load of the pages
-            //Otherwise we need to deal with state persistence
-            if (firstTime) {
-                this.updateAssociatedTypes($("#newProperty"));
-                this.updateValueTextFields($("#newType"), $("#newUpper"));
-            }
+            this.updateAssociatedTypes($("#newProperty"));
+            this.updateValueTextFields($("#newType"), $("#newUpper"));
 
             return this;
         }
