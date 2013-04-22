@@ -1,8 +1,9 @@
 define([
   'baseview',
+  'openlayersutil',
   '../../../models/Filter',
   'text!templates/partials/filters/EditFiltersView.html'
-], function(Baseview, Filter, editFiltersTemplate){
+], function(Baseview, Utils, Filter, editFiltersTemplate){
     var private = {
         operatorCounter: 0
     };
@@ -25,7 +26,14 @@ define([
             "click .add-row": "addRow",
             "click #clearFilter": "clearFilter",
             "click #createFilter": "createFilter",
-            "change #newOperator": "updateValueTextFields"
+            "click #applyFilter": "applyFilter",
+            "change #newType": "handleTextFieldsChange",
+            "change #newProperty": "handlePropertyChange"
+        },
+
+        applyFilter: function(e) {
+            Backbone.globalEvents.trigger("filtersChanged", [this.model]);
+            console.log(this.model);
         },
 
         cacheOperators: function() {
@@ -52,12 +60,45 @@ define([
             }, function(err){console.log(err);});
         },
 
-        updateValueTextFields: function(e) {
-            console.log(e);
-            if ($(e.target).val() == "=")
-                $("#newUpper").addClass("hide");
-            else
-                $("#newUpper").removeClass("hide");
+        handlePropertyChange: function(e) {
+            this.updateAssociatedTypes($(e.target));
+        },
+
+        updateAssociatedTypes: function(target) {
+            var selectedVal = target.val(),
+                type = _.findWhere(this.features, {name:selectedVal}).type,
+                types = Utils.getTypeDropdownValues(type),
+                selecteProperty = $("#newType").val();
+                 
+            this.types = types;
+            $("#newType").html("");
+
+            _.each(types, function(type) {
+                $('<option/>').val(type).text(type).appendTo($('#newType'));
+            });
+
+            $("#newType").val(selecteProperty);
+            this.updateValueTextFields($("#newType"), $("#newUpper"));
+        },
+
+        handleTextFieldsChange: function(e) {
+            this.updateValueTextFields($(e.target), $("#newUpper"));
+        },
+
+        updateValueTextFields: function(target, fieldToToggle) {
+            $("#editFilter .staged").toggleClass("wide-95");
+            if (target.val() == "..") {
+                target.closest("td").next().prop("colspan", "1")
+                fieldToToggle.removeClass("hide");
+                fieldToToggle.parent().removeClass("hide");
+            }
+            else {
+                fieldToToggle.addClass("hide");
+                fieldToToggle.parent().addClass("hide");
+                fieldToToggle.html("");
+                target.closest("td").next().prop("colspan", "2")
+            }
+
         },
 
         deleteRow: function(e) {
@@ -65,15 +106,16 @@ define([
         },
 
         addRow: function(e) {
+
             var newOperator = {
                 id: private.operatorCounter++,
-                property: $("#newType").val(),
-                type: $("#newOperator").val(),
+                property: $("#newProperty").val(),
+                type: $("#newType").val(),
                 lowerBoundary: $("#newLower").val(),
                 upperBoundary: $("#newUpper").val()
             };
 
-            if (!$("#newUpper").val() != "") {
+            if ($("#newUpper").val() == "") {
                 newOperator.value = newOperator.lowerBoundary;
                 delete newOperator.lowerBoundary;
                 delete newOperator.upperBoundary;
@@ -82,11 +124,20 @@ define([
             this.model.set("name", $("#filterName").val());
             console.log(newOperator);
 
+            this.cacheOperators();
             this.model.addOperator(newOperator);
         },
 
-        render: function () {
-            this.$el.html(this.template(this.model.toJSON()));;
+        render: function (firstTime) {
+            var templateData = {
+                types: this.types,
+                features: this.features,
+                model: this.model.toJSON()
+            };
+
+            this.$el.html(this.template(templateData));
+            this.updateAssociatedTypes($("#newProperty"));
+            this.updateValueTextFields($("#newType"), $("#newUpper"));
 
             return this;
         }

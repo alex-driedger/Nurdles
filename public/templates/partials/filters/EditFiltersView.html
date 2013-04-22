@@ -16,24 +16,28 @@
             </td>
         </tr>
 
-        <% _.each(operators, function(operator) { %>
+        <% _.each(model.operators, function(operator) { %>
 
         <tr>
         <td>
             <select id="<%= operator.id + '-property' %>" class="wide-30">
-                <option value="<%= operator.property %>"><%= operator.property %></option>
+                <% _.each(features, function(feature) { %>
+                <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
+                <% }); %>
             </select>
         </td>
         <td>
             <select id="<%= operator.id + '-type' %>" class="wide-30">
-                <option value="<%= operator.type %>"><%= operator.type %></option>
+                <% _.each(types, function(type) { %>
+                <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
+                <% }); %>
             </select>
         </td>
-        <td> 
-            <input id="<%= operator.id + '-lower' %>" type="text" class="wide-90" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+        <td <%= operator.upperBoundary ? '' : 'colspan="2"' %>> 
+            <input id="<%= operator.id + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
         </td>
-        <td> 
-            <input id="<%= operator.id + '-upper' %>" type="text" class="wide-90" value="<%= operator.upperBoundary %>" />
+        <td class="<%= operator.upperBoundary ? '' : 'hide' %>"> 
+            <input id="<%= operator.id + '-upper' %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
         </td>
         <td>
             <div class="plus-minus-container">
@@ -46,14 +50,17 @@
 
     <tr>
         <td>
-            <select id="newType" class="wide-30">
-                <option value="sog">sog</option>
+            <select id="newProperty" class="wide-30">
+                <% _.each(features, function(feature) { %>
+                    <option value="<%= feature.name %>"><%= feature.name %></option>
+                <% }); %>
             </select>
         </td>
         <td>
-            <select id="newOperator" class="wide-30">
-                <option value="=">=</option>
-                <option value="..">..</option>
+            <select id="newType" class="wide-30">
+                <% _.each(types, function(type) { %>
+                    <option value="<%= type %>"><%= type %></option>
+                <% }); %>
             </select>
         </td>
         <td> 
@@ -74,5 +81,6 @@
 <div class="pull-right padded">
     <button id="clearFilter" class="btn"> Clear </button>
     <button id="createFilter" class="btn"> Create </button>
+    <button id="applyFilter" class="btn"> Apply </button>
 </div>
 

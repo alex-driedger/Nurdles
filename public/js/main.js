@@ -9,6 +9,7 @@ require.config({
     underscore: 'libs/underscore/underscore-min',
     backbone: 'libs/backbone/backbone-min',
     baseview: 'views/BaseView',
+    openlayersutil: "utils/OpenLayersUtil",
     bootstrap: 'libs/bootstrap/bootstrap.min',
     templates: '../templates'
   },
