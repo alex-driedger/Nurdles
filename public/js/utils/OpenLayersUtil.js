@@ -1,7 +1,7 @@
 define([
        'underscore',
        './utils/Parser',
-       './utils/conf',
+       './utils/Conf',
 ], function(_, Parser, Conf){
     var private = {};
 
@@ -12,7 +12,7 @@ define([
                 proxy: Conf.featureSetProxy,
                 success: function (response) {
                     var parser = new OpenLayers.Format.WFSDescribeFeatureType(),
-                        parsedData = Parser.parseFeautures(parser.read(response.responseText));
+                        parsedData = Parser.parseFeatures(parser.read(response.responseText));
 
                     callback(null, parsedData);
                 },
@@ -28,7 +28,7 @@ define([
                 proxy: Conf.getCapabilitiesProxy,
                 success: function (response) {
                     var capabilities = JSON.parse(response.responseText),
-                        filterCapabilities = _.toArray(capabilities)[0]["ogc:Filter_Capabilities"]
+                        filterCapabilities = _.toArray(capabilities)[0]["ogc:Filter_Capabilities"];
 
                     callback(null, filterCapabilities);
                 },
@@ -36,6 +36,12 @@ define([
                     callback(err);
                 }
             });
+        },
+
+        getTypeDropdownValues: function(type) {
+            var values = Conf.scalarFilterCapabilties.byType[type];
+
+            return values || ["na"];
         },
 
         determineNumberOfInputs: function(propertyType) {

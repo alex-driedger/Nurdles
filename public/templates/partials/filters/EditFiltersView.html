@@ -46,16 +46,17 @@
 
     <tr>
         <td>
-            <select id="newType" class="wide-30">
+            <select id="newProperty" class="wide-30">
                 <% _.each(features, function(feature) { %>
                     <option value="<%= feature.name %>"><%= feature.name %></option>
                 <% }); %>
             </select>
         </td>
         <td>
-            <select id="newOperator" class="wide-30">
-                <option value="=">=</option>
-                <option value="..">..</option>
+            <select id="newType" class="wide-30">
+                <% _.each(types, function(type) { %>
+                    <option value="<%= type %>"><%= type %></option>
+                <% }); %>
             </select>
         </td>
         <td> 

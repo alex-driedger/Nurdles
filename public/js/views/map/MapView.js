@@ -136,6 +136,7 @@ define([
             var filter_1_0 = new OpenLayers.Format.Filter({version: "1.0.0"});
             var xml = new OpenLayers.Format.XML(); 
             var filter_param = xml.write(filter_1_0.write(olFilters));
+            console.log(filter_param);
 
             return filter_param;
         },

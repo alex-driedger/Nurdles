@@ -26,8 +26,8 @@ define([
             "click .add-row": "addRow",
             "click #clearFilter": "clearFilter",
             "click #createFilter": "createFilter",
-            "change #newOperator": "updateValueTextFields",
-            "change #newType": "updateNewOperator"
+            "change #newType": "handleTextFieldsChange",
+            "change #newProperty": "handlePropertyChange"
         },
 
         cacheOperators: function() {
@@ -54,19 +54,34 @@ define([
             }, function(err){console.log(err);});
         },
 
-        updateNewOperator: function(e) {
-            var selectedVal = $(e.target).val(),
-                type = _.findWhere(this.features, {name:selectedVal}).type;
-
-            console.log(Utils.determineNumberOfInputs(type));
+        handlePropertyChange: function(e) {
+            this.updateAssociatedTypes($(e.target));
         },
 
-        updateValueTextFields: function(e) {
-            console.log(e);
-            if ($(e.target).val() == "=")
-                $("#newUpper").addClass("hide");
+        updateAssociatedTypes: function(target) {
+            var selectedVal = target.val(),
+                type = _.findWhere(this.features, {name:selectedVal}).type;
+
+            var types = Utils.getTypeDropdownValues(type);
+            this.types = types;
+
+            $("#newType").html("");
+            _.each(types, function(type) {
+                $('<option/>').val(type).text(type).appendTo($('#newType'));
+            });
+
+            this.updateValueTextFields($("#newType"), $("#newUpper"));
+        },
+
+        handleTextFieldsChange: function(e) {
+            this.updateValueTextFields($(e.target), $("#newUpper"));
+        },
+
+        updateValueTextFields: function(target, fieldToToggle) {
+            if (target.val() == "..")
+                fieldToToggle.removeClass("hide");
             else
-                $("#newUpper").removeClass("hide");
+                fieldToToggle.addClass("hide");
         },
 
         deleteRow: function(e) {
@@ -76,8 +91,8 @@ define([
         addRow: function(e) {
             var newOperator = {
                 id: private.operatorCounter++,
-                property: $("#newType").val(),
-                type: $("#newOperator").val(),
+                property: $("#newProperty").val(),
+                type: $("#newType").val(),
                 lowerBoundary: $("#newLower").val(),
                 upperBoundary: $("#newUpper").val()
             };
@@ -96,11 +111,14 @@ define([
 
         render: function () {
             var templateData = {
+                types: this.types,
                 features: this.features,
                 model: this.model.toJSON()
             };
 
-            this.$el.html(this.template(templateData));;
+            this.$el.html(this.template(templateData));
+            this.updateAssociatedTypes($("#newProperty"));
+            this.updateValueTextFields($("#newType"), $("#newUpper"));
 
             return this;
         }

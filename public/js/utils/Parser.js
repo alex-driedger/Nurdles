@@ -4,7 +4,7 @@ define([
     var private = {};
 
     var Parser = {
-        parseFeautures: function(data) {
+        parseFeatures: function(data) {
             var featureTypes = data.featureTypes,
                 features = [];
 
