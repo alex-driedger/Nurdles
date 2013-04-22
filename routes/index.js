@@ -19,6 +19,7 @@ function bind(app, passport) {
     app.post("/proxy", proxy.proxyIt);
     app.get("/proxy", proxy.proxyIt);
     app.get("/proxy/features", proxy.getFeatures);
+    app.get("/proxy/getCapabilities", proxy.getCapabilities);
 }
 
 function ensureAuthenticated(req, res, next) {

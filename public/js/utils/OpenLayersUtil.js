@@ -6,7 +6,7 @@ define([
     var private = {};
 
     var OpenLayersUtil = {
-        getFilterFeatures: function(callback) {
+        getFeatureFields: function(callback) {
             var request = OpenLayers.Request.GET({
                 url: 'https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=DescribeFeatureType&typeName=exactAIS:LVI&authKey=tokencoin',
                 proxy: Conf.featureSetProxy,
@@ -20,7 +20,22 @@ define([
                     callback(err);
                 }
             });
+        },
 
+        getFilterCapabilities: function(callback) {
+            var request = OpenLayers.Request.GET({
+                url: 'https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetCapabilities&authKey=tokencoin',
+                proxy: Conf.getCapabilitiesProxy,
+                success: function (response) {
+                    var capabilities = JSON.parse(response.responseText),
+                        filterCapabilities = _.toArray(capabilities)[0]["ogc:Filter_Capabilities"]
+
+                    callback(null, filterCapabilities);
+                },
+                error: function(err) {
+                    callback(err);
+                }
+            });
         },
 
         determineNumberOfInputs: function(propertyType) {

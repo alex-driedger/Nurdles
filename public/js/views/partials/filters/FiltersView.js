@@ -28,10 +28,14 @@ define([
 
         preRender: function(callback) {
             var view = this;
-            OpenLayersUtil.getFilterFeatures(function(err, response) {
+            OpenLayersUtil.getFeatureFields(function(err, response) {
                 private.features = response;
                 view.$el.html(view.template());
                 callback();
+            });
+
+            OpenLayersUtil.getFilterCapabilities(function(err, response) {
+                console.log(response);
             });
             return this;
         },
