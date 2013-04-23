@@ -1,8 +1,9 @@
 define([
   'baseview',
+  'openlayersutil',
   '../../../models/Filter',
   'text!templates/partials/filters/SavedFiltersView.html'
-], function(Baseview, Filter, editFiltersTemplate){
+], function(Baseview, Utils, Filter, editFiltersTemplate){
     var private = {
         activeFilters: []
     };
@@ -82,6 +83,39 @@ define([
             return operands;
         },
 
+        updateAssociatedTypes: function(property, typeDropDown) {
+            var selectedVal = property.val(),
+                type = _.findWhere(this.features, {name:selectedVal}).type,
+                types = Utils.getTypeDropdownValues(type),
+                selectedProperty = typeDropDown.val();
+                 
+            this.types = types;
+            typeDropDown.html("");
+
+            _.each(types, function(type) {
+                $('<option/>').val(type).text(type).appendTo(typeDropDown);
+            });
+
+            typeDropDown.val(selectedProperty);
+            //this.updateValueTextFields($("#newType"), $("#newUpper"));
+        },
+
+        updateValueTextFields: function(target, fieldToToggle) {
+            $("#editFilter .staged").toggleClass("wide-95");
+            if (target.val() == "..") {
+                target.closest("td").next().prop("colspan", "1")
+                fieldToToggle.removeClass("hide");
+                fieldToToggle.parent().removeClass("hide");
+            }
+            else {
+                fieldToToggle.addClass("hide");
+                fieldToToggle.parent().addClass("hide");
+                fieldToToggle.html("");
+                target.closest("td").next().prop("colspan", "2")
+            }
+
+        },
+
         render: function () {
 
             var view = this;
@@ -89,8 +123,22 @@ define([
                 url: "/api/filters/getAllForUser",
                 type: "GET",
                 success: function(filters) {
-                    console.log("FILTERS :", filters);
-                    view.$el.html(view.template({filters: filters}));
+                    var templateData = {
+                        types: view.types,
+                        features: view.features,
+                        filters: filters,
+                    };
+
+                    view.$el.html(view.template(templateData));
+
+                    _.each(filters, function(filter) {
+                        var counter = 0;
+                        _.each(filter.operators, function(operator) {
+                            view.updateAssociatedTypes($("#" + counter + "-" + filter._id + "-property"), $("#" + counter + "-" + filter._id + "-type"));
+                            view.updateValueTextFields($("#" + counter + "-" + filter._id + "-type"), $("#" + counter + "-" + filter._id + "-upper"));
+                            counter++;
+                        });
+                    });
 
                     $('.filters-wrapper').find('.collapsed').next().hide();
                 },

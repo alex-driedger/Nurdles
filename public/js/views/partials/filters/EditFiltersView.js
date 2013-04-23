@@ -58,9 +58,11 @@ define([
         },
 
         createFilter: function(e) {
+            var view = this;
             this.model.set("name", $("#filterName").val());
             this.model.save( function(response){
                 Backbone.globalEvents.trigger("addedFilter", response);
+                view.clearFilter();
             }, function(err){console.log(err);});
         },
 

@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-        <div class="filter-operands-container">
+    <div id="<%= filter._id %>-container" class="filter-operands-container clearfix">
             <table id="<%= filter._id %>-table" class="table table-condensed" style="margin-bottom: 0px;">
                     <tr>
                         <td colspan="2">
@@ -30,8 +30,10 @@
 
                     <tr>
                     <td>
-                    <select id="<%= counter + '-' + filter._id + '-property' %>" class="wide-30 savedFilter">
-                            <option value="<%= operator.property %>"><%= operator.property %></option>
+                        <select id="<%= counter + '-' + filter._id + '-property' %>" class="wide-30 savedFilter">
+                            <% _.each(features, function(feature) { %>
+                            <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
+                            <% }); %>
                         </select>
                     </td>
                     <td>
@@ -55,6 +57,10 @@
                     <% counter++; %>
                 <% }); %>
             </table>
+            <div class="pull-right padded">
+                <button id="<%= filter._id %>-remove" class="btn btn-danger"> Remove </button>
+                <button id="<%= filter._id %>-save" class="btn"> Create </button>
+            </div>
         </div>
     <% }); %>
 </div>
