@@ -12,6 +12,7 @@ define([
             this.initArgs(args);
 
             this.expandedFilters = [];
+            this.activeFilters = [];
             this.bindTo(Backbone.globalEvents, "addedFilter", this.render, this);
         },
 
@@ -47,21 +48,20 @@ define([
         handleFilterToggle: function(e) {
             e.stopImmediatePropagation();
 
-            var target = $(e.target);
+            var target = $(e.target),
+                id = target.prop("id");
 
             if (target.prop("checked")) {
                 target.closest(".collapsed").addClass("selected");
-                var operators = this.getOperators(target.prop("id"));
 
-                var filter = new Filter();
+                var filter = new Filter(),
+                    operators = _.findWhere(this.filters, {_id: id}).operators;
 
-                filter._id = target.prop("id");
-                filter.setOperators(operators);
-
+                filter._id = id; //Local comparison will happen with the id field. No need to set it
+                filter.set("operators", operators); //Mapview needs the operators on the model so we set it
                 this.activeFilters.push(filter);
             }
             else {
-                var id = target.prop("id");
                 target.closest(".collapsed").removeClass("selected");
 
                 this.activeFilters = _.reject(this.activeFilters, function(filter) {
