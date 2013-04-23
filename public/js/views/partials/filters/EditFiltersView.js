@@ -40,8 +40,12 @@ define([
             _.each(this.model.getOperators(), function(operator) {
                 operator.property = $("#" + operator.id + "-property").val();
                 operator.type = $("#" + operator.id + "-type").val();
-                operator.lowerBoundary = $("#" + operator.id + "-lower").val();
-                operator.upperBoundary = $("#" + operator.id + "-upper").val();
+                if (operator.upperBoundary) {
+                    operator.lowerBoundary = $("#" + operator.id + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.id + "-upper").val();
+                }
+                else
+                    operator.value = $("#" + operator.id + "-lower").val();
             });
 
             this.model.set("name", $("#filterName").val());
@@ -54,9 +58,11 @@ define([
         },
 
         createFilter: function(e) {
+            var view = this;
             this.model.set("name", $("#filterName").val());
             this.model.save( function(response){
                 Backbone.globalEvents.trigger("addedFilter", response);
+                view.clearFilter();
             }, function(err){console.log(err);});
         },
 

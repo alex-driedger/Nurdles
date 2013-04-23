@@ -46,7 +46,7 @@ define([
         },
 
         clearOperators: function() {
-            this.get("operators").reset();
+            this.set("operators", []);
             this.trigger("change");
         },
 
