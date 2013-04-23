@@ -61,16 +61,21 @@ define([
 
         getOperators: function(filterId) {
             var operands = [],
-                numberOfFilters = $("#" + filterId + "-table tr").length - 1, //We have a header row :-)
-                operand = {};
+                numberOfFilters = $("#" + filterId + "-table tr").length - 1; //We have a header row :-)
 
             console.log("About to apply " + numberOfFilters + " filters!");
 
             for (var i = 0; i < numberOfFilters; i++) {
+                var operand = {};
                 operand.property = $("#" + i + "-" + filterId + "-property").val();
                 operand.type = $("#" + i + "-" + filterId + "-type").val();
-                operand.lowerBoundary = $("#" + i + "-" + filterId + "-lower").val();
-                operand.upperBoundary = $("#" + i + "-" + filterId + "-upper").val();
+                if (operand.upperBoundary) {
+                    operand.lowerBoundary = $("#" + i + "-" + filterId + "-lower").val();
+                    operand.upperBoundary = $("#" + i + "-" + filterId + "-upper").val();
+                }
+                else
+                    operand.value = $("#" + i + "-" + filterId + "-lower").val();
+
                 operands.push(operand)
             }
 
