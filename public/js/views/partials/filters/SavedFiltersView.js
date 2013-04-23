@@ -5,13 +5,13 @@ define([
   'text!templates/partials/filters/SavedFiltersView.html'
 ], function(Baseview, Utils, Filter, editFiltersTemplate){
     var private = {
-        activeFilters: []
     };
 
     var FiltersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
 
+            this.expandedFilters = [];
             this.bindTo(Backbone.globalEvents, "addedFilter", this.render, this);
         },
 
@@ -19,7 +19,8 @@ define([
 
         events: {
             "click .collapsed": "handleExpand",
-            "click .checkbox": "handleFilterToggle"
+            "click .checkbox": "handleFilterToggle",
+            "click .delete-row": "handleRowRemoval"
         },
 
         preRender: function() {
@@ -29,7 +30,18 @@ define([
         },
 
         handleExpand: function(e) {
-            $(e.target).closest("div .collapsed").next().slideToggle(200);
+            var headerDiv = $(e.target).closest("div .collapsed"),
+                divToToggle = headerDiv.next(),
+                filterId = divToToggle.prop("id").split("-")[0],
+                indexOfFilter = _.indexOf(this.expandedFilters, filterId);
+
+            if (indexOfFilter == -1)
+                this.expandedFilters.push(filterId);
+            else
+                this.expandedFilters.splice(indexOfFilter, 1);
+
+            headerDiv.toggleClass("notExpanded");
+            divToToggle.slideToggle(200);
         },
 
         handleFilterToggle: function(e) {
@@ -46,18 +58,27 @@ define([
                 filter._id = target.prop("id");
                 filter.setOperators(operators);
 
-                private.activeFilters.push(filter);
+                this.activeFilters.push(filter);
             }
             else {
                 var id = target.prop("id");
                 target.closest(".collapsed").removeClass("selected");
 
-                private.activeFilters = _.reject(private.activeFilters, function(filter) {
+                this.activeFilters = _.reject(this.activeFilters, function(filter) {
                     return filter._id == id;
                 });
             }
 
-            Backbone.globalEvents.trigger("filtersChanged", private.activeFilters);
+            Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
+        },
+
+        handleRowRemoval: function(e) {
+            var operatorInfo = $(e.target).prop("id").split("-"),
+                operatorNumber = operatorInfo[0],
+                filter = _.findWhere(this.filters, {_id: operatorInfo[1]});
+            
+            filter.operators.splice(operatorNumber, 1);
+            this.render(true);
         },
 
         getOperators: function(filterId) {
@@ -116,36 +137,57 @@ define([
 
         },
 
-        render: function () {
+        loadSavedFiltersView: function(filters, view) {
+            var templateData = {
+                types: view.types,
+                features: view.features,
+                filters: filters,
+            };
 
-            var view = this;
-            $.ajax({
-                url: "/api/filters/getAllForUser",
-                type: "GET",
-                success: function(filters) {
-                    var templateData = {
-                        types: view.types,
-                        features: view.features,
-                        filters: filters,
-                    };
+            view.$el.html(view.template(templateData));
 
-                    view.$el.html(view.template(templateData));
-
-                    _.each(filters, function(filter) {
-                        var counter = 0;
-                        _.each(filter.operators, function(operator) {
-                            view.updateAssociatedTypes($("#" + counter + "-" + filter._id + "-property"), $("#" + counter + "-" + filter._id + "-type"));
-                            view.updateValueTextFields($("#" + counter + "-" + filter._id + "-type"), $("#" + counter + "-" + filter._id + "-upper"));
-                            counter++;
-                        });
-                    });
-
-                    $('.filters-wrapper').find('.collapsed').next().hide();
-                },
-                error: function(err) {
-                    console.log("ERROR: ", err);
-                }
+            _.each(this.expandedFilters, function(filterId) {
+                $("#" + filterId + "-container").prev().removeClass("notExpanded");
             });
+
+            _.each(filters, function(filter) {
+                var counter = 0;
+                _.each(filter.operators, function(operator) {
+                    view.updateAssociatedTypes($("#" + counter + "-" + filter._id + "-property"), $("#" + counter + "-" + filter._id + "-type"));
+                    view.updateValueTextFields($("#" + counter + "-" + filter._id + "-type"), $("#" + counter + "-" + filter._id + "-upper"));
+                    counter++;
+                });
+                    view.updateAssociatedTypes($("#" + filter._id + "-newProperty"), $("#" + filter._id + "-newType"));
+                    view.updateValueTextFields($("#" + filter._id + "-newType"), $("#" + filter._id + "-newUpper"));
+            });
+
+            $('.filters-wrapper').find('.collapsed.notExpanded').next().hide();
+
+        },
+
+        render: function (isLocalRender) {
+            if (typeof isLocalRender == "undefined" || isLocalRender == false) {
+                console.log("Fetching from DB");
+                var view = this;
+                $.ajax({
+                    url: "/api/filters/getAllForUser",
+                    type: "GET",
+                    success: function(filters) {
+
+                        view.filters = filters;
+                        view.loadSavedFiltersView(view.filters, view);
+                        view.delegateEvents(view.events);
+                    },
+                    error: function(err) {
+                        console.log("ERROR: ", err);
+                    }
+                });
+            }
+            else {
+                console.log("Using cached");
+                this.loadSavedFiltersView(this.filters, this);
+                this.delegateEvents(this.events);
+            }
 
             return this;
         }
