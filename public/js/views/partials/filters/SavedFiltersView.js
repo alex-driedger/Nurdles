@@ -21,13 +21,39 @@ define([
         events: {
             "click .collapsed": "handleExpand",
             "click .checkbox": "handleFilterToggle",
-            "click .delete-row": "handleRowRemoval"
+            "click .delete-row": "handleRowRemoval",
+            "click .deleteFilter": "handleDeleteFilter",
+            "click .saveFilter": "handleSaveFilter"
         },
 
         preRender: function() {
             this.$el.html(this.template());
 
             return this;
+        },
+
+        handleDeleteFilter: function(e) {
+            var filterId = $(e.target).prop("id").split("-")[0],
+                indexInExpandedFilter = _.indexOf(this.expandedFilters, filterId);
+
+            if (indexInExpandedFilter != -1)
+                this.expandedFilters.splice(indexInExpandedFilter, 1);
+            
+            this.filters = _.reject(this.filters, function(filter) {
+                return filter._id == filterId;
+            });
+            
+            this.activeFilters = _.reject(this.activeFilters, function(filter) {
+                return filter._id == filterId;
+            });
+
+            //TODO: Delete from DB
+            this.render(true);
+        },
+        
+        handleSaveFilter: function(e) {
+            var filterId = $(e.target).prop("id").split("-")[0];
+            console.log($(e.target));
         },
 
         handleExpand: function(e) {
