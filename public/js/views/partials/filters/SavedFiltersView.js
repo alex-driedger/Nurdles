@@ -39,7 +39,8 @@ define([
                 });
 
                 view.addSubView(detailsView);
-                view.$el.append(detailsView.render().$el);
+                view.$el.append(detailsView.preRender().$el);
+                detailsView.render();
             });
 
 

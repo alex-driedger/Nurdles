@@ -131,34 +131,30 @@ define([
             }
         },
 
-        render: function() {
+        preRender: function() {
             this.$el.html(this.template({
                 filter: this.filter,
                 features: this.features
             }));
-
+            
             return this;
+        },
 
-            /*
-            view.$el.html(view.template(templateData));
+        render: function() {
+            var counter = 0,
+                view = this;
 
-            _.each(this.expandedFilters, function(filterId) {
-                $("#" + filterId + "-container").prev().removeClass("notExpanded");
+
+            _.each(view.filter.operators, function(operator) {
+                //view.updateAssociatedTypes($("#" + counter + "-" + view.filter._id + "-property"), $("#" + counter + "-" + view.filter._id + "-type"));
+                //view.updateValueTextFields($("#" + counter + "-" + view.filter._id + "-type"), $("#" + counter + "-" + view.filter._id + "-upper"));
+                counter++;
             });
+                //this.updateAssociatedTypes($("#" + this.filter._id + "-newProperty"), $("#" + this.filter._id + "-newType"));
+                //this.updateValueTextFields($("#" + this.filter._id + "-newType"), $("#" + this.filter._id + "-newUpper"));
 
-            _.each(filters, function(filter) {
-                var counter = 0;
-                _.each(filter.operators, function(operator) {
-                    view.updateAssociatedTypes($("#" + counter + "-" + filter._id + "-property"), $("#" + counter + "-" + filter._id + "-type"));
-                    view.updateValueTextFields($("#" + counter + "-" + filter._id + "-type"), $("#" + counter + "-" + filter._id + "-upper"));
-                    counter++;
-                });
-                    view.updateAssociatedTypes($("#" + filter._id + "-newProperty"), $("#" + filter._id + "-newType"));
-                    view.updateValueTextFields($("#" + filter._id + "-newType"), $("#" + filter._id + "-newUpper"));
-            });
-
-            $('.filters-wrapper').find('.collapsed.notExpanded').next().hide();
-            */
+            $("#" + this.filter._id + "-container").hide();
+            return this;
         }
     });
 

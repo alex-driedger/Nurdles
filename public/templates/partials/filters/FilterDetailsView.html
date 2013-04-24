@@ -1,3 +1,13 @@
+<div class="saved-filter clearfix collapsed notExpanded">
+    <div class="pull-left">
+        <%=filter.name %>
+    </div>
+    <div class="pull-right">
+        <div class="collapsed-checkbox">
+            <input id="<%= filter._id %>" class="checkbox" type="checkbox" />
+        </div>
+    </div>
+</div>
 <div id="<%= filter._id %>-container" class="filter-operands-container clearfix">
         <table id="<%= filter._id %>-table" class="table table-condensed" style="margin-bottom: 0px;">
                 <tr>
