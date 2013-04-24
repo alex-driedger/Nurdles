@@ -13,7 +13,7 @@ define([
 
             this.expandedFilters = [];
             this.activeFilters = [];
-            this.bindTo(Backbone.globalEvents, "addedFilter", this.render, this);
+            this.bindTo(Backbone.globalEvents, "addedFilter", this.render(false), this);
         },
 
         template: _.template(editFiltersTemplate),

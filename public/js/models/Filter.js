@@ -8,15 +8,6 @@ define([
             this.set("operators", []);
         },
 
-        save: function(success, error) {
-            $.ajax({
-                url: "/api/filters/save",
-                type: "POST",
-                data: this.attributes,
-                success: success,
-                error: error
-            });
-        },
 
         setOperators: function(operators) {
             this.set("operators", operators);
