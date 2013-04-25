@@ -7,11 +7,16 @@ define([
     var private = {
     };
 
-    var FiltersView = Baseview.extend({
+    var SavedFiltersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
 
+            this.activeFilters = [];
+            this.expandedFilters = [];
+
             this.bindTo(Backbone.globalEvents, "addedFilter", this.appendNewFilter, this);
+            this.bindTo(Backbone.globalEvents, "toggleExpandedFilter", this.toggleExpandedFilter, this);
+            this.bindTo(Backbone.globalEvents, "activateFilter", this.activateFilter, this);
         },
 
         template: _.template(editFiltersTemplate),
@@ -25,14 +30,32 @@ define([
             return this;
         },
 
+        toggleExpandedFilter: function(filter) {
+            
+        },
+
+        activateFilter: function(data) {
+            if (data.activate)
+                this.activeFilters.push(data.filter);
+            else {
+                this.activeFilters = _.reject(this.activeFilters, function(filter) {
+                    return filter._id == id;
+                });
+            }
+
+            Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
+        },
+
         appendNewFilter: function(filter) {
             //TODO: Add new filter at the beginning of the list
         },
 
         loadSavedFiltersView: function(filters, view) {
+            //Remember, filters is a backbone collection 
+            //User Collection methods 
             view.$el.html(view.template());
 
-            _.each(filters, function(filter) {
+            filters.forEach(function(filter) {
                 var detailsView = new FilterDetailsView({
                     filter: filter,
                     features: view.features,
@@ -50,10 +73,11 @@ define([
             if (typeof isLocalRender == "undefined" || isLocalRender == false) {
                 console.log("Fetching from DB");
                 var view = this;
-                $.ajax({
+
+                this.filters.fetch({
                     url: "/api/filters/getAllForUser",
-                    type: "GET",
                     success: function(filters) {
+                        console.log(filters);
 
                         view.filters = filters;
                         view.loadSavedFiltersView(view.filters, view);
@@ -74,7 +98,7 @@ define([
         }
     });
 
-    return FiltersView;
+    return SavedFiltersView;
 });
 
 

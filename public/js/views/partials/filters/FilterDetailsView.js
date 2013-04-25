@@ -32,11 +32,11 @@ define([
                 this.expandedFilters.splice(indexInExpandedFilter, 1);
             
             this.filters = _.reject(this.filters, function(filter) {
-                return filter._id == filterId;
+                return filter.get("_id") == filterId;
             });
             
             this.activeFilters = _.reject(this.activeFilters, function(filter) {
-                return filter._id == filterId;
+                return filter.get("_id") == filterId;
             });
 
             //TODO: Delete from DB
@@ -51,13 +51,15 @@ define([
         handleExpand: function(e) {
             var headerDiv = $(e.target).closest("div .collapsed"),
                 divToToggle = headerDiv.next(),
-                filterId = divToToggle.prop("id").split("-")[0],
-                indexOfFilter = _.indexOf(this.expandedFilters, filterId);
+                filterId = divToToggle.prop("id").split("-")[0];
 
+            Backbone.globalEvents.trigger("toggleExpandedFilter", this.filter);
+            /*
             if (indexOfFilter == -1)
                 this.expandedFilters.push(filterId);
             else
                 this.expandedFilters.splice(indexOfFilter, 1);
+                */
 
             headerDiv.toggleClass("notExpanded");
             divToToggle.slideToggle(200);
@@ -67,27 +69,23 @@ define([
             e.stopImmediatePropagation();
 
             var target = $(e.target),
-                id = target.prop("id");
+                id = target.prop("id"),
+                isActivated = false;
 
             if (target.prop("checked")) {
                 target.closest(".collapsed").addClass("selected");
+                isActivated = true;
 
-                var filter = new Filter(),
-                    operators = _.findWhere(this.filters, {_id: id}).operators;
-
-                filter._id = id; //Local comparison will happen with the id field. No need to set it
-                filter.set("operators", operators); //Mapview needs the operators on the model so we set it
-                this.activeFilters.push(filter);
             }
             else {
                 target.closest(".collapsed").removeClass("selected");
-
-                this.activeFilters = _.reject(this.activeFilters, function(filter) {
-                    return filter._id == id;
-                });
             }
 
-            Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
+            Backbone.globalEvents.trigger("activateFilter", {
+                filter: this.filter,
+                activate: isActivated
+            });
+
         },
 
         handleRowRemoval: function(e) {
@@ -136,6 +134,8 @@ define([
                 filter: this.filter,
                 features: this.features
             }));
+
+            this.delegateEvents(this.events);
             
             return this;
         },
@@ -153,7 +153,7 @@ define([
                 //this.updateAssociatedTypes($("#" + this.filter._id + "-newProperty"), $("#" + this.filter._id + "-newType"));
                 //this.updateValueTextFields($("#" + this.filter._id + "-newType"), $("#" + this.filter._id + "-newUpper"));
 
-            $("#" + this.filter._id + "-container").hide();
+            $("#" + this.filter.get("_id") + "-container").hide();
             return this;
         }
     });
