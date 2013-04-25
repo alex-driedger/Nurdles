@@ -39,7 +39,7 @@ define([
                 this.activeFilters.push(data.filter);
             else {
                 this.activeFilters = _.reject(this.activeFilters, function(filter) {
-                    return filter._id == id;
+                    return filter.get("_id") == data.filter.get("_id");
                 });
             }
 
