@@ -60,7 +60,7 @@
                 </td>
                 <td>
                     <select id="<%= filter.get('_id') %>-newType" class="wide-30">
-                        <% _.each([], function(type) { %>
+                        <% _.each(types, function(type) { %>
                             <option value="<%= type %>"><%= type %></option>
                         <% }); %>
                     </select>

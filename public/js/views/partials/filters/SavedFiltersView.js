@@ -15,6 +15,7 @@ define([
             this.expandedFilters = [];
 
             this.bindTo(Backbone.globalEvents, "addedFilter", this.appendNewFilter, this);
+            this.bindTo(Backbone.globalEvents, "deleteFilter", this.deleteFilter, this);
             this.bindTo(Backbone.globalEvents, "toggleExpandedFilter", this.toggleExpandedFilter, this);
             this.bindTo(Backbone.globalEvents, "activateFilter", this.activateFilter, this);
         },
@@ -50,9 +51,13 @@ define([
             //TODO: Add new filter at the beginning of the list
         },
 
+        deleteFilter: function(filter) {
+            //TODO: Delete Filter from DB
+        },
+
         loadSavedFiltersView: function(filters, view) {
             //Remember, filters is a backbone collection 
-            //User Collection methods 
+            //Use Collection methods 
             view.$el.html(view.template());
 
             filters.forEach(function(filter) {

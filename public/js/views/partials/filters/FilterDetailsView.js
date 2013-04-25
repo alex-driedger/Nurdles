@@ -25,22 +25,8 @@ define([
         },
 
         handleDeleteFilter: function(e) {
-            var filterId = $(e.target).prop("id").split("-")[0],
-                indexInExpandedFilter = _.indexOf(this.expandedFilters, filterId);
-
-            if (indexInExpandedFilter != -1)
-                this.expandedFilters.splice(indexInExpandedFilter, 1);
-            
-            this.filters = _.reject(this.filters, function(filter) {
-                return filter.get("_id") == filterId;
-            });
-            
-            this.activeFilters = _.reject(this.activeFilters, function(filter) {
-                return filter.get("_id") == filterId;
-            });
-
-            //TODO: Delete from DB
-            this.render(true);
+            Backbone.globalEvents.trigger("deleteFilter", this.filter);
+            this.close();
         },
         
         handleSaveFilter: function(e) {
@@ -54,15 +40,11 @@ define([
                 filterId = divToToggle.prop("id").split("-")[0];
 
             Backbone.globalEvents.trigger("toggleExpandedFilter", this.filter);
-            /*
-            if (indexOfFilter == -1)
-                this.expandedFilters.push(filterId);
-            else
-                this.expandedFilters.splice(indexOfFilter, 1);
-                */
 
             headerDiv.toggleClass("notExpanded");
             divToToggle.slideToggle(200);
+
+            this.isExpanded = !this.isExpanded;
         },
 
         handleFilterToggle: function(e) {
@@ -85,16 +67,18 @@ define([
                 filter: this.filter,
                 activate: isActivated
             });
-
         },
 
         handleRowRemoval: function(e) {
             var operatorInfo = $(e.target).prop("id").split("-"),
-                operatorNumber = operatorInfo[0],
-                filter = _.findWhere(this.filters, {_id: operatorInfo[1]});
+                operatorNumber = parseInt(operatorInfo[0]);
             
-            filter.operators.splice(operatorNumber, 1);
-            this.render(true);
+            if (this.filter.get("operators").length === 1)
+                this.filter.set("operators", []); //Need to do this since there's weird behaviour with splicing single object arrays
+            else
+                this.filter.set("operators", this.filter.get("operators").splice(operatorNumber, 1));
+
+            this.reRender();
         },
 
         updateAssociatedTypes: function(property, typeDropDown) {
@@ -111,7 +95,6 @@ define([
             });
 
             typeDropDown.val(selectedProperty);
-            //this.updateValueTextFields($("#newType"), $("#newUpper"));
         },
 
         updateValueTextFields: function(target, fieldToToggle) {
@@ -132,7 +115,8 @@ define([
         preRender: function() {
             this.$el.html(this.template({
                 filter: this.filter,
-                features: this.features
+                features: this.features,
+                types: []
             }));
 
             this.delegateEvents(this.events);
@@ -144,16 +128,18 @@ define([
             var counter = 0,
                 view = this;
 
-
-            _.each(view.filter.operators, function(operator) {
-                //view.updateAssociatedTypes($("#" + counter + "-" + view.filter._id + "-property"), $("#" + counter + "-" + view.filter._id + "-type"));
-                //view.updateValueTextFields($("#" + counter + "-" + view.filter._id + "-type"), $("#" + counter + "-" + view.filter._id + "-upper"));
+            _.each(view.filter.get("operators"), function(operator) {
+                view.updateAssociatedTypes($("#" + counter + "-" + view.filter.get("_id") + "-property"), $("#" + counter + "-" + view.filter.get("_id") + "-type"));
+                view.updateValueTextFields($("#" + counter + "-" + view.filter.get("_id") + "-type"), $("#" + counter + "-" + view.filter.get("_id") + "-upper"));
                 counter++;
             });
-                //this.updateAssociatedTypes($("#" + this.filter._id + "-newProperty"), $("#" + this.filter._id + "-newType"));
-                //this.updateValueTextFields($("#" + this.filter._id + "-newType"), $("#" + this.filter._id + "-newUpper"));
 
-            $("#" + this.filter.get("_id") + "-container").hide();
+            this.updateAssociatedTypes($("#" + this.filter.get("_id") + "-newProperty"), $("#" + this.filter.get("_id") + "-newType"));
+            this.updateValueTextFields($("#" + this.filter.get("_id") + "-newType"), $("#" + this.filter.get("_id") + "-newUpper"));
+
+            if (!this.isExpanded)
+                $("#" + this.filter.get("_id") + "-container").hide();
+
             return this;
         }
     });

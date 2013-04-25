@@ -21,10 +21,12 @@ define([
             this.unbindFromAll();
             this.undelegateEvents();
             this.off();
-            if ($(this.$el)[0].id == "main-content")
-                this.$el.empty();
-            else
-                this.remove();
+            this.$el.fadeOut(200, function() {
+                if ($(this.$el)[0].id == "main-content")
+                    this.$el.empty();
+                else
+                    this.remove();
+            });
             
             if (this.onClose) this.onClose();
         },
@@ -83,6 +85,12 @@ define([
             this.unbindEventsToView(view);
             //I want to free up the memory so I'm deleting
             delete this.subviews[view.cid];
+        },
+
+        reRender: function(args) {
+            if (this.preRender)
+                this.preRender(args);
+            this.render(args);
         },
         
         closeSubviews: function() {
