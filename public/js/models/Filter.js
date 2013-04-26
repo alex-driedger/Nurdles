@@ -4,6 +4,8 @@ define([
   'backbone',
 ], function($, _, Backbone){
     var Filter = Backbone.Model.extend({
+        idAttrbiute: "_id",
+
         initialize: function(attributes) {
             this.set("operators", []);
         },

@@ -62,7 +62,7 @@ define([
 
             filters.forEach(function(filter) {
                 var detailsView = new FilterDetailsView({
-                    filter: filter,
+                    model: filter,
                     features: view.features,
                 });
 
@@ -81,12 +81,10 @@ define([
 
                 this.filters.fetch({
                     url: "/api/filters/getAllForUser",
-                    success: function(filters) {
-                        console.log(filters);
+                    success: function(filters, res, opt) {
+                        console.log(filters.models[0].get("operators"), res, opt);
 
-                        view.filters = filters;
                         view.loadSavedFiltersView(view.filters, view);
-                        //view.delegateEvents(view.events);
                     },
                     error: function(err) {
                         console.log("ERROR: ", err);

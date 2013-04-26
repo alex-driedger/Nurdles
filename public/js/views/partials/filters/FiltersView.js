@@ -1,12 +1,13 @@
 define([
   'baseview',
+  'basecollection',
   'openlayersutil',
   './SavedFiltersView',
   './EditFiltersView',
   '../../../models/Filter',
   'text!templates/partials/filters/EditFiltersView.html',
   'text!templates/partials/filters/FiltersView.html'
-], function(Baseview, OpenLayersUtil, SavedFiltersView, EditFiltersView, Filter, editFiltersTemplate, showFiltersTemplate){
+], function(Baseview, BaseCollection, OpenLayersUtil, SavedFiltersView, EditFiltersView, Filter, editFiltersTemplate, showFiltersTemplate){
     var private = {
         features: []
     };
@@ -15,11 +16,7 @@ define([
         initialize: function(args) {
             this.initArgs(args);
 
-            var filterCollection = Backbone.Collection.extend([], {
-                model: Filter 
-            });
-
-            this.filters = new filterCollection();
+            this.filters = new BaseCollection([], {model: Filter});
 
         },
 

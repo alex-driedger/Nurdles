@@ -7,8 +7,10 @@ var self = {
                 res.statusCode = 500;
                 res.send({error: err});
             }
-            else
+            else {
                 res.send(filters);
+                console.log(filters);
+            }
         });
     },
 

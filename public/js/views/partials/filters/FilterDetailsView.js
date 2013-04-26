@@ -20,12 +20,13 @@ define([
             "click .collapsed": "handleExpand",
             "click .checkbox": "handleFilterToggle",
             "click .delete-row": "handleRowRemoval",
+            "click .add-row": "handleAddRow",
             "click .deleteFilter": "handleDeleteFilter",
             "click .saveFilter": "handleSaveFilter"
         },
 
         handleDeleteFilter: function(e) {
-            Backbone.globalEvents.trigger("deleteFilter", this.filter);
+            Backbone.globalEvents.trigger("deleteFilter", this.model);
             this.close();
         },
         
@@ -34,12 +35,31 @@ define([
             console.log($(e.target));
         },
 
+        handleAddRow: function(e) {
+            var newOperator = {
+                id: this.model.get("operators").length,
+                property: $("#" + this.model.get("_id") + "-newProperty").val(),
+                type: $("#" + this.model.get("_id") + "-newType").val(),
+                lowerBoundary: $("#n" + this.model.get("_id") + "-ewLower").val(),
+                upperBoundary: $("#" + this.model.get("_id") + "-newUpper").val()
+            };
+
+            if ($("#" + this.model.get("_id") + "-newUpper").val() == "") {
+                newOperator.value = newOperator.lowerBoundary;
+                delete newOperator.lowerBoundary;
+                delete newOperator.upperBoundary;
+            }
+
+            this.model.addOperator(newOperator);
+            this.reRender();
+        },
+
         handleExpand: function(e) {
             var headerDiv = $(e.target).closest("div .collapsed"),
                 divToToggle = headerDiv.next(),
                 filterId = divToToggle.prop("id").split("-")[0];
 
-            Backbone.globalEvents.trigger("toggleExpandedFilter", this.filter);
+            Backbone.globalEvents.trigger("toggleExpandedFilter", this.model);
 
             headerDiv.toggleClass("notExpanded");
             divToToggle.slideToggle(200);
@@ -64,7 +84,7 @@ define([
             }
 
             Backbone.globalEvents.trigger("activateFilter", {
-                filter: this.filter,
+                filter: this.model,
                 activate: isActivated
             });
         },
@@ -72,12 +92,8 @@ define([
         handleRowRemoval: function(e) {
             var operatorInfo = $(e.target).prop("id").split("-"),
                 operatorNumber = parseInt(operatorInfo[0]);
-            
-            if (this.filter.get("operators").length === 1)
-                this.filter.set("operators", []); //Need to do this since there's weird behaviour with splicing single object arrays
-            else
-                this.filter.set("operators", this.filter.get("operators").splice(operatorNumber, 1));
 
+            this.model.removeOperator(operatorNumber);
             this.reRender();
         },
 
@@ -114,7 +130,7 @@ define([
 
         preRender: function() {
             this.$el.html(this.template({
-                filter: this.filter,
+                filter: this.model,
                 features: this.features,
                 types: []
             }));
@@ -128,17 +144,17 @@ define([
             var counter = 0,
                 view = this;
 
-            _.each(view.filter.get("operators"), function(operator) {
-                view.updateAssociatedTypes($("#" + counter + "-" + view.filter.get("_id") + "-property"), $("#" + counter + "-" + view.filter.get("_id") + "-type"));
-                view.updateValueTextFields($("#" + counter + "-" + view.filter.get("_id") + "-type"), $("#" + counter + "-" + view.filter.get("_id") + "-upper"));
+            _.each(view.model.get("operators"), function(operator) {
+                view.updateAssociatedTypes($("#" + counter + "-" + view.model.get("_id") + "-property"), $("#" + counter + "-" + view.model.get("_id") + "-type"));
+                view.updateValueTextFields($("#" + counter + "-" + view.model.get("_id") + "-type"), $("#" + counter + "-" + view.model.get("_id") + "-upper"));
                 counter++;
             });
 
-            this.updateAssociatedTypes($("#" + this.filter.get("_id") + "-newProperty"), $("#" + this.filter.get("_id") + "-newType"));
-            this.updateValueTextFields($("#" + this.filter.get("_id") + "-newType"), $("#" + this.filter.get("_id") + "-newUpper"));
+            this.updateAssociatedTypes($("#" + this.model.get("_id") + "-newProperty"), $("#" + this.model.get("_id") + "-newType"));
+            this.updateValueTextFields($("#" + this.model.get("_id") + "-newType"), $("#" + this.model.get("_id") + "-newUpper"));
 
             if (!this.isExpanded)
-                $("#" + this.filter.get("_id") + "-container").hide();
+                $("#" + this.model.get("_id") + "-container").hide();
 
             return this;
         }
