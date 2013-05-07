@@ -84,6 +84,8 @@ define([
                 },
                 error: function(err) { console.log(err); }
             });
+
+            Backbone.globalEvents.trigger("updateFilter", this.model);
         },
 
         handleAddRow: function(e) {

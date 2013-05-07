@@ -18,6 +18,7 @@ define([
             this.bindTo(Backbone.globalEvents, "deleteFilter", this.deleteFilter, this);
             this.bindTo(Backbone.globalEvents, "toggleExpandedFilter", this.toggleExpandedFilter, this);
             this.bindTo(Backbone.globalEvents, "activateFilter", this.activateFilter, this);
+            this.bindTo(Backbone.globalEvents, "updateFilter", this.updateFilter, this);
         },
 
         template: _.template(editFiltersTemplate),
@@ -45,6 +46,21 @@ define([
             }
 
             Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
+        },
+
+        updateFilter: function(filter) {
+            var triggerRedraw = false;
+            _.map(this.activeFilters, function(activeFilter) {
+                if (activeFilter.get("_id") === filter.get("_id")) {
+                    triggerRedraw = true;
+                    return filter;
+                }
+                else
+                    return activeFilter;
+            });
+
+            if (triggerRedraw)
+                Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
         },
 
         appendNewFilter: function(filter) {
