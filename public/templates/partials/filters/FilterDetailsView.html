@@ -54,15 +54,13 @@
                 <td>
                     <select id="<%= filter.get('_id') %>-newProperty" class="wide-30">
                         <% _.each(features, function(feature) { %>
-                            <option value="<%= feature.name %>"><%= feature.name %></option>
+                        <option value="<%= feature.name %>"<% if (tempOperator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                         <% }); %>
                     </select>
                 </td>
                 <td>
                     <select id="<%= filter.get('_id') %>-newType" class="wide-30">
-                        <% _.each(types, function(type) { %>
-                            <option value="<%= type %>"<% if (operator.property == feature.name) { %> selected <% } %>><%= type %></option>
-                        <% }); %>
+                            <option value="<%= tempOperator.type %>"><%= tempOperator.type %></option>
                     </select>
                 </td>
                 <td> 

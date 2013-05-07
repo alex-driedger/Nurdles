@@ -56,7 +56,7 @@ define([
         
         handleSaveFilter: function(e) {
             var filterId = $(e.target).prop("id").split("-")[0];
-            console.log(filterId);
+            console.log(this.model);
         },
 
         handleAddRow: function(e) {
