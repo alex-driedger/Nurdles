@@ -12,7 +12,7 @@ define([
             this.initArgs(args);
 
             this.isExpanded = this.isActive = false;
-            //this.listenTo(this.model, "change", this.cacheOperators);
+            this.listenTo(this.model, "change", this.cacheOperators);
         },
 
         template: _.template(filterDetailsTemplate),
@@ -39,14 +39,14 @@ define([
                     operator.value = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
             });
 
-            this.tempOperator.property = $(view.model.get("_id") + "-newProperty").val();
-            this.tempOperator.type = $(view.model.get("_id") + "-newType").val();
+            this.tempOperator.property = $("#" + view.model.get("_id") + "-newProperty").val();
+            this.tempOperator.type = $("#" + view.model.get("_id") + "-newType").val();
             if (this.tempOperator.upperBoundary) {
-                this.tempOperator.lowerBoundary = $(this.model.get("_id") + "-newLoower").val();
-                this.tempOperator.upperBoundary = $(this.model.get("_id") + "-newUpper").val();
+                this.tempOperator.lowerBoundary = $("#" + this.model.get("_id") + "-newLoower").val();
+                this.tempOperator.upperBoundary = $("#" + this.model.get("_id") + "-newUpper").val();
             }
             else
-                this.tempOperator.value = $(this.model.get("_id") + "-newLower").val();
+                this.tempOperator.value = $("#" + this.model.get("_id") + "-newLower").val();
         },
 
         handleDeleteFilter: function(e) {
@@ -60,8 +60,15 @@ define([
         },
 
         handleAddRow: function(e) {
+            var highestId = _.reduce(this.model.getOperators(), function(memo, operator) {
+                if (operator.id > memo)
+                    return parseInt(operator.id);
+                else
+                    return parseInt(memo);
+            }, 0);
+
             var newOperator = {
-                id: this.model.get("operators").length,
+                id: highestId + 1,
                 property: $("#" + this.model.get("_id") + "-newProperty").val(),
                 type: $("#" + this.model.get("_id") + "-newType").val(),
                 lowerBoundary: $("#" + this.model.get("_id") + "-newLower").val(),
@@ -75,6 +82,7 @@ define([
             }
 
             this.model.addOperator(newOperator);
+            this.tempOperator = {};
             this.reRender();
         },
 

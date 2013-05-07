@@ -61,7 +61,7 @@
                 <td>
                     <select id="<%= filter.get('_id') %>-newType" class="wide-30">
                         <% _.each(types, function(type) { %>
-                            <option value="<%= type %>"><%= type %></option>
+                            <option value="<%= type %>"<% if (operator.property == feature.name) { %> selected <% } %>><%= type %></option>
                         <% }); %>
                     </select>
                 </td>
