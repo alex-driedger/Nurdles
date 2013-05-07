@@ -24,26 +24,26 @@
 
                 <tr>
                 <td>
-                    <select id="<%= counter + '-' + filter.get('_id') + '-property' %>" class="wide-30 savedFilter">
+                    <select id="<%= operator.id + '-' + filter.get('_id') + '-property' %>" class="wide-30 savedFilter">
                         <% _.each(features, function(feature) { %>
                         <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                         <% }); %>
                     </select>
                 </td>
                 <td>
-                    <select id="<%= counter + '-' + filter.get('_id') + '-type' %>" class="wide-30 savedFilter">
+                    <select id="<%= operator.id + '-' + filter.get('_id') + '-type' %>" class="wide-30 savedFilter">
                         <option value="<%= operator.type %>"><%= operator.type %></option>
                     </select>
                 </td>
                 <td> 
-                    <input id="<%=counter + '-' + filter.get('_id') + '-lower' %>" type="text" class="wide-90 savedFilter" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                    <input id="<%=operator.id + '-' + filter.get('_id') + '-lower' %>" type="text" class="wide-90 savedFilter" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                 </td>
                 <td> 
-                    <input id="<%=counter + '-' + filter.get('_id') + '-upper' %>" type="text" class="wide-90 savedFilter" value="<%= operator.upperBoundary %>" />
+                    <input id="<%=operator.id + '-' + filter.get('_id') + '-upper' %>" type="text" class="wide-90 savedFilter" value="<%= operator.upperBoundary %>" />
                 </td>
                 <td>
                     <div class="plus-minus-container minus">
-                        <img id="<%=counter + '-' + filter.get('_id')%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                        <img id="<%=operator.id + '-' + filter.get('_id')%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                     </div>
                 </td>
             </tr>
@@ -66,10 +66,10 @@
                     </select>
                 </td>
                 <td> 
-                    <input id="<%= filter.get('_id') %>-newLower" type="text" class="wide-90" />
+                    <input id="<%= filter.get('_id') %>-newLower" type="text" class="wide-90" value="<%= tempOperator.value ? tempOperator.value : tempOperator.lowerBoundary %>"/>
                 </td>
                 <td> 
-                    <input id="<%= filter.get('_id') %>-newUpper" type="text" class="wide-90" />
+                    <input id="<%= filter.get('_id') %>-newUpper" type="text" class="wide-90" value="<%= tempOperator.upperBoundary %>"/>
                 </td>
                 <td>
                     <div id="<%= filter.get('_id') %>-addOperator" class="plus-minus-container">

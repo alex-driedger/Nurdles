@@ -12,6 +12,7 @@ define([
             this.initArgs(args);
 
             this.isExpanded = this.isActive = false;
+            //this.listenTo(this.model, "change", this.cacheOperators);
         },
 
         template: _.template(filterDetailsTemplate),
@@ -25,6 +26,29 @@ define([
             "click .saveFilter": "handleSaveFilter"
         },
 
+        cacheOperators: function() {
+            var view = this;
+            _.each(this.model.getOperators(), function(operator) {
+                operator.property = $("#" + operator.id + "-" + view.model.get("_id") + "-property").val();
+                operator.type = $("#" + operator.id + "-" + view.model.get("_id") + "-type").val();
+                if (operator.upperBoundary) {
+                    operator.lowerBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-upper").val();
+                }
+                else
+                    operator.value = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
+            });
+
+            this.tempOperator.property = $(view.model.get("_id") + "-newProperty").val();
+            this.tempOperator.type = $(view.model.get("_id") + "-newType").val();
+            if (this.tempOperator.upperBoundary) {
+                this.tempOperator.lowerBoundary = $(this.model.get("_id") + "-newLoower").val();
+                this.tempOperator.upperBoundary = $(this.model.get("_id") + "-newUpper").val();
+            }
+            else
+                this.tempOperator.value = $(this.model.get("_id") + "-newLower").val();
+        },
+
         handleDeleteFilter: function(e) {
             Backbone.globalEvents.trigger("deleteFilter", this.model);
             this.close();
@@ -32,7 +56,7 @@ define([
         
         handleSaveFilter: function(e) {
             var filterId = $(e.target).prop("id").split("-")[0];
-            console.log($(e.target));
+            console.log(filterId);
         },
 
         handleAddRow: function(e) {
@@ -40,7 +64,7 @@ define([
                 id: this.model.get("operators").length,
                 property: $("#" + this.model.get("_id") + "-newProperty").val(),
                 type: $("#" + this.model.get("_id") + "-newType").val(),
-                lowerBoundary: $("#n" + this.model.get("_id") + "-ewLower").val(),
+                lowerBoundary: $("#" + this.model.get("_id") + "-newLower").val(),
                 upperBoundary: $("#" + this.model.get("_id") + "-newUpper").val()
             };
 
@@ -131,6 +155,7 @@ define([
         preRender: function() {
             this.$el.html(this.template({
                 filter: this.model,
+                tempOperator: this.tempOperator,
                 features: this.features,
                 types: []
             }));
@@ -141,13 +166,11 @@ define([
         },
 
         render: function() {
-            var counter = 0,
-                view = this;
+            var view = this;
 
             _.each(view.model.get("operators"), function(operator) {
-                view.updateAssociatedTypes($("#" + counter + "-" + view.model.get("_id") + "-property"), $("#" + counter + "-" + view.model.get("_id") + "-type"));
-                view.updateValueTextFields($("#" + counter + "-" + view.model.get("_id") + "-type"), $("#" + counter + "-" + view.model.get("_id") + "-upper"));
-                counter++;
+                view.updateAssociatedTypes($("#" + operator.id + "-" + view.model.get("_id") + "-property"), $("#" + operator.id + "-" + view.model.get("_id") + "-type"));
+                view.updateValueTextFields($("#" + operator.id + "-" + view.model.get("_id") + "-type"), $("#" + operator.id + "-" + view.model.get("_id") + "-upper"));
             });
 
             this.updateAssociatedTypes($("#" + this.model.get("_id") + "-newProperty"), $("#" + this.model.get("_id") + "-newType"));

@@ -63,6 +63,7 @@ define([
             filters.forEach(function(filter) {
                 var detailsView = new FilterDetailsView({
                     model: filter,
+                    tempOperator: {}, //operator used to populate last row
                     features: view.features,
                 });
 

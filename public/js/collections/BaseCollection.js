@@ -13,6 +13,10 @@ define([
                 });
             }
         },
+
+        //We we receive collection data, it's ALWAYS going to be an array of model attributes
+        //So we need to override the parsing function to accomodate this. It's weird that backbone
+        //doesn't do this on it's own...
         parse: function(data) {
             for(var i = 0, len = data.length; i < len; i++) {
                 var parsedModel = new this.model();
