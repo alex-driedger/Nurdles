@@ -49,14 +49,41 @@ define([
                 this.tempOperator.value = $("#" + this.model.get("_id") + "-newLower").val();
         },
 
+        updateModel: function() {
+            var operators = [],
+                view = this;
+
+            _.each(this.model.getOperators(), function(operator) {
+                operator.property = $("#" + operator.id + "-" + view.model.get("_id") + "-property").val();
+                operator.type = $("#" + operator.id + "-" + view.model.get("_id") + "-type").val();
+                if (operator.upperBoundary) {
+                    operator.lowerBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-upper").val();
+                }
+                else
+                    operator.value = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
+
+                operators.push(operator);
+            });
+
+            this.model.setOperators(operators);
+        },
+
         handleDeleteFilter: function(e) {
             Backbone.globalEvents.trigger("deleteFilter", this.model);
             this.close();
         },
         
         handleSaveFilter: function(e) {
+            this.updateModel();
             var filterId = $(e.target).prop("id").split("-")[0];
-            console.log(this.model);
+            this.model.save(null, {
+                url: "/api/filters/" + filterId + "/update",
+                success: function(filter) {
+                    console.log("Updated filter: ", filter);
+                },
+                error: function(err) { console.log(err); }
+            });
         },
 
         handleAddRow: function(e) {

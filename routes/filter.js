@@ -35,6 +35,17 @@ var self = {
     },
 
     update: function(req, res) {
+        filterdal.update(req.params.filterId, req.body, function(err, filter) {
+            if (err) {
+                console.log(err);
+                res.statusCode = 500;
+                res.send({error: err});
+            }
+            else {
+                console.log(filter);
+                res.send(filter);
+            }
+        });
 
     }
 
