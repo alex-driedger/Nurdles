@@ -15,18 +15,29 @@ define([
             }
         },
         
-        close: function() {
+        close: function(withFade) {
             this.trigger("close", this);
             this.closeSubviews();
             this.unbindFromAll();
             this.undelegateEvents();
             this.off();
-            if ($(this.$el)[0].id == "main-content")
-                this.$el.empty();
-            else
-                this.remove();
+            if (withFade) {
+                this.$el.fadeOut(200, function() {
+                    if ($(this).prop("id") == "main-content")
+                        $(this).empty();
+                    else
+                        $(this).remove();
+                });
+            }
+            else {
+                if (this.$el.prop("id") == "main-content")
+                    this.$el.empty();
+                else
+                    this.$el.remove();
+            }
             
-            if (this.onClose) this.onClose();
+            if (this.onClose) 
+                this.onClose();
         },
         
         //We'll use the view events delegator for "in-house" events.
@@ -83,6 +94,12 @@ define([
             this.unbindEventsToView(view);
             //I want to free up the memory so I'm deleting
             delete this.subviews[view.cid];
+        },
+
+        reRender: function(args) {
+            if (this.preRender)
+                this.preRender(args);
+            this.render(args);
         },
         
         closeSubviews: function() {

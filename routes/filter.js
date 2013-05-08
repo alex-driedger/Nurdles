@@ -7,8 +7,10 @@ var self = {
                 res.statusCode = 500;
                 res.send({error: err});
             }
-            else
+            else {
                 res.send(filters);
+                console.log(filters);
+            }
         });
     },
 
@@ -24,7 +26,18 @@ var self = {
         });
     },
 
-    delete: function(req, res) {
+    remove: function(req, res) {
+        console.log("About to remove: ", req.params.filterId);
+        filterdal.remove(req.params.filterId, function(err) {
+            if (err) {
+                console.log(err);
+                res.statusCode = 500;
+                res.send({error: err});
+            }
+            else {
+                res.send(true);
+            }
+        });
         
     },
 
@@ -33,6 +46,17 @@ var self = {
     },
 
     update: function(req, res) {
+        filterdal.update(req.params.filterId, req.body, function(err, filter) {
+            if (err) {
+                console.log(err);
+                res.statusCode = 500;
+                res.send({error: err});
+            }
+            else {
+                console.log(filter);
+                res.send(filter);
+            }
+        });
 
     }
 

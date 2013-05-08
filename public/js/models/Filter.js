@@ -4,19 +4,12 @@ define([
   'backbone',
 ], function($, _, Backbone){
     var Filter = Backbone.Model.extend({
+        idAttribute: "_id",
+
         initialize: function(attributes) {
             this.set("operators", []);
         },
 
-        save: function(success, error) {
-            $.ajax({
-                url: "/api/filters/save",
-                type: "POST",
-                data: this.attributes,
-                success: success,
-                error: error
-            });
-        },
 
         setOperators: function(operators) {
             this.set("operators", operators);

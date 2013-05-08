@@ -1,29 +1,49 @@
 define([
   'baseview',
   'openlayersutil',
-  '../../../models/Filter',
+  './FilterDetailsView',
   'text!templates/partials/filters/SavedFiltersView.html'
-], function(Baseview, Utils, Filter, editFiltersTemplate){
+], function(Baseview, Utils, FilterDetailsView, editFiltersTemplate){
     var private = {
+        isFilterActive: function(filter, view) {
+            for (var i = 0, len = view.activeFilters.length; i < len; i++) {
+                if (view.activeFilters[i].get("_id") === filter.get("_id"))
+                    return i;
+            }
+
+            return -1;
+        },
+
+        updateActiveFilters: function(filter, view) {
+            var triggerRedraw = false;
+            _.map(view.activeFilters, function(activeFilter) {
+                if (activeFilter.get("_id") === filter.get("_id")) {
+                    triggerRedraw = true;
+                    return filter;
+                }
+                else
+                    return activeFilter;
+            });
+        },
     };
 
-    var FiltersView = Baseview.extend({
+    var SavedFiltersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
 
-            this.expandedFilters = [];
             this.activeFilters = [];
-            this.bindTo(Backbone.globalEvents, "addedFilter", this.render, this);
+            this.expandedFilters = [];
+
+            this.bindTo(Backbone.globalEvents, "addedFilter", this.appendNewFilter, this);
+            this.bindTo(Backbone.globalEvents, "deleteFilter", this.deleteFilter, this);
+            this.bindTo(Backbone.globalEvents, "toggleExpandedFilter", this.toggleExpandedFilter, this);
+            this.bindTo(Backbone.globalEvents, "activateFilter", this.activateFilter, this);
+            this.bindTo(Backbone.globalEvents, "updateFilter", this.updateFilter, this);
         },
 
         template: _.template(editFiltersTemplate),
 
         events: {
-            "click .collapsed": "handleExpand",
-            "click .checkbox": "handleFilterToggle",
-            "click .delete-row": "handleRowRemoval",
-            "click .deleteFilter": "handleDeleteFilter",
-            "click .saveFilter": "handleSaveFilter"
         },
 
         preRender: function() {
@@ -32,162 +52,57 @@ define([
             return this;
         },
 
-        handleDeleteFilter: function(e) {
-            var filterId = $(e.target).prop("id").split("-")[0],
-                indexInExpandedFilter = _.indexOf(this.expandedFilters, filterId);
-
-            if (indexInExpandedFilter != -1)
-                this.expandedFilters.splice(indexInExpandedFilter, 1);
+        toggleExpandedFilter: function(filter) {
             
-            this.filters = _.reject(this.filters, function(filter) {
-                return filter._id == filterId;
-            });
-            
-            this.activeFilters = _.reject(this.activeFilters, function(filter) {
-                return filter._id == filterId;
-            });
-
-            //TODO: Delete from DB
-            this.render(true);
-        },
-        
-        handleSaveFilter: function(e) {
-            var filterId = $(e.target).prop("id").split("-")[0];
-            console.log($(e.target));
         },
 
-        handleExpand: function(e) {
-            var headerDiv = $(e.target).closest("div .collapsed"),
-                divToToggle = headerDiv.next(),
-                filterId = divToToggle.prop("id").split("-")[0],
-                indexOfFilter = _.indexOf(this.expandedFilters, filterId);
-
-            if (indexOfFilter == -1)
-                this.expandedFilters.push(filterId);
-            else
-                this.expandedFilters.splice(indexOfFilter, 1);
-
-            headerDiv.toggleClass("notExpanded");
-            divToToggle.slideToggle(200);
-        },
-
-        handleFilterToggle: function(e) {
-            e.stopImmediatePropagation();
-
-            var target = $(e.target),
-                id = target.prop("id");
-
-            if (target.prop("checked")) {
-                target.closest(".collapsed").addClass("selected");
-
-                var filter = new Filter(),
-                    operators = _.findWhere(this.filters, {_id: id}).operators;
-
-                filter._id = id; //Local comparison will happen with the id field. No need to set it
-                filter.set("operators", operators); //Mapview needs the operators on the model so we set it
-                this.activeFilters.push(filter);
-            }
+        activateFilter: function(data) {
+            if (data.activate)
+                this.activeFilters.push(data.filter);
             else {
-                target.closest(".collapsed").removeClass("selected");
-
                 this.activeFilters = _.reject(this.activeFilters, function(filter) {
-                    return filter._id == id;
+                    return filter.get("_id") == data.filter.get("_id");
                 });
             }
 
             Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
         },
 
-        handleRowRemoval: function(e) {
-            var operatorInfo = $(e.target).prop("id").split("-"),
-                operatorNumber = operatorInfo[0],
-                filter = _.findWhere(this.filters, {_id: operatorInfo[1]});
-            
-            filter.operators.splice(operatorNumber, 1);
-            this.render(true);
+        updateFilter: function(filter) {
+            if (triggerRedraw)
+                Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
         },
 
-        getOperators: function(filterId) {
-            var operands = [],
-                numberOfFilters = $("#" + filterId + "-table tr").length - 1; //We have a header row :-)
-
-            console.log("About to apply " + numberOfFilters + " filters!");
-
-            for (var i = 0; i < numberOfFilters; i++) {
-                var operand = {};
-                operand.property = $("#" + i + "-" + filterId + "-property").val();
-                operand.type = $("#" + i + "-" + filterId + "-type").val();
-                if (operand.upperBoundary) {
-                    operand.lowerBoundary = $("#" + i + "-" + filterId + "-lower").val();
-                    operand.upperBoundary = $("#" + i + "-" + filterId + "-upper").val();
-                }
-                else
-                    operand.value = $("#" + i + "-" + filterId + "-lower").val();
-
-                operands.push(operand)
-            }
-
-            return operands;
+        appendNewFilter: function(filter) {
+            //TODO: Add new filter at the beginning of the list
         },
 
-        updateAssociatedTypes: function(property, typeDropDown) {
-            var selectedVal = property.val(),
-                type = _.findWhere(this.features, {name:selectedVal}).type,
-                types = Utils.getTypeDropdownValues(type),
-                selectedProperty = typeDropDown.val();
-                 
-            this.types = types;
-            typeDropDown.html("");
+        deleteFilter: function(filter) {
+            var indexOfFilterToDelete = private.isFilterActive(filter, this);
 
-            _.each(types, function(type) {
-                $('<option/>').val(type).text(type).appendTo(typeDropDown);
-            });
-
-            typeDropDown.val(selectedProperty);
-            //this.updateValueTextFields($("#newType"), $("#newUpper"));
-        },
-
-        updateValueTextFields: function(target, fieldToToggle) {
-            $("#editFilter .staged").toggleClass("wide-95");
-            if (target.val() == "..") {
-                target.closest("td").next().prop("colspan", "1")
-                fieldToToggle.removeClass("hide");
-                fieldToToggle.parent().removeClass("hide");
+            if (indexOfFilterToDelete !== -1) {
+                this.activeFilters.splice(indexOfFilterToDelete, 1);
+                Backbone.globalEvents.trigger("filtersChanged", this.activeFilters); 
             }
-            else {
-                fieldToToggle.addClass("hide");
-                fieldToToggle.parent().addClass("hide");
-                fieldToToggle.html("");
-                target.closest("td").next().prop("colspan", "2")
-            }
-
         },
 
         loadSavedFiltersView: function(filters, view) {
-            var templateData = {
-                types: view.types,
-                features: view.features,
-                filters: filters,
-            };
+            //Remember, filters is a backbone collection 
+            //Use Collection methods 
+            view.$el.html(view.template());
 
-            view.$el.html(view.template(templateData));
-
-            _.each(this.expandedFilters, function(filterId) {
-                $("#" + filterId + "-container").prev().removeClass("notExpanded");
-            });
-
-            _.each(filters, function(filter) {
-                var counter = 0;
-                _.each(filter.operators, function(operator) {
-                    view.updateAssociatedTypes($("#" + counter + "-" + filter._id + "-property"), $("#" + counter + "-" + filter._id + "-type"));
-                    view.updateValueTextFields($("#" + counter + "-" + filter._id + "-type"), $("#" + counter + "-" + filter._id + "-upper"));
-                    counter++;
+            filters.forEach(function(filter) {
+                var detailsView = new FilterDetailsView({
+                    model: filter,
+                    tempOperator: {}, //operator used to populate last row
+                    features: view.features,
                 });
-                    view.updateAssociatedTypes($("#" + filter._id + "-newProperty"), $("#" + filter._id + "-newType"));
-                    view.updateValueTextFields($("#" + filter._id + "-newType"), $("#" + filter._id + "-newUpper"));
+
+                view.addSubView(detailsView);
+                view.$el.append(detailsView.preRender().$el);
+                detailsView.render();
             });
 
-            $('.filters-wrapper').find('.collapsed.notExpanded').next().hide();
 
         },
 
@@ -195,14 +110,13 @@ define([
             if (typeof isLocalRender == "undefined" || isLocalRender == false) {
                 console.log("Fetching from DB");
                 var view = this;
-                $.ajax({
-                    url: "/api/filters/getAllForUser",
-                    type: "GET",
-                    success: function(filters) {
 
-                        view.filters = filters;
+                this.filters.fetch({
+                    url: "/api/filters/getAllForUser",
+                    success: function(filters, res, opt) {
+                        console.log(filters.models[0].get("operators"), res, opt);
+
                         view.loadSavedFiltersView(view.filters, view);
-                        view.delegateEvents(view.events);
                     },
                     error: function(err) {
                         console.log("ERROR: ", err);
@@ -219,7 +133,7 @@ define([
         }
     });
 
-    return FiltersView;
+    return SavedFiltersView;
 });
 
 
