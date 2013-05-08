@@ -72,8 +72,16 @@ define([
         },
 
         handleDeleteFilter: function(e) {
+            var view = this;
+
             Backbone.globalEvents.trigger("deleteFilter", this.model);
-            this.close();
+            this.model.destroy({
+                url:"/api/filters/" + this.model.get("_id"),
+                success: function(response) {
+                    console.log(response);
+                    view.close();
+                }
+            });
         },
         
         handleSaveFilter: function(e) {

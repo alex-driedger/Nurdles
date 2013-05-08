@@ -25,10 +25,6 @@ define([
                     return activeFilter;
             });
         },
-
-        removeFromActiveFilters: function(filter, view) {
-
-        }
     };
 
     var SavedFiltersView = Baseview.extend({
@@ -88,7 +84,6 @@ define([
                 this.activeFilters.splice(indexOfFilterToDelete, 1);
                 Backbone.globalEvents.trigger("filtersChanged", this.activeFilters); 
             }
-            //TODO: Delete Filter from DB
         },
 
         loadSavedFiltersView: function(filters, view) {

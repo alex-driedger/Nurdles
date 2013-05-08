@@ -25,7 +25,15 @@ var self = {
         Filter.update({_id: new ObjectId(id.toString())}, filter, function(err, filter) {
             callback(err, filter);
         });
-    }
+    },
+
+    remove: function(filterId, callback) {
+        var ObjectId = mongoose.Types.ObjectId;
+
+        Filter.remove({_id: new ObjectId(filterId.toString())}, function(err) {
+            callback(err);
+        });
+    },
 
 };
 

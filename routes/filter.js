@@ -26,7 +26,18 @@ var self = {
         });
     },
 
-    delete: function(req, res) {
+    remove: function(req, res) {
+        console.log("About to remove: ", req.params.filterId);
+        filterdal.remove(req.params.filterId, function(err) {
+            if (err) {
+                console.log(err);
+                res.statusCode = 500;
+                res.send({error: err});
+            }
+            else {
+                res.send(true);
+            }
+        });
         
     },
 
