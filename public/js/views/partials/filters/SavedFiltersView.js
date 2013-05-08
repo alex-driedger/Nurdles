@@ -5,6 +5,30 @@ define([
   'text!templates/partials/filters/SavedFiltersView.html'
 ], function(Baseview, Utils, FilterDetailsView, editFiltersTemplate){
     var private = {
+        isFilterActive: function(filter, view) {
+            for (var i = 0, len = view.activeFilters.length; i < len; i++) {
+                if (view.activeFilters[i].get("_id") === filter.get("_id"))
+                    return i;
+            }
+
+            return -1;
+        },
+
+        updateActiveFilters: function(filter, view) {
+            var triggerRedraw = false;
+            _.map(view.activeFilters, function(activeFilter) {
+                if (activeFilter.get("_id") === filter.get("_id")) {
+                    triggerRedraw = true;
+                    return filter;
+                }
+                else
+                    return activeFilter;
+            });
+        },
+
+        removeFromActiveFilters: function(filter, view) {
+
+        }
     };
 
     var SavedFiltersView = Baseview.extend({
@@ -49,16 +73,6 @@ define([
         },
 
         updateFilter: function(filter) {
-            var triggerRedraw = false;
-            _.map(this.activeFilters, function(activeFilter) {
-                if (activeFilter.get("_id") === filter.get("_id")) {
-                    triggerRedraw = true;
-                    return filter;
-                }
-                else
-                    return activeFilter;
-            });
-
             if (triggerRedraw)
                 Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
         },
@@ -68,6 +82,12 @@ define([
         },
 
         deleteFilter: function(filter) {
+            var indexOfFilterToDelete = private.isFilterActive(filter, this);
+
+            if (indexOfFilterToDelete !== -1) {
+                this.activeFilters.splice(indexOfFilterToDelete, 1);
+                Backbone.globalEvents.trigger("filtersChanged", this.activeFilters); 
+            }
             //TODO: Delete Filter from DB
         },
 

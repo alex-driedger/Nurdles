@@ -47,6 +47,8 @@ define([
             }
             else
                 this.tempOperator.value = $("#" + this.model.get("_id") + "-newLower").val();
+
+            this.tempChecked = $("#" + this.model.get("_id") + "-checkbox").prop("checked");
         },
 
         updateModel: function() {
@@ -193,6 +195,7 @@ define([
             this.$el.html(this.template({
                 filter: this.model,
                 tempOperator: this.tempOperator,
+                tempChecked: this.tempChecked,
                 features: this.features,
                 types: []
             }));
