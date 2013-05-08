@@ -1,9 +1,10 @@
 define([
        'baseview',
+       'openlayersutil',
        './FeaturePopup',
        '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html',
-], function(BaseView, FeaturePopup, TopToolsRow, mapTemplate){
+], function(BaseView, OpenLayersUtil, FeaturePopup, TopToolsRow, mapTemplate){
     var private = {
         /*-----
         * These are methods taken from the demo site.
@@ -171,6 +172,9 @@ define([
 
             _Map.addControl(new OpenLayers.Control.Zoom({ 'position': new OpenLayers.Pixel(50, 50) }));
             _Map.addControl(new OpenLayers.Control.Navigation());
+            _Map.addControl(new OpenLayers.Control.Graticule({
+                intervals: [10]
+            }));
 
             _Layer_WMS = new OpenLayers.Layer.WMS(
                 "exactAIS", "https://owsdemo.exactearth.com/wms?authKey=9178ef5a-8ccd-45d3-8786-38901966a291",
@@ -189,6 +193,8 @@ define([
             }
             );
             _Layer_WMS.setVisibility(true);
+
+            OpenLayersUtil.getLayerStyles(_Layer_WMS);
 
             OpenLayers.Util.onImageLoadError = function () { }
             var basicMapLayer = new OpenLayers.Layer.WMS("Basic Base Map", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
@@ -235,6 +241,8 @@ define([
             _Map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
 
             _Map.zoomToMaxExtent();
+
+            window.map = _Map; //BAD BAD BAD BAD but easy to manipulate the map through the console.
         }
     });
 

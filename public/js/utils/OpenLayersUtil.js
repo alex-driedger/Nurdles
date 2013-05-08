@@ -38,6 +38,22 @@ define([
             });
         },
 
+        getLayerStyles: function(callback) {
+            var request = OpenLayers.Request.GET({
+                url: 'https://owsdemo.exactearth.com/ows?service=wms&version=1.3.0&request=GetCapabilities&authKey=tokencoin',
+                proxy: Conf.getCapabilitiesProxy,
+                success: function (response) {
+                    var capabilities = JSON.parse(response.responseText);
+                        layerStyles = _.toArray(capabilities.WMS_Capabilities.Capability.Layer.Layer);
+
+                    console.log("CAPABILITIES: ", layerStyles);
+                },
+                error: function(err) {
+                    callback(err);
+                }
+            });
+        },
+
         getTypeDropdownValues: function(type) {
             var values = Conf.scalarFilterCapabilties.byType[type];
 
