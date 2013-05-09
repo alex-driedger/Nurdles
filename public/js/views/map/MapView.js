@@ -85,6 +85,7 @@ define([
         initialize: function(args) {
             this.isHeaderViewable = true;
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
+            this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
         },
 
         events: {
@@ -142,10 +143,23 @@ define([
             return filter_param;
         },
 
+        toggleGraticule: function(activate) {
+            _.each(this.model.controls, function(control) {
+                if (control.layerName && control.layerName === "Graticule") {
+                    if (activate)
+                        control.activate();
+                    else
+                        control.deactivate();
+                    return
+                }
+            });
+        },
+
         render: function () {
             this.$el.html(mapTemplate);
 
             var controlsView = new TopToolsRow(),
+                graticuleControl,
                 _Map,
                 _Layer_WMS, _Layer_Highlight, _Layer_Hover, _Layer_Select;
 
@@ -159,7 +173,10 @@ define([
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
             _Map = new OpenLayers.Map('map', {
-                controls: [],
+                controls: [
+                    new OpenLayers.Control.Zoom({ 'position': new OpenLayers.Pixel(50, 50) }),
+                    new OpenLayers.Control.Navigation()
+                ],
                 projection: new OpenLayers.Projection("EPSG:900913"),
                 displayProjection: new OpenLayers.Projection("EPSG:4326"),
                 maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
@@ -170,11 +187,13 @@ define([
 
             this.model = _Map;
 
-            _Map.addControl(new OpenLayers.Control.Zoom({ 'position': new OpenLayers.Pixel(50, 50) }));
-            _Map.addControl(new OpenLayers.Control.Navigation());
-            _Map.addControl(new OpenLayers.Control.Graticule({
-                intervals: [10]
-            }));
+            graticuleControl = new OpenLayers.Control.Graticule({
+                numPoints: 2,
+                labelled: true,
+                autoActivate: false
+            });
+
+            _Map.addControl(graticuleControl);
 
             _Layer_WMS = new OpenLayers.Layer.WMS(
                 "exactAIS", "https://owsdemo.exactearth.com/wms?authKey=9178ef5a-8ccd-45d3-8786-38901966a291",
