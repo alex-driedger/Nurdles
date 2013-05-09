@@ -36,7 +36,7 @@ select {
     top: 55px;
     position: fixed;
     right: 0;
-    bottom: 0;
+    bottom: 50px;
     left: 0;
     z-index: 15;
     background: #fff;

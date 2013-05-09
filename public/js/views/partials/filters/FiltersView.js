@@ -32,9 +32,6 @@ define([
                 callback();
             });
 
-            OpenLayersUtil.getFilterCapabilities(function(err, response) {
-                console.log(response);
-            });
             return this;
         },
 
