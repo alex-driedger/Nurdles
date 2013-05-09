@@ -101,7 +101,7 @@ var self = {
             var initWorkflow = jWorkflow.order(createDb)
                 .andThen(createModels)
                 .andThen(initPassport);
-                //.andThen(mapData); //Include if you need to bootstrap data, remove otherwise
+                .andThen(mapData); //Include if you need to bootstrap data, remove otherwise
 
             initWorkflow.start({initialValue: passport}); //Get rid of passport if not using auth
         }
