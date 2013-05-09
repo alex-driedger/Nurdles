@@ -11,7 +11,6 @@ require.config({
     baseview: 'views/BaseView',
     basecollection: 'collections/BaseCollection',
     openlayersutil: "utils/OpenLayersUtil",
-    initializerutil: "utils/InitializerUtil",
     bootstrap: 'libs/bootstrap/bootstrap.min',
     templates: '../templates'
   },
