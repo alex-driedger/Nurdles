@@ -193,7 +193,7 @@ select {
     top: 0;
     background-color: #fff;
     z-index: 1100;
-    height: 95%;
+    height: 100%;
     width: 40%;
     -webkit-transition: width 0.2s; /* Safari and Chrome */
 }

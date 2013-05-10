@@ -16,7 +16,7 @@ define([
 
         updateActiveFilters: function(filter, view) {
             var triggerRedraw = false;
-            _.map(view.activeFilters, function(activeFilter) {
+            return _.map(view.activeFilters, function(activeFilter) {
                 if (activeFilter.get("_id") === filter.get("_id")) {
                     triggerRedraw = true;
                     return filter;
@@ -69,8 +69,8 @@ define([
         },
 
         updateFilter: function(filter) {
-            if (triggerRedraw)
-                Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
+            if (private.isFilterActive(filter, this) != -1)
+                Backbone.globalEvents.trigger("filtersChanged", private.updateActiveFilters(filter, this));
         },
 
         appendNewFilter: function(filter) {

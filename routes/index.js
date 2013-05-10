@@ -15,7 +15,7 @@ function bind(app, passport) {
 
     app.get("/api/filters/getAllForUser", ensureAuthenticated, filter.getAllForUser);
     app.post("/api/filters/save", ensureAuthenticated, filter.create);
-    app.post("/api/filters/:filterId/update", ensureAuthenticated, filter.update);
+    app.put("/api/filters/:filterId/update", ensureAuthenticated, filter.update);
     app.delete("/api/filters/:filterId", ensureAuthenticated, filter.remove);
 
     app.post("/proxy", proxy.defaultProxy);
