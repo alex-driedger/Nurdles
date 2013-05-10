@@ -7,13 +7,17 @@ define([
   '../../../models/Layer',
   'text!templates/partials/layers/NewMapLayerView.html',
   'text!templates/partials/layers/MapLayersView.html'
-], function(Baseview, BaseCollection, OpenLayersUtil, SavedMapLayersView, NewMapLayersView, Filter, newMapLayersViewTemplate, mapLayersViewTemplate){
+], function(Baseview, BaseCollection, OpenLayersUtil, SavedMapLayersView, NewMapLayerView, Layer, newMapLayersViewTemplate, mapLayersViewTemplate){
     
-    var private = {};
+    var private = {
+    };
 
     var MapLayersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
+            this.isDynamicContainer = true;
+
+            //this.layers = new BaseCollection([], {model: Layer});
         },
 
         template: _.template(mapLayersViewTemplate),
@@ -21,13 +25,30 @@ define([
         events: {},
 
         preRender: function(callback) {
+            var view = this;
+            OpenLayersUtil.getLayers(null, function(err, styles) {
+                console.log(styles);
+                view.$el.html(view.template());
+                callback();
+            });
 
+            return this;
         },
 
-        render: function() {
-            this.$el.html(this.template);
-            return this;
+        render: function () {
+            var newMapLayersView = new NewMapLayerView({
+                    $el: $("#newMapLayer"),
+                }),
+                savedMapLayersView = new SavedMapLayersView({
+                    $el: $("#savedMapLayers"),
+                });
 
+            this.addSubView(newMapLayersView);
+            this.addSubView(savedMapLayersView);
+            newMapLayersView.render();
+            savedMapLayersView.render();
+
+            return this;
         }
     });
 

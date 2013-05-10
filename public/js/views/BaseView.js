@@ -57,7 +57,6 @@ define([
         },
 
         unbindEventsToView: function(view) {
-            console.log(this.bindings);
             var self = this;
             var bindingsToRemove = _.where(this.bindings, {object: view});
             _.each(bindingsToRemove, function(binding, index, list) {
@@ -65,7 +64,6 @@ define([
             });
 
             this.bindings = _.difference(this.bindings, bindingsToRemove);
-            console.log(this.bindings);
         },
         
         unbindFromAll: function() {

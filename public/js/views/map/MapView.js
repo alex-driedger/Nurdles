@@ -213,7 +213,10 @@ define([
             );
             _Layer_WMS.setVisibility(true);
 
-            OpenLayersUtil.getLayerStyles(_Layer_WMS);
+            OpenLayersUtil.getLayers(null, function(err, layers) {
+                console.log("LAYERS: ", layers);
+            });
+                                        
 
             OpenLayers.Util.onImageLoadError = function () { }
             var basicMapLayer = new OpenLayers.Layer.WMS("Basic Base Map", "http://vmap0.tiles.osgeo.org/wms/vmap0", 

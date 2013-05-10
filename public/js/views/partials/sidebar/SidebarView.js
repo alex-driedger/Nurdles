@@ -21,7 +21,10 @@ define([
                     subview.close();
                 };
             });
-            mapLayersView.render().$el.appendTo("#toolContainer");
+            mapLayersView.preRender(function() {
+                mapLayersView.$el.appendTo("#toolContainer");
+                mapLayersView.render();
+            });
 
         },
 
