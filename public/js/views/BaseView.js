@@ -2,6 +2,7 @@ define([
        'jquery',
        'underscore',
        'backbone',
+       'jqueryui',
 ], function($, _, Backbone){
     var BaseView = Backbone.View.extend({
 

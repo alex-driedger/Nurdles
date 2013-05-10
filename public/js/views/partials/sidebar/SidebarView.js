@@ -7,6 +7,12 @@ define([
     var SidebarView = Baseview.extend({
         initialize: function(args) {
             this.$el = args || $("#sidebar");
+
+            this.bindTo(Backbone.globalEvents, "showMapLayersView", this.showMapLayersView, this);
+        },
+
+        showMapLayersView: function() {
+            console.log(this.subviews);
         },
 
         render: function () {

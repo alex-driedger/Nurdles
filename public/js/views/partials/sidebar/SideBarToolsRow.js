@@ -11,6 +11,14 @@ define([
             }
         },
 
+        events: {
+            "click #mapLayers": "showMapLayersView"
+        },
+
+        showMapLayersView: function(e) {
+            Backbone.globalEvents.trigger("showMapLayersView");
+        },
+
         render: function () {
             this.$el.html(sidebarToolsRow);
             //TODO: Grab user preferences so we know which button to highlight
