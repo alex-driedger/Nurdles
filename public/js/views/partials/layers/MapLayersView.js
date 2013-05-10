@@ -3,9 +3,9 @@ define([
   'basecollection',
   'openlayersutil',
   './SavedMapLayersView',
-  './NewMapLayersView',
+  './NewMapLayerView',
   '../../../models/Layer',
-  'text!templates/partials/layers/NewMapLayersView.html'
+  'text!templates/partials/layers/NewMapLayerView.html',
   'text!templates/partials/layers/MapLayersView.html'
 ], function(Baseview, BaseCollection, OpenLayersUtil, SavedMapLayersView, NewMapLayersView, Filter, newMapLayersViewTemplate, mapLayersViewTemplate){
     
@@ -25,6 +25,8 @@ define([
         },
 
         render: function() {
+            this.$el.html(this.template);
+            return this;
 
         }
     });

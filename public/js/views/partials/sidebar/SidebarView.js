@@ -1,9 +1,10 @@
 define([
   'baseview',
   '../filters/FiltersView',
+  '../layers/MapLayersView',
   '../sidebar/SideBarToolsRow',
   'text!templates/partials/sidebar/SidebarView.html'
-], function(Baseview, FiltersView, SideBarToolsRow, sidebarViewTemplate){
+], function(Baseview, FiltersView, MapLayersView, SideBarToolsRow, sidebarViewTemplate){
     var SidebarView = Baseview.extend({
         initialize: function(args) {
             this.$el = args || $("#sidebar");
@@ -12,7 +13,16 @@ define([
         },
 
         showMapLayersView: function() {
-            console.log(this.subviews);
+            var mapLayersView = new MapLayersView(),
+                view = this;
+            this.eachSubview(function(subview) {
+                if (subview.isDynamicContainer) {
+                    view.removeSubView(subview.cid);
+                    subview.close();
+                };
+            });
+            mapLayersView.render().$el.appendTo("#toolContainer");
+
         },
 
         render: function () {
