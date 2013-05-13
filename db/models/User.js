@@ -4,7 +4,7 @@ var mongoose = require('../index').getMongoose(),
 var UserSchema = new mongoose.Schema({
     username: { type: String, required: true, index: { unique: true } },
     password: {type: String, require: true },
-    filters: { type: [mongoose.Schema.ObjectId], required: false}
+    activeFilters: { type: [mongoose.Schema.ObjectId], required: false}
 });
 
 UserSchema.plugin(passportLocalMongoose);

@@ -6,6 +6,7 @@
 require.config({
   paths: {
     jquery: 'libs/jquery/jquery-min',
+    jqueryui: 'libs/jquery/jquery-ui.min',
     underscore: 'libs/underscore/underscore-min',
     backbone: 'libs/backbone/backbone-min',
     baseview: 'views/BaseView',

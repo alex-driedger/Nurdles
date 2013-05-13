@@ -2,6 +2,7 @@ define([
        'jquery',
        'underscore',
        'backbone',
+       'jqueryui',
 ], function($, _, Backbone){
     var BaseView = Backbone.View.extend({
 
@@ -13,6 +14,9 @@ define([
                     view[key] = args[key];
                 });
             }
+
+            if (this.restoreState)
+                this.restoreState();
         },
         
         close: function(withFade) {
@@ -35,6 +39,9 @@ define([
                 else
                     this.$el.remove();
             }
+
+            if (this.saveState)
+                this.saveState();
             
             if (this.onClose) 
                 this.onClose();
@@ -56,7 +63,6 @@ define([
         },
 
         unbindEventsToView: function(view) {
-            console.log(this.bindings);
             var self = this;
             var bindingsToRemove = _.where(this.bindings, {object: view});
             _.each(bindingsToRemove, function(binding, index, list) {
@@ -64,7 +70,6 @@ define([
             });
 
             this.bindings = _.difference(this.bindings, bindingsToRemove);
-            console.log(this.bindings);
         },
         
         unbindFromAll: function() {

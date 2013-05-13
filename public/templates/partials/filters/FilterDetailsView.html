@@ -1,10 +1,10 @@
-<div class="saved-filter clearfix collapsed notExpanded <% if (tempChecked == true) { %> selected <% } %>">
+<div class="saved-filter clearfix collapsed notExpanded <% if (tempChecked == true || filter.active) { %> selected <% } %>">
     <div class="pull-left">
         <%=filter.get('name') %>
     </div>
     <div class="pull-right">
         <div class="collapsed-checkbox">
-            <input id="<%= filter.get('_id') %>-checkbox" class="checkbox" type="checkbox" <% if (tempChecked == true) { %> checked <% } %>/>
+            <input id="<%= filter.get('_id') %>-checkbox" class="checkbox" type="checkbox" <% if (tempChecked == true || filter.active) { %> checked <% } %>/>
         </div>
     </div>
 </div>

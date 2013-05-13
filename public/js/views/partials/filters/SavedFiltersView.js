@@ -16,7 +16,7 @@ define([
 
         updateActiveFilters: function(filter, view) {
             var triggerRedraw = false;
-            _.map(view.activeFilters, function(activeFilter) {
+            return _.map(view.activeFilters, function(activeFilter) {
                 if (activeFilter.get("_id") === filter.get("_id")) {
                     triggerRedraw = true;
                     return filter;
@@ -32,6 +32,7 @@ define([
             this.initArgs(args);
 
             this.activeFilters = [];
+            this.activeFiltersFromState = [];
             this.expandedFilters = [];
 
             this.bindTo(Backbone.globalEvents, "addedFilter", this.appendNewFilter, this);
@@ -39,6 +40,34 @@ define([
             this.bindTo(Backbone.globalEvents, "toggleExpandedFilter", this.toggleExpandedFilter, this);
             this.bindTo(Backbone.globalEvents, "activateFilter", this.activateFilter, this);
             this.bindTo(Backbone.globalEvents, "updateFilter", this.updateFilter, this);
+        },
+
+        saveState: function() {
+            var view = this,
+                activeFilterIds = _.map(this.activeFilters, function(activeFilter) {
+                    return activeFilter.get("_id");
+                });
+          
+            $.ajax({
+                type: "POST",
+                url: "api/filters/saveState",
+                data: {
+                    activeFilters: activeFilterIds
+                }
+            });
+        },
+
+        restoreState: function() {
+            var view = this;
+          
+            $.ajax({
+                type: "GET",
+                url: "api/filters/getState",
+                success: function(activeFiltersFromState) {
+                    view.activeFiltersFromState = activeFiltersFromState;
+                }
+            });
+
         },
 
         template: _.template(editFiltersTemplate),
@@ -69,8 +98,8 @@ define([
         },
 
         updateFilter: function(filter) {
-            if (triggerRedraw)
-                Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
+            if (private.isFilterActive(filter, this) != -1)
+                Backbone.globalEvents.trigger("filtersChanged", private.updateActiveFilters(filter, this));
         },
 
         appendNewFilter: function(filter) {
@@ -102,21 +131,42 @@ define([
                 view.$el.append(detailsView.preRender().$el);
                 detailsView.render();
             });
+        },
 
+        mapRequiresInitialFilters: function() {
+            var view = this;
+
+            if (this.activeFilters.length === 0 && this.activeFiltersFromState.length !== 0) {
+                this.filters.forEach(function(filter) {
+                    if (_.contains(view.activeFiltersFromState, filter.get("_id")))
+                        view.activeFilters.push(filter);
+                });
+
+                Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
+            }
 
         },
 
         render: function (isLocalRender) {
             if (typeof isLocalRender == "undefined" || isLocalRender == false) {
                 console.log("Fetching from DB");
-                var view = this;
+                var view = this,
+                    filtersWithActiveInfoInjected = [];
 
                 this.filters.fetch({
                     url: "/api/filters/getAllForUser",
-                    success: function(filters, res, opt) {
-                        console.log(filters.models[0].get("operators"), res, opt);
+                    success: function(list, res, opt) {
+                        filtersWithActiveInfoInjected = _.map(list.models, function(filter) {
+                            if (_.contains(view.activeFiltersFromState, filter.get("_id")) )
+                                filter.active = true; //Don't set it because we don't want to alter the actual model.
+                            return filter
+                        });
 
                         view.loadSavedFiltersView(view.filters, view);
+
+                        if (view.mapRequiresInitialFilters()) {
+                            Backbone.globalEvents.trigger("filtersChanged", view.activeFilters);
+                        }
                     },
                     error: function(err) {
                         console.log("ERROR: ", err);

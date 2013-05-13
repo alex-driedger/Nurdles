@@ -15,6 +15,7 @@ define([
     var FiltersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
+            this.isDynamicContainer = true;
 
             this.filters = new BaseCollection([], {model: Filter});
 
