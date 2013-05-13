@@ -41,6 +41,29 @@ define([
             this.bindTo(Backbone.globalEvents, "updateFilter", this.updateFilter, this);
         },
 
+        saveState: function() {
+            var view = this,
+                activeFilterIds = _.map(this.activeFilters, function(activeFilter) {
+                    return activeFilter.get("_id");
+                });
+          
+            $.ajax({
+                type: "POST",
+                url: "api/filters/saveState",
+                data: {
+                    activeFilters: activeFilterIds
+                },
+                success: function(response) {
+                    console.log("Active Filters: ", response);
+                },
+                error: function(err) {}
+            });
+        },
+
+        restoreState: function() {
+
+        },
+
         template: _.template(editFiltersTemplate),
 
         events: {
@@ -114,8 +137,6 @@ define([
                 this.filters.fetch({
                     url: "/api/filters/getAllForUser",
                     success: function(filters, res, opt) {
-                        console.log(filters.models[0].get("operators"), res, opt);
-
                         view.loadSavedFiltersView(view.filters, view);
                     },
                     error: function(err) {

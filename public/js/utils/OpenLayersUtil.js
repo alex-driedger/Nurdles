@@ -48,7 +48,7 @@ define([
                 url: layerCapabilitiesURL,
                 proxy: Conf.getCapabilitiesProxy,
                 success: function (response) {
-                    var capabilities = JSON.parse(response.responseText);
+                    var capabilities = JSON.parse(response.responseText),
                         layers = _.toArray(capabilities.WMS_Capabilities.Capability.Layer.Layer);
 
                     callback(null, layers);

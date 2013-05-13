@@ -2,7 +2,8 @@ function bind(app, passport) {
     var user = require('./user'),
     map = require('./map'),
     proxy = require('./proxy'),
-    filter = require('./filter');
+    filter = require('./filter'),
+    stateManager = require('./statemanager');
 
     app.get('/', ensureAuthenticated, function(res, req) {
         res.send(req.user);
@@ -17,6 +18,8 @@ function bind(app, passport) {
     app.post("/api/filters/save", ensureAuthenticated, filter.create);
     app.put("/api/filters/:filterId/update", ensureAuthenticated, filter.update);
     app.delete("/api/filters/:filterId", ensureAuthenticated, filter.remove);
+
+    app.post("/api/filters/saveState", ensureAuthenticated, stateManager.saveFilterState);
 
     app.post("/proxy", proxy.defaultProxy);
     app.get("/proxy", proxy.defaultProxy);

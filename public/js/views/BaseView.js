@@ -14,6 +14,9 @@ define([
                     view[key] = args[key];
                 });
             }
+
+            if (this.restoreState)
+                this.restoreState();
         },
         
         close: function(withFade) {
@@ -36,6 +39,9 @@ define([
                 else
                     this.$el.remove();
             }
+
+            if (this.saveState)
+                this.saveState();
             
             if (this.onClose) 
                 this.onClose();
