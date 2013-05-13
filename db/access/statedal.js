@@ -19,7 +19,7 @@ var self = {
     getFilterState: function(userId, callback) {
         var ObjectId = mongoose.Types.ObjectId;
 
-        User.findById(new ObjectId(userId, function(err, user) {
+        User.findById(new ObjectId(userId), function(err, user) {
             if (err)
                 callback(err);
             else

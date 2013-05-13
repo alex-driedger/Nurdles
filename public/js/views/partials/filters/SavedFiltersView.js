@@ -32,6 +32,7 @@ define([
             this.initArgs(args);
 
             this.activeFilters = [];
+            this.activeFiltersFromState = [];
             this.expandedFilters = [];
 
             this.bindTo(Backbone.globalEvents, "addedFilter", this.appendNewFilter, this);
@@ -52,15 +53,20 @@ define([
                 url: "api/filters/saveState",
                 data: {
                     activeFilters: activeFilterIds
-                },
-                success: function(response) {
-                    console.log("Active Filters: ", response);
-                },
-                error: function(err) {}
+                }
             });
         },
 
         restoreState: function() {
+            var view = this;
+          
+            $.ajax({
+                type: "GET",
+                url: "api/filters/getState",
+                success: function(activeFiltersFromState) {
+                    view.activeFiltersFromState = activeFiltersFromState;
+                }
+            });
 
         },
 
@@ -125,19 +131,42 @@ define([
                 view.$el.append(detailsView.preRender().$el);
                 detailsView.render();
             });
+        },
 
+        mapRequiresInitialFilters: function() {
+            var view = this;
+
+            if (this.activeFilters.length === 0 && this.activeFiltersFromState.length !== 0) {
+                this.filters.forEach(function(filter) {
+                    if (_.contains(view.activeFiltersFromState, filter.get("_id")))
+                        view.activeFilters.push(filter);
+                });
+
+                Backbone.globalEvents.trigger("filtersChanged", this.activeFilters);
+            }
 
         },
 
         render: function (isLocalRender) {
             if (typeof isLocalRender == "undefined" || isLocalRender == false) {
                 console.log("Fetching from DB");
-                var view = this;
+                var view = this,
+                    filtersWithActiveInfoInjected = [];
 
                 this.filters.fetch({
                     url: "/api/filters/getAllForUser",
-                    success: function(filters, res, opt) {
+                    success: function(list, res, opt) {
+                        filtersWithActiveInfoInjected = _.map(list.models, function(filter) {
+                            if (_.contains(view.activeFiltersFromState, filter.get("_id")) )
+                                filter.active = true; //Don't set it because we don't want to alter the actual model.
+                            return filter
+                        });
+
                         view.loadSavedFiltersView(view.filters, view);
+
+                        if (view.mapRequiresInitialFilters()) {
+                            Backbone.globalEvents.trigger("filtersChanged", view.activeFilters);
+                        }
                     },
                     error: function(err) {
                         console.log("ERROR: ", err);

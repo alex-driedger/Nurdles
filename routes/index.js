@@ -20,6 +20,7 @@ function bind(app, passport) {
     app.delete("/api/filters/:filterId", ensureAuthenticated, filter.remove);
 
     app.post("/api/filters/saveState", ensureAuthenticated, stateManager.saveFilterState);
+    app.get("/api/filters/getState", ensureAuthenticated, stateManager.getFilterState);
 
     app.post("/proxy", proxy.defaultProxy);
     app.get("/proxy", proxy.defaultProxy);

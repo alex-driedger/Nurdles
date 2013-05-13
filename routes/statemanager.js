@@ -13,6 +13,18 @@ var self = {
                 res.send(response);
             }
         });
+    },
+
+    getFilterState: function(req, res) {
+        statedal.getFilterState(req.user._id.toString(), function(err, activeFilters) {
+            if (err) {
+                res.statusCode = 500;
+                res.send({error: err});
+            }
+            else {
+                res.send(activeFilters);
+            }
+        });
     }
 };
 
