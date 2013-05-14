@@ -3,6 +3,7 @@ function bind(app, passport) {
     map = require('./map'),
     proxy = require('./proxy'),
     filter = require('./filter'),
+    layer = require('./layer'),
     stateManager = require('./statemanager');
 
     app.get('/', ensureAuthenticated, function(res, req) {
@@ -18,6 +19,11 @@ function bind(app, passport) {
     app.post("/api/filters/save", ensureAuthenticated, filter.create);
     app.put("/api/filters/:filterId/update", ensureAuthenticated, filter.update);
     app.delete("/api/filters/:filterId", ensureAuthenticated, filter.remove);
+
+    app.get("/api/layers/getAllForUser", ensureAuthenticated, layer.getAllForUser);
+    app.post("/api/layers/save", ensureAuthenticated, layer.create);
+    app.put("/api/layers/:layerId/update", ensureAuthenticated, layer.update);
+    app.delete("/api/layers/:layerId", ensureAuthenticated, layer.remove);
 
     app.post("/api/filters/saveState", ensureAuthenticated, stateManager.saveFilterState);
     app.get("/api/filters/getState", ensureAuthenticated, stateManager.getFilterState);

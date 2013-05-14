@@ -2,7 +2,7 @@ define([
        'baseview',
        'basecollection',
        'openlayersutil',
-       '../../../models/Layer',
+       '../../models/Layer',
        './FeaturePopup',
        '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html',
@@ -85,11 +85,25 @@ define([
     var MapView = BaseView.extend({
 
         initialize: function(args) {
+            this.model = new OpenLayers.Map({
+                controls: [
+                    new OpenLayers.Control.Zoom({ 'position': new OpenLayers.Pixel(50, 50) }),
+                    new OpenLayers.Control.Navigation()
+                ],
+                projection: new OpenLayers.Projection("EPSG:900913"),
+                displayProjection: new OpenLayers.Projection("EPSG:4326"),
+                maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
+                numZoomLevels: 18,
+                maxResolution: 156543,
+                units: 'meters'
+            });
             this.userLayers = new BaseCollection([], {model: Layer});
 
             this.isHeaderViewable = true;
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
+
+            this.getExactEarthLayers(this.getUserLayers);
         },
 
         events: {
@@ -160,22 +174,25 @@ define([
         },
 
         getExactEarthLayers: function(callback) {
+            var view = this;
+
             OpenLayersUtil.getLayers(null, function(err, layers) {
                 if (err)
-                    console.log("ERROR GETTING LAYERS: ", err)l
+                    console.log("ERROR GETTING LAYERS: ", err);
                 else
-                    callback(layers);
+                    callback(layers, view);
             });
         },
 
-        addActiveLayersToMap: function(eeLayers, userLayers) {
+        addActiveLayersToMap: function(eeLayers, userLayers, view) {
+            var layersToAddToMap = [];
             _.each(eeLayers, function(eeLayer) {
                 var layer,
-                    userLayer = userLayers.findWhere({name: eeLayer.name});
-                if (userLayer && userLayer.active) {
-                    _Layer_WMS = new OpenLayers.Layer.WMS(
-                        eeLayer.name, "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
-                        userLayer.exactEarthParams,
+                    userLayer = userLayers.findWhere({name: eeLayer.Name});
+                if (userLayer && userLayer.get("active") && userLayer.get("exactEarthParams")) {
+                    layer = new OpenLayers.Layer.WMS(
+                        eeLayer.Name, "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
+                        userLayer.get("exactEarthParams"),
                         {
                             singleTile: false,
                             ratio: 1,
@@ -184,25 +201,21 @@ define([
                             wrapDateLine: true
                         }
                     );
-                    
 
-
-        },
-
-        getUserLayers: function(eeLayers) {
-            var view = this;
-
-            this.userLayers.fetch({
-                url: "/api/layers/getAllForUser",
-                success: function(userLayers, res, opt) {
-                    view.addActiveLayersToMap(eeLayers, userLayers);
+                    layersToAddToMap.push(layer);
                 }
             });
-        }
-            
 
-        addActiveLayersToMap: function(layers) {
+            view.model.addLayers(layersToAddToMap);
+        },
 
+        getUserLayers: function(eeLayers, view) {
+            view.userLayers.fetch({
+                url: "/api/layers/getAllForUser",
+                success: function(userLayers, res, opt) {
+                    view.addActiveLayersToMap(eeLayers, userLayers, view);
+                }
+            });
         },
 
         render: function () {
@@ -210,7 +223,6 @@ define([
 
             var controlsView = new TopToolsRow(),
                 graticuleControl,
-                _Map,
                 _Layer_WMS;
 
             controlsView.render();
@@ -221,20 +233,7 @@ define([
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
-            _Map = new OpenLayers.Map('map', {
-                controls: [
-                    new OpenLayers.Control.Zoom({ 'position': new OpenLayers.Pixel(50, 50) }),
-                    new OpenLayers.Control.Navigation()
-                ],
-                projection: new OpenLayers.Projection("EPSG:900913"),
-                displayProjection: new OpenLayers.Projection("EPSG:4326"),
-                maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
-                numZoomLevels: 18,
-                maxResolution: 156543,
-                units: 'meters'
-            });
-
-            this.model = _Map;
+            this.model.render("map");
 
             graticuleControl = new OpenLayers.Control.Graticule({
                 numPoints: 2,
@@ -242,27 +241,7 @@ define([
                 autoActivate: false
             });
 
-            _Map.addControl(graticuleControl);
-
-            _Layer_WMS = new OpenLayers.Layer.WMS(
-                "exactAIS", "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
-                    {
-                    LAYERS: "exactAIS:LVI",
-                    STYLES: "VesselByType",
-                    format: "image/png",
-                    transparent: "true"
-            },
-                {
-                    singleTile: false,
-                    ratio: 1,
-                    isBaseLayer: false,
-                    yx: { 'EPSG:4326': true },
-                    wrapDateLine: true
-                }
-                );
-            _Layer_WMS.setVisibility(true);
-
-                                        
+            this.model.addControl(graticuleControl);
 
             OpenLayers.Util.onImageLoadError = function () { }
             var basicMapLayer = new OpenLayers.Layer.WMS("Basic Base Map", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
@@ -273,7 +252,7 @@ define([
                         transitionEffect: "resize"
                     });
 
-            _Map.addLayers([basicMapLayer]);
+            this.model.addLayers([basicMapLayer]);
 
             var oInfoControl = {
                 click: new OpenLayers.Control.WMSGetFeatureInfo({
@@ -287,26 +266,28 @@ define([
 
             for (var i in oInfoControl) {
                 oInfoControl[i].events.register("getfeatureinfo", this, private.showInfo);
-                _Map.addControl(oInfoControl[i]);
+                this.model.addControl(oInfoControl[i]);
             }
             oInfoControl.click.activate();
 
-            _Map.events.register("mousemove", _Map, function(e) { 
-                var latlon = _Map.getLonLatFromViewPortPx(e.xy) ;
-                latlon.transform( _Map.projection, _Map.displayProjection);
+            this.model.events.register("mousemove", this.model, function(e) { 
+                var latlon = this.model.getLonLatFromViewPortPx(e.xy) ;
+                latlon.transform( this.model.projection, this.model.displayProjection);
                 OpenLayers.Util.getElement("coordinates").innerHTML = latlon.lat + ", " + latlon.lon;
             });
 
-            basicMapLayer.events.register("loadstart", _Map, this.showLoader);
-            basicMapLayer.events.register("loadend", _Map, this.hideLoader);
-            _Layer_WMS.events.register("loadstart", _Map, this.showLoader);
-            _Layer_WMS.events.register("loadend", _Map, this.hideLoader);
+            /*
+            basicMapLayer.events.register("loadstart", this.model, this.showLoader);
+            basicMapLayer.events.register("loadend", this.model, this.hideLoader);
+            _Layer_WMS.events.register("loadstart", this.model, this.showLoader);
+            _Layer_WMS.events.register("loadend", this.model, this.hideLoader);
+            */
 
-            _Map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
+            this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
 
-            _Map.zoomToMaxExtent();
+            this.model.zoomToMaxExtent();
 
-            window.map = _Map; //BAD BAD BAD BAD but easy to manipulate the map through the console.
+            window.map = this.model; //BAD BAD BAD BAD but easy to manipulate the map through the console.
         }
     });
 

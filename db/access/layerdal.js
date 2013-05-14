@@ -3,7 +3,7 @@ var Layer = require('../models/Layer').Layer,
 
 var self = {
     create: function(userId, layer, callback) {
-        filter.owner = userId;
+        layer.owner = userId;
         Layer.create(layer, function(err, layer) {
             callback(null, layer);
         });
@@ -11,6 +11,7 @@ var self = {
 
     getAllForUser: function(id, callback) {
         var ObjectId = mongoose.Types.ObjectId;
+        console.log("Finding Layers for user: ", id);
         Layer.find({owner: new ObjectId(id.toString())}, function(err, layers) {
             callback(err, layers);
         });
