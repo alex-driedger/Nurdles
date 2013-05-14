@@ -30,9 +30,9 @@ define([
             }
         },
 
-        showInfo: function(evt) {
+        showInfo: function(evt, view) {
             if (evt.features && evt.features.length > 0)
-                private.onFeatureSelect(evt, this.model, this);
+                private.onFeatureSelect(evt, view.model, view);
         },
 
         loadingLayers: 0,
@@ -103,6 +103,7 @@ define([
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
 
+            this.addControlsToMap();
             this.getExactEarthLayers(this.getUserLayers);
         },
 
@@ -185,6 +186,7 @@ define([
         },
 
         addActiveLayersToMap: function(eeLayers, userLayers, view) {
+            console.log(eeLayers);
             var layersToAddToMap = [];
             _.each(eeLayers, function(eeLayer) {
                 var layer,
@@ -216,6 +218,24 @@ define([
                     view.addActiveLayersToMap(eeLayers, userLayers, view);
                 }
             });
+        },
+
+        addControlsToMap: function() {
+            var view = this,
+            oInfoControl = new OpenLayers.Control.WMSGetFeatureInfo({
+                    url: 'https://owsdemo.exactearth.com/wms?authKey=tokencoin',
+                    title: 'Identify features by clicking',
+                    infoFormat: "application/vnd.ogc.gml",
+                    queryVisible: true,
+                    eventListeners: {
+                        getfeatureinfo: function(evt) {
+                            private.showInfo(evt, view);
+                        }
+                    }
+                });
+
+                this.model.addControl(oInfoControl);
+                oInfoControl.activate();
         },
 
         render: function () {
@@ -255,21 +275,6 @@ define([
 
             map.addLayers([basicMapLayer]);
 
-            var oInfoControl = {
-                click: new OpenLayers.Control.WMSGetFeatureInfo({
-                    url: 'https://owsdemo.exactearth.com/wms?authKey=9178ef5a-8ccd-45d3-8786-38901966a291',
-                    title: 'Identify features by clicking',
-                    layers: [_Layer_WMS],
-                    infoFormat: "application/vnd.ogc.gml",
-                    queryVisible: true
-                })
-            };
-
-            for (var i in oInfoControl) {
-                oInfoControl[i].events.register("getfeatureinfo", this, private.showInfo);
-                map.addControl(oInfoControl[i]);
-            }
-            oInfoControl.click.activate();
 
             map.events.register("mousemove", map, function(e) { 
                 var latlon = map.getLonLatFromViewPortPx(e.xy) ;
