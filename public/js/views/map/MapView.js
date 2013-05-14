@@ -223,6 +223,7 @@ define([
 
             var controlsView = new TopToolsRow(),
                 graticuleControl,
+                map = this.model,
                 _Layer_WMS;
 
             controlsView.render();
@@ -233,7 +234,7 @@ define([
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
-            this.model.render("map");
+            map.render("map");
 
             graticuleControl = new OpenLayers.Control.Graticule({
                 numPoints: 2,
@@ -241,7 +242,7 @@ define([
                 autoActivate: false
             });
 
-            this.model.addControl(graticuleControl);
+            map.addControl(graticuleControl);
 
             OpenLayers.Util.onImageLoadError = function () { }
             var basicMapLayer = new OpenLayers.Layer.WMS("Basic Base Map", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
@@ -252,7 +253,7 @@ define([
                         transitionEffect: "resize"
                     });
 
-            this.model.addLayers([basicMapLayer]);
+            map.addLayers([basicMapLayer]);
 
             var oInfoControl = {
                 click: new OpenLayers.Control.WMSGetFeatureInfo({
@@ -266,13 +267,13 @@ define([
 
             for (var i in oInfoControl) {
                 oInfoControl[i].events.register("getfeatureinfo", this, private.showInfo);
-                this.model.addControl(oInfoControl[i]);
+                map.addControl(oInfoControl[i]);
             }
             oInfoControl.click.activate();
 
-            this.model.events.register("mousemove", this.model, function(e) { 
-                var latlon = this.model.getLonLatFromViewPortPx(e.xy) ;
-                latlon.transform( this.model.projection, this.model.displayProjection);
+            map.events.register("mousemove", map, function(e) { 
+                var latlon = map.getLonLatFromViewPortPx(e.xy) ;
+                latlon.transform( map.projection, map.displayProjection);
                 OpenLayers.Util.getElement("coordinates").innerHTML = latlon.lat + ", " + latlon.lon;
             });
 
@@ -283,11 +284,11 @@ define([
             _Layer_WMS.events.register("loadend", this.model, this.hideLoader);
             */
 
-            this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
+            map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
 
-            this.model.zoomToMaxExtent();
+            map.zoomToMaxExtent();
 
-            window.map = this.model; //BAD BAD BAD BAD but easy to manipulate the map through the console.
+            window.map = map; //BAD BAD BAD BAD but easy to manipulate the map through the console.
         }
     });
 
