@@ -5,6 +5,7 @@ var self = {
         var https = require("follow-redirects").https;
 
         https.get(req.query["url"], function(response) {
+            console.log("Starting proxy request!: ", req.query["url"]);
             var output = "";
 
             response.on("data", function(chunk) {
@@ -37,6 +38,27 @@ var self = {
             var parsedResponse = parser.toJson(output);
 
             res.send(parser.toJson(output));
+        });
+    },
+
+    getWMS: function(req, res) {
+        var https = require("follow-redirects").https,
+            params = "";
+
+        for(var propertyName in req.query) {
+            params += "&" + propertyName + "=" + req.query[propertyName];
+        }
+
+        https.get("https://owsdemo.exactearth.com/wms?authKey=tokencoin" + params, function(response) {
+            var output = "";
+
+            response.on("data", function(chunk) {
+                output += chunk;
+            });
+
+            response.on("end", function() {
+                res.send(output);
+            });
         });
     }
 };

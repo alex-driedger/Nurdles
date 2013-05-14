@@ -161,8 +161,7 @@ define([
             var controlsView = new TopToolsRow(),
                 graticuleControl,
                 _Map,
-                _Layer_WMS, _Layer_Highlight, _Layer_Hover, _Layer_Select;
-
+                _Layer_WMS;
 
             controlsView.render();
             this.addSubView(controlsView);
@@ -196,21 +195,21 @@ define([
             _Map.addControl(graticuleControl);
 
             _Layer_WMS = new OpenLayers.Layer.WMS(
-                "exactAIS", "https://owsdemo.exactearth.com/wms?authKey=9178ef5a-8ccd-45d3-8786-38901966a291",
+                "exactAIS", "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
                     {
-                LAYERS: "exactAIS:LVI",
-                STYLES: "VesselByType",
-                format: "image/png",
-                transparent: "true"
+                    LAYERS: "exactAIS:LVI",
+                    STYLES: "VesselByType",
+                    format: "image/png",
+                    transparent: "true"
             },
-            {
-                singleTile: false,
-                ratio: 1,
-                isBaseLayer: false,
-                yx: { 'EPSG:4326': true },
-                wrapDateLine: true
-            }
-            );
+                {
+                    singleTile: false,
+                    ratio: 1,
+                    isBaseLayer: false,
+                    yx: { 'EPSG:4326': true },
+                    wrapDateLine: true
+                }
+                );
             _Layer_WMS.setVisibility(true);
 
             OpenLayersUtil.getLayers(null, function(err, layers) {
@@ -227,11 +226,7 @@ define([
                         transitionEffect: "resize"
                     });
 
-                _Layer_Highlight = new OpenLayers.Layer.Vector("Highlighted Features", { displayInLayerSwitcher: false, isBaseLayer: false });
-            _Layer_Select = new OpenLayers.Layer.Vector("Selected Features", { displayInLayerSwitcher: false, isBaseLayer: false });
-            _Layer_Hover = new OpenLayers.Layer.Vector("Highlighted Features", { displayInLayerSwitcher: false, isBaseLayer: false });
-
-            _Map.addLayers([basicMapLayer, _Layer_WMS, _Layer_Highlight, _Layer_Select, _Layer_Hover]);
+            _Map.addLayers([basicMapLayer]);
 
             var oInfoControl = {
                 click: new OpenLayers.Control.WMSGetFeatureInfo({
