@@ -2,8 +2,10 @@
 module.exports = {
     load: function() {
         var userDAL = require("./access/userdal"),
-            filterDAL = require("./access/filterdal");
+            layerDAL = require("./access/layerdal");
 
-        userDAL.create("chris", "password", "tokencoin", function(err, user) { });
+        userDAL.create("chris", "password", "tokencoin", function(err, user) {
+            
+        });
     }
 };

@@ -1,10 +1,12 @@
 define([
        'baseview',
+       'basecollection',
        'openlayersutil',
+       '../../../models/Layer',
        './FeaturePopup',
        '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html',
-], function(BaseView, OpenLayersUtil, FeaturePopup, TopToolsRow, mapTemplate){
+], function(BaseView, BaseCollection, OpenLayersUtil, Layer, FeaturePopup, TopToolsRow, mapTemplate){
     var private = {
         /*-----
         * These are methods taken from the demo site.
@@ -83,6 +85,8 @@ define([
     var MapView = BaseView.extend({
 
         initialize: function(args) {
+            this.userLayers = new BaseCollection([], {model: Layer});
+
             this.isHeaderViewable = true;
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
@@ -155,6 +159,52 @@ define([
             });
         },
 
+        getExactEarthLayers: function(callback) {
+            OpenLayersUtil.getLayers(null, function(err, layers) {
+                if (err)
+                    console.log("ERROR GETTING LAYERS: ", err)l
+                else
+                    callback(layers);
+            });
+        },
+
+        addActiveLayersToMap: function(eeLayers, userLayers) {
+            _.each(eeLayers, function(eeLayer) {
+                var layer,
+                    userLayer = userLayers.findWhere({name: eeLayer.name});
+                if (userLayer && userLayer.active) {
+                    _Layer_WMS = new OpenLayers.Layer.WMS(
+                        eeLayer.name, "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
+                        userLayer.exactEarthParams,
+                        {
+                            singleTile: false,
+                            ratio: 1,
+                            isBaseLayer: eeLayer.isBaseLayer,
+                            yx: { 'EPSG:4326': true },
+                            wrapDateLine: true
+                        }
+                    );
+                    
+
+
+        },
+
+        getUserLayers: function(eeLayers) {
+            var view = this;
+
+            this.userLayers.fetch({
+                url: "/api/layers/getAllForUser",
+                success: function(userLayers, res, opt) {
+                    view.addActiveLayersToMap(eeLayers, userLayers);
+                }
+            });
+        }
+            
+
+        addActiveLayersToMap: function(layers) {
+
+        },
+
         render: function () {
             this.$el.html(mapTemplate);
 
@@ -212,9 +262,6 @@ define([
                 );
             _Layer_WMS.setVisibility(true);
 
-            OpenLayersUtil.getLayers(null, function(err, layers) {
-                console.log("LAYERS: ", layers);
-            });
                                         
 
             OpenLayers.Util.onImageLoadError = function () { }
