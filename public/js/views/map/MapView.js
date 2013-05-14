@@ -1,10 +1,12 @@
 define([
        'baseview',
+       'basecollection',
        'openlayersutil',
+       '../../models/Layer',
        './FeaturePopup',
        '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html',
-], function(BaseView, OpenLayersUtil, FeaturePopup, TopToolsRow, mapTemplate){
+], function(BaseView, BaseCollection, OpenLayersUtil, Layer, FeaturePopup, TopToolsRow, mapTemplate){
     var private = {
         /*-----
         * These are methods taken from the demo site.
@@ -28,9 +30,9 @@ define([
             }
         },
 
-        showInfo: function(evt) {
+        showInfo: function(evt, view) {
             if (evt.features && evt.features.length > 0)
-                private.onFeatureSelect(evt, this.model, this);
+                private.onFeatureSelect(evt, view.model, view);
         },
 
         loadingLayers: 0,
@@ -83,9 +85,26 @@ define([
     var MapView = BaseView.extend({
 
         initialize: function(args) {
+            this.model = new OpenLayers.Map({
+                controls: [
+                    new OpenLayers.Control.Zoom({ 'position': new OpenLayers.Pixel(50, 50) }),
+                    new OpenLayers.Control.Navigation()
+                ],
+                projection: new OpenLayers.Projection("EPSG:900913"),
+                displayProjection: new OpenLayers.Projection("EPSG:4326"),
+                maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
+                numZoomLevels: 18,
+                maxResolution: 156543,
+                units: 'meters'
+            });
+            this.userLayers = new BaseCollection([], {model: Layer});
+
             this.isHeaderViewable = true;
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
+
+            this.addControlsToMap();
+            this.getExactEarthLayers(this.getUserLayers);
         },
 
         events: {
@@ -155,14 +174,77 @@ define([
             });
         },
 
+        getExactEarthLayers: function(callback) {
+            var view = this;
+
+            OpenLayersUtil.getLayers(null, function(err, layers) {
+                if (err)
+                    console.log("ERROR GETTING LAYERS: ", err);
+                else
+                    callback(layers, view);
+            });
+        },
+
+        addActiveLayersToMap: function(eeLayers, userLayers, view) {
+            console.log(eeLayers);
+            var layersToAddToMap = [];
+            _.each(eeLayers, function(eeLayer) {
+                var layer,
+                    userLayer = userLayers.findWhere({name: eeLayer.Name});
+                if (userLayer && userLayer.get("active") && userLayer.get("exactEarthParams")) {
+                    layer = new OpenLayers.Layer.WMS(
+                        eeLayer.Name, "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
+                        userLayer.get("exactEarthParams"),
+                        {
+                            singleTile: false,
+                            ratio: 1,
+                            isBaseLayer: eeLayer.isBaseLayer,
+                            yx: { 'EPSG:4326': true },
+                            wrapDateLine: true
+                        }
+                    );
+
+                    layersToAddToMap.push(layer);
+                }
+            });
+
+            view.model.addLayers(layersToAddToMap);
+        },
+
+        getUserLayers: function(eeLayers, view) {
+            view.userLayers.fetch({
+                url: "/api/layers/getAllForUser",
+                success: function(userLayers, res, opt) {
+                    view.addActiveLayersToMap(eeLayers, userLayers, view);
+                }
+            });
+        },
+
+        addControlsToMap: function() {
+            var view = this,
+            oInfoControl = new OpenLayers.Control.WMSGetFeatureInfo({
+                    url: 'https://owsdemo.exactearth.com/wms?authKey=tokencoin',
+                    title: 'Identify features by clicking',
+                    infoFormat: "application/vnd.ogc.gml",
+                    queryVisible: true,
+                    eventListeners: {
+                        getfeatureinfo: function(evt) {
+                            private.showInfo(evt, view);
+                        }
+                    }
+                });
+
+                this.model.addControl(oInfoControl);
+                oInfoControl.activate();
+        },
+
         render: function () {
             this.$el.html(mapTemplate);
 
             var controlsView = new TopToolsRow(),
                 graticuleControl,
-                _Map,
-                _Layer_WMS, _Layer_Highlight, _Layer_Hover, _Layer_Select;
-
+                map = this.model,
+                _Layer_WMS;
 
             controlsView.render();
             this.addSubView(controlsView);
@@ -172,20 +254,7 @@ define([
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
-            _Map = new OpenLayers.Map('map', {
-                controls: [
-                    new OpenLayers.Control.Zoom({ 'position': new OpenLayers.Pixel(50, 50) }),
-                    new OpenLayers.Control.Navigation()
-                ],
-                projection: new OpenLayers.Projection("EPSG:900913"),
-                displayProjection: new OpenLayers.Projection("EPSG:4326"),
-                maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
-                numZoomLevels: 18,
-                maxResolution: 156543,
-                units: 'meters'
-            });
-
-            this.model = _Map;
+            map.render("map");
 
             graticuleControl = new OpenLayers.Control.Graticule({
                 numPoints: 2,
@@ -193,30 +262,7 @@ define([
                 autoActivate: false
             });
 
-            _Map.addControl(graticuleControl);
-
-            _Layer_WMS = new OpenLayers.Layer.WMS(
-                "exactAIS", "https://owsdemo.exactearth.com/wms?authKey=9178ef5a-8ccd-45d3-8786-38901966a291",
-                    {
-                LAYERS: "exactAIS:LVI",
-                STYLES: "VesselByType",
-                format: "image/png",
-                transparent: "true"
-            },
-            {
-                singleTile: false,
-                ratio: 1,
-                isBaseLayer: false,
-                yx: { 'EPSG:4326': true },
-                wrapDateLine: true
-            }
-            );
-            _Layer_WMS.setVisibility(true);
-
-            OpenLayersUtil.getLayers(null, function(err, layers) {
-                console.log("LAYERS: ", layers);
-            });
-                                        
+            map.addControl(graticuleControl);
 
             OpenLayers.Util.onImageLoadError = function () { }
             var basicMapLayer = new OpenLayers.Layer.WMS("Basic Base Map", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
@@ -227,44 +273,27 @@ define([
                         transitionEffect: "resize"
                     });
 
-                _Layer_Highlight = new OpenLayers.Layer.Vector("Highlighted Features", { displayInLayerSwitcher: false, isBaseLayer: false });
-            _Layer_Select = new OpenLayers.Layer.Vector("Selected Features", { displayInLayerSwitcher: false, isBaseLayer: false });
-            _Layer_Hover = new OpenLayers.Layer.Vector("Highlighted Features", { displayInLayerSwitcher: false, isBaseLayer: false });
+            map.addLayers([basicMapLayer]);
 
-            _Map.addLayers([basicMapLayer, _Layer_WMS, _Layer_Highlight, _Layer_Select, _Layer_Hover]);
 
-            var oInfoControl = {
-                click: new OpenLayers.Control.WMSGetFeatureInfo({
-                    url: 'https://owsdemo.exactearth.com/wms?authKey=9178ef5a-8ccd-45d3-8786-38901966a291',
-                    title: 'Identify features by clicking',
-                    layers: [_Layer_WMS],
-                    infoFormat: "application/vnd.ogc.gml",
-                    queryVisible: true
-                })
-            };
-
-            for (var i in oInfoControl) {
-                oInfoControl[i].events.register("getfeatureinfo", this, private.showInfo);
-                _Map.addControl(oInfoControl[i]);
-            }
-            oInfoControl.click.activate();
-
-            _Map.events.register("mousemove", _Map, function(e) { 
-                var latlon = _Map.getLonLatFromViewPortPx(e.xy) ;
-                latlon.transform( _Map.projection, _Map.displayProjection);
+            map.events.register("mousemove", map, function(e) { 
+                var latlon = map.getLonLatFromViewPortPx(e.xy) ;
+                latlon.transform( map.projection, map.displayProjection);
                 OpenLayers.Util.getElement("coordinates").innerHTML = latlon.lat + ", " + latlon.lon;
             });
 
-            basicMapLayer.events.register("loadstart", _Map, this.showLoader);
-            basicMapLayer.events.register("loadend", _Map, this.hideLoader);
-            _Layer_WMS.events.register("loadstart", _Map, this.showLoader);
-            _Layer_WMS.events.register("loadend", _Map, this.hideLoader);
+            /*
+            basicMapLayer.events.register("loadstart", this.model, this.showLoader);
+            basicMapLayer.events.register("loadend", this.model, this.hideLoader);
+            _Layer_WMS.events.register("loadstart", this.model, this.showLoader);
+            _Layer_WMS.events.register("loadend", this.model, this.hideLoader);
+            */
 
-            _Map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
+            map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
 
-            _Map.zoomToMaxExtent();
+            map.zoomToMaxExtent();
 
-            window.map = _Map; //BAD BAD BAD BAD but easy to manipulate the map through the console.
+            window.map = map; //BAD BAD BAD BAD but easy to manipulate the map through the console.
         }
     });
 

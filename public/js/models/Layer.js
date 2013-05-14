@@ -6,11 +6,6 @@ define([
     var Layer = Backbone.Model.extend({
         idAttribute: "_id",
 
-        defaults: {
-            styles: [],
-            url: ""
-        },
-
         initialize: function(attributes) {
         }
     });
