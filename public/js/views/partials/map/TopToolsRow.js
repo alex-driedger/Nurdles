@@ -8,7 +8,8 @@ define([
         },
 
         events: {
-            "click #showGrid": "toggleGraticule" 
+            "click #showGrid": "toggleGraticule",
+            "click #measure": "toggleMeasure" 
         },
 
         toggleGraticule: function(e) {
@@ -27,6 +28,21 @@ define([
 
             btn.toggleClass("active");
             Backbone.globalEvents.trigger("toggleGraticule", activate);
+        },
+
+        toggleMeasure: function(e) {
+            var btn = $("#measure"),
+                activate;
+
+            if (btn.hasClass("active")) {
+                activate = false;
+            }
+            else {
+                activate = true;
+            }
+
+            btn.toggleClass("active");
+            Backbone.globalEvents.trigger("toggleMeasure", activate);
         },
 
         render: function () {

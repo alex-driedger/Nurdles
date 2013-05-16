@@ -55,6 +55,15 @@ define([
             }
         },
 
+        handleMeasurements: function(event) {
+            var geometry = event.geometry;
+            var units = event.units;
+            var order = event.order;
+            var measure = event.measure;
+
+            console.log("measure: " + measure.toFixed(3) + " " + units);
+        },
+
         loadingLayers: 0,
 
         // Needed only for interaction, not for the display.
@@ -76,7 +85,7 @@ define([
                 bounds = null;
 
             //We need to transform the points to properly place the popup
-            featureInfo.geometry.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"))
+            featureInfo.geometry.transform(OpenLayersUtil.getProjection());
 
             //If we're dealing with a point feature, we won't have getBounds so 
             //We'll need to create our bounds before grabbing the center LonLat
@@ -107,21 +116,22 @@ define([
         initialize: function(args) {
             this.model = new OpenLayers.Map({
                 controls: [
-                    new OpenLayers.Control.Zoom({ 'position': new OpenLayers.Pixel(50, 50) }),
-                    new OpenLayers.Control.Navigation()
+                    new OpenLayers.Control.Zoom({ name: "Zoom", 'position': new OpenLayers.Pixel(50, 50) }),
+                    new OpenLayers.Control.Navigation({name: "Navigation"})
                 ],
                 projection: new OpenLayers.Projection("EPSG:900913"),
                 displayProjection: new OpenLayers.Projection("EPSG:4326"),
                 maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
                 numZoomLevels: 18,
                 maxResolution: 156543,
-                units: 'meters'
+                units: 'm'
             });
             this.userLayers = new BaseCollection([], {model: Layer});
 
             this.isHeaderViewable = true;
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
+            this.bindTo(Backbone.globalEvents, "toggleMeasure", this.toggleMeasure, this);
 
             this.addControlsToMap();
             this.getExactEarthLayers(this.getUserLayers);
@@ -174,12 +184,37 @@ define([
 
         toggleGraticule: function(activate) {
             _.each(this.model.controls, function(control) {
-                if (control.layerName && control.layerName === "Graticule") {
+                if (control.name === "Graticule") {
                     if (activate)
                         control.activate();
                     else
                         control.deactivate();
                     return
+                }
+            });
+        },
+
+        toggleMeasure: function(activate) {
+            _.each(this.model.controls, function(control) {
+                if (activate) {
+                    switch (control.name) {
+                        case "Measure":
+                            control.activate();
+                            break;
+                         case "GetFeatureInfo":
+                             control.deactivate();
+                            break;
+                    }
+                }
+                else {
+                    switch (control.name) {
+                        case "Measure":
+                            control.deactivate();
+                            break;
+                         case "GetFeatureInfo":
+                             control.activate();
+                            break;
+                    }
                 }
             });
         },
@@ -255,20 +290,42 @@ define([
         addControlsToMap: function() {
             var view = this,
             oInfoControl = new OpenLayers.Control.WMSGetFeatureInfo({
-                    url: 'https://owsdemo.exactearth.com/wms?authKey=tokencoin',
+                name: "GetFeatureInfo",
+                url: 'https://owsdemo.exactearth.com/wms?authKey=tokencoin',
                     title: 'Identify features by clicking',
-                    infoFormat: "application/vnd.ogc.gml",
-                    queryVisible: true,
-                    eventListeners: {
-                        getfeatureinfo: function(evt) {
-                            private.showInfo(evt, view);
-                            private.applyTrack(evt, view);
-                        }
+                infoFormat: "application/vnd.ogc.gml",
+                queryVisible: true,
+                eventListeners: {
+                    getfeatureinfo: function(evt) {
+                        private.showInfo(evt, view);
+                        private.applyTrack(evt, view);
                     }
-                });
+                }
+            });
 
-                this.model.addControl(oInfoControl);
-                oInfoControl.activate();
+            this.model.addControl(oInfoControl);
+            oInfoControl.activate();
+
+
+            //--------------MEASUREMENT CONTROLS-----------------------//
+            var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+            renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+
+            var measureControl = new OpenLayers.Control.Measure(
+                OpenLayers.Handler.Path,
+                {
+                    name: "Measure",
+                    //immediate: true,
+                    persist: true
+                }
+            );
+
+            measureControl.events.on({
+                "measure": private.handleMeasurements,
+                "measurepartial": private.handleMeasurements
+            });
+
+            this.model.addControl(measureControl);
         },
 
         render: function () {
@@ -290,6 +347,7 @@ define([
             map.render("map");
 
             graticuleControl = new OpenLayers.Control.Graticule({
+                name: "Graticule",
                 numPoints: 2,
                 labelled: true,
                 autoActivate: false

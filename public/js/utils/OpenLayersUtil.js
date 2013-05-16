@@ -6,6 +6,10 @@ define([
     var private = {};
 
     var OpenLayersUtil = {
+        getProjection: function() {
+            return new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326");
+        },
+
         getFeatureFields: function(callback) {
             var request = OpenLayers.Request.GET({
                 url: 'https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=DescribeFeatureType&typeName=exactAIS:LVI&authKey=tokencoin',
