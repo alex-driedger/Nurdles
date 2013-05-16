@@ -35,6 +35,26 @@ define([
                 private.onFeatureSelect(evt, view.model, view);
         },
 
+        applyTrack: function(evt, view) {
+            var shipInfo,
+                latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y)),
+                filter = {},
+                exactAISLayer = map.getLayersByName("exactAIS:HT30")[0];
+
+            if (evt.features && evt.features.length > 0) {
+                shipInfo = evt.features[0];
+                filter.operators = [];
+                filter.operators.push({
+                    property: "mmsi",
+                    value: shipInfo.data.mmsi,
+                    type: "=="
+                });
+
+                exactAISLayer.params["FILTER"] = OpenLayersUtil.convertFilterToFilterParam([filter]);
+                exactAISLayer.redraw();
+            }
+        },
+
         loadingLayers: 0,
 
         // Needed only for interaction, not for the display.
@@ -136,30 +156,20 @@ define([
         updateFilters: function(filters) {
             var map = this.model;
 
-            var exactAISLayer = map.getLayersByName("exactAIS")[0];
+            var exactAISLayer = map.getLayersByName("exactAIS:LVI")[0];
 
             exactAISLayer.params["FILTER"] = this.createOpenLayersFilters(filters);
             exactAISLayer.redraw();
         },
 
         createOpenLayersFilters: function(filters) {
-            console.log(filters);
-            var olFilters = new OpenLayers.Filter.Logical({
-                type: OpenLayers.Filter.Logical.AND 
-            });
+            var simplifiedFilters = [];
 
             for (var i = 0, len = filters.length; i< len; i++) {
-                for (var j = 0, olen = filters[i].get("operators").length; j < olen; j++) {
-                    olFilters.filters.push(filters[i].get("operators")[j]);
-                }
-            }
+                simplifiedFilters.push({operators: filters[i].get("operators")})
+            };
 
-            var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
-            var xml = new OpenLayers.Format.XML(); 
-            var filter_param = xml.write(filter_1_0.write(olFilters));
-            console.log(filter_param);
-
-            return filter_param;
+            return OpenLayersUtil.convertFilterToFilterParam(simplifiedFilters);
         },
 
         toggleGraticule: function(activate) {
@@ -194,7 +204,28 @@ define([
                 if (userLayer && userLayer.get("active") && userLayer.get("exactEarthParams")) {
                     layer = new OpenLayers.Layer.WMS(
                         eeLayer.Name, "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
-                        userLayer.get("exactEarthParams"),
+                        {
+                        LAYERS: "exactAIS:LVI",
+                        STYLES: "VesselByType",
+                        format: "image/png",
+                        transparent: "true"
+                        },
+                        {
+                            singleTile: false,
+                            ratio: 1,
+                            isBaseLayer: eeLayer.isBaseLayer,
+                            yx: { 'EPSG:4326': true },
+                            wrapDateLine: true
+                        }
+                    );
+                    layer2 = new OpenLayers.Layer.WMS(
+                        "exactAIS:HT30", "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
+                        {
+                        LAYERS: "exactAIS:HT30",
+                        STYLES: "Track",
+                        format: "image/png",
+                        transparent: "true"
+                        },
                         {
                             singleTile: false,
                             ratio: 1,
@@ -205,6 +236,7 @@ define([
                     );
 
                     layersToAddToMap.push(layer);
+                    layersToAddToMap.push(layer2);
                 }
             });
 
@@ -230,6 +262,7 @@ define([
                     eventListeners: {
                         getfeatureinfo: function(evt) {
                             private.showInfo(evt, view);
+                            private.applyTrack(evt, view);
                         }
                     }
                 });

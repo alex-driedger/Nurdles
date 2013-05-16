@@ -272,6 +272,7 @@ select {
 .leaflet-popup, .olTipFrame {
     position: absolute;
     text-align: center;
+    opacity: 0.8 !important;
 }
 .leaflet-popup-content-wrapper, .olTipFrameContentWrapper {
     padding: 1px;

@@ -82,7 +82,27 @@ define([
             }
 
             return -1; //This means it's a geometric constraint
-        }
+        },
+
+        convertFilterToFilterParam: function(filters) {
+            var olFilters = new OpenLayers.Filter.Logical({
+                type: OpenLayers.Filter.Logical.AND 
+            });
+
+            for (var i = 0, len = filters.length; i< len; i++) {
+                for (var j = 0, olen = filters[i].operators.length; j < olen; j++) {
+                    olFilters.filters.push(filters[i].operators[j]);
+                }
+            }
+
+            var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
+            var xml = new OpenLayers.Format.XML(); 
+            var filter_param = xml.write(filter_1_0.write(olFilters));
+            console.log(filter_param);
+
+            return filter_param;
+            
+        },
     };
 
     return OpenLayersUtil;
