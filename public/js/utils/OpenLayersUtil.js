@@ -7,7 +7,10 @@ define([
 
     var OpenLayersUtil = {
         getProjection: function() {
-            return new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326");
+            return {
+                projection: new OpenLayers.Projection("EPSG:900913"), 
+                displayProjection: new OpenLayers.Projection("EPSG:4326")
+            };
         },
 
         getFeatureFields: function(callback) {

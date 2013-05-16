@@ -60,10 +60,7 @@ define([
             var units = event.units;
             var order = event.order;
             var measure = event.measure;
-
-            console.log("measure: " + measure.toFixed(3) + " " + units);
-
-            $("#dialog").dialog();
+            console.log("Measure: " +  measure.toFixed(3) + " metres");
         },
 
         loadingLayers: 0,
@@ -81,13 +78,13 @@ define([
         },
 
         onFeatureSelect: function(evt, map, view) {
-            var latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y));
-
             var featureInfo = evt.features[0],
-                bounds = null;
+                bounds = null,
+                projection = OpenLayersUtil.getProjection();
 
             //We need to transform the points to properly place the popup
-            featureInfo.geometry.transform(OpenLayersUtil.getProjection());
+
+            featureInfo.geometry.transform(projection.displayProjection, projection.projection)
 
             //If we're dealing with a point feature, we won't have getBounds so 
             //We'll need to create our bounds before grabbing the center LonLat
@@ -97,7 +94,6 @@ define([
             else
                 bounds = featureInfo.geometry.createBounds();
 
-            console.log(latLongOfClick);
             console.log(bounds.getCenterLonLat());
 
             var featurePopup = new FeaturePopup({
