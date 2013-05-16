@@ -62,6 +62,8 @@ define([
             var measure = event.measure;
 
             console.log("measure: " + measure.toFixed(3) + " " + units);
+
+            $("#dialog").dialog();
         },
 
         loadingLayers: 0,
