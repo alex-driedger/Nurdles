@@ -10,9 +10,15 @@ define([
         template: _.template(measurePopupTemplate),
 
         render: function() {
+            var view = this;
+
             this.$el.html(this.template(this.model));
             $("#dialog").append(this.$el);
-            $("#dialog").dialog();
+            $("#dialog").dialog({
+                close: function(evt, ui) {
+                    view.close();
+                }
+            });
 
             return this;
         },

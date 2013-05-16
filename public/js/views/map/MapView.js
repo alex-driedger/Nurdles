@@ -4,9 +4,10 @@ define([
        'openlayersutil',
        '../../models/Layer',
        './FeaturePopup',
+       './MeasurePopup',
        '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html',
-], function(BaseView, BaseCollection, OpenLayersUtil, Layer, FeaturePopup, TopToolsRow, mapTemplate){
+], function(BaseView, BaseCollection, OpenLayersUtil, Layer, FeaturePopup, MeasurePopup, TopToolsRow, mapTemplate){
     var private = {
         /*-----
         * These are methods taken from the demo site.
@@ -62,8 +63,6 @@ define([
             var measure = event.measure;
             console.log("Measure: " +  measure.toFixed(3) + " metres");
         },
-
-        loadingLayers: 0,
 
         // Needed only for interaction, not for the display.
         onPopupClose: function(evt) {
@@ -215,6 +214,10 @@ define([
                     }
                 }
             });
+
+            var measurePopupView = new MeasurePopup();
+
+            measurePopupView.render();
         },
 
         getExactEarthLayers: function(callback) {
