@@ -23,7 +23,7 @@ define([
                                    "<h2>TEST</h2>" + "Description here",
                                    undefined, true, function(e) {
                                        this.destroy();
-                                       context.disposeOfView()
+                                       context.close()
                                    }
                                   );
 
@@ -32,10 +32,6 @@ define([
             this.data.map.addPopup(popup);
 
             return this;
-        },
-
-        disposeOfView: function() {
-            this.close();
         }
     });
 

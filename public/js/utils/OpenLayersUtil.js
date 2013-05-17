@@ -6,6 +6,13 @@ define([
     var private = {};
 
     var OpenLayersUtil = {
+        getProjection: function() {
+            return {
+                projection: new OpenLayers.Projection("EPSG:900913"), 
+                displayProjection: new OpenLayers.Projection("EPSG:4326")
+            };
+        },
+
         getFeatureFields: function(callback) {
             var request = OpenLayers.Request.GET({
                 url: 'https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=DescribeFeatureType&typeName=exactAIS:LVI&authKey=tokencoin',
@@ -82,7 +89,27 @@ define([
             }
 
             return -1; //This means it's a geometric constraint
-        }
+        },
+
+        convertFilterToFilterParam: function(filters) {
+            var olFilters = new OpenLayers.Filter.Logical({
+                type: OpenLayers.Filter.Logical.AND 
+            });
+
+            for (var i = 0, len = filters.length; i< len; i++) {
+                for (var j = 0, olen = filters[i].operators.length; j < olen; j++) {
+                    olFilters.filters.push(filters[i].operators[j]);
+                }
+            }
+
+            var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
+            var xml = new OpenLayers.Format.XML(); 
+            var filter_param = xml.write(filter_1_0.write(olFilters));
+            console.log(filter_param);
+
+            return filter_param;
+            
+        },
     };
 
     return OpenLayersUtil;
