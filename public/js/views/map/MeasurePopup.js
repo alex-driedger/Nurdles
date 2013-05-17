@@ -9,8 +9,12 @@ define([
             var order = event.order;
             var measure = event.measure;
             if (measure > 0 ) {
-                $("#measureContainer").append("<div>Segment " + this.numberOfSegments + ": " +  measure.toFixed(3) + " " + event.units + "</div>");
+                $("#measureContainer").append("<div>Segment " + this.numberOfSegments + ": " +  (measure.toFixed(3) - this.previousTotal.toFixed(3)).toFixed(3) + " " + event.units + "</div>");
                 this.numberOfSegments++;
+                this.previousTotal = measure;
+
+                if (event.type === "measure") 
+                    $("#measureContainer").append("<div><b>Total</b>: " +  measure.toFixed(3) + " " + event.units + "</div>");
             }
             else 
                 $("#measureContainer").html("");
@@ -21,6 +25,7 @@ define([
         initialize: function(args) {
             this.initArgs(args);
             this.numberOfSegments = 1;
+            this.previousTotal = 0;
 
             this.bindToControl(this.measureControl, "measure", private.handleMeasurements, this);
             this.bindToControl(this.measureControl, "measurepartial", private.handleMeasurements, this);
