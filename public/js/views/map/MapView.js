@@ -233,32 +233,15 @@ define([
             var layersToAddToMap = [];
             _.each(eeLayers, function(eeLayer) {
                 var layer,
-                    userLayer = userLayers.findWhere({name: eeLayer.Name});
-                if (userLayer && userLayer.get("active") && userLayer.get("exactEarthParams")) {
+                    userLayer = userLayers.findWhere({name: eeLayer.Name}),
+                    params = {};
+
+                    if (userLayer)
+                        params = userLayer.get("exactEarthParams");
+
                     layer = new OpenLayers.Layer.WMS(
                         eeLayer.Name, "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
-                        {
-                        LAYERS: "exactAIS:LVI",
-                        STYLES: "VesselByType",
-                        format: "image/png",
-                        transparent: "true"
-                        },
-                        {
-                            singleTile: false,
-                            ratio: 1,
-                            isBaseLayer: eeLayer.isBaseLayer,
-                            yx: { 'EPSG:4326': true },
-                            wrapDateLine: true
-                        }
-                    );
-                    layer2 = new OpenLayers.Layer.WMS(
-                        "exactAIS:HT30", "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
-                        {
-                        LAYERS: "exactAIS:HT30",
-                        STYLES: "Track",
-                        format: "image/png",
-                        transparent: "true"
-                        },
+                        params,
                         {
                             singleTile: false,
                             ratio: 1,
@@ -268,12 +251,10 @@ define([
                         }
                     );
 
-                    layersToAddToMap.push(layer);
-                    layersToAddToMap.push(layer2);
-                }
+                    view.model.addLayer(layer);
+                    layer.setVisibility(userLayer && userLayer.get("active"))
             });
 
-            view.model.addLayers(layersToAddToMap);
         },
 
         getUserLayers: function(eeLayers, view) {
@@ -317,8 +298,16 @@ define([
                 }
             );
 
-
             this.model.addControl(measureControl);
+
+            var graticuleControl = new OpenLayers.Control.Graticule({
+                name: "Graticule",
+                numPoints: 2,
+                labelled: true,
+                autoActivate: false
+            });
+
+            this.model.addControl(graticuleControl);
         },
 
         render: function () {
@@ -339,14 +328,6 @@ define([
 
             map.render("map");
 
-            graticuleControl = new OpenLayers.Control.Graticule({
-                name: "Graticule",
-                numPoints: 2,
-                labelled: true,
-                autoActivate: false
-            });
-
-            map.addControl(graticuleControl);
 
             OpenLayers.Util.onImageLoadError = function () { }
             var basicMapLayer = new OpenLayers.Layer.WMS("Basic Base Map", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
