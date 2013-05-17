@@ -6,19 +6,23 @@
 require.config({
   paths: {
     jquery: 'libs/jquery/jquery-min',
+    bootstrap: 'libs/bootstrap/bootstrap.min',
     jqueryui: 'libs/jquery/jquery-ui.min',
     underscore: 'libs/underscore/underscore-min',
     backbone: 'libs/backbone/backbone-min',
     baseview: 'views/BaseView',
     basecollection: 'collections/BaseCollection',
     openlayersutil: "utils/OpenLayersUtil",
-    bootstrap: 'libs/bootstrap/bootstrap.min',
     templates: '../templates'
   },
 
   shim: {
       bootstrap: {
           deps: ['jquery']
+      },
+
+      jqueryui: {
+          deps: ['bootstrap']
       },
 
       underscore: { 
