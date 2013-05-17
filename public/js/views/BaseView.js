@@ -3,6 +3,7 @@ define([
        'underscore',
        'backbone',
        'jqueryui',
+       'bootstrap'
 ], function($, _, Backbone){
     var BaseView = Backbone.View.extend({
 
@@ -23,6 +24,7 @@ define([
             this.trigger("close", this);
             this.closeSubviews();
             this.unbindFromAll();
+            this.unbindFromAllControls();
             this.undelegateEvents();
             this.off();
             if (withFade) {
@@ -58,6 +60,15 @@ define([
             this.bindings.push({ object: object, event: e, callback: callback });
         },
 
+        bindToControl: function(control, e, callback, context) {
+            context || (context = this);
+            
+            control.events.register(e, context, callback);
+            
+            this.controlBindings || (this.controlBindings = []);
+            this.controlBindings.push({ control: control, event: e, callback: callback, view: this });
+        },
+
         eachSubview: function(iterator) {
             _.each(this.subviews, iterator);
         },
@@ -71,6 +82,16 @@ define([
 
             this.bindings = _.difference(this.bindings, bindingsToRemove);
         },
+
+        unbindControlEventsFromView: function(view) {
+            var self = this;
+            var bindingsToRemove = _.where(this.controlBindings, {view: view});
+            _.each(bindingsToRemove, function(binding, index, list) {
+                binding.control.events.unregister(binding.event, self, binding.callback);
+            });
+
+            this.controlBindings = _.difference(this.controlBindings, bindingsToRemove);
+        },
         
         unbindFromAll: function() {
             var self = this;
@@ -82,6 +103,18 @@ define([
             //Here, I can just reset the array and the garbarge collection will take care of the rest
             //Remember, I switched the event off so we should be ok
             this.bindings = [];
+        },
+
+        unbindFromAllControls: function() {
+            var self = this;
+            
+            _.each(this.controlBindings, function(binding, index, list) {
+                binding.control.events.unregister(binding.event, self, binding.callback);
+            });
+
+            //Here, I can just reset the array and the garbarge collection will take care of the rest
+            //Remember, I switched the event off so we should be ok
+            this.controlBindings = [];
         },
         
         addSubView: function(view) {

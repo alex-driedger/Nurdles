@@ -7,6 +7,7 @@ define([
        './MeasurePopup',
        '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html',
+       '../../components/DynamicMeasure'
 ], function(BaseView, BaseCollection, OpenLayersUtil, Layer, FeaturePopup, MeasurePopup, TopToolsRow, mapTemplate){
     var private = {
         /*-----
@@ -56,13 +57,6 @@ define([
             }
         },
 
-        handleMeasurements: function(event) {
-            var geometry = event.geometry;
-            var units = event.units;
-            var order = event.order;
-            var measure = event.measure;
-            console.log("Measure: " +  measure.toFixed(3) + " metres");
-        },
 
         // Needed only for interaction, not for the display.
         onPopupClose: function(evt) {
@@ -196,7 +190,12 @@ define([
                 if (activate) {
                     switch (control.name) {
                         case "Measure":
+                            var measurePopupView = new MeasurePopup({
+                                measureControl: control
+                            });
+
                             control.activate();
+                            measurePopupView.render();
                             break;
                          case "GetFeatureInfo":
                              control.deactivate();
@@ -207,6 +206,7 @@ define([
                     switch (control.name) {
                         case "Measure":
                             control.deactivate();
+                            Backbone.globalEvents.trigger("measureEnd");
                             break;
                          case "GetFeatureInfo":
                              control.activate();
@@ -215,9 +215,6 @@ define([
                 }
             });
 
-            var measurePopupView = new MeasurePopup();
-
-            measurePopupView.render();
         },
 
         getExactEarthLayers: function(callback) {
@@ -312,19 +309,14 @@ define([
             var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
             renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
 
-            var measureControl = new OpenLayers.Control.Measure(
+            var measureControl = new OpenLayers.Control.DynamicMeasure(
                 OpenLayers.Handler.Path,
                 {
                     name: "Measure",
-                    //immediate: true,
                     persist: true
                 }
             );
 
-            measureControl.events.on({
-                "measure": private.handleMeasurements,
-                "measurepartial": private.handleMeasurements
-            });
 
             this.model.addControl(measureControl);
         },
