@@ -17,7 +17,7 @@ define([
             this.initArgs(args);
             this.isDynamicContainer = true;
 
-            //this.layers = new BaseCollection([], {model: Layer});
+            this.layers = new BaseCollection([], {model: Layer});
         },
 
         template: _.template(mapLayersViewTemplate),
@@ -41,6 +41,7 @@ define([
                 }),
                 savedMapLayersView = new SavedMapLayersView({
                     $el: $("#savedMapLayers"),
+                    layers: this.layers
                 });
 
             this.addSubView(newMapLayersView);

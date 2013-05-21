@@ -7,7 +7,7 @@ module.exports = {
         userDAL.create("chris", "password", "tokencoin", function(err, user) {
             if (user) {
                 layerDAL.create(user._id, {
-                    title: "EE LVI",
+                    title: "ExactAIS:LVI",
                     name: "exactAIS:LVI",
                     authKey: "tokencoin",
                     isBaseLayer: false,
@@ -15,6 +15,21 @@ module.exports = {
                     exactEarthParams: {
                         LAYERS: "exactAIS:LVI",
                         STYLES: "VesselByType",
+                        format: "image/png",
+                        transparent: "true"
+                    },
+                    active: true
+                }, function(err, layer) {} );
+
+                layerDAL.create(user._id, {
+                    title: "exactAIS:HT30",
+                    name: "exactAIS:HT30",
+                    authKey: "tokencoin",
+                    isBaseLayer: false,
+                    isExactEarth: true,
+                    exactEarthParams: {
+                        LAYERS: "exactAIS:HT30",
+                        STYLES: "Track",
                         format: "image/png",
                         transparent: "true"
                     },

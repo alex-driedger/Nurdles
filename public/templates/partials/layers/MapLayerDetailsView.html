@@ -1,14 +1,14 @@
-<div class="saved-filter clearfix collapsed notExpanded <% if (tempChecked == true) { %> selected <% } %>">
+<div class="saved-filter clearfix collapsed notExpanded %>">
     <div class="pull-left">
-        NAME GOES HERE
+        <%= layer.get("title") %>
     </div>
     <div class="pull-right">
         <div class="collapsed-checkbox">
-            <input id="ID-checkbox" class="checkbox" type="checkbox" />
+            <input id="<%= layer.get("_id") %>-checkbox" class="checkbox" type="checkbox" />
         </div>
     </div>
 </div>
-<div id="ID-container" class="filter-operands-container clearfix">
+<div id="<%= layer.get("_id") %>-container" class="filter-operands-container clearfix">
     <div class="vpadded10">
         <input id="filterName" type="text" placeholder="Layer URL" value="URL GOES HERE" style="margin-left: 5px;"/>
     </div>
