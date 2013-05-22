@@ -16,7 +16,7 @@ suite('User Tests', function(){
         testMongoose.connection.close();
     });
 
-    suite('#getByUsername', function(){
+    suite('Basic functions', function(){
         test('should be the "chris" User', function(done){
             userdal.findUserByUsername("chris", function(err, user) {
                 expect(err).to.be.null;

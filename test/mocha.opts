@@ -1,2 +1,2 @@
 --ui tdd
---reporter list
+--reporter spec
