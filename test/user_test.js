@@ -1,26 +1,34 @@
 var expect = require('chai').expect;
 var chai = require('chai');
 var initDB = require("../db/init");
-//var userdal = require("../db/access/userdal");
-var User = require('../db/models/User').User;
-
-chai.Assertion.includeStack = true;
+var userdal = require("../db/access/userdal");
+var testMongoose;
 
 suite('User Tests', function(){
     setup(function(done){
         initDB.createDb(null, function(mongoose) {
+            testMongoose = mongoose;
             done();
         });
     });
 
+    teardown(function() {
+        testMongoose.connection.close();
+    });
+
     suite('#getByUsername', function(){
-        test('should be Chris User', function(done){
-            User.findByUsername("chris", function(err, user) {
-                if (err) done(err);
-                expect(user).to.be.ok;
+        test('should be the "chris" User', function(done){
+            userdal.findUserByUsername("chris", function(err, user) {
+                expect(err).to.be.null;
+                expect(user).not.to.be.null;
                 expect(user.username).to.be.equal("chris");
                 done();
             });
         });
+
+        test('should have a create function', function(){
+            expect(userdal.create).to.be.ok;
+        });
     });
+
 });
