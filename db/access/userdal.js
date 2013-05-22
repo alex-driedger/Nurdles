@@ -13,7 +13,7 @@ var self = {
     },
 
     findUserByUsername: function(username, callback) {
-        User.findByUsername({username: username}, function(err, user) {
+        User.findByUsername(username, function(err, user) {
             if (err)
                 callback(err);
             else

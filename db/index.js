@@ -1,6 +1,7 @@
 var jWorkflow = require('jWorkflow'),
     mongoose = require('mongoose'),
     bootstrap = require("./bootstrap"),
+    initDB = require("./init"),
     passport,
     LocalStrategy = require('passport-local').Strategy,
     User,
@@ -12,25 +13,9 @@ function createDb(initialValue, baton) {
     passport = initialValue;
     isMappedAlready = false;
 
-    //Heroku sets the process.env.PORT variable. If it's undefined, it means we're running locally
-    //so connect to the local mongo instance.
-    var connectionString = 
-        process.env.MONGOLAB_URI || 
-        process.env.MONGOHQ_URL || 
-        'mongodb://localhost/frontier';
-
-    var theport = process.env.PORT || 5000;
-    var mongoOptions = { db: { safe: true }};
-    console.log("Attempting to connect with connection string: " + connectionString);
-
-    mongoose.connect(connectionString,  mongoOptions, function(err, result) {
-         if (err) { 
-            console.log ('ERROR connecting to: ' + connectionString + '. ' + err);
-          } else {
-            console.log ('Succeeded connected to: ' + connectionString);
-          }
-       });
-    baton.pass();
+    initDB.createDb(mongoose, function(mongoose) {
+        baton.pass();
+    });
 }
 
 function createModels (previous, baton) {
