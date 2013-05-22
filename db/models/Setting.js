@@ -1,4 +1,4 @@
-var mongoose = require('../index').getMongoose();
+var mongoose = require('../init').getMongoose();
 
 var SettingSchema = new mongoose.Schema({
     type: { type: String, required: true },

@@ -1,4 +1,4 @@
-var mongoose = require('../index').getMongoose();
+var mongoose = require('../init').getMongoose();
 
 var LayerSchema = new mongoose.Schema({
     owner: {type: mongoose.Schema.ObjectId, required: true },
