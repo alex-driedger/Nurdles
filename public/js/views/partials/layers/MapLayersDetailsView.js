@@ -17,7 +17,7 @@ define([
 
         events: {
             "click .collapsed": "handleExpand",
-            "click .checkbox": "handleFilterToggle",
+            "click .checkbox": "handleLayerToggle",
         },
 
         handleExpand: function(e) {
@@ -33,7 +33,7 @@ define([
             this.isExpanded = !this.isExpanded;
         },
 
-        handleFilterToggle: function(e) {
+        handleLayerToggle: function(e) {
             e.stopImmediatePropagation();
 
             var target = $(e.target),

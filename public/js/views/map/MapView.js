@@ -121,6 +121,7 @@ define([
 
             this.isHeaderViewable = true;
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
+            this.bindTo(Backbone.globalEvents, "layersChanged", this.updateLayers, this);
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
             this.bindTo(Backbone.globalEvents, "toggleMeasure", this.toggleMeasure, this);
 
@@ -152,6 +153,16 @@ define([
             private.loadingLayers--;
             if (private.loadingLayers === 0)
                 $("#loader").addClass("hide");
+        },
+
+        updateLayers: function(layers) {
+            var map = this.model;
+
+            _.each(layers.models, function(layer) {
+                    map.getLayersByName(layer.get("name"))[0].setVisibility(layer.get("active"));
+            });
+
+            console.log(layers.models);
         },
 
         updateFilters: function(filters) {

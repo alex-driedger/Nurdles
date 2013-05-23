@@ -10,6 +10,9 @@ define([
     var SavedMapLayersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
+
+            this.activeFilters = [];
+            this.bindTo(Backbone.globalEvents, "activateLayer", this.activateLayer, this);
         },
 
         template: _.template(savedMapLayersTemplate),
@@ -34,6 +37,18 @@ define([
                 view.layersContainer.append(detailsView.preRender().$el);
                 detailsView.render();
             });
+        },
+
+        activateLayer: function(data) {
+            data.layer.set("active", data.activate);
+            data.layer.save(null, {
+                url: "/api/layers/" + data.layer.get("_id") + "/update",
+                success: function(data) {
+                    console.log("Save successful");
+                }
+            });
+
+            Backbone.globalEvents.trigger("layersChanged", this.layers);
         },
 
         render: function (isLocalRender) {
