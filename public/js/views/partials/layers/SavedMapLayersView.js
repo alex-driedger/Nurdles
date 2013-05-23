@@ -10,6 +10,8 @@ define([
     var SavedMapLayersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
+
+            this.bindTo(Backbone.globalEvents, "activateLayer", this.activateLayer, this);
         },
 
         template: _.template(savedMapLayersTemplate),
@@ -20,15 +22,32 @@ define([
         loadSavedLayersList: function(layers, view) {
             view.$el.html(view.template());
 
+            if (view.isExactEarthLayers)
+                view.layersContainer = $("#exactEarthLayersContainer");
+            else
+                view.layersContainer = $("#externalLayersContainer");
+
             layers.forEach(function(layer) {
                 var detailsView = new MapLayersDetailsView({
                     model: layer,
                 });
 
                 view.addSubView(detailsView);
-                view.$el.append(detailsView.preRender().$el);
+                view.layersContainer.append(detailsView.preRender().$el);
                 detailsView.render();
             });
+        },
+
+        activateLayer: function(data) {
+            data.layer.set("active", data.activate);
+            data.layer.save(null, {
+                url: "/api/layers/" + data.layer.get("_id") + "/update",
+                success: function(data) {
+                    console.log("Save successful");
+                }
+            });
+
+            Backbone.globalEvents.trigger("layersChanged", this.layers);
         },
 
         render: function (isLocalRender) {

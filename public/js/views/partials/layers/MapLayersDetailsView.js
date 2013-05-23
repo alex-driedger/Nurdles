@@ -16,6 +16,8 @@ define([
         template: _.template(mapLayerDetailsViewTemplate),
 
         events: {
+            "click .collapsed": "handleExpand",
+            "click .checkbox": "handleLayerToggle",
         },
 
         handleExpand: function(e) {
@@ -29,6 +31,27 @@ define([
             divToToggle.slideToggle(200);
 
             this.isExpanded = !this.isExpanded;
+        },
+
+        handleLayerToggle: function(e) {
+            e.stopImmediatePropagation();
+
+            var target = $(e.target),
+                id = target.prop("id"),
+                isActivated = false;
+
+            if (target.prop("checked")) {
+                target.closest(".collapsed").addClass("selected");
+                isActivated = true;
+            }
+            else {
+                target.closest(".collapsed").removeClass("selected");
+            }
+
+            Backbone.globalEvents.trigger("activateLayer", {
+                layer: this.model,
+                activate: isActivated
+            });
         },
 
         preRender: function() {
