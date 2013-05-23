@@ -20,13 +20,18 @@ define([
         loadSavedLayersList: function(layers, view) {
             view.$el.html(view.template());
 
+            if (view.isExactEarthLayers)
+                view.layersContainer = $("#exactEarthLayersContainer");
+            else
+                view.layersContainer = $("#externalLayersContainer");
+
             layers.forEach(function(layer) {
                 var detailsView = new MapLayersDetailsView({
                     model: layer,
                 });
 
                 view.addSubView(detailsView);
-                view.$el.append(detailsView.preRender().$el);
+                view.layersContainer.append(detailsView.preRender().$el);
                 detailsView.render();
             });
         },

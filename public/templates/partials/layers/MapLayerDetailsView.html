@@ -1,22 +1,31 @@
-<div class="saved-filter clearfix collapsed notExpanded %>">
+<div class="saved-filter clearfix collapsed notExpanded <% if (layer.get("active")) { %> selected <% } %>">
     <div class="pull-left">
         <%= layer.get("title") %>
     </div>
     <div class="pull-right">
         <div class="collapsed-checkbox">
-            <input id="<%= layer.get("_id") %>-checkbox" class="checkbox" type="checkbox" />
+            <input id="<%= layer.get("_id") %>-checkbox" class="checkbox" type="checkbox" <% if (layer.get("active")) { %> checked <% } %>/>
         </div>
     </div>
 </div>
 <div id="<%= layer.get("_id") %>-container" class="filter-operands-container clearfix">
+    <% if (!layer.get("isExactEarth")) { %>
     <div class="vpadded10">
         <input id="filterName" type="text" placeholder="Layer URL" value="URL GOES HERE" style="margin-left: 5px;"/>
     </div>
-        <div class="pull-right padded">
-            <button id="ID-remove" class="btn btn-small btn-danger deleteLayer"> Remove </button>
-            <button id="ID-restore" class="btn restoreLayer"> Restore </button>
-            <button id="ID-save" class="btn saveLayer"> Save </button>
-        </div>
+    <div class="pull-right padded">
+        <button id="ID-remove" class="btn btn-small btn-danger deleteLayer"> Remove </button>
+        <button id="ID-restore" class="btn restoreLayer"> Restore </button>
+        <button id="ID-save" class="btn saveLayer"> Save </button>
     </div>
+    <% } else { %>
+    <div class="vpadded10 padded">
+        <select>
+            <option> Stuff will go here </option>
+        </select>
+    </div>
+    <% } %>
+</div>
+
 
 
