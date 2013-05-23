@@ -55,10 +55,13 @@ define([
                 var view = this,
                     layersWithActiveInfoInjected = [];
 
+                Backbone.globalEvents.trigger("showLoader");
+
                 this.layers.fetch({
                     url: "/api/layers/getAllForUser",
                     success: function(list, res, opt) {
                         view.loadSavedLayersList(list.models, view);
+                        Backbone.globalEvents.trigger("hideLoader");
 
                     },
                     error: function(err) {

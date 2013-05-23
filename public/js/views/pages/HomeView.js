@@ -9,6 +9,9 @@ define([
     initialize: function() {
         this.subviews = [];
         this.sidebarActive = false;
+
+        this.bindTo(Backbone.globalEvents, "showLoader", this.showLoader, this);
+        this.bindTo(Backbone.globalEvents, "hideLoader", this.hideLoader, this);
     },
 
     events: {
@@ -32,6 +35,14 @@ define([
                 this.sidebarActive = true;
             }
         }
+    },
+
+    showLoader: function(e) {
+        $("#loader").removeClass("hide");
+    },
+
+    hideLoader: function(e) {
+        $("#loader").addClass("hide");
     },
 
     render: function(){

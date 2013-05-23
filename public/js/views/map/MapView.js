@@ -144,16 +144,6 @@ define([
             }
         },
 
-        showLoader: function(e) {
-            private.loadingLayers++
-            $("#loader").removeClass("hide");
-        },
-
-        hideLoader: function(e) {
-            private.loadingLayers--;
-            if (private.loadingLayers === 0)
-                $("#loader").addClass("hide");
-        },
 
         updateLayers: function(layers) {
             var map = this.model;
