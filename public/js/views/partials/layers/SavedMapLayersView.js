@@ -11,7 +11,6 @@ define([
         initialize: function(args) {
             this.initArgs(args);
 
-            this.activeFilters = [];
             this.bindTo(Backbone.globalEvents, "activateLayer", this.activateLayer, this);
         },
 
