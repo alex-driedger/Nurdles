@@ -20,9 +20,15 @@
     </div>
     <% } else { %>
     <div class="vpadded10 padded">
-        <select>
-            <option> Stuff will go here </option>
-        </select>
+        <div class="bordered-box">
+            <div>
+                <ul id="sortable">
+                    <% _.each(eeLayer.Style, function(style) { %>
+                        <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label><input type="checkbox" /> <%= style.Title %></label></li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
     </div>
     <% } %>
 </div>

@@ -57,10 +57,18 @@ define([
         preRender: function() {
             this.$el.html(this.template({
                 layer: this.model,
+                eeLayer: this.eeLayer
             }));
 
+            $( "#sortable" ).sortable({
+                placeholder: "ui-state-highlight"
+            });
+            $("#sortable" ).disableSelection();
+
+            console.log("EELAYER: ", this.eeLayer);
+
             this.delegateEvents(this.events);
-            
+
             return this;
 
         },
