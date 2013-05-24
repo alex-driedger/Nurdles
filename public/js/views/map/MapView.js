@@ -122,6 +122,7 @@ define([
             this.isHeaderViewable = true;
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
             this.bindTo(Backbone.globalEvents, "layersChanged", this.updateLayers, this);
+            this.bindTo(Backbone.globalEvents, "layerStylesReordered", this.updateLayerStyles, this);
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
             this.bindTo(Backbone.globalEvents, "toggleMeasure", this.toggleMeasure, this);
 
@@ -153,6 +154,13 @@ define([
             });
 
             console.log(layers.models);
+        },
+
+        updateLayerStyles: function(layer) {
+            var eeLayer = map.getLayersByName(layer.get("name"))[0],
+                params = layer.get("exactEarthParams");
+
+            eeLayer.mergeNewParams(params);
         },
 
         updateFilters: function(filters) {

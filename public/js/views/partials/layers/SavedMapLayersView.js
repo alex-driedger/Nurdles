@@ -13,6 +13,7 @@ define([
                 Backbone.globalEvents.trigger("showLoader");
 
             this.bindTo(Backbone.globalEvents, "activateLayer", this.activateLayer, this);
+            this.bindTo(Backbone.globalEvents, "activateStyle", this.activateStyle, this);
         },
 
         template: _.template(savedMapLayersTemplate),
@@ -28,7 +29,6 @@ define([
             else
                 view.layersContainer = $("#externalLayersContainer");
 
-            console.log("LKSDF: ", view.eeLayers);
             layers.forEach(function(layer) {
                 var detailsView = new MapLayersDetailsView({
                     model: layer,

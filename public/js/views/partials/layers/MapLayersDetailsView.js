@@ -18,6 +18,7 @@ define([
         events: {
             "click .collapsed": "handleExpand",
             "click .checkbox": "handleLayerToggle",
+            "click .styleCheckbox": "toggleStyle"
         },
 
         handleExpand: function(e) {
@@ -31,6 +32,38 @@ define([
             divToToggle.slideToggle(200);
 
             this.isExpanded = !this.isExpanded;
+        },
+
+        toggleStyle: function(e) {
+            var target = $(e.target);
+            e.stopImmediatePropagation();
+            
+            target.parent().closest("li").toggleClass("ui-state-disabled");
+            this.handleLayerReorder();
+        },
+
+        handleLayerReorder: function() {
+            var activeStyles = $( "#" + this.model.get("_id")).sortable( "toArray" ),
+                layersDefinitions = "",
+                exactEarthParams = this.model.get("exactEarthParams");
+
+            for (var i = 0, len = activeStyles.length; i < len; i++) {
+                layersDefinitions += this.model.get("name") + ",";
+            }
+
+            layersDefinitions = layersDefinitions.substring(0, layersDefinitions.length - 1); //Removing final comma
+
+            exactEarthParams.STYLES = activeStyles.join(",");
+            exactEarthParams.LAYERS = layersDefinitions;
+
+            this.model.save(null, {
+                url: "/api/layers/" + this.model.get("_id") + "/update",
+                success: function(data) {
+                    console.log("Save successful");
+                }
+            });
+
+            Backbone.globalEvents.trigger("layerStylesReordered", this.model);
         },
 
         handleLayerToggle: function(e) {
@@ -55,25 +88,35 @@ define([
         },
 
         preRender: function() {
+            var view = this;
+
             this.$el.html(this.template({
                 layer: this.model,
-                eeLayer: this.eeLayer
+                eeLayer: this.eeLayer,
+                styles: this.model.get("exactEarthParams").STYLES
             }));
 
-            $( "#sortable" ).sortable({
-                placeholder: "ui-state-highlight"
-            });
-            $("#sortable" ).disableSelection();
-
-            console.log("EELAYER: ", this.eeLayer);
-
-            this.delegateEvents(this.events);
 
             return this;
 
         },
 
         render: function() {
+            var view = this;
+
+            $( "#" + this.model.get("_id")).sortable({
+                placeholder: "ui-state-highlight",
+                items: "li:not(.ui-state-disabled)",
+                cancel: ".ui-state-disabled",
+                stop: function(event, ui) {
+                    view.handleLayerReorder();
+                }
+            });
+            $("#" + this.model.get("_id")).disableSelection();
+
+            console.log("EELAYER: ", this.eeLayer);
+
+            this.delegateEvents(this.events);
             if (!this.isExpanded)
                 $("#" + this.model.get("_id") + "-container").hide();
 

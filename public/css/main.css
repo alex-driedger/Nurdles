@@ -26,7 +26,7 @@ input[type="checkbox"] {
 
 /*-------------------------Open Layers---------------------------*/
 .olImageLoadError {
-    visibility: hidden;
+    display: none !important;
 }
 
 /*-------------------------Padding-------------------------------*/
@@ -507,13 +507,13 @@ table.wms, td.wms
 
 /*------------------------Sortable---------------------------*/
 
-#sortable { 
+.sortable { 
     list-style-type: none; 
     margin: 0; 
     padding: 0; 
 }
 
-#sortable li { 
+.sortable li { 
     margin: 0 3px 3px 3px;
     padding: 0.4em;
     padding-left: 1.5em;
@@ -521,7 +521,7 @@ table.wms, td.wms
     height: 18px;
 }
 
-#sortable li span { 
+.sortable li span { 
     position: absolute;
     margin-left: -1.3em;
 }
