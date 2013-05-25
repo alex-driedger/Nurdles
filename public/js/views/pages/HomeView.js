@@ -45,8 +45,9 @@ define([
             layers: layers
         });
 
-        $("#viewLayerContainer").html(viewLayersView.render().$el);
-        this.addSubView(ViewLayersView);
+        $("#viewLayerContainer").html(viewLayersView.preRender().$el);
+        viewLayersView.render();
+        this.addSubView(viewLayersView);
     },
 
     showLoader: function(e) {
