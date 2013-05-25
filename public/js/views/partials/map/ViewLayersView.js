@@ -18,10 +18,17 @@ define([
         },
 
         handleLayerReorder: function() {
-            var activeLayers = $( "#sortableViewLayers").sortable( "toArray" ).reverse(),
-                baseZIndex = 10;
+            var activeLayers = $( "#sortableViewLayers").sortable( "toArray" ).reverse();
 
             Backbone.globalEvents.trigger("layersReordered", activeLayers);
+
+            this.layers.each(function(layer) {
+                if (_.contains(activeLayers, layer.get("name"))) {
+                    layer.set("order", activeLayers.indexOf(layer.get("name")) + 1);
+                    layer.update();
+                }
+            });
+                    
             console.log($("#sortableViewLayers").sortable("toArray"));
         },
 
@@ -36,11 +43,16 @@ define([
 
             target.parent().closest("li").toggleClass("ui-state-disabled");
 
-            layer.set("active", isActivated);
+            if (isActivated) {
+                layer.set("active", true);
+                this.handleLayerReorder();
+            }
+            else {
+                layer.set("active", false);
+                layer.update();
+            }
+
             Backbone.globalEvents.trigger("layersChanged", this.layers);
-
-            layer.update();
-
         },
 
         preRender: function() {

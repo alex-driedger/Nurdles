@@ -12,7 +12,7 @@ var self = {
     getAllForUser: function(id, callback) {
         var ObjectId = mongoose.Types.ObjectId;
         console.log("Finding Layers for user: ", id);
-        Layer.find({owner: new ObjectId(id.toString())}, function(err, layers) {
+        Layer.find({owner: new ObjectId(id.toString())}).sort({order: -1}).exec(function(err, layers) {
             callback(err, layers);
         });
     },

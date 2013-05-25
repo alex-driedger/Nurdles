@@ -274,6 +274,7 @@ define([
                     );
 
                     view.model.addLayer(layer);
+                    view.model.setLayerIndex(layer, userLayer.get("order"));
                     layer.setVisibility(userLayer && userLayer.get("active"))
             });
 

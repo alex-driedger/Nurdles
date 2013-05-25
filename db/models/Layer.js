@@ -11,7 +11,8 @@ var LayerSchema = new mongoose.Schema({
     isBaseLayer: { type: String, required: true },
     isExactEarth: { type: Boolean, required: true },
     exactEarthParams: { type: mongoose.Schema.Types.Mixed, required: false },
-    active: { type: Boolean, required: true, default: false }
+    active: { type: Boolean, required: true, default: false },
+    order: { type: Number, required: true, default: -1 }
 });
 
 var Layer = mongoose.model("Layer", LayerSchema);
