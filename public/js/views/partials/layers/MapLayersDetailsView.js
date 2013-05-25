@@ -43,7 +43,7 @@ define([
         },
 
         handleLayerReorder: function() {
-            var activeStyles = $( "#" + this.model.get("_id")).sortable( "toArray" ),
+            var activeStyles = $( "#" + this.model.get("_id") + "-layer").sortable( "toArray" ).reverse(),
                 layersDefinitions = "",
                 exactEarthParams = this.model.get("exactEarthParams");
 
@@ -104,7 +104,7 @@ define([
         render: function() {
             var view = this;
 
-            $( "#" + this.model.get("_id")).sortable({
+            $( "#" + this.model.get("_id") + "-layer").sortable({
                 placeholder: "ui-state-highlight",
                 items: "li:not(.ui-state-disabled)",
                 cancel: ".ui-state-disabled",

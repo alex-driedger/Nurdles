@@ -150,7 +150,7 @@ define([
             var map = this.model;
 
             _.each(layers.models, function(layer) {
-                    map.getLayersByName(layer.get("name"))[0].setVisibility(layer.get("active"));
+                map.getLayersByName(layer.get("name"))[0].setVisibility(layer.get("active"));
             });
 
             console.log(layers.models);
