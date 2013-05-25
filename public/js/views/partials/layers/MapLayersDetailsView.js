@@ -17,7 +17,6 @@ define([
 
         events: {
             "click .collapsed": "handleExpand",
-            "click .checkbox": "handleLayerToggle",
             "click .styleCheckbox": "toggleStyle"
         },
 
@@ -39,10 +38,10 @@ define([
             e.stopImmediatePropagation();
             
             target.parent().closest("li").toggleClass("ui-state-disabled");
-            this.handleLayerReorder();
+            this.handleStyleReorder();
         },
 
-        handleLayerReorder: function() {
+        handleStyleReorder: function() {
             var activeStyles = $( "#" + this.model.get("_id") + "-layer").sortable( "toArray" ).reverse(),
                 layersDefinitions = "",
                 exactEarthParams = this.model.get("exactEarthParams");
@@ -56,35 +55,9 @@ define([
             exactEarthParams.STYLES = activeStyles.join(",");
             exactEarthParams.LAYERS = layersDefinitions;
 
-            this.model.save(null, {
-                url: "/api/layers/" + this.model.get("_id") + "/update",
-                success: function(data) {
-                    console.log("Save successful");
-                }
-            });
+            this.model.update();
 
             Backbone.globalEvents.trigger("layerStylesReordered", this.model);
-        },
-
-        handleLayerToggle: function(e) {
-            e.stopImmediatePropagation();
-
-            var target = $(e.target),
-                id = target.prop("id"),
-                isActivated = false;
-
-            if (target.prop("checked")) {
-                target.closest(".collapsed").addClass("selected");
-                isActivated = true;
-            }
-            else {
-                target.closest(".collapsed").removeClass("selected");
-            }
-
-            Backbone.globalEvents.trigger("activateLayer", {
-                layer: this.model,
-                activate: isActivated
-            });
         },
 
         preRender: function() {
@@ -109,7 +82,7 @@ define([
                 items: "li:not(.ui-state-disabled)",
                 cancel: ".ui-state-disabled",
                 stop: function(event, ui) {
-                    view.handleLayerReorder();
+                    view.handleStyleReorder();
                 }
             });
             $("#" + this.model.get("_id")).disableSelection();

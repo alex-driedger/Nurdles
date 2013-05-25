@@ -468,6 +468,11 @@ table.wms, td.wms
     border: 1px solid #888;
 }
 
+.collapsed-header {
+    background-color: #cccccc;
+    border: 1px solid #888;
+}
+
 .accordion {
     margin: 10px 0; 
     width: 100%;

@@ -1,11 +1,6 @@
-<div class="saved-filter clearfix collapsed notExpanded <% if (layer.get("active")) { %> selected <% } %>">
+<div class="saved-filter clearfix collapsed notExpanded collapsed-header">
     <div class="pull-left">
         <%= layer.get("title") %>
-    </div>
-    <div class="pull-right">
-        <div class="collapsed-checkbox">
-            <input id="<%= layer.get("_id") %>-checkbox" class="checkbox" type="checkbox" <% if (layer.get("active")) { %> checked <% } %>/>
-        </div>
     </div>
 </div>
 <div id="<%= layer.get("_id") %>-container" class="filter-operands-container clearfix">

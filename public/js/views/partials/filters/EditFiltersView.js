@@ -60,16 +60,15 @@ define([
         createFilter: function(e) {
             var view = this;
             this.model.set("name", $("#filterName").val());
-            this.model.save(null, {
-                success: function(response){
+            this.model.update(
+                function(response, view){
                     Backbone.globalEvents.trigger("addedFilter", response);
                     view.clearFilter();
                 },
-                error: function(err){
+                function(err){
                     console.log(err); 
                 },
-                url: "/api/filters/save"
-            });
+                this);
         },
 
         handlePropertyChange: function(e) {

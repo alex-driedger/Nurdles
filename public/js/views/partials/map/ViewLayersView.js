@@ -18,6 +18,10 @@ define([
         },
 
         handleLayerReorder: function() {
+            var activeLayers = $( "#sortableViewLayers").sortable( "toArray" ).reverse(),
+                baseZIndex = 10;
+
+            Backbone.globalEvents.trigger("layersReordered", activeLayers);
             console.log($("#sortableViewLayers").sortable("toArray"));
         },
 
@@ -35,12 +39,7 @@ define([
             layer.set("active", isActivated);
             Backbone.globalEvents.trigger("layersChanged", this.layers);
 
-            layer.save(null, {
-                url: "/api/layers/" + layer.get("_id") + "/update",
-                success: function(data) {
-                    console.log("Save successful");
-                }
-            });
+            layer.update();
 
         },
 
