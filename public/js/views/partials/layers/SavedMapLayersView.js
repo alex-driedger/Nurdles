@@ -10,8 +10,10 @@ define([
     var SavedMapLayersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
+                Backbone.globalEvents.trigger("showLoader");
 
             this.bindTo(Backbone.globalEvents, "activateLayer", this.activateLayer, this);
+            this.bindTo(Backbone.globalEvents, "activateStyle", this.activateStyle, this);
         },
 
         template: _.template(savedMapLayersTemplate),
@@ -30,6 +32,7 @@ define([
             layers.forEach(function(layer) {
                 var detailsView = new MapLayersDetailsView({
                     model: layer,
+                    eeLayer: _.findWhere(view.eeLayers, {Name: layer.get("name")})
                 });
 
                 view.addSubView(detailsView);
@@ -55,7 +58,6 @@ define([
                 var view = this,
                     layersWithActiveInfoInjected = [];
 
-                Backbone.globalEvents.trigger("showLoader");
 
                 this.layers.fetch({
                     url: "/api/layers/getAllForUser",

@@ -16,6 +16,7 @@ define([
         initialize: function(args) {
             this.initArgs(args);
             this.isDynamicContainer = true;
+            this.eeLayers = null;
 
             this.layers = new BaseCollection([], {model: Layer});
         },
@@ -26,8 +27,8 @@ define([
 
         preRender: function(callback) {
             var view = this;
-            OpenLayersUtil.getLayers(null, function(err, styles) {
-                console.log(styles);
+            OpenLayersUtil.getLayers(null, function(err, eeLayers) {
+                view.eeLayers = eeLayers;
                 view.$el.html(view.template());
                 callback();
             });
@@ -42,7 +43,8 @@ define([
                 savedMapLayersView = new SavedMapLayersView({
                     $el: $("#savedMapLayers"),
                     isExactEarthLayers: true,
-                    layers: this.layers
+                    layers: this.layers,
+                    eeLayers: this.eeLayers
                 });
 
             this.addSubView(newMapLayersView);
