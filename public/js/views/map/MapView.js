@@ -264,6 +264,8 @@ define([
                     layer.setVisibility(userLayer && userLayer.get("active"))
             });
 
+            Backbone.globalEvents.trigger("layersFetched", userLayers);
+
         },
 
         getUserLayers: function(eeLayers, view) {

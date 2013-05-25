@@ -1,0 +1,5 @@
+<ul id="sortableViewLayers" class="sortable">
+    <% _.each(layers.models, function(layer) { %>
+        <li id="<%= layer.get('name') %>" class="ui-state-default <% if (!layer.get('active')) { %> ui-state-disabled <% } %>"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label><input class="styleCheckbox" type="checkbox" <% if (layer.get("active")) { %> checked <% } %>  /> <%= layer.get("title") %></label></li>
+    <% }); %>
+</ul>
