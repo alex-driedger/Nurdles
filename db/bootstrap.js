@@ -18,7 +18,8 @@ module.exports = {
                         format: "image/png",
                         transparent: "true"
                     },
-                    active: true
+                    active: true,
+                    order: 1
                 }, function(err, layer) {} );
 
                 layerDAL.create(user._id, {
@@ -33,7 +34,8 @@ module.exports = {
                         format: "image/png",
                         transparent: "true"
                     },
-                    active: true
+                    active: true,
+                    order: 2
                 }, function(err, layer) {} );
             }
         });

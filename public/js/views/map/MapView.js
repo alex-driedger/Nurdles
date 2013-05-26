@@ -123,6 +123,7 @@ define([
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
             this.bindTo(Backbone.globalEvents, "layersChanged", this.updateLayers, this);
             this.bindTo(Backbone.globalEvents, "layerStylesReordered", this.updateLayerStyles, this);
+            this.bindTo(Backbone.globalEvents, "layersReordered", this.updateLayerOrder, this);
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
             this.bindTo(Backbone.globalEvents, "toggleMeasure", this.toggleMeasure, this);
 
@@ -150,10 +151,22 @@ define([
             var map = this.model;
 
             _.each(layers.models, function(layer) {
-                    map.getLayersByName(layer.get("name"))[0].setVisibility(layer.get("active"));
+                map.getLayersByName(layer.get("name"))[0].setVisibility(layer.get("active"));
             });
 
             console.log(layers.models);
+        },
+
+        updateLayerOrder: function(layerIds) {
+            var map = this.model;
+
+            for (var i = 1, len = map.layers.length; i < len; i++) {
+                var layer = map.layers[i];
+                if (layerIds.indexOf(layer.name) == -1)
+                    map.setLayerIndex(layer, -1);
+                else
+                    map.setLayerIndex(layer, i + 1); //To bump it above the base layer
+            }
         },
 
         updateLayerStyles: function(layer) {
@@ -261,8 +274,11 @@ define([
                     );
 
                     view.model.addLayer(layer);
+                    view.model.setLayerIndex(layer, userLayer.get("order"));
                     layer.setVisibility(userLayer && userLayer.get("active"))
             });
+
+            Backbone.globalEvents.trigger("layersFetched", userLayers);
 
         },
 

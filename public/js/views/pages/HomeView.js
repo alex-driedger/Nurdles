@@ -2,8 +2,9 @@ define([
   'baseview',
   '../map/MapView',
   '../partials/sidebar/SidebarView',
+  '../partials/map/ViewLayersView',
   'text!templates/pages/HomeView.html'
-], function(Baseview, MapView, SideBarView, homeTemplate){
+], function(Baseview, MapView, SideBarView, ViewLayersView, homeTemplate){
 
   var HomeView = Baseview.extend({
     initialize: function() {
@@ -12,6 +13,8 @@ define([
 
         this.bindTo(Backbone.globalEvents, "showLoader", this.showLoader, this);
         this.bindTo(Backbone.globalEvents, "hideLoader", this.hideLoader, this);
+
+        this.bindTo(Backbone.globalEvents, "layersFetched", this.loadLayersIntoDropDown, this);
     },
 
     events: {
@@ -35,6 +38,16 @@ define([
                 this.sidebarActive = true;
             }
         }
+    },
+
+    loadLayersIntoDropDown: function(layers) {
+        var viewLayersView = new ViewLayersView({
+            layers: layers
+        });
+
+        $("#viewLayerContainer").html(viewLayersView.preRender().$el);
+        viewLayersView.render();
+        this.addSubView(viewLayersView);
     },
 
     showLoader: function(e) {

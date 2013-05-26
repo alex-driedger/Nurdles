@@ -468,6 +468,11 @@ table.wms, td.wms
     border: 1px solid #888;
 }
 
+.collapsed-header {
+    background-color: #cccccc;
+    border: 1px solid #888;
+}
+
 .accordion {
     margin: 10px 0; 
     width: 100%;
@@ -514,10 +519,9 @@ table.wms, td.wms
 }
 
 .sortable li { 
-    margin: 0 3px 3px 3px;
-    padding: 0.4em;
+    margin: 0 5px 5px 5px;
+    padding: 0.5em;
     padding-left: 1.5em;
-    font-size: 1.4em;
     height: 18px;
 }
 
@@ -527,3 +531,8 @@ table.wms, td.wms
 }
 
 .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+
+.sortable.no-padding li {
+    padding: 0px;
+    padding-left: 0px;
+}

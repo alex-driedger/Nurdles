@@ -1,0 +1,9 @@
+<ul id="sortableViewLayers" class="sortable">
+    <% _.each(layers.models, function(layer) { %>
+    <li id="<%= layer.get('name') %>" class="ui-state-default viewLayerLi <% if (!layer.get('active')) { %> ui-state-disabled <% } %>"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label><input id="<%= layer.get('_id') %>" class="layerCheckbox" type="checkbox" <% if (layer.get("active")) { %> checked <% } %>  /> <%= layer.get("title") %></label></li>
+        <% }); %>
+</ul>
+<ul class="sortable no-padding">
+    <li class="divider"></li>
+    <li> Basemaps will go here </li>
+</ul>

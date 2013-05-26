@@ -1,11 +1,6 @@
-<div class="saved-filter clearfix collapsed notExpanded <% if (layer.get("active")) { %> selected <% } %>">
+<div class="saved-filter clearfix collapsed notExpanded collapsed-header">
     <div class="pull-left">
         <%= layer.get("title") %>
-    </div>
-    <div class="pull-right">
-        <div class="collapsed-checkbox">
-            <input id="<%= layer.get("_id") %>-checkbox" class="checkbox" type="checkbox" <% if (layer.get("active")) { %> checked <% } %>/>
-        </div>
     </div>
 </div>
 <div id="<%= layer.get("_id") %>-container" class="filter-operands-container clearfix">
@@ -22,7 +17,7 @@
     <div class="vpadded10 padded">
         <div class="bordered-box">
             <div>
-                <ul id="<%= layer.get('_id') %>" class="sortable">
+                <ul id="<%= layer.get('_id') %>-layer" class="sortable">
                     <% if (!_.isArray(eeLayer.Style)) {
                         isActive = eeLayer.Name == layer.get("name") %>
                             <li id="<%= eeLayer.Style.Name %>" class="ui-state-default <% if (!isActive) { %> ui-state-disabled <% } %>"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label><input class="styleCheckbox" type="checkbox" <% if (isActive) { %> checked <% } %>  /> <%= eeLayer.Style.Title %></label></li>

@@ -87,13 +87,7 @@ define([
         handleSaveFilter: function(e) {
             this.updateModel();
             var filterId = $(e.target).prop("id").split("-")[0];
-            this.model.save(null, {
-                url: "/api/filters/" + filterId + "/update",
-                success: function(filter) {
-                    console.log("Updated filter: ", filter);
-                },
-                error: function(err) { console.log(err); }
-            });
+            this.model.update();
 
             Backbone.globalEvents.trigger("updateFilter", this.model);
         },
