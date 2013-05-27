@@ -68,7 +68,9 @@ define([
         },
 
         appendNewFilter: function(filter) {
-            //TODO: Add new filter at the beginning of the list
+            this.filters.add(filter, {at: 0});
+            this.preRender();
+            this.render(true);
         },
 
         deleteFilter: function(filter) {
@@ -112,7 +114,7 @@ define([
                         view.loadSavedFiltersView(view.filters, view);
 
                         if (view.activeFilters.length > 0) {
-                            Backbone.globalEvents.trigger("filtersChanged", view.activeFilters);
+                            Backbone.globalEvents.trigger("initialFilterLoad", view.activeFilters);
                         }
                     },
                     error: function(err) {

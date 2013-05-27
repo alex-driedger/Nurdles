@@ -15,8 +15,9 @@ define([
             this.model = new Filter();
 
             //If anything happens to our operators collection, show the user.
-            this.listenTo(this.model, "change", this.cacheOperators);
-            this.listenTo(this.model, "addOperator", this.render);
+            this.bindTo(this.model, "removeOperator", this.cacheOperators);
+            this.bindTo(this.model, "clearOperators", this.reRender);
+            this.bindTo(this.model, "addOperator", this.render);
         },
 
         template: _.template(editFiltersTemplate),
@@ -49,11 +50,10 @@ define([
             });
 
             this.model.set("name", $("#filterName").val());
-
-            this.render();
         },
 
         clearFilter: function() {
+            this.model.set("name", "");
             this.model.clearOperators();
         },
 
@@ -63,7 +63,8 @@ define([
             this.model.save(null, {
                 success: function(response){
                     Backbone.globalEvents.trigger("addedFilter", response);
-                    view.clearFilter();
+                    view.model = new Filter();
+                    view.reRender();
                 },
                 error: function(err){
                     console.log(err); 
@@ -119,7 +120,7 @@ define([
 
         addRow: function(e) {
             var newOperator = {
-                id: private.operatorCounter++,
+               id: private.operatorCounter++,
                 property: $("#newProperty").val(),
                 type: $("#newType").val(),
                 lowerBoundary: $("#newLower").val(),
@@ -137,9 +138,10 @@ define([
 
             this.cacheOperators();
             this.model.addOperator(newOperator);
+            this.reRender();
         },
 
-        render: function (firstTime) {
+        render: function () {
             var templateData = {
                 types: this.types,
                 features: this.features,

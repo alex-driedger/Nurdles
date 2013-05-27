@@ -118,9 +118,11 @@ define([
                 units: 'm'
             });
             this.userLayers = new BaseCollection([], {model: Layer});
+            this.initialFiltersToLoad = [];
 
             this.isHeaderViewable = true;
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
+            this.bindTo(Backbone.globalEvents, "initialFilterLoad", this.queueInitialFilters, this);
             this.bindTo(Backbone.globalEvents, "layersChanged", this.updateLayers, this);
             this.bindTo(Backbone.globalEvents, "layerStylesReordered", this.updateLayerStyles, this);
             this.bindTo(Backbone.globalEvents, "layersReordered", this.updateLayerOrder, this);
@@ -176,13 +178,30 @@ define([
             eeLayer.mergeNewParams(params);
         },
 
+        queueInitialFilters: function(filters) {
+            this.initialFiltersToLoad = filters;
+            this.loadInitialFilters();
+        },
+
+        //This function exists because need a common landing point when loading
+        //filters and the map at the same time. We call this when were done loading
+        //filters from the db AND when we're done loading the layers on the map.
+        //Only once both are done can we apply the filters to the map.
+        loadInitialFilters: function() {
+            if (this.layersLoaded && this.initialFiltersToLoad.length > 0) {
+                this.updateFilters(this.initialFiltersToLoad);
+                delete this.initialFiltersToLoad;
+            }
+        },
+
         updateFilters: function(filters) {
             var map = this.model;
 
             var exactAISLayer = map.getLayersByName("exactAIS:LVI")[0];
 
-            exactAISLayer.params["FILTER"] = this.createOpenLayersFilters(filters);
-            exactAISLayer.redraw();
+            if (filters.length > 0) {
+                exactAISLayer.mergeNewParams({"FILTER": this.createOpenLayersFilters(filters)});
+            }
         },
 
         createOpenLayersFilters: function(filters) {
@@ -279,6 +298,8 @@ define([
             });
 
             Backbone.globalEvents.trigger("layersFetched", userLayers);
+            this.layersLoaded = true;
+            this.loadInitialFilters();
 
         },
 

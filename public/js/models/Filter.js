@@ -23,7 +23,7 @@ define([
         removeOperator: function(id) {
             var operatorWithIndex = this.findOperatorById(id)
             this.get("operators").splice(operatorWithIndex.index, 1);
-            this.trigger("change");
+            this.trigger("removeOperator");
             console.log("Now have " + this.get("operators").length + " operators");
         },
 
@@ -40,7 +40,7 @@ define([
 
         clearOperators: function() {
             this.set("operators", []);
-            this.trigger("change");
+            this.trigger("clearOperators");
         },
 
         getOperators: function(attribute) {
