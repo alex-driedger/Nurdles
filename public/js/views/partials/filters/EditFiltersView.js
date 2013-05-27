@@ -118,7 +118,6 @@ define([
         },
 
         addRow: function(e) {
-
             var newOperator = {
                 id: private.operatorCounter++,
                 property: $("#newProperty").val(),
@@ -144,7 +143,7 @@ define([
             var templateData = {
                 types: this.types,
                 features: this.features,
-                model: this.model.toJSON()
+                model: this.model
             };
 
             this.$el.html(this.template(templateData));
