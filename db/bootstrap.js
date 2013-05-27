@@ -2,6 +2,7 @@
 module.exports = {
     load: function() {
         var userDAL = require("./access/userdal"),
+            filterDAL = require("./access/filterdal");
             layerDAL = require("./access/layerdal");
 
         userDAL.create("chris", "password", "tokencoin", function(err, user) {
@@ -36,6 +37,16 @@ module.exports = {
                     },
                     active: true,
                     order: 2
+                }, function(err, layer) {} );
+
+                filterDAL.create(user._id, {
+                    name: "Canadian Ships",
+                    active: true,
+                    operators: [{
+                        property: "flag_country",
+                        type: "==",
+                        value: "Canada"
+                    }]
                 }, function(err, layer) {} );
             }
         });

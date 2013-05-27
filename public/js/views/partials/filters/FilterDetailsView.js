@@ -148,10 +148,13 @@ define([
                 target.closest(".collapsed").removeClass("selected");
             }
 
+            this.model.set("active", isActivated);
             Backbone.globalEvents.trigger("activateFilter", {
                 filter: this.model,
                 activate: isActivated
             });
+
+            this.model.update();
         },
 
         handleRowRemoval: function(e) {
