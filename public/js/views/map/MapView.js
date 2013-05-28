@@ -24,30 +24,6 @@ define([
             return 20037508.34 * lat / 180;
         },
 
-        showInfo: function(evt, view) {
-            if (evt.features && evt.features.length > 0)
-                private.onFeatureSelect(evt, view.model, view);
-        },
-
-        applyTrack: function(evt, view) {
-            var shipInfo,
-                latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y)),
-                filter = {},
-                exactAISLayer = map.getLayersByName("exactAIS:HT30")[0];
-
-            if (evt.features && evt.features.length > 0) {
-                shipInfo = evt.features[0];
-                filter.operators = [];
-                filter.operators.push({
-                    property: "mmsi",
-                    value: shipInfo.data.mmsi,
-                    type: "=="
-                });
-
-                exactAISLayer.params["FILTER"] = OpenLayersUtil.convertFilterToFilterParam([filter]);
-                exactAISLayer.redraw();
-            }
-        },
 
         // Needed only for interaction, not for the display.
         onPopupClose: function(evt) {
@@ -61,34 +37,6 @@ define([
             }
         },
 
-        onFeatureSelect: function(evt, map, view) {
-            var featureInfo = evt.features[0],
-                bounds = null,
-                projection = OpenLayersUtil.getProjection();
-
-            //We need to transform the points to properly place the popup
-            featureInfo.geometry.transform(projection.displayProjection, projection.projection)
-
-            //If we're dealing with a point feature, we won't have getBounds so 
-            //We'll need to create our bounds before grabbing the center LonLat
-            if (featureInfo.geometry.getBounds())
-                bounds = featureInfo.geometry.getBounds();
-            else
-                bounds = featureInfo.geometry.createBounds();
-
-            console.log(bounds.getCenterLonLat());
-
-            var featurePopup = new FeaturePopup({
-                shipInformation:  {
-                    data: featureInfo
-                },
-                map: map,
-                position: bounds.getCenterLonLat()
-            }, view);
-
-            view.addSubView(featurePopup);
-            featurePopup.render();
-        }
     };
 
     var MapView = BaseView.extend({
@@ -122,7 +70,7 @@ define([
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
             this.bindTo(Backbone.globalEvents, "toggleMeasure", this.toggleMeasure, this);
 
-            this.addControlsToMap();
+            OpenLayersUtil.addControlsToMap(this);
             this.getExactEarthLayers(this.getUserLayers);
         },
 
@@ -138,6 +86,80 @@ define([
                     $("#collapseHeaderIcon").attr("src", "../../img/arrow-up.png");
                     this.isHeaderViewable = true;
                 }
+            }
+        },
+
+        getExactEarthLayers: function(callback) {
+            var view = this;
+            OpenLayersUtil.getLayers(null, function(err, layers) {
+                if (err)
+                    console.log("ERROR GETTING LAYERS: ", err);
+                else
+                    callback(layers, view);
+            });
+        },
+
+        getUserLayers: function(eeLayers, view) {
+            view.userLayers.fetch({
+                url: "/api/layers/getAllForUser",
+                success: function(userLayers, res, opt) {
+                    OpenLayersUtil.addActiveLayersToMap(eeLayers, userLayers, view);
+                    view.mapLoaded(view);
+                }
+            });
+        },
+
+        onFeatureSelect: function(evt, map, view) {
+            var featureInfo = evt.features[0],
+                bounds = null,
+                projection = OpenLayersUtil.getProjection();
+
+            //We need to transform the points to properly place the popup
+            featureInfo.geometry.transform(projection.displayProjection, projection.projection)
+
+            //If we're dealing with a point feature, we won't have getBounds so 
+            //We'll need to create our bounds before grabbing the center LonLat
+            if (featureInfo.geometry.getBounds())
+                bounds = featureInfo.geometry.getBounds();
+            else
+                bounds = featureInfo.geometry.createBounds();
+
+            console.log(bounds.getCenterLonLat());
+
+            var featurePopup = new FeaturePopup({
+                shipInformation:  {
+                    data: featureInfo
+                },
+                map: map,
+                position: bounds.getCenterLonLat()
+            }, view);
+
+            view.addSubView(featurePopup);
+            featurePopup.render();
+        },
+
+        showInfo: function(evt, view) {
+            if (evt.features && evt.features.length > 0)
+                view.onFeatureSelect(evt, view.model, view);
+        },
+
+        applyTrack: function(evt, view) {
+            var shipInfo,
+                latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y)),
+                filter = {},
+                exactAISLayer = map.getLayersByName("exactAIS:HT30")[0];
+
+            if (evt.features && evt.features.length > 0) {
+                shipInfo = evt.features[0];
+                filter.operators = [];
+                filter.operators.push({
+                    property: "mmsi",
+                    value: shipInfo.data.mmsi,
+                    type: "=="
+                });
+
+                exactAISLayer.params["FILTER"] = OpenLayersUtil.convertFilterToFilterParam([filter]);
+                exactAISLayer.redraw();
             }
         },
 
@@ -254,180 +276,6 @@ define([
                 }
             });
 
-        },
-
-        getExactEarthLayers: function(callback) {
-            var view = this;
-
-            OpenLayersUtil.getLayers(null, function(err, layers) {
-                if (err)
-                    console.log("ERROR GETTING LAYERS: ", err);
-                else
-                    callback(layers, view);
-            });
-        },
-
-        addActiveLayersToMap: function(eeLayers, userLayers, view) {
-            console.log(eeLayers);
-            var layersToAddToMap = [];
-                haveActiveBaseLayer = false; //Used to keep track if we've added a baselayer yet.
-
-            eeStoredLayers = userLayers.filter(function(layer) {
-                return layer.get("isExactEarth");
-            });
-            customLayers = userLayers.reject(function(layer) {
-                return (layer.get("isExactEarth") || layer.get("isBaseLayer"));
-            });
-            baseLayers = userLayers.filter(function(layer) {
-                return layer.get("isBaseLayer");
-            });
-
-            //I made four collection because I figure this is easier than filtering on demand.
-            //Especially in the view designed to allow a user to choose styles. That page is divided
-            //into EE layers and custom layers -- this will make it easier
-            this.eeStoredLayers = new BaseCollection(eeStoredLayers, {model: Layer});
-            this.customLayers = new BaseCollection(customLayers, {model: Layer});
-            this.baseLayers = new BaseCollection(baseLayers, {model: Layer});
-
-            _.each(eeLayers, function(eeLayer) {
-                var layer,
-                    userLayer = userLayers.findWhere({name: eeLayer.Name}),
-                    params = {};
-
-                    if (userLayer)
-                        params = userLayer.get("exactEarthParams");
-
-                    layer = new OpenLayers.Layer.WMS(
-                        eeLayer.Name, "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
-                        params,
-                        {
-                            singleTile: false,
-                            ratio: 1,
-                            yx: { 'EPSG:4326': true },
-                            wrapDateLine: true
-                        }
-                    );
-
-                    view.model.addLayer(layer);
-                    view.model.setLayerIndex(layer, userLayer.get("order"));
-                    layer.setVisibility(userLayer && userLayer.get("active"));
-            });
-
-            this.baseLayers.each(function(baseLayer) {
-                var eeBaseLayer;
-                switch (baseLayer.get("mapType")) {
-                    case "OSM":
-                        eeBaseLayer = new OpenLayers.Layer.OSM("OSMBaseMap", null,
-                            { 
-                                isBaseLayer: true, 
-                                wrapDateLine: true,
-                                transitionEffect: "resize"
-                            });
-                        break;
-                    case "WMS":
-                        eeBaseLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://labs.metacarta.com/wms/vmap0?", 
-                            {layers: "basic"}, 
-                            { 
-                                isBaseLayer: true, 
-                                wrapDateLine: true,
-                                transitionEffect: "resize"
-                            });
-                        break;
-                }
-
-                view.model.addLayer(eeBaseLayer);
-
-                if (baseLayer.get("active")) {
-                    if (haveActiveBaseLayer) { //Dealing with duplicate base layer error
-                        baseLayer.set("active", false);
-                        baseLayer.update();
-                    }
-
-                    view.model.setBaseLayer(eeBaseLayer);
-                    haveActiveBaseLayer = true;
-                }
-            });
-
-            if (!haveActiveBaseLayer) {
-                var basicMapLayer = new OpenLayers.Layer.OSM("OSMBaseMap", null,
-                    { 
-                        isBaseLayer: true, 
-                        wrapDateLine: true,
-                        transitionEffect: "resize"
-                    });
-                view.model.addLayer(basicMapLayer);
-
-                var basicMapLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://labs.metacarta.com/wms/vmap0?", 
-                    {layers: "basic"}, 
-                    { 
-                        isBaseLayer: true, 
-                        wrapDateLine: true,
-                        transitionEffect: "resize"
-                    });
-            }
-
-            //Combine ee and custom layers since they can intermingle when assigning order
-            userLayers = userLayers.reject(function(layer) {
-                return layer.get("isBaseLayer");
-            });
-
-            this.userLayers = new BaseCollection(userLayers, {model: Layer});
-
-            this.layersLoaded = true;
-            this.loadInitialFilters();
-
-        },
-
-        getUserLayers: function(eeLayers, view) {
-            view.userLayers.fetch({
-                url: "/api/layers/getAllForUser",
-                success: function(userLayers, res, opt) {
-                    view.addActiveLayersToMap(eeLayers, userLayers, view);
-                    view.mapLoaded(view);
-                }
-            });
-        },
-
-        addControlsToMap: function() {
-            var view = this,
-            oInfoControl = new OpenLayers.Control.WMSGetFeatureInfo({
-                name: "GetFeatureInfo",
-                url: 'https://owsdemo.exactearth.com/wms?authKey=tokencoin',
-                    title: 'Identify features by clicking',
-                infoFormat: "application/vnd.ogc.gml",
-                queryVisible: true,
-                eventListeners: {
-                    getfeatureinfo: function(evt) {
-                        private.showInfo(evt, view);
-                        private.applyTrack(evt, view);
-                    }
-                }
-            });
-
-            this.model.addControl(oInfoControl);
-            oInfoControl.activate();
-
-            /**************************
-            * Measure Controls 
-            **************************/
-            var measureControl = new OpenLayers.Control.DynamicMeasure(
-                OpenLayers.Handler.Path,
-                {
-                    name: "Measure",
-                    persist: true
-                }
-            );
-
-            this.model.addControl(measureControl);
-
-            var graticuleControl = new OpenLayers.Control.Graticule({
-                name: "Graticule",
-                numPoints: 2,
-                labelled: true,
-                autoActivate: false
-            });
-
-            this.model.addControl(graticuleControl);
         },
 
         mapLoaded: function(view) {
