@@ -324,9 +324,11 @@ define([
             baseLayers = userLayers.filter(function(layer) {
                 return layer.get("isBaseLayer");
             });
-            Backbone.globalEvents.trigger("eeLayersFetched", eeLayers);
-            Backbone.globalEvents.trigger("customLayersFetched", customLayers);
-            Backbone.globalEvents.trigger("baseLayersFetched", baseLayers);
+
+            this.eeLayers = new BaseCollection(eeLayers, {model: Layer});
+            this.customLayers = new BaseCollection(customLayers, {model: Layer});
+            this.baseLayers = new BaseCollection(baseLayers, {model: Layer});
+
             this.layersLoaded = true;
             this.loadInitialFilters();
 
@@ -337,7 +339,7 @@ define([
                 url: "/api/layers/getAllForUser",
                 success: function(userLayers, res, opt) {
                     view.addActiveLayersToMap(eeLayers, userLayers, view);
-                    view.render();
+                    view.mapLoaded(view);
                 }
             });
         },
@@ -384,13 +386,23 @@ define([
             this.model.addControl(graticuleControl);
         },
 
+        mapLoaded: function(view) {
+            view.render();
+
+            Backbone.globalEvents.trigger("eeLayersFetched", view.eeLayers);
+            Backbone.globalEvents.trigger("customLayersFetched", view.customLayers);
+            Backbone.globalEvents.trigger("baseLayersFetched", view.baseLayers);
+
+            //Optional event 
+            Backbone.globalEvents.trigger("mapLoaded", view.model);
+        },
+
         render: function () {
             this.$el.html(mapTemplate);
 
             var controlsView = new TopToolsRow(),
                 graticuleControl,
-                map = this.model,
-                _Layer_WMS;
+                map = this.model;
 
             controlsView.render();
             this.addSubView(controlsView);
@@ -401,10 +413,7 @@ define([
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
             map.render("map");
-
-
             OpenLayers.Util.onImageLoadError = function () { }
-
 
             map.events.register("mousemove", map, function(e) { 
                 var latlon = map.getLonLatFromViewPortPx(e.xy) ;
