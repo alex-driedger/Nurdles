@@ -4,7 +4,7 @@ var LayerSchema = new mongoose.Schema({
     owner: {type: mongoose.Schema.ObjectId, required: true },
     title: { type: String, required: true },
     name: { type: String, required: false},
-    url: { type: String, required: false },
+    url: { type: String, required: true, default: "Not Required" },
     username: { type: String, required: false },
     password: { type: String, required: false },
     authKey: { type: String, required: false },

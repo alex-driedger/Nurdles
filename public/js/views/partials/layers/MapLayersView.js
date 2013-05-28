@@ -42,7 +42,6 @@ define([
                 }),
                 savedMapLayersView = new SavedMapLayersView({
                     $el: $("#savedMapLayers"),
-                    isExactEarthLayers: true,
                     layers: this.layers,
                     eeLayers: this.eeLayers
                 });

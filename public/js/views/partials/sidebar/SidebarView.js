@@ -37,6 +37,7 @@ define([
 
         showMapLayersView: function() {
             var mapLayersView = new MapLayersView();
+            Backbone.globalEvents.trigger("showLoader");
 
             this.closeDynamicContainers();
             mapLayersView.preRender(function() {

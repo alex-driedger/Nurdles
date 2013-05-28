@@ -1,8 +1,11 @@
     <div class="header bordered">
-        New Map Layer
+        New Map Layer (Feature is delayed)
     </div>
     <div class="vpadded10">
-        <input id="filterName" type="text" placeholder="Layer URL" value="<%= name %>" style="margin-left: 5px;"/>
+        <input id="filterName" type="text" placeholder="Layer Name" value="<%= layer.get('name') %>" style="margin-left: 5px;"/>
+    </div>
+    <div class="vpadded10">
+        <input id="filterURL" type="text" placeholder="Layer URL" value="<%= layer.get('url') %>" style="margin-left: 5px;"/>
     </div>
 
     <div class="pull-right padded">

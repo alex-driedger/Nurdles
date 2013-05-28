@@ -189,30 +189,6 @@ define([
             view.customLayers = parsedLayers.customLayers;
             view.baseLayers = parsedLayers.baseLayers;
 
-            _.each(eeLayers, function(eeLayer) {
-                var layer,
-                    userLayer = userLayers.findWhere({name: eeLayer.Name}),
-                    params = {};
-
-                    if (userLayer)
-                        params = userLayer.get("exactEarthParams");
-
-                    layer = new OpenLayers.Layer.WMS(
-                        eeLayer.Name, "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
-                        params,
-                        {
-                            singleTile: false,
-                            ratio: 1,
-                            yx: { 'EPSG:4326': true },
-                            wrapDateLine: true
-                        }
-                    );
-
-                    view.model.addLayer(layer);
-                    view.model.setLayerIndex(layer, userLayer.get("order"));
-                    layer.setVisibility(userLayer && userLayer.get("active"));
-            });
-
             view.baseLayers.each(function(baseLayer) {
                 var eeBaseLayer;
                 switch (baseLayer.get("mapType")) {
@@ -265,6 +241,31 @@ define([
                         transitionEffect: "resize"
                     });
             }
+
+            _.each(eeLayers, function(eeLayer) {
+                var layer,
+                    userLayer = userLayers.findWhere({name: eeLayer.Name}),
+                    params = {};
+
+                    if (userLayer)
+                        params = userLayer.get("exactEarthParams");
+
+                    layer = new OpenLayers.Layer.WMS(
+                        eeLayer.Name, "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
+                        params,
+                        {
+                            singleTile: false,
+                            ratio: 1,
+                            yx: { 'EPSG:4326': true },
+                            wrapDateLine: true
+                        }
+                    );
+
+                    view.model.addLayer(layer);
+                    view.model.setLayerIndex(layer, userLayer.get("order"));
+                    layer.setVisibility(userLayer && userLayer.get("active"));
+            });
+
 
             //Combine ee and custom layers since they can intermingle when assigning order
             userLayers = userLayers.reject(function(layer) {

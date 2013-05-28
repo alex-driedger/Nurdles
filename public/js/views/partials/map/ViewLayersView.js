@@ -19,7 +19,7 @@ define([
         },
 
         handleLayerReorder: function() {
-            var activeLayers = $( "#sortableViewLayers").sortable( "toArray" ).reverse();
+            var activeLayers = $( "#sortableViewLayers").sortable( "toArray" );
 
             Backbone.globalEvents.trigger("layersReordered", activeLayers);
 

@@ -182,12 +182,19 @@ define([
         updateLayerOrder: function(layerIds) {
             var map = this.model;
 
-            for (var i = 1, len = map.layers.length; i < len; i++) {
-                var layer = map.layers[i];
+            var layers = _.reject(map.layers, function(layer) {
+                return layer.isBaseLayer;
+            });
+            var offset = map.layers.length - layers.length;
+
+            for (var i = 0, len = layers.length; i < len; i++) {
+                var layer = map.getLayersByName(layerIds[i])[0];
+
                 if (layerIds.indexOf(layer.name) == -1)
-                    map.setLayerIndex(layer, -1);
+                    layer.setVisibility(false);
                 else
-                    map.setLayerIndex(layer, i + 1); //To bump it above the base layer
+                    map.setLayerIndex(layer, map.layers.length - i - 1);
+                    //map.setLayerIndex(layer, offset - i); //To bump it above the base layers
             }
         },
 
@@ -222,6 +229,8 @@ define([
             if (filters.length > 0) {
                 exactAISLayer.mergeNewParams({"FILTER": this.createOpenLayersFilters(filters)});
             }
+            else 
+                exactAISLayer.mergeNewParams({"FILTER": ""});
         },
 
         createOpenLayersFilters: function(filters) {

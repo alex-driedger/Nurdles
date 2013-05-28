@@ -66,10 +66,8 @@ define([
             this.$el.html(this.template({
                 layer: this.model,
                 eeLayer: this.eeLayer,
-                styles: this.model.get("exactEarthParams").STYLES
+                styles: this.styles
             }));
-
-
             return this;
 
         },

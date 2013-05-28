@@ -11,10 +11,13 @@ define([
         this.subviews = [];
         this.sidebarActive = false;
 
+        this.showLoader();
+
         this.bindTo(Backbone.globalEvents, "showLoader", this.showLoader, this);
         this.bindTo(Backbone.globalEvents, "hideLoader", this.hideLoader, this);
 
         this.bindTo(Backbone.globalEvents, "layersFetched", this.loadLayersIntoDropDown, this);
+        this.bindTo(Backbone.globalEvents, "mapLoaded", this.hideLoader, this);
     },
 
     events: {
