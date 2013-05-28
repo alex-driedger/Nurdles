@@ -8,7 +8,7 @@ var LayerSchema = new mongoose.Schema({
     username: { type: String, required: false },
     password: { type: String, required: false },
     authKey: { type: String, required: false },
-    isBaseLayer: { type: String, required: true },
+    isBaseLayer: { type: Boolean, required: true },
     isExactEarth: { type: Boolean, required: true },
     exactEarthParams: { type: mongoose.Schema.Types.Mixed, required: false },
     active: { type: Boolean, required: true, default: false },

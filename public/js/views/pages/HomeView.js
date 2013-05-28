@@ -64,7 +64,7 @@ define([
       var mapView = new MapView({el: $("#openLayersImage")}),
             sidebarView = new SideBarView();
 
-      mapView.render();
+      //mapView.render();
       sidebarView.render();
       this.subviews.push(mapView);
       this.subviews.push(sidebarView);

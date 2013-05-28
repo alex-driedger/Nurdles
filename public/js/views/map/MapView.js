@@ -21,15 +21,7 @@ define([
         Lat2Merc: function(lat) {
             var PI = 3.14159265358979323846;
             lat = Math.log(Math.tan((90 + lat) * PI / 360)) / (PI / 180);
-                                    return 20037508.34 * lat / 180;
-        },
-
-        setHtml: function(response) {
-            console.log();
-            if (response.text.indexOf("MMSI") >= 0) {
-                $("#dialog").html(response.text);
-                $("#dialog").addClass("onTop").removeClass("hide");
-            }
+            return 20037508.34 * lat / 180;
         },
 
         showInfo: function(evt, view) {
@@ -57,7 +49,6 @@ define([
             }
         },
 
-
         // Needed only for interaction, not for the display.
         onPopupClose: function(evt) {
             // 'this' is the popup.
@@ -76,12 +67,10 @@ define([
                 projection = OpenLayersUtil.getProjection();
 
             //We need to transform the points to properly place the popup
-
             featureInfo.geometry.transform(projection.displayProjection, projection.projection)
 
             //If we're dealing with a point feature, we won't have getBounds so 
             //We'll need to create our bounds before grabbing the center LonLat
-            //TODO: Maybe make this suck less
             if (featureInfo.geometry.getBounds())
                 bounds = featureInfo.geometry.getBounds();
             else
@@ -119,8 +108,11 @@ define([
             });
             this.userLayers = new BaseCollection([], {model: Layer});
             this.initialFiltersToLoad = [];
-
             this.isHeaderViewable = true;
+
+            /*
+            * App-wide events to listen to 
+            */
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
             this.bindTo(Backbone.globalEvents, "initialFilterLoad", this.queueInitialFilters, this);
             this.bindTo(Backbone.globalEvents, "layersChanged", this.updateLayers, this);
@@ -272,6 +264,8 @@ define([
         addActiveLayersToMap: function(eeLayers, userLayers, view) {
             console.log(eeLayers);
             var layersToAddToMap = [];
+                haveActiveBaseLayer = false; //Used to keep track if we've added a baselayer yet.
+
             _.each(eeLayers, function(eeLayer) {
                 var layer,
                     userLayer = userLayers.findWhere({name: eeLayer.Name}),
@@ -286,16 +280,36 @@ define([
                         {
                             singleTile: false,
                             ratio: 1,
-                            isBaseLayer: eeLayer.isBaseLayer,
+                            isBaseLayer: userLayer.isBaseLayer,
                             yx: { 'EPSG:4326': true },
                             wrapDateLine: true
                         }
                     );
 
                     view.model.addLayer(layer);
-                    view.model.setLayerIndex(layer, userLayer.get("order"));
-                    layer.setVisibility(userLayer && userLayer.get("active"))
+
+                    if (userLayer.get("isBaseLayer") && userLayer.get("active")) {
+                        view.model.setBaseLayer(layer);
+                        haveActiveBaseLayer = true;
+                    }
+                    else {
+                        view.model.setLayerIndex(layer, userLayer.get("order"));
+                        layer.setVisibility(userLayer && userLayer.get("active"));
+                    }
             });
+
+            if (!haveActiveBaseLayer) {
+                var basicMapLayer = new OpenLayers.Layer.OSM("Basic Base Map",
+                    { 
+                        isBaseLayer: true, 
+                        wrapDateLine: true,
+                        transitionEffect: "resize"
+                    });
+                var baseMap = new OpenLayers.Layer.OSM( "Simple OSM Map");
+                view.model.addLayer(baseMap);
+
+                view.model.setBaseLayer(baseMap);
+            }
 
             Backbone.globalEvents.trigger("layersFetched", userLayers);
             this.layersLoaded = true;
@@ -308,6 +322,7 @@ define([
                 url: "/api/layers/getAllForUser",
                 success: function(userLayers, res, opt) {
                     view.addActiveLayersToMap(eeLayers, userLayers, view);
+                    view.render();
                 }
             });
         },
@@ -331,11 +346,9 @@ define([
             this.model.addControl(oInfoControl);
             oInfoControl.activate();
 
-
-            //--------------MEASUREMENT CONTROLS-----------------------//
-            var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
-            renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-
+            /**************************
+            * Measure Controls 
+            **************************/
             var measureControl = new OpenLayers.Control.DynamicMeasure(
                 OpenLayers.Handler.Path,
                 {
@@ -376,15 +389,6 @@ define([
 
 
             OpenLayers.Util.onImageLoadError = function () { }
-            var basicMapLayer = new OpenLayers.Layer.WMS("Basic Base Map", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
-                    {layers: "basic"}, 
-                    { 
-                        isBaseLayer: true, 
-                        wrapDateLine: true,
-                        transitionEffect: "resize"
-                    });
-
-            map.addLayers([basicMapLayer]);
 
 
             map.events.register("mousemove", map, function(e) { 
@@ -392,13 +396,6 @@ define([
                 latlon.transform( map.projection, map.displayProjection);
                 OpenLayers.Util.getElement("coordinates").innerHTML = latlon.lat + ", " + latlon.lon;
             });
-
-            /*
-            basicMapLayer.events.register("loadstart", this.model, this.showLoader);
-            basicMapLayer.events.register("loadend", this.model, this.hideLoader);
-            _Layer_WMS.events.register("loadstart", this.model, this.showLoader);
-            _Layer_WMS.events.register("loadend", this.model, this.hideLoader);
-            */
 
             map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
 
