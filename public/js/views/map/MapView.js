@@ -280,7 +280,6 @@ define([
                         {
                             singleTile: false,
                             ratio: 1,
-                            isBaseLayer: userLayer.isBaseLayer,
                             yx: { 'EPSG:4326': true },
                             wrapDateLine: true
                         }
@@ -299,19 +298,35 @@ define([
             });
 
             if (!haveActiveBaseLayer) {
-                var basicMapLayer = new OpenLayers.Layer.OSM("Basic Base Map",
+                var basicMapLayer = new OpenLayers.Layer.OSM("OSMBaseMap", null,
                     { 
                         isBaseLayer: true, 
                         wrapDateLine: true,
                         transitionEffect: "resize"
                     });
-                var baseMap = new OpenLayers.Layer.OSM( "Simple OSM Map");
-                view.model.addLayer(baseMap);
+                view.model.addLayer(basicMapLayer);
 
-                view.model.setBaseLayer(baseMap);
+                var basicMapLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://labs.metacarta.com/wms/vmap0?", 
+                    {layers: "basic"}, 
+                    { 
+                        isBaseLayer: true, 
+                        wrapDateLine: true,
+                        transitionEffect: "resize"
+                    });
             }
 
-            Backbone.globalEvents.trigger("layersFetched", userLayers);
+            eeLayers = userLayers.filter(function(layer) {
+                return layer.get("isExactEarth");
+            });
+            customLayers = userLayers.reject(function(layer) {
+                return (layer.get("isExactEarth") || layer.get("isBaseLayer"));
+            });
+            baseLayers = userLayers.filter(function(layer) {
+                return layer.get("isBaseLayer");
+            });
+            Backbone.globalEvents.trigger("eeLayersFetched", eeLayers);
+            Backbone.globalEvents.trigger("customLayersFetched", customLayers);
+            Backbone.globalEvents.trigger("baseLayersFetched", baseLayers);
             this.layersLoaded = true;
             this.loadInitialFilters();
 

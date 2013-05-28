@@ -39,6 +39,22 @@ module.exports = {
                     order: 2
                 }, function(err, layer) {} );
 
+                layerDAL.create(user._id, {
+                    title: "OSMBaseMap",
+                    name: "OSMBaseMap",
+                    isBaseLayer: true,
+                    isExactEarth: false,
+                    active: true,
+                }, function(err, layer) {} );
+
+                layerDAL.create(user._id, {
+                    title: "WMSBaseMap",
+                    name: "WMSBaseMap",
+                    isBaseLayer: true,
+                    isExactEarth: false,
+                    active: false,
+                }, function(err, layer) {} );
+
                 filterDAL.create(user._id, {
                     name: "Canadian Ships",
                     active: true,
