@@ -13,7 +13,7 @@ label {
     padding-left: 15px;
     text-indent: -15px;
 }
-input[type="checkbox"] {
+input[type="checkbox"], input[type="radio"] {
     width: 13px;
     height: 13px;
     padding: 0;
@@ -23,6 +23,11 @@ input[type="checkbox"] {
     top: -1px;
     *overflow: hidden;
 }
+
+input[type="radio"] {
+    vertical-align: middle;
+}
+
 
 /*-------------------------Open Layers---------------------------*/
 .olImageLoadError {

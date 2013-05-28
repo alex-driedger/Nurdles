@@ -45,6 +45,7 @@ module.exports = {
                     isBaseLayer: true,
                     isExactEarth: false,
                     active: true,
+                    mapType: "OSM"
                 }, function(err, layer) {} );
 
                 layerDAL.create(user._id, {
@@ -52,7 +53,7 @@ module.exports = {
                     name: "WMSBaseMap",
                     isBaseLayer: true,
                     isExactEarth: false,
-                    active: false,
+                    active: false
                 }, function(err, layer) {} );
 
                 filterDAL.create(user._id, {

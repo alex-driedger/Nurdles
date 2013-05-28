@@ -14,7 +14,7 @@ define([
         this.bindTo(Backbone.globalEvents, "showLoader", this.showLoader, this);
         this.bindTo(Backbone.globalEvents, "hideLoader", this.hideLoader, this);
 
-        this.bindTo(Backbone.globalEvents, "eeLayersFetched", this.loadLayersIntoDropDown, this);
+        this.bindTo(Backbone.globalEvents, "layersFetched", this.loadLayersIntoDropDown, this);
     },
 
     events: {
@@ -40,9 +40,10 @@ define([
         }
     },
 
-    loadLayersIntoDropDown: function(layers) {
+    loadLayersIntoDropDown: function(layers, baseLayers) {
         var viewLayersView = new ViewLayersView({
             layers: layers,
+            baseLayers: baseLayers
         });
 
         $("#viewLayerContainer").html(viewLayersView.preRender().$el);

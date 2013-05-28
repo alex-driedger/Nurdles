@@ -116,6 +116,7 @@ define([
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
             this.bindTo(Backbone.globalEvents, "initialFilterLoad", this.queueInitialFilters, this);
             this.bindTo(Backbone.globalEvents, "layersChanged", this.updateLayers, this);
+            this.bindTo(Backbone.globalEvents, "baseLayerSelected", this.changeBaseLayer, this);
             this.bindTo(Backbone.globalEvents, "layerStylesReordered", this.updateLayerStyles, this);
             this.bindTo(Backbone.globalEvents, "layersReordered", this.updateLayerOrder, this);
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
@@ -140,6 +141,11 @@ define([
             }
         },
 
+        changeBaseLayer: function(layer) {
+            var map = this.model;
+
+            map.setBaseLayer(map.getLayersByName(layer.get("name"))[0]);
+        },
 
         updateLayers: function(layers) {
             var map = this.model;
@@ -266,6 +272,23 @@ define([
             var layersToAddToMap = [];
                 haveActiveBaseLayer = false; //Used to keep track if we've added a baselayer yet.
 
+            eeStoredLayers = userLayers.filter(function(layer) {
+                return layer.get("isExactEarth");
+            });
+            customLayers = userLayers.reject(function(layer) {
+                return (layer.get("isExactEarth") || layer.get("isBaseLayer"));
+            });
+            baseLayers = userLayers.filter(function(layer) {
+                return layer.get("isBaseLayer");
+            });
+
+            //I made four collection because I figure this is easier than filtering on demand.
+            //Especially in the view designed to allow a user to choose styles. That page is divided
+            //into EE layers and custom layers -- this will make it easier
+            this.eeStoredLayers = new BaseCollection(eeStoredLayers, {model: Layer});
+            this.customLayers = new BaseCollection(customLayers, {model: Layer});
+            this.baseLayers = new BaseCollection(baseLayers, {model: Layer});
+
             _.each(eeLayers, function(eeLayer) {
                 var layer,
                     userLayer = userLayers.findWhere({name: eeLayer.Name}),
@@ -286,15 +309,43 @@ define([
                     );
 
                     view.model.addLayer(layer);
+                    view.model.setLayerIndex(layer, userLayer.get("order"));
+                    layer.setVisibility(userLayer && userLayer.get("active"));
+            });
 
-                    if (userLayer.get("isBaseLayer") && userLayer.get("active")) {
-                        view.model.setBaseLayer(layer);
-                        haveActiveBaseLayer = true;
+            this.baseLayers.each(function(baseLayer) {
+                var eeBaseLayer;
+                switch (baseLayer.get("mapType")) {
+                    case "OSM":
+                        eeBaseLayer = new OpenLayers.Layer.OSM("OSMBaseMap", null,
+                            { 
+                                isBaseLayer: true, 
+                                wrapDateLine: true,
+                                transitionEffect: "resize"
+                            });
+                        break;
+                    case "WMS":
+                        eeBaseLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://labs.metacarta.com/wms/vmap0?", 
+                            {layers: "basic"}, 
+                            { 
+                                isBaseLayer: true, 
+                                wrapDateLine: true,
+                                transitionEffect: "resize"
+                            });
+                        break;
+                }
+
+                view.model.addLayer(eeBaseLayer);
+
+                if (baseLayer.get("active")) {
+                    if (haveActiveBaseLayer) { //Dealing with duplicate base layer error
+                        baseLayer.set("active", false);
+                        baseLayer.update();
                     }
-                    else {
-                        view.model.setLayerIndex(layer, userLayer.get("order"));
-                        layer.setVisibility(userLayer && userLayer.get("active"));
-                    }
+
+                    view.model.setBaseLayer(eeBaseLayer);
+                    haveActiveBaseLayer = true;
+                }
             });
 
             if (!haveActiveBaseLayer) {
@@ -315,19 +366,12 @@ define([
                     });
             }
 
-            eeLayers = userLayers.filter(function(layer) {
-                return layer.get("isExactEarth");
-            });
-            customLayers = userLayers.reject(function(layer) {
-                return (layer.get("isExactEarth") || layer.get("isBaseLayer"));
-            });
-            baseLayers = userLayers.filter(function(layer) {
+            //Combine ee and custom layers since they can intermingle when assigning order
+            userLayers = userLayers.reject(function(layer) {
                 return layer.get("isBaseLayer");
             });
 
-            this.eeLayers = new BaseCollection(eeLayers, {model: Layer});
-            this.customLayers = new BaseCollection(customLayers, {model: Layer});
-            this.baseLayers = new BaseCollection(baseLayers, {model: Layer});
+            this.userLayers = new BaseCollection(userLayers, {model: Layer});
 
             this.layersLoaded = true;
             this.loadInitialFilters();
@@ -389,7 +433,8 @@ define([
         mapLoaded: function(view) {
             view.render();
 
-            Backbone.globalEvents.trigger("eeLayersFetched", view.eeLayers);
+            Backbone.globalEvents.trigger("layersFetched", view.userLayers, view.baseLayers);
+            Backbone.globalEvents.trigger("eeStoredLayersFetched", view.eeStoredLayers);
             Backbone.globalEvents.trigger("customLayersFetched", view.customLayers);
             Backbone.globalEvents.trigger("baseLayersFetched", view.baseLayers);
 
