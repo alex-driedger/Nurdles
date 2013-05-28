@@ -29,7 +29,7 @@ define([
             else
                 view.layersContainer = $("#externalLayersContainer");
 
-            layers.forEach(function(layer) {
+            layers.eeStoredLayers.forEach(function(layer) {
                 var detailsView = new MapLayersDetailsView({
                     model: layer,
                     eeLayer: _.findWhere(view.eeLayers, {Name: layer.get("name")})
@@ -62,7 +62,7 @@ define([
                 this.layers.fetch({
                     url: "/api/layers/getAllForUser",
                     success: function(list, res, opt) {
-                        view.loadSavedLayersList(list.models, view);
+                        view.loadSavedLayersList(Utils.parseLayerTypes(list), view);
                         Backbone.globalEvents.trigger("hideLoader");
 
                     },

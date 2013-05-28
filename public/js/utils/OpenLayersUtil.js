@@ -47,6 +47,26 @@ define([
             });
         },
 
+        parseLayerTypes: function(layers) {
+            var parsedLayers = {};
+
+            eeStoredLayers = layers.filter(function(layer) {
+                return layer.get("isExactEarth");
+            });
+            customLayers = layers.reject(function(layer) {
+                return (layer.get("isExactEarth") || layer.get("isBaseLayer"));
+            });
+            baseLayers = layers.filter(function(layer) {
+                return layer.get("isBaseLayer");
+            });
+
+            parsedLayers.eeStoredLayers = new BaseCollection(eeStoredLayers, {model: Layer});
+            parsedLayers.customLayers = new BaseCollection(customLayers, {model: Layer});
+            parsedLayers.baseLayers = new BaseCollection(baseLayers, {model: Layer});
+
+            return parsedLayers;
+        },
+
         getLayers: function(layerCapabilitiesURL, callback) {
             var url = request = null;
 
@@ -158,24 +178,16 @@ define([
         addActiveLayersToMap: function(eeLayers, userLayers, view) {
             console.log(eeLayers);
             var layersToAddToMap = [];
-                haveActiveBaseLayer = false; //Used to keep track if we've added a baselayer yet.
-
-            eeStoredLayers = userLayers.filter(function(layer) {
-                return layer.get("isExactEarth");
-            });
-            customLayers = userLayers.reject(function(layer) {
-                return (layer.get("isExactEarth") || layer.get("isBaseLayer"));
-            });
-            baseLayers = userLayers.filter(function(layer) {
-                return layer.get("isBaseLayer");
-            });
+                haveActiveBaseLayer = false, //Used to keep track if we've added a baselayer yet.
+                parsedLayers = this.parseLayerTypes(userLayers);
+            
 
             //I made four collection because I figure this is easier than filtering on demand.
             //Especially in the view designed to allow a user to choose styles. That page is divided
             //into EE layers and custom layers -- this will make it easier
-            view.eeStoredLayers = new BaseCollection(eeStoredLayers, {model: Layer});
-            view.customLayers = new BaseCollection(customLayers, {model: Layer});
-            view.baseLayers = new BaseCollection(baseLayers, {model: Layer});
+            view.eeStoredLayers = parsedLayers.eeStoredLayers;
+            view.customLayers = parsedLayers.customLayers;
+            view.baseLayers = parsedLayers.baseLayers;
 
             _.each(eeLayers, function(eeLayer) {
                 var layer,
