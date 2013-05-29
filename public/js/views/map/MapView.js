@@ -212,7 +212,7 @@ define([
             //Reset filter to a single filter since we only have one style applied
             else  {
                 filterParam = eeLayer.params.FILTER;
-                if (filterParam.indexOf("(") !== -1 ) //Only alter the filter param if we have one style but miltiple filters.
+                if (filterParam && filterParam.indexOf("(") !== -1 ) //Only alter the filter param if we have one style but miltiple filters.
                     filterParam = filterParam.substring(1, filterParam.indexOf(")"));
             }
 

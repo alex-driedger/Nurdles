@@ -89,7 +89,8 @@ define([
         },
 
         render: function() {
-            var view = this;
+            var view = this,
+                styles;
 
             $( "#" + this.model.get("_id") + "-layer").sortable({
                 placeholder: "ui-state-highlight",
@@ -105,8 +106,12 @@ define([
 
             this.delegateEvents(this.events);
             if (!this.model.get("isBaseLayer")) {
-                this.model.get("exactEarthParams").STYLES.split(",").forEach(function(style) {
-                    $("#" + style + "-legend-container").hide();
+                styles  = this.eeLayer.Style;
+                if (styles instanceof Object) 
+                   styles = [styles]; //EE sends back an object (not an array) if there's only one style...
+
+                _.each(styles, function(style) {
+                    $("#" + style.Name + "-legend-container").hide();
                 });
             }
 
