@@ -194,13 +194,30 @@ define([
                     layer.setVisibility(false);
                 else
                     map.setLayerIndex(layer, map.layers.length - i - 1);
-                    //map.setLayerIndex(layer, offset - i); //To bump it above the base layers
             }
         },
 
         updateLayerStyles: function(layer) {
             var eeLayer = map.getLayersByName(layer.get("name"))[0],
-                params = layer.get("exactEarthParams");
+                params = layer.get("exactEarthParams"),
+                stylesLength = params.STYLES.split(",").length,
+                filterParam;
+
+            if (stylesLength > 1) {
+                filterParam = "(" + eeLayer.params.FILTER + ")";
+                for (var i = 1; i < stylesLength; i++) {
+                    filterParam += filterParam ; //Needed if we have applied multiple styles on a filtered layer 
+                }
+                //layer.update();
+            }
+            //Reset filter to a single filter since we only have one style applied
+            else  {
+                filterParam = eeLayer.params.FILTER;
+                filterParam = filterParam.substring(1, filterParam.indexOf(")"));
+            }
+
+            params.FILTER = filterParam;
+            layer.set("exactEarthParams", params);
 
             eeLayer.mergeNewParams(params);
         },
@@ -222,12 +239,22 @@ define([
         },
 
         updateFilters: function(filters) {
-            var map = this.model;
+            var map = this.model,
+                filtersForParam = [];
 
-            var exactAISLayer = map.getLayersByName("exactAIS:LVI")[0];
+            var exactAISLayer = map.getLayersByName("exactAIS:LVI")[0],
+                styles = exactAISLayer.params.STYLES.split(","),
+                filterParam = this.createOpenLayersFilters(filters);
+
+            if (styles.length > 1) {
+                filterParam = "(" + filterParam + ")";
+                for (var i = 0, len = styles.length; i < len; i++) {
+                    filterParam += filterParam ; //Needed if we have applied multiple styles on a filtered layer 
+                }
+            }
 
             if (filters.length > 0) {
-                exactAISLayer.mergeNewParams({"FILTER": this.createOpenLayersFilters(filters)});
+                exactAISLayer.mergeNewParams({"FILTER": filterParam});
             }
             else 
                 exactAISLayer.mergeNewParams({"FILTER": ""});
