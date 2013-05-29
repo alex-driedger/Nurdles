@@ -487,6 +487,10 @@ table.wms, td.wms
     padding-right: 5px;
 }
 
+.inline-icon {
+    position: relative !important;
+}
+
 /*-------------------------Box Container------------------------------*/
 .bordered-box {
     position: relative;
@@ -527,7 +531,10 @@ table.wms, td.wms
     margin: 0 5px 5px 5px;
     padding: 0.5em;
     padding-left: 1.5em;
-    height: 18px;
+}
+
+.sortable label {
+    margin-bottom: 0;
 }
 
 .sortable li span { 

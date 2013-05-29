@@ -1,4 +1,4 @@
-<div class="saved-filter clearfix collapsed notExpanded collapsed-header">
+<div class="saved-filter clearfix collapsed notExpanded layerExapnd collapsed-header">
     <div class="pull-left">
         <%= layer.get("title") %>
     </div>
@@ -16,18 +16,37 @@
     <% } else { %>
     <div class="vpadded10 padded">
         <div class="bordered-box">
-            <div>
+            <div class="accordian">
                 <ul id="<%= layer.get('_id') %>-layer" class="sortable">
                     <% if (!_.isArray(eeLayer.Style)) {
                         isActive = eeLayer.Name == layer.get("name") %>
                         <li id="<%= eeLayer.Style.Name %>" class="ui-state-default <% if (!isActive) { %> ui-state-disabled <% } %>"><span class="ui-icon ui-icon-arrowthick-1-n-s"></span><label><input class="styleCheckbox" type="checkbox" <% if (isActive) { %> checked <% } %>  /> <%= eeLayer.Style.Title %></label>
-
+                        <% if (isActive) %>
+                            <div class="collapsed legendExpand">
+                                Legend
+                                <span class="pull-right inline-icon">
+                                    <img id="<%= eeLayer.Style.Name %>-icon" src="../../img/arrow-down.png" class="icon-small legendIcon" />
+                                </span>
+                            </div>
+                            <div id="<%= eeLayer.Style.Name %>-legend-container">
+                                <img src="<%= eeLayer.Style.LegendURL.OnlineResource['xlink:href'] %>" />
+                            </div>
                         </li>
                         <% } else  {
                         _.each(eeLayer.Style, function(eeStyle) { 
                             isActive = _.contains(styles.split(","), eeStyle.Name) %>
                             <li id="<%= eeStyle.Name %>" class="ui-state-default <% if (!isActive) { %> ui-state-disabled <% } %>"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><label><input class="styleCheckbox" type="checkbox" <% if (isActive) { %> checked <% } %>  /> <%= eeStyle.Title %></label>
 
+                                <% if (isActive) %>
+                                <div class="collapsed legendExpand">
+                                    Legend
+                                    <span class="pull-right inline-icon">
+                                        <img id="<%= eeStyle.Name %>-icon" src="../../img/arrow-down.png" class="icon-small" />
+                                    </span>
+                                </div>
+                                <div id="<%= eeStyle.Name %>-legend-container">
+                                    <img src="<%= eeStyle.LegendURL.OnlineResource['xlink:href'] + '&legend_options=fontStyle:bold;forceLabels:on;fontName:Play;fontAntiAliasing:true;fontColor:0x7D7D7D;fontSize:9;bgColor:0xFFFFFF;dpi:120;&scale=80000' %>" />
+                                </div>
                             </li>
                             <% }); 
                         } %>

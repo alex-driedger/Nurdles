@@ -208,16 +208,17 @@ define([
                 for (var i = 1; i < stylesLength; i++) {
                     filterParam += filterParam ; //Needed if we have applied multiple styles on a filtered layer 
                 }
-                //layer.update();
             }
             //Reset filter to a single filter since we only have one style applied
             else  {
                 filterParam = eeLayer.params.FILTER;
-                filterParam = filterParam.substring(1, filterParam.indexOf(")"));
+                if (filterParam.indexOf("(") !== -1 ) //Only alter the filter param if we have one style but miltiple filters.
+                    filterParam = filterParam.substring(1, filterParam.indexOf(")"));
             }
 
             params.FILTER = filterParam;
             layer.set("exactEarthParams", params);
+            layer.update();
 
             eeLayer.mergeNewParams(params);
         },

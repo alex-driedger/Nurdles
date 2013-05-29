@@ -37,7 +37,6 @@ define([
 
             this.bindTo(Backbone.globalEvents, "addedFilter", this.appendNewFilter, this);
             this.bindTo(Backbone.globalEvents, "deleteFilter", this.deleteFilter, this);
-            this.bindTo(Backbone.globalEvents, "toggleExpandedFilter", this.toggleExpandedFilter, this);
             this.bindTo(Backbone.globalEvents, "activateFilter", this.activateFilter, this);
             this.bindTo(Backbone.globalEvents, "updateFilter", this.updateFilter, this);
         },

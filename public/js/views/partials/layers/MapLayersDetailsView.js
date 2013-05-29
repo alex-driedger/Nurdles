@@ -16,7 +16,8 @@ define([
         template: _.template(mapLayerDetailsViewTemplate),
 
         events: {
-            "click .collapsed": "handleExpand",
+            "click .layerExapnd": "handleExpand",
+            "click .legendExpand": "handleLegendExpand",
             "click .styleCheckbox": "toggleStyle"
         },
 
@@ -31,6 +32,21 @@ define([
             divToToggle.slideToggle(200);
 
             this.isExpanded = !this.isExpanded;
+        },
+
+        handleLegendExpand: function(e) {
+            var headerDiv = $(e.target).closest("div .legendExpand"),
+                id = headerDiv.parent().prop("id"),
+                divToToggle = headerDiv.next();
+
+            divToToggle.slideToggle(200);
+            $("#" + id + "-icon").prop("src", function(index, oldValue) {
+                if (oldValue.match(/down/)) 
+                    return oldValue.replace(/down/, "up");
+                else
+                    return oldValue.replace(/up/, "down");
+            });
+
         },
 
         toggleStyle: function(e) {
@@ -88,6 +104,12 @@ define([
             console.log("EELAYER: ", this.eeLayer);
 
             this.delegateEvents(this.events);
+            if (!this.model.get("isBaseLayer")) {
+                this.model.get("exactEarthParams").STYLES.split(",").forEach(function(style) {
+                    $("#" + style + "-legend-container").hide();
+                });
+            }
+
             if (!this.isExpanded)
                 $("#" + this.model.get("_id") + "-container").hide();
 
