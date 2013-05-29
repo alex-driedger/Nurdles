@@ -107,7 +107,7 @@ define([
             this.delegateEvents(this.events);
             if (!this.model.get("isBaseLayer")) {
                 styles  = this.eeLayer.Style;
-                if (styles instanceof Object) 
+                if (!(styles instanceof Array)) 
                    styles = [styles]; //EE sends back an object (not an array) if there's only one style...
 
                 _.each(styles, function(style) {
