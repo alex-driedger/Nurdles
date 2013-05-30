@@ -13,7 +13,8 @@ define([
 
         events: {
             "click #mapLayers": "showMapLayersView",
-            "click #filters": "showFiltersView"
+            "click #filters": "showFiltersView",
+            "click #shiplist": "showShiplistView"
         },
 
         showFiltersView: function(e) {
@@ -26,6 +27,12 @@ define([
             $("#sidebarToolsContainer .btn").removeClass("active");
             $("#mapLayers").addClass("active");
             Backbone.globalEvents.trigger("showMapLayersView");
+        },
+
+        showShiplistView: function(e) {
+            $("#sidebarToolsContainer .btn").removeClass("active");
+            $("#shiplist").addClass("active");
+            Backbone.globalEvents.trigger("showShiplistView");
         },
 
         render: function () {

@@ -2,15 +2,17 @@ define([
   'baseview',
   '../filters/FiltersView',
   '../layers/MapLayersView',
+  '../shiplist/ShiplistView',
   '../sidebar/SideBarToolsRow',
   'text!templates/partials/sidebar/SidebarView.html'
-], function(Baseview, FiltersView, MapLayersView, SideBarToolsRow, sidebarViewTemplate){
+], function(Baseview, FiltersView, MapLayersView, ShiplistView, SideBarToolsRow, sidebarViewTemplate){
     var SidebarView = Baseview.extend({
         initialize: function(args) {
             this.$el = args || $("#sidebar");
 
             this.bindTo(Backbone.globalEvents, "showMapLayersView", this.showMapLayersView, this);
             this.bindTo(Backbone.globalEvents, "showFiltersView", this.showFiltersView, this);
+            this.bindTo(Backbone.globalEvents, "showShiplistView", this.showShiplistView, this);
         },
 
         closeDynamicContainers: function() {
@@ -45,6 +47,17 @@ define([
                 mapLayersView.render();
             });
             this.addSubView(mapLayersView);
+        },
+
+        showShiplistView: function() {
+            var shiplistView = new ShiplistView();
+
+            this.closeDynamicContainers();
+            shiplistView.preRender(function() {
+                shiplistView.$el.appendTo("#toolContainer");
+                shiplistView.render();
+            });
+            this.addSubView(shiplistView);
         },
 
         render: function () {
