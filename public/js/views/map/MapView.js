@@ -69,6 +69,7 @@ define([
             this.bindTo(Backbone.globalEvents, "layersReordered", this.updateLayerOrder, this);
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
             this.bindTo(Backbone.globalEvents, "toggleMeasure", this.toggleMeasure, this);
+            this.bindTo(Backbone.globalEvents, "search", this.handleSearch, this);
 
             OpenLayersUtil.addControlsToMap(this);
             this.getExactEarthLayers(this.getUserLayers);
@@ -87,6 +88,54 @@ define([
                     this.isHeaderViewable = true;
                 }
             }
+        },
+
+        handleSearch: function(searchTerm) {
+            console.log(searchTerm);
+            var filter = new OpenLayers.Filter.Comparison({ 
+                type: OpenLayers.Filter.Comparison.LIKE, 
+                matchCase:false, 
+                property: "mmsi", 
+                value: "*" + searchTerm + "*" 
+            }); 
+
+            $.ajax({
+                type: "GET",
+                url: "/proxy/search",
+                data: {
+                    t: "HT30",
+                    p: "518498000"
+                },
+                success: function(response) {
+                    console.log(response);
+                },
+                erro: function(err) {
+                    console.log("ERROR");
+                    console.log(err);
+                }
+            });
+
+            return false;
+
+            /*
+            var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
+                url: mywfsURL, 
+                geometryName: "SHAPE", 
+                featurePrefix: mywfsFeaturePrefix, 
+                featureType: mywfsFeatureType, 
+                srsName: myprojname // eg "EPSG:900913" 
+            }); 
+
+            wfsprotocol.read ({ 
+                filter:filter, 
+                callback: this.processQuery, 
+                scope: strategy 
+            }); 
+            */
+        },
+
+        processQuery: function(query) {
+            console.log(query);
         },
 
         getExactEarthLayers: function(callback) {

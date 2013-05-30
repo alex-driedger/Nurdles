@@ -27,6 +27,30 @@ var self = {
         });
     },
 
+    search: function(req, res) {
+        var http = require("follow-redirects").http,
+            searchURL = "http://demo.exactearth.com/Search.ashx?";
+
+        for (var key in req.query ) {
+            searchURL += key + "=" + req.query[key] + "&";
+        }
+
+        searchURL += "authkey=tokencoin";
+        console.log("SEARCHURL: ", searchURL);
+
+        http.get(searchURL, function(response) {
+            var output = "";
+
+            response.on("data", function(chunk) {
+                output += chunk;
+            });
+
+            response.on("end", function() {
+                res.send(output);
+            });
+        });
+    },
+
     getFeatures: function(req, res) {
         self.proxyIt(req, res, true, function(output) {
             res.send(output);
