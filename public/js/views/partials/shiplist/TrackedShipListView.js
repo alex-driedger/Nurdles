@@ -1,14 +1,14 @@
 define([
   'baseview',
   'openlayersutil',
-  'text!templates/partials/shiplist/ShiplistOnMapView.html'
-], function(Baseview, OpenLayersUtil, shiplistOnMapTemplate){
-    var ShiplistOnMapView = Baseview.extend({
+  'text!templates/partials/shiplist/TrackedShipListView.html'
+], function(Baseview, OpenLayersUtil, trackedShipListTemplate){
+    var TrackedShipListView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
         },
 
-        template: _.template(shiplistOnMapTemplate),
+        template: _.template(trackedShipListTemplate),
 
         events: {},
 
@@ -23,6 +23,6 @@ define([
         }
     });
 
-    return ShiplistOnMapView;
+    return TrackedShipListView;
 });
 

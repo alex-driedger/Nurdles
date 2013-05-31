@@ -25,11 +25,12 @@ define([
 
         events: {},
 
-        preRender: function(callback) {
+        preRender: function(containingDiv, callback) {
             var view = this;
+            this.$el.appendTo(containingDiv)
             OpenLayersUtil.getFeatureFields(function(err, response) {
                 private.features = response;
-                view.$el.html(view.template());
+                view.fadeInViewElements(view.template());
                 callback();
             });
 

@@ -27,34 +27,30 @@ define([
         },
 
         showFiltersView: function() {
+            this.closeDynamicContainers();
             var filtersView = new FiltersView();
 
-            this.closeDynamicContainers();
-            filtersView.preRender(function() {
-                filtersView.$el.appendTo("#toolContainer");
-                filtersView.render();
+            filtersView.preRender($("#toolContainer"), function() {
+                filtersView.render(false, true);
             });
             this.addSubView(filtersView);
         },
 
         showMapLayersView: function() {
-            var mapLayersView = new MapLayersView();
-            Backbone.globalEvents.trigger("showLoader");
-
             this.closeDynamicContainers();
-            mapLayersView.preRender(function() {
-                mapLayersView.$el.appendTo("#toolContainer");
+            var mapLayersView = new MapLayersView();
+
+            mapLayersView.preRender($("#toolContainer"), function() {
                 mapLayersView.render();
             });
             this.addSubView(mapLayersView);
         },
 
         showShiplistView: function() {
+            this.closeDynamicContainers();
             var shiplistView = new ShiplistView();
 
-            this.closeDynamicContainers();
-            shiplistView.preRender(function() {
-                shiplistView.$el.appendTo("#toolContainer");
+            shiplistView.preRender($("#toolsContainer"), function() {
                 shiplistView.render();
             });
             this.addSubView(shiplistView);
@@ -67,8 +63,7 @@ define([
                 filtersView = new FiltersView();
 
             sidebarTools.render();
-            filtersView.preRender(function() {
-                filtersView.$el.appendTo("#toolContainer");
+            filtersView.preRender($("#toolContainer"), function() {
                 filtersView.render();
             });
             this.addSubView(sidebarTools);

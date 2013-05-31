@@ -25,11 +25,12 @@ define([
 
         events: {},
 
-        preRender: function(callback) {
+        preRender: function(containingDiv, callback) {
             var view = this;
+            this.$el.appendTo(containingDiv)
             OpenLayersUtil.getLayers(null, function(err, eeLayers) {
                 view.eeLayers = eeLayers;
-                view.$el.html(view.template());
+                view.fadeInViewElements(view.template());
                 callback();
             });
 

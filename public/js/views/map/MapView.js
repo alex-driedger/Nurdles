@@ -92,46 +92,48 @@ define([
 
         handleSearch: function(searchTerm) {
             console.log(searchTerm);
-            var filter = new OpenLayers.Filter.Comparison({ 
-                type: OpenLayers.Filter.Comparison.LIKE, 
-                matchCase:false, 
-                property: "mmsi", 
-                value: "*" + searchTerm + "*" 
-            }); 
+            var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"}),
+                xml = new OpenLayers.Format.XML(),
+                filter = new OpenLayers.Filter.Comparison({ 
+                    type: OpenLayers.Filter.Comparison.LIKE, 
+                    matchCase:false, 
+                    property: "mmsi", 
+                    value: "test" 
+                }),
+                filter_param;
 
+            filter_param = xml.write(filter_1_0.write(filter));
+            console.log(filter_param);
+
+            /*
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "/proxy/search",
                 data: {
-                    t: "HT30",
-                    p: "518498000"
+                     filter: "<wfs:GetFeature service='WFS' version='1.1.0' maxFeatures='1' xmlns:exactEarth='http://owsdemo.exactearth.com/gws' xmlns:wfs='http://www.opengis.net/wfs' xmlns:ogc='http://www.opengis.net/ogc' xmlns:gml='http://www.opengis.net/gml' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd'>" + filter_param + "</wfs:GetFeature>"
                 },
                 success: function(response) {
-                    console.log(response);
+                    console.log("RESPONSE: ", response);
                 },
-                erro: function(err) {
+                error: function(err) {
                     console.log("ERROR");
                     console.log(err);
                 }
             });
 
             return false;
-
-            /*
+            */
             var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
-                url: mywfsURL, 
-                geometryName: "SHAPE", 
-                featurePrefix: mywfsFeaturePrefix, 
-                featureType: mywfsFeatureType, 
-                srsName: myprojname // eg "EPSG:900913" 
+                url: "/proxy?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
+                featurePrefix: "", 
+                featureType: "exactAIS:LVI", 
             }); 
 
-            wfsprotocol.read ({ 
+            wfsProtocol.read ({ 
                 filter:filter, 
                 callback: this.processQuery, 
-                scope: strategy 
+                scope: new OpenLayers.Strategy.Fixed 
             }); 
-            */
         },
 
         processQuery: function(query) {

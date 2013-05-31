@@ -1,14 +1,17 @@
 define([
-       'jquery',
-       'underscore',
-       'backbone',
-       'jqueryui',
-       'bootstrap'
-], function($, _, Backbone){
+   'jquery',
+   'underscore',
+   'backbone',
+   'text!templates/partials/loading.html',
+   'jqueryui',
+   'bootstrap'
+], function($, _, Backbone, loadingTemplate){
     var BaseView = Backbone.View.extend({
 
         initArgs: function(args) {
             var view = this;
+            this.loaderTemplate = _.template(loadingTemplate);
+            this.startLoad();
 
             if (args) {
                 _.each(_.keys(args), function(key) {
@@ -16,8 +19,20 @@ define([
                 });
             }
 
+
             if (this.restoreState)
                 this.restoreState();
+        },
+
+        startLoad: function() {
+            this.$el.css("height", "100%");
+            this.$el.html(this.loaderTemplate());
+        },
+
+        fadeInViewElements: function(template) {
+            this.$el.css("display", "none");
+            this.$el.html(template);
+            this.$el.fadeIn();
         },
         
         close: function(withFade) {

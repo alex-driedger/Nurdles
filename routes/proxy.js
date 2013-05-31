@@ -28,17 +28,11 @@ var self = {
     },
 
     search: function(req, res) {
-        var http = require("follow-redirects").http,
-            searchURL = "http://demo.exactearth.com/Search.ashx?";
+        var https = require("follow-redirects").https;
 
-        for (var key in req.query ) {
-            searchURL += key + "=" + req.query[key] + "&";
-        }
+        req.body = req.xml;
 
-        searchURL += "authkey=tokencoin";
-        console.log("SEARCHURL: ", searchURL);
-
-        http.get(searchURL, function(response) {
+        https.get(req.query["url"], function(response) {
             var output = "";
 
             response.on("data", function(chunk) {
@@ -46,7 +40,10 @@ var self = {
             });
 
             response.on("end", function() {
-                res.send(output);
+                if (passInfo)
+                    callback(output);
+                else
+                    res.send(output);
             });
         });
     },

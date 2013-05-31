@@ -28,6 +28,16 @@ input[type="radio"] {
     vertical-align: middle;
 }
 
+/*-------------------------Loader--------------------------------*/
+.loading {
+    height: 100%;
+}
+
+.loading img {
+    position: relative;
+    top: 45%;
+    left: 45%;
+}
 
 /*-------------------------Open Layers---------------------------*/
 .olImageLoadError {
