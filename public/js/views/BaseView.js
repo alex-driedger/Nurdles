@@ -35,27 +35,17 @@ define([
             this.$el.fadeIn();
         },
         
-        close: function(withFade) {
+        close: function() {
             this.trigger("close", this);
             this.closeSubviews();
             this.unbindFromAll();
             this.unbindFromAllControls();
             this.undelegateEvents();
             this.off();
-            if (withFade) {
-                this.$el.fadeOut(200, function() {
-                    if ($(this).prop("id") == "main-content")
-                        $(this).empty();
-                    else
-                        $(this).remove();
-                });
-            }
-            else {
-                if (this.$el.prop("id") == "main-content")
-                    this.$el.empty();
-                else
-                    this.$el.remove();
-            }
+            if (this.$el.prop("id") == "main-content")
+                this.$el.empty();
+            else
+                this.$el.remove();
 
             if (this.saveState)
                 this.saveState();
