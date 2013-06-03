@@ -93,23 +93,29 @@ define([
 
         handleSearch: function(searchTerm) {
             console.log(searchTerm);
+            var filter;
+
+            if (!isNaN(searchTerm)) {
+                filter = new OpenLayers.Filter.Comparison({ 
+                    type: OpenLayers.Filter.Comparison.EQUAL_TO, 
+                    property: "mmsi", 
+                    value: searchTerm
+                });
+            }
+            else {
+                filter = new OpenLayers.Filter.Comparison({ 
+                    type: OpenLayers.Filter.Comparison.LIKE, 
+                    matchCase:false, 
+                    property: "vessel_name", 
+                    value: searchTerm
+                });
+            }
+
             var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"}),
                 xml = new OpenLayers.Format.XML(),
                 filter = new OpenLayers.Filter.Logical({
                     type: OpenLayers.Filter.Logical.OR,
-                    filters: [
-                        new OpenLayers.Filter.Comparison({ 
-                            type: OpenLayers.Filter.Comparison.EQUAL_TO, 
-                            property: "mmsi", 
-                            value: searchTerm
-                        }),
-                        new OpenLayers.Filter.Comparison({ 
-                            type: OpenLayers.Filter.Comparison.LIKE, 
-                            matchCase:false, 
-                            property: "vessel_name", 
-                            value: searchTerm
-                        })
-                    ]
+                    filters: [filter]
                 });
 
             filter = OpenLayersUtil.mergeActiveFilters(filter, map.getLayersByName("exactAIS:LVI")[0].params.FILTER);
