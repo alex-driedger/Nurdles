@@ -56,6 +56,7 @@ define([
             });
             this.userLayers = new BaseCollection([], {model: Layer});
             this.initialFiltersToLoad = [];
+            this.filter = [];
             this.isHeaderViewable = true;
 
             /*
@@ -94,43 +95,33 @@ define([
             console.log(searchTerm);
             var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"}),
                 xml = new OpenLayers.Format.XML(),
-                filter = new OpenLayers.Filter.Comparison({ 
-                    type: OpenLayers.Filter.Comparison.LIKE, 
-                    matchCase:false, 
-                    property: "mmsi", 
-                    value: "test" 
-                }),
-                filter_param;
+                filter = new OpenLayers.Filter.Logical({
+                    type: OpenLayers.Filter.Logical.OR,
+                    filters: [
+                        new OpenLayers.Filter.Comparison({ 
+                            type: OpenLayers.Filter.Comparison.EQUAL_TO, 
+                            property: "mmsi", 
+                            value: searchTerm
+                        }),
+                        new OpenLayers.Filter.Comparison({ 
+                            type: OpenLayers.Filter.Comparison.LIKE, 
+                            matchCase:false, 
+                            property: "vessel_name", 
+                            value: searchTerm
+                        })
+                    ]
+                });
 
-            filter_param = xml.write(filter_1_0.write(filter));
-            console.log(filter_param);
+            filter = OpenLayersUtil.mergeActiveFilters(filter, map.getLayersByName("exactAIS:LVI")[0].params.FILTER);
 
-            /*
-            $.ajax({
-                type: "POST",
-                url: "/proxy/search",
-                data: {
-                     filter: "<wfs:GetFeature service='WFS' version='1.1.0' maxFeatures='1' xmlns:exactEarth='http://owsdemo.exactearth.com/gws' xmlns:wfs='http://www.opengis.net/wfs' xmlns:ogc='http://www.opengis.net/ogc' xmlns:gml='http://www.opengis.net/gml' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd'>" + filter_param + "</wfs:GetFeature>"
-                },
-                success: function(response) {
-                    console.log("RESPONSE: ", response);
-                },
-                error: function(err) {
-                    console.log("ERROR");
-                    console.log(err);
-                }
-            });
-
-            return false;
-            */
             var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
-                url: "/proxy?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
+                url: "/proxy/search?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
                 featurePrefix: "", 
                 featureType: "exactAIS:LVI", 
             }); 
 
             wfsProtocol.read ({ 
-                filter:filter, 
+                filter: filter, 
                 callback: this.processQuery, 
                 scope: new OpenLayers.Strategy.Fixed 
             }); 
@@ -297,6 +288,8 @@ define([
             var exactAISLayer = map.getLayersByName("exactAIS:LVI")[0],
                 styles = exactAISLayer.params.STYLES.split(","),
                 filterParam = this.createOpenLayersFilters(filters);
+
+            this.filter = filterParam;
 
             if (styles.length > 1) {
                 filterParam = "(" + filterParam + ")";

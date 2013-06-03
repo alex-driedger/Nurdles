@@ -113,6 +113,29 @@ define([
             return -1; //This means it's a geometric constraint
         },
 
+        mergeActiveFilters: function(newFilter, mapFilter) {
+            var parser, 
+                xml,
+                mapFilterConverted,
+                newFilter,
+                filters = [newFilter]
+
+            parser = new OpenLayers.Format.Filter.v1_1_0 ();
+            xml = new OpenLayers.Format.XML();
+
+            if (mapFilter) {
+                mapFilterConverted = parser.read(xml.read(mapFilter).documentElement);
+                filters.push(mapFilterConverted);
+            }
+
+            newFilter = new OpenLayers.Filter.Logical({
+                type: OpenLayers.Filter.Logical.AND,
+                filters: filters
+            });
+
+            return newFilter;
+        },
+
         convertFilterToFilterParam: function(filters) {
             var olFilters = new OpenLayers.Filter.Logical({
                 type: OpenLayers.Filter.Logical.AND 

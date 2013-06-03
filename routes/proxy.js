@@ -28,23 +28,13 @@ var self = {
     },
 
     search: function(req, res) {
-        var https = require("follow-redirects").https;
-
-        req.body = req.xml;
-
-        https.get(req.query["url"], function(response) {
-            var output = "";
-
-            response.on("data", function(chunk) {
-                output += chunk;
-            });
-
-            response.on("end", function() {
-                if (passInfo)
-                    callback(output);
-                else
-                    res.send(output);
-            });
+        var request = require('request');
+        request.post({
+            headers: {'content-type' : 'application/xml', 'content-length': req.xml.length},
+            url:     "https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin",
+                body:    req.xml
+        }, function(error, response, body){
+            res.send(body);
         });
     },
 
