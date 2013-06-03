@@ -8,6 +8,7 @@ define([
 ], function(Baseview, OpenLayersUtil, SearchedShipList, TrackedShipListView, OnMapShipListView, shipListTemplate){
     var ShipListView = Baseview.extend({
         initialize: function(args) {
+            this.fromSearch = false;
             this.initArgs(args);
             this.isDynamicContainer = true;
 
@@ -34,7 +35,8 @@ define([
                     $el: $("#trackedShips"),
                 }),
                 onMapShipListView = new OnMapShipListView({
-                    $el: $("#shipList")
+                    $el: $("#shipList"),
+                    load: !this.fromSearch
                 });
 
             this.addSubView(searchedShipListView);

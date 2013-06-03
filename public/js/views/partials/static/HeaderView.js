@@ -9,6 +9,7 @@ define([
         },
 
         handleSearchClick: function(e) {
+            e.preventDefault();
             var value = $(e.target).prev().val();
 
             Backbone.globalEvents.trigger("search", value);

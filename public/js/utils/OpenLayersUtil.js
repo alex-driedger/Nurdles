@@ -113,7 +113,7 @@ define([
             return -1; //This means it's a geometric constraint
         },
 
-        mergeActiveFilters: function(newFilter, mapFilter) {
+        convertXMLFilterToOLFilter: function(xmlFilter) {
             var parser, 
                 xml,
                 mapFilterConverted,
@@ -123,8 +123,16 @@ define([
             parser = new OpenLayers.Format.Filter.v1_1_0 ();
             xml = new OpenLayers.Format.XML();
 
+            olFilter = parser.read(xml.read(xmlFilter).documentElement);
+
+            return olFilter;
+        },
+
+        mergeActiveFilters: function(newFilter, mapFilter) {
+            var filters = [newFilter];
+
             if (mapFilter) {
-                mapFilterConverted = parser.read(xml.read(mapFilter).documentElement);
+                mapFilterConverted = this.convertXMLFilterToOLFilter(mapFilter);
                 filters.push(mapFilterConverted);
             }
 

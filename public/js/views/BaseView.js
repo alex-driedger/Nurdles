@@ -14,9 +14,9 @@ define([
             this.startLoad();
 
             if (args) {
-                _.each(_.keys(args), function(key) {
-                    view[key] = args[key];
-                });
+                for (var attribute in args) {
+                    view[attribute] = args[attribute];
+                }
             }
 
 

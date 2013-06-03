@@ -71,6 +71,7 @@ define([
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
             this.bindTo(Backbone.globalEvents, "toggleMeasure", this.toggleMeasure, this);
             this.bindTo(Backbone.globalEvents, "search", this.handleSearch, this);
+            this.bindTo(Backbone.globalEvents, "getShipList", this.getShipList, this);
 
             OpenLayersUtil.addControlsToMap(this);
             this.getExactEarthLayers(this.getUserLayers);
@@ -89,6 +90,38 @@ define([
                     this.isHeaderViewable = true;
                 }
             }
+        },
+
+        getShipList: function() {
+            var filter,
+                map = this.model,
+                mapFilter = map.getLayersByName("exactAIS:LVI")[0].params.FILTER;
+
+            filter = new OpenLayers.Filter.Spatial({ 
+                type: OpenLayers.Filter.Spatial.BBOX, 
+                property: "position", 
+                value: map.getExtent().transform(map.projection, map.displayProjection)
+            });
+
+            filter = OpenLayersUtil.mergeActiveFilters(filter, mapFilter);
+
+            var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
+                url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
+                featurePrefix: "", 
+                featureType: "exactAIS:LVI",
+            }); 
+
+            Backbone.globalEvents.trigger("showLoader");
+
+            wfsProtocol.read ({ 
+                filter: filter, 
+                callback: function(response) {
+                    Backbone.globalEvents.trigger("hideLoader");
+                    Backbone.globalEvents.trigger("fetchedShipsList", response.features);
+                },
+                scope: new OpenLayers.Strategy.Fixed
+            }); 
+            
         },
 
         handleSearch: function(searchTerm) {
@@ -121,7 +154,7 @@ define([
             filter = OpenLayersUtil.mergeActiveFilters(filter, map.getLayersByName("exactAIS:LVI")[0].params.FILTER);
 
             var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
-                url: "/proxy/search?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
+                url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
                 featurePrefix: "", 
                 featureType: "exactAIS:LVI", 
             }); 
@@ -136,9 +169,7 @@ define([
         },
 
         processQuery: function(response) {
-            console.log(response);
             Backbone.globalEvents.trigger("hideLoader");
-            $("#shiplist").click();
             Backbone.globalEvents.trigger("fetchedSearchedShips", response.features);
         },
 
@@ -404,6 +435,12 @@ define([
                 var latlon = map.getLonLatFromViewPortPx(e.xy) ;
                 latlon.transform( map.projection, map.displayProjection);
                 OpenLayers.Util.getElement("coordinates").innerHTML = latlon.lat + ", " + latlon.lon;
+            });
+            map.events.register("moveend", map, function(e) {
+                Backbone.globalEvents.trigger("moveEnd");
+            });
+            map.events.register("zoomend", map, function(e) {
+                Backbone.globalEvents.trigger("zoomEnd");
             });
 
             map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);

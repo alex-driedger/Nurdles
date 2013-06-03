@@ -7,8 +7,8 @@ define([
             if (!args) {
                 this.$el = $("#sidebarToolsContainer");
             }
-            else {
-            }
+
+            this.bindTo(Backbone.globalEvents, "activatePane", this.activatePane, this);
         },
 
         events: {
@@ -17,21 +17,27 @@ define([
             "click #shiplist": "showShiplistView"
         },
 
-        showFiltersView: function(e) {
+        activatePane: function(buttonToSimulateClick) {
+            this.swapActiveTab(buttonToSimulateClick);
+        },
+
+        swapActiveTab: function(tabToBecomeActive) {
             $("#sidebarToolsContainer .btn").removeClass("active");
-            $("#filters").addClass("active");
+            tabToBecomeActive.addClass("active");
+        },
+
+        showFiltersView: function(e) {
+            this.swapActiveTab($("#filters"));
             Backbone.globalEvents.trigger("showFiltersView");
         },
 
         showMapLayersView: function(e) {
-            $("#sidebarToolsContainer .btn").removeClass("active");
-            $("#mapLayers").addClass("active");
+            this.swapActiveTab($("#mapLayers"));
             Backbone.globalEvents.trigger("showMapLayersView");
         },
 
         showShiplistView: function(e) {
-            $("#sidebarToolsContainer .btn").removeClass("active");
-            $("#shiplist").addClass("active");
+            this.swapActiveTab($("#shiplist"));
             Backbone.globalEvents.trigger("showShiplistView");
         },
 

@@ -30,7 +30,7 @@ function bind(app, passport) {
     app.get("/proxy/features", proxy.getFeatures);
     app.get("/proxy/getCapabilities", proxy.getCapabilities);
     app.get("/proxy/exactEarthWMS", proxy.getWMS);
-    app.post("/proxy/search", proxy.search);
+    app.post("/proxy/getWFSFeatures", proxy.getWFSFeatures);
 }
 
 function ensureAuthenticated(req, res, next) {

@@ -27,7 +27,7 @@ var self = {
         });
     },
 
-    search: function(req, res) {
+    getWFSFeatures: function(req, res) {
         var request = require('request');
         request.post({
             headers: {'content-type' : 'application/xml', 'content-length': req.xml.length},

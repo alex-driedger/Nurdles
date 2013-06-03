@@ -23,10 +23,13 @@ define([
                 view.ships.add(new Ship(eeShip.attributes));
             });
 
+            console.log(this.ships.models);
             this.render();
 
-            if ($("#sidebar").hasClass("hide"))
+            if ($("#sidebar").hasClass("hide")) {
+                Backbone.globalEvents.trigger("activatePane", $("#shiplist"));
                 $("#separator").click();
+            }
         },
 
         preRender: function(callback) {
@@ -35,9 +38,9 @@ define([
         },
 
         render: function () {
-            this.$el.html(this.template({
+            this.fadeInViewElements((this.template({
                 ships: this.ships 
-            }));
+            })));
 
             return this;
         }

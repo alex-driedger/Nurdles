@@ -9,10 +9,15 @@ define([
     var SidebarView = Baseview.extend({
         initialize: function(args) {
             this.$el = args || $("#sidebar");
+            var view = this;
 
             this.bindTo(Backbone.globalEvents, "showMapLayersView", this.showMapLayersView, this);
             this.bindTo(Backbone.globalEvents, "showFiltersView", this.showFiltersView, this);
             this.bindTo(Backbone.globalEvents, "showShiplistView", this.showShiplistView, this);
+            this.bindTo(Backbone.globalEvents, "search", function() { 
+                if ($("#sidebar").hasClass("hide"))
+                    view.showShiplistView(true); 
+            }, this);
         },
 
         closeDynamicContainers: function() {
@@ -46,9 +51,9 @@ define([
             this.addSubView(mapLayersView);
         },
 
-        showShiplistView: function() {
+        showShiplistView: function(fromSearch) {
             this.closeDynamicContainers();
-            var shiplistView = new ShiplistView();
+            var shiplistView = new ShiplistView({fromSearch: fromSearch});
 
             shiplistView.preRender($("#toolContainer"), function() {
                 shiplistView.render();

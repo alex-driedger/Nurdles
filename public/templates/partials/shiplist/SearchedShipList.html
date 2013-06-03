@@ -2,12 +2,13 @@
     Searched ships
 </div>
 
+
 <table class="table table-condensed" style="margin-bottom: 0px;">
         <tr>
-            <td colspan="2">
+            <td>
                 MMSI:
             </td>
-            <td colspan="2">
+            <td>
                 Name:
             </td>
         </tr>
@@ -17,14 +18,10 @@
         <tr>
             <td>
                 <%= ship.get("mmsi") %>
-            <td>
             </td>
             <td>
-            <%= ship.get("vessel_name") %>
+                <%= ship.get("vessel_name") %>
             </td>
         </tr>
     <% }); %>
 </table>
-
-
-
