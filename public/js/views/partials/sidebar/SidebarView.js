@@ -50,7 +50,7 @@ define([
             this.closeDynamicContainers();
             var shiplistView = new ShiplistView();
 
-            shiplistView.preRender($("#toolsContainer"), function() {
+            shiplistView.preRender($("#toolContainer"), function() {
                 shiplistView.render();
             });
             this.addSubView(shiplistView);

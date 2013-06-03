@@ -126,6 +126,8 @@ define([
                 featureType: "exactAIS:LVI", 
             }); 
 
+            Backbone.globalEvents.trigger("showLoader");
+
             wfsProtocol.read ({ 
                 filter: filter, 
                 callback: this.processQuery, 
@@ -133,8 +135,11 @@ define([
             }); 
         },
 
-        processQuery: function(query) {
-            console.log(query);
+        processQuery: function(response) {
+            console.log(response);
+            Backbone.globalEvents.trigger("hideLoader");
+            $("#shiplist").click();
+            Backbone.globalEvents.trigger("fetchedSearchedShips", response.features);
         },
 
         getExactEarthLayers: function(callback) {
