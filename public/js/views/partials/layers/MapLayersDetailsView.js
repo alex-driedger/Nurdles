@@ -16,7 +16,8 @@ define([
         template: _.template(mapLayerDetailsViewTemplate),
 
         events: {
-            "click .collapsed": "handleExpand",
+            "click .layerExapnd": "handleExpand",
+            "click .legendExpand": "handleLegendExpand",
             "click .styleCheckbox": "toggleStyle"
         },
 
@@ -31,6 +32,21 @@ define([
             divToToggle.slideToggle(200);
 
             this.isExpanded = !this.isExpanded;
+        },
+
+        handleLegendExpand: function(e) {
+            var headerDiv = $(e.target).closest("div .legendExpand"),
+                id = headerDiv.parent().prop("id"),
+                divToToggle = headerDiv.next();
+
+            divToToggle.slideToggle(200);
+            $("#" + id + "-icon").prop("src", function(index, oldValue) {
+                if (oldValue.match(/down/)) 
+                    return oldValue.replace(/down/, "up");
+                else
+                    return oldValue.replace(/up/, "down");
+            });
+
         },
 
         toggleStyle: function(e) {
@@ -66,16 +82,15 @@ define([
             this.$el.html(this.template({
                 layer: this.model,
                 eeLayer: this.eeLayer,
-                styles: this.model.get("exactEarthParams").STYLES
+                styles: this.styles
             }));
-
-
             return this;
 
         },
 
         render: function() {
-            var view = this;
+            var view = this,
+                styles;
 
             $( "#" + this.model.get("_id") + "-layer").sortable({
                 placeholder: "ui-state-highlight",
@@ -90,6 +105,16 @@ define([
             console.log("EELAYER: ", this.eeLayer);
 
             this.delegateEvents(this.events);
+            if (!this.model.get("isBaseLayer")) {
+                styles  = this.eeLayer.Style;
+                if (!(styles instanceof Array)) 
+                   styles = [styles]; //EE sends back an object (not an array) if there's only one style...
+
+                _.each(styles, function(style) {
+                    $("#" + style.Name + "-legend-container").hide();
+                });
+            }
+
             if (!this.isExpanded)
                 $("#" + this.model.get("_id") + "-container").hide();
 

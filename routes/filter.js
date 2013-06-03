@@ -21,6 +21,7 @@ var self = {
                 res.send({error: err});
             }
             else {
+                console.log("JUST SAVED FILTER: ", filter);
                 res.send(filter);
             }
         });

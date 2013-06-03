@@ -21,7 +21,7 @@ define([
         },
 
         render: function (firstTime) {
-            this.$el.html(this.template());
+            this.$el.html(this.template({layer: this.model}));
 
             return this;
         }

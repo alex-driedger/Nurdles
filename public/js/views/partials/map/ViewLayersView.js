@@ -14,11 +14,12 @@ define([
         template: _.template(viewLayersTemplate),
 
         events: {
-            "click .layerCheckbox": "handleLayerToggle"
+            "click .layerCheckbox": "handleLayerToggle",
+            "click .baseLayerRadio": "handleBaseLayerSelect"
         },
 
         handleLayerReorder: function() {
-            var activeLayers = $( "#sortableViewLayers").sortable( "toArray" ).reverse();
+            var activeLayers = $( "#sortableViewLayers").sortable( "toArray" );
 
             Backbone.globalEvents.trigger("layersReordered", activeLayers);
 
@@ -55,8 +56,25 @@ define([
             Backbone.globalEvents.trigger("layersChanged", this.layers);
         },
 
+        handleBaseLayerSelect: function(e) {
+            e.stopImmediatePropagation();
+
+            var target = $(e.target),
+                id = target.prop("id"),
+                isActivated = target.prop("checked"),
+                layer = this.baseLayers.findWhere({_id: id});
+
+            layer.set("active", isActivated);
+            //layer.update();
+
+            Backbone.globalEvents.trigger("baseLayerSelected", layer);
+        },
+
         preRender: function() {
-            this.$el.html(this.template({layers: this.layers}));
+            this.$el.html(this.template({
+                layers: this.layers,
+                baseLayers: this.baseLayers
+            }));
             return this;
         },
 
@@ -70,7 +88,6 @@ define([
                     view.handleLayerReorder();
                 }
             });
-            
         }
     });
 

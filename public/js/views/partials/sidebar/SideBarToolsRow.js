@@ -7,25 +7,38 @@ define([
             if (!args) {
                 this.$el = $("#sidebarToolsContainer");
             }
-            else {
-            }
+
+            this.bindTo(Backbone.globalEvents, "activatePane", this.activatePane, this);
         },
 
         events: {
             "click #mapLayers": "showMapLayersView",
-            "click #filters": "showFiltersView"
+            "click #filters": "showFiltersView",
+            "click #shiplist": "showShiplistView"
+        },
+
+        activatePane: function(buttonToSimulateClick) {
+            this.swapActiveTab(buttonToSimulateClick);
+        },
+
+        swapActiveTab: function(tabToBecomeActive) {
+            $("#sidebarToolsContainer .btn").removeClass("active");
+            tabToBecomeActive.addClass("active");
         },
 
         showFiltersView: function(e) {
-            $("#sidebarToolsContainer .btn").removeClass("active");
-            $("#filters").addClass("active");
+            this.swapActiveTab($("#filters"));
             Backbone.globalEvents.trigger("showFiltersView");
         },
 
         showMapLayersView: function(e) {
-            $("#sidebarToolsContainer .btn").removeClass("active");
-            $("#mapLayers").addClass("active");
+            this.swapActiveTab($("#mapLayers"));
             Backbone.globalEvents.trigger("showMapLayersView");
+        },
+
+        showShiplistView: function(e) {
+            this.swapActiveTab($("#shiplist"));
+            Backbone.globalEvents.trigger("showShiplistView");
         },
 
         render: function () {

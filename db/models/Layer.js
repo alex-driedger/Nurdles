@@ -4,15 +4,16 @@ var LayerSchema = new mongoose.Schema({
     owner: {type: mongoose.Schema.ObjectId, required: true },
     title: { type: String, required: true },
     name: { type: String, required: false},
-    url: { type: String, required: false },
+    url: { type: String, required: true, default: "Not Required" },
     username: { type: String, required: false },
     password: { type: String, required: false },
     authKey: { type: String, required: false },
-    isBaseLayer: { type: String, required: true },
+    isBaseLayer: { type: Boolean, required: true },
     isExactEarth: { type: Boolean, required: true },
     exactEarthParams: { type: mongoose.Schema.Types.Mixed, required: false },
     active: { type: Boolean, required: true, default: false },
-    order: { type: Number, required: true, default: -1 }
+    order: { type: Number, required: true, default: -1 },
+    mapType: { type: String, required: true, default: "WMS" }
 });
 
 var Layer = mongoose.model("Layer", LayerSchema);

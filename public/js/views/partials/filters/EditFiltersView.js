@@ -15,8 +15,9 @@ define([
             this.model = new Filter();
 
             //If anything happens to our operators collection, show the user.
-            this.listenTo(this.model, "change", this.cacheOperators);
-            this.listenTo(this.model, "addOperator", this.render);
+            this.bindTo(this.model, "removeOperator", this.cacheOperators);
+            this.bindTo(this.model, "clearOperators", this.reRender);
+            this.bindTo(this.model, "addOperator", this.render);
         },
 
         template: _.template(editFiltersTemplate),
@@ -49,26 +50,27 @@ define([
             });
 
             this.model.set("name", $("#filterName").val());
-
-            this.render();
         },
 
         clearFilter: function() {
+            this.model.set("name", "");
             this.model.clearOperators();
         },
 
         createFilter: function(e) {
             var view = this;
             this.model.set("name", $("#filterName").val());
-            this.model.update(
-                function(response, view){
+            this.model.save(null, {
+                success: function(response){
                     Backbone.globalEvents.trigger("addedFilter", response);
-                    view.clearFilter();
+                    view.model = new Filter();
+                    view.reRender();
                 },
-                function(err){
+                error: function(err){
                     console.log(err); 
                 },
-                this);
+                url: "/api/filters/save"
+            });
         },
 
         handlePropertyChange: function(e) {
@@ -117,9 +119,8 @@ define([
         },
 
         addRow: function(e) {
-
             var newOperator = {
-                id: private.operatorCounter++,
+               id: private.operatorCounter++,
                 property: $("#newProperty").val(),
                 type: $("#newType").val(),
                 lowerBoundary: $("#newLower").val(),
@@ -137,13 +138,14 @@ define([
 
             this.cacheOperators();
             this.model.addOperator(newOperator);
+            this.reRender();
         },
 
-        render: function (firstTime) {
+        render: function () {
             var templateData = {
                 types: this.types,
                 features: this.features,
-                model: this.model.toJSON()
+                model: this.model
             };
 
             this.$el.html(this.template(templateData));

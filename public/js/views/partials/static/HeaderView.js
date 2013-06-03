@@ -4,9 +4,22 @@ define([
 ], function(Baseview, headerTemplate){
     var HeaderView = Baseview.extend({
 
+        events: {
+            "click #searchButton":"handleSearchClick"
+        },
+
+        handleSearchClick: function(e) {
+            e.preventDefault();
+            var value = $(e.target).prev().val();
+
+            Backbone.globalEvents.trigger("search", value);
+
+        },
+
         render: function () {
-            console.log(this.$el);
             this.$el.html(headerTemplate);
+
+            return this;
         }
     });
 

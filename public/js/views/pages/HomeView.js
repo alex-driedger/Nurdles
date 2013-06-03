@@ -11,10 +11,13 @@ define([
         this.subviews = [];
         this.sidebarActive = false;
 
+        this.showLoader();
+
         this.bindTo(Backbone.globalEvents, "showLoader", this.showLoader, this);
         this.bindTo(Backbone.globalEvents, "hideLoader", this.hideLoader, this);
 
         this.bindTo(Backbone.globalEvents, "layersFetched", this.loadLayersIntoDropDown, this);
+        this.bindTo(Backbone.globalEvents, "mapLoaded", this.hideLoader, this);
     },
 
     events: {
@@ -40,9 +43,10 @@ define([
         }
     },
 
-    loadLayersIntoDropDown: function(layers) {
+    loadLayersIntoDropDown: function(layers, baseLayers) {
         var viewLayersView = new ViewLayersView({
-            layers: layers
+            layers: layers,
+            baseLayers: baseLayers
         });
 
         $("#viewLayerContainer").html(viewLayersView.preRender().$el);
@@ -64,7 +68,6 @@ define([
       var mapView = new MapView({el: $("#openLayersImage")}),
             sidebarView = new SideBarView();
 
-      mapView.render();
       sidebarView.render();
       this.subviews.push(mapView);
       this.subviews.push(sidebarView);

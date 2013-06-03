@@ -1,0 +1,50 @@
+<div class="header bordered">
+    Ship List
+</div>
+
+<% if (load) { %>
+<div class="clearfix vtupadded10">
+    <div class="pull-left lpadding20">
+        Fetching ship list. Please wait...
+    </div>
+    <div class="pull-right rpadding15">
+        <img class="small-loader" src="../../img/loader-big.gif" />
+    </div>
+</div>
+
+<% } else { %>
+
+    <% if (ships.length === 0) { %>
+    <div class="lpadding20 muted clearfix">
+        No ships to display
+        <div class="pull-right rpadding15">
+            <button id="getShipList" class="btn btn-primary">Get Ship List</button>
+        </div>
+    </div>
+    <% } else { %>
+
+    <table class="table table-condensed" style="margin-bottom: 0px;">
+            <tr>
+                <td>
+                    MMSI:
+                </td>
+                <td>
+                    Name:
+                </td>
+            </tr>
+
+            <% ships.each(function(ship) { %>
+
+            <tr>
+                <td>
+                    <%= ship.get("mmsi") %>
+                </td>
+                <td>
+                    <%= ship.get("vessel_name") %>
+                </td>
+            </tr>
+        <% }); %>
+    </table>
+    <% 
+    } 
+} %>

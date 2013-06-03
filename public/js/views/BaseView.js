@@ -1,46 +1,51 @@
 define([
-       'jquery',
-       'underscore',
-       'backbone',
-       'jqueryui',
-       'bootstrap'
-], function($, _, Backbone){
+   'jquery',
+   'underscore',
+   'backbone',
+   'text!templates/partials/loading.html',
+   'jqueryui',
+   'bootstrap'
+], function($, _, Backbone, loadingTemplate){
     var BaseView = Backbone.View.extend({
 
         initArgs: function(args) {
             var view = this;
+            this.loaderTemplate = _.template(loadingTemplate);
+            this.startLoad();
 
             if (args) {
-                _.each(_.keys(args), function(key) {
-                    view[key] = args[key];
-                });
+                for (var attribute in args) {
+                    view[attribute] = args[attribute];
+                }
             }
+
 
             if (this.restoreState)
                 this.restoreState();
         },
+
+        startLoad: function() {
+            this.$el.css("height", "100%");
+            this.$el.html(this.loaderTemplate());
+        },
+
+        fadeInViewElements: function(template) {
+            this.$el.css("display", "none");
+            this.$el.html(template);
+            this.$el.fadeIn();
+        },
         
-        close: function(withFade) {
+        close: function() {
             this.trigger("close", this);
             this.closeSubviews();
             this.unbindFromAll();
             this.unbindFromAllControls();
             this.undelegateEvents();
             this.off();
-            if (withFade) {
-                this.$el.fadeOut(200, function() {
-                    if ($(this).prop("id") == "main-content")
-                        $(this).empty();
-                    else
-                        $(this).remove();
-                });
-            }
-            else {
-                if (this.$el.prop("id") == "main-content")
-                    this.$el.empty();
-                else
-                    this.$el.remove();
-            }
+            if (this.$el.prop("id") == "main-content")
+                this.$el.empty();
+            else
+                this.$el.remove();
 
             if (this.saveState)
                 this.saveState();

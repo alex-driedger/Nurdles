@@ -3,7 +3,7 @@
 </div>
 
 <div class="vpadded10">
-    <input id="filterName" type="text" placeholder="Name" value="<%= name %>" style="margin-left: 5px;"/>
+    <input id="filterName" type="text" placeholder="Name" value="<%= model.get('name') %>" style="margin-left: 5px;"/>
 </div>
 
 <table class="table table-condensed" style="margin-bottom: 0px;">
@@ -16,7 +16,7 @@
             </td>
         </tr>
 
-        <% _.each(model.operators, function(operator) { %>
+        <% _.each(model.get("operators"), function(operator) { %>
 
         <tr>
         <td>

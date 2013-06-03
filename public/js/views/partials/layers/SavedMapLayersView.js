@@ -24,19 +24,39 @@ define([
         loadSavedLayersList: function(layers, view) {
             view.$el.html(view.template());
 
-            if (view.isExactEarthLayers)
-                view.layersContainer = $("#exactEarthLayersContainer");
-            else
-                view.layersContainer = $("#externalLayersContainer");
+            view.eeLayersContainer = $("#exactEarthLayersContainer");
 
-            layers.forEach(function(layer) {
+            layers.eeStoredLayers.forEach(function(layer) {
                 var detailsView = new MapLayersDetailsView({
                     model: layer,
-                    eeLayer: _.findWhere(view.eeLayers, {Name: layer.get("name")})
+                    eeLayer: _.findWhere(view.eeLayers, {Name: layer.get("name")}),
+                    styles: layer.get("exactEarthParams").STYLES
                 });
 
                 view.addSubView(detailsView);
-                view.layersContainer.append(detailsView.preRender().$el);
+                view.eeLayersContainer.append(detailsView.preRender().$el);
+                detailsView.render();
+            });
+
+            view.externalLayersContainer = $("#externalLayersContainer");
+            layers.customLayers.forEach(function(layer) {
+                var detailsView = new MapLayersDetailsView({
+                    model: layer
+                });
+
+                view.addSubView(detailsView);
+                view.externalLayersContainer.append(detailsView.preRender().$el);
+                detailsView.render();
+            });
+
+            view.baseLayersContainer = $("#baseLayersContainer");
+            layers.baseLayers.forEach(function(layer) {
+                var detailsView = new MapLayersDetailsView({
+                    model: layer
+                });
+
+                view.addSubView(detailsView);
+                view.baseLayersContainer.append(detailsView.preRender().$el);
                 detailsView.render();
             });
         },
@@ -62,7 +82,7 @@ define([
                 this.layers.fetch({
                     url: "/api/layers/getAllForUser",
                     success: function(list, res, opt) {
-                        view.loadSavedLayersList(list.models, view);
+                        view.loadSavedLayersList(Utils.parseLayerTypes(list), view);
                         Backbone.globalEvents.trigger("hideLoader");
 
                     },
