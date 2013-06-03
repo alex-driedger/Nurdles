@@ -13,7 +13,7 @@ define([
             this.ships = new BaseCollection([], {model: Ship});
 
             this.bindTo(Backbone.globalEvents, "fetchedShipsList", this.displayShipList, this);
-            this.bindTo(Backbone.globalEvents, "zoomEnd", function() {
+            this.bindTo(Backbone.globalEvents, "moveEnd", function() {
                 view.ships.reset();
                 view.load = true;
                 view.showLoadScreen();
@@ -23,7 +23,6 @@ define([
             if (this.load) {
                 Backbone.globalEvents.trigger("getShipList");
             }
-
         },
 
         template: _.template(shiplistOnMapTemplate),

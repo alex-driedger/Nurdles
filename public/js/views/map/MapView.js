@@ -42,6 +42,7 @@ define([
     var MapView = BaseView.extend({
 
         initialize: function(args) {
+            var view = this;
             this.model = new OpenLayers.Map({
                 controls: [
                     new OpenLayers.Control.Zoom({ name: "Zoom", 'position': new OpenLayers.Pixel(50, 50) }),
@@ -57,6 +58,7 @@ define([
             this.userLayers = new BaseCollection([], {model: Layer});
             this.initialFiltersToLoad = [];
             this.filter = [];
+            this.cachedSearchedShips = null;
             this.isHeaderViewable = true;
 
             /*
@@ -72,6 +74,14 @@ define([
             this.bindTo(Backbone.globalEvents, "toggleMeasure", this.toggleMeasure, this);
             this.bindTo(Backbone.globalEvents, "search", this.handleSearch, this);
             this.bindTo(Backbone.globalEvents, "getShipList", this.getShipList, this);
+            this.bindTo(Backbone.globalEvents, "showShiplistView", function() {
+                if (view.cachedSearchedShips)
+                    setTimeout(function() {
+                        Backbone.globalEvents.trigger("cachedSearchedShipsExist", view.cachedSearchedShips);
+                    }, 5); //We want this to happen after other event handlers have been initiated so we make it start a bit later.
+                    //This allows us to make sure the view that handles the event is the view that was loaded from clicking on shiplist on the side bar.
+            }, this);
+            this.bindTo(Backbone.globalEvents, "cacheSearchedShips", function(ships) {view.cachedSearchedShips = ships;}, this);
 
             OpenLayersUtil.addControlsToMap(this);
             this.getExactEarthLayers(this.getUserLayers);
@@ -288,9 +298,21 @@ define([
                 filterParam;
 
             if (stylesLength > 1) {
-                filterParam = "(" + eeLayer.params.FILTER + ")";
-                for (var i = 1; i < stylesLength; i++) {
-                    filterParam += filterParam ; //Needed if we have applied multiple styles on a filtered layer 
+                if (eeLayer.params.FILTER.indexOf("(") != -1) {
+                    filterParam = eeLayer.params.FILTER.replace(/\(/gi, "");
+                    filterParam = filterParam.substring(0, filterParam.length - 1);
+                    filterParam = filterParam.split(")");
+                    for (var i = 0, len = filterParam.length; i < len; i++) {
+                        filterParam[i] = "(" + filterParam[i] + ")";
+                    }
+                    filterParam = filterParam.join();
+                    filterParam = filterParam.replace(/,/g, "");
+                }
+                else {
+                    filterParam = "(" + eeLayer.params.FILTER + ")";
+                    for (var i = 1; i < stylesLength; i++) {
+                        filterParam += filterParam ; //Needed if we have applied multiple styles on a filtered layer 
+                    }
                 }
             }
             //Reset filter to a single filter since we only have one style applied

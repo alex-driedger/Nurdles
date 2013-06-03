@@ -5,17 +5,29 @@ define([
   '../../../models/Ship',
   'text!templates/partials/shiplist/SearchedShipList.html'
 ], function(Baseview, OpenLayersUtil, BaseCollection, Ship, searchedShipListTemplated){
-    var TrackedShipListView = Baseview.extend({
+    var SearchedShipView = Baseview.extend({
         initialize: function(args) {
+            this.load = false;
             this.initArgs(args);
             this.ships = new BaseCollection([], {model: Ship});
 
             this.bindTo(Backbone.globalEvents, "fetchedSearchedShips", this.transformShipData, this);
+            this.bindTo(Backbone.globalEvents, "search", function(){
+                this.load = true;
+                this.render()
+            }, this);
+            this.bindTo(Backbone.globalEvents, "cachedSearchedShipsExist", this.renderCachedShips, this);
         },
 
         template: _.template(searchedShipListTemplated),
 
         events: {},
+
+        renderCachedShips: function(cachedShips) {
+            this.ships = cachedShips;
+            this.load = false;
+            this.render();
+        },
 
         transformShipData: function(eeShips) {
             var view = this;
@@ -23,7 +35,9 @@ define([
                 view.ships.add(new Ship(eeShip.attributes));
             });
 
-            console.log(this.ships.models);
+            Backbone.globalEvents.trigger("cacheSearchedShips", this.ships);
+            this.load = false;
+            this.display = true;
             this.render();
 
             if ($("#sidebar").hasClass("hide")) {
@@ -32,20 +46,17 @@ define([
             }
         },
 
-        preRender: function(callback) {
-
-            return this;
-        },
-
         render: function () {
             this.fadeInViewElements((this.template({
-                ships: this.ships 
+                ships: this.ships,
+                load: this.load,
+                display: this.display
             })));
 
             return this;
         }
     });
 
-    return TrackedShipListView;
+    return SearchedShipView;
 });
 

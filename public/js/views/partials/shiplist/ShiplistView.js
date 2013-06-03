@@ -29,7 +29,8 @@ define([
 
         render: function () {
             var searchedShipListView = new SearchedShipList({
-                    $el: $("#searchedShips")
+                    $el: $("#searchedShips"),
+                    load: this.fromSearch,
                 }),
                 trackedShipListView = new TrackedShipListView({
                     $el: $("#trackedShips"),
@@ -42,6 +43,7 @@ define([
             this.addSubView(searchedShipListView);
             this.addSubView(trackedShipListView);
             this.addSubView(onMapShipListView);
+            searchedShipListView.render();
             trackedShipListView.render();
             onMapShipListView.render();
 
