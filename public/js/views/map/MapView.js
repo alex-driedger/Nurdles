@@ -299,7 +299,7 @@ define([
             var map = this.model;
 
             var layers = _.reject(map.layers, function(layer) {
-                return layer.isBaseLayer;
+                return layer.isBaseLayer || layer.markers;
             });
             var offset = map.layers.length - layers.length;
 
@@ -311,6 +311,11 @@ define([
                 else
                     map.setLayerIndex(layer, map.layers.length - i - 1);
             }
+
+            _.each(map.layers, function(olLayer) {
+                if (olLayer.markers)
+                    map.setLayerIndex(olLayer, map.layers.length - 1)
+            });
         },
 
         updateLayerStyles: function(layer) {
