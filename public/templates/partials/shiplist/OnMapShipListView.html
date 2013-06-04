@@ -23,26 +23,91 @@
     </div>
     <% } else { %>
 
-    <table class="table table-condensed" style="margin-bottom: 0px;">
+    <table class="table table-condensed cursor" style="margin-bottom: 0px;">
             <tr>
+                <td></td>
                 <td>
                     MMSI:
                 </td>
                 <td>
                     Name:
                 </td>
+                <td></td>
             </tr>
 
             <% ships.each(function(ship) { %>
 
-            <tr>
+            <tr id="<%= ship.get('mmsi') %>-header" class="shipHeader">
                 <td>
+                    <span class="pull-left inline-icon">
+                        <img id="<%= ship.get('mmsi') %>-arrow" src="../../img/arrow-up.png" class="icon-small legendIcon" />
+                    </span>
+
+                </td>
+                <td id="<%= ship.get('mmsi') %>-mmsi">
                     <%= ship.get("mmsi") %>
                 </td>
-                <td>
+                <td id="<%= ship.get('mmsi') %>-name">
                     <%= ship.get("vessel_name") %>
                 </td>
+                <td>
+                    <button id="<%= ship.get('mmsi') %>-locate" class="btn btn-info btn-small locateButton">Locate</button>
+                </td>
             </tr>
+            <tr>
+                <td colspan="4">
+                    <div id="<%= ship.get('mmsi') %>-details" style="display: none;">
+                        <table  class="table table-condensed">
+                                <tr class="wms">
+                                    <td class="wms"><strong>Type: </strong><%= ship.get("type") %></td>
+                                    <td class="wms"><strong>Flag: </strong><%= ship.get("flag_country") %></td>
+                                    </td>
+                                </tr>
+                                <tr class="wms">
+                                    <td class="wms"><strong>IMO: </strong><%= ship.get("imo") %></td>
+                                    <td class="wms"><strong>MMSI: </strong><%= ship.get("mmsi") %></td>
+                                </tr>
+                                <tr class="wms">
+                                    <td class="wms"><strong>Call Sign: </strong><%= ship.get("callsign") %></td>
+                                    <td class="wms"><strong>Size: </strong><%= ship.get("length") %>m x <%= ship.get("width") %>m</td>
+                                </tr>
+                                <tr class="wms">
+                                    <td bgcolor="#99CCFF" class="wms"><strong>Latest Position at:</strong></td>
+                                    <td bgcolor="#99CCFF" class="wms"><%= ship.get("ts_pos_utc").toString().replace(/T|\:\d\dZ/g, " ") %></td>
+                                    <td bgcolor="#99CCFF" class="wms"></td>
+                                </tr>
+                                <tr class="wms">
+                                    <td class="wms"><strong>Latitude: </strong><%= ship.get("latitude") %></td>
+                                    <td class="wms"><strong>Longitude: </strong><%= ship.get("longitude") %></td>
+                                </tr>
+                                <tr class="wms">
+                                    <td class="wms"><strong>Course: </strong><%= ship.get("cog") %>&deg;</td>
+                                    <td class="wms"><strong>Speed: </strong><%= ship.get("sog") %>kn</td>
+                                </tr>
+                                <tr class="wms">
+                                    <td class="wms"><strong>Heading: </strong><%= ship.get("heading") %>&deg;</td>
+                                    <td class="wms"><strong>Rate of Turn: </strong><%= ship.get("rot") %>&deg; /min</td>
+                                </tr>
+                                <tr class="wms">
+                                    <td colspan="3" class="wms"><em>Status: Under Way Using Engine</em></td>
+                                </tr>
+                                <tr class="wms">
+                                    <td nowrap bgcolor="#99CCFF" class="wms"><strong>Latest Report at:</strong></td>
+                                    <td bgcolor="#99CCFF" class="wms"><%= ship.get("ts_pos_utc").toString().replace(/T|\:\d\dZ/g, " ") %></td>
+                                    <td bgcolor="#99CCFF" class="wms"></td>
+                                </tr>
+                                <tr class="wms">
+                                    <td class="wms"><strong>Destination: </strong> <%= ship.get("destination") %></td>
+                                    <td class="wms"><strong>Est. Arrival: </strong><%= ship.get("eta") %></td>            
+                                </tr>
+                                <tr class="wms">
+                                    <td class="wms"><strong>Cargo: </strong><%= ship.get("vessel_type_cargo") %></td>
+                                    <td class="wms"><strong>Draught: </strong><%= ship.get("draught") %></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
         <% }); %>
     </table>
     <% 

@@ -27,7 +27,10 @@ define([
 
         template: _.template(shiplistOnMapTemplate),
 
-        events: {},
+        events: {
+            "click .shipHeader": "handleExpand",
+            "click .locateButton": "handleLocate"
+        },
 
         displayShipList: function(eeShips) {
             console.log(eeShips);
@@ -38,6 +41,26 @@ define([
 
             this.load = false;
             this.reRender();
+        },
+
+        handleExpand: function(e) {
+            var id = $(e.target).prop("id").split("-")[0];
+
+            $("#" + id + "-details").slideToggle("hide");
+            $("#" + id + "-arrow").prop("src", function(index, oldValue) {
+                if (oldValue.match(/down/)) 
+                    return oldValue.replace(/down/, "up");
+                else
+                    return oldValue.replace(/up/, "down");
+            });
+        },
+
+
+        handleLocate: function(e) {
+            e.stopPropagation();
+            var ship = this.ships.findWhere({mmsi: $(e.target).prop("id").split("-")[0]});
+
+            Backbone.globalEvents.trigger("locateShip", ship);
         },
 
         preRender: function(callback) {

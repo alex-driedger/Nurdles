@@ -82,6 +82,7 @@ define([
                     //This allows us to make sure the view that handles the event is the view that was loaded from clicking on shiplist on the side bar.
             }, this);
             this.bindTo(Backbone.globalEvents, "cacheSearchedShips", function(ships) {view.cachedSearchedShips = ships;}, this);
+            this.bindTo(Backbone.globalEvents, "locateShip", this.locateShip, this);
 
             OpenLayersUtil.addControlsToMap(this);
             this.getExactEarthLayers(this.getUserLayers);
@@ -100,6 +101,27 @@ define([
                     this.isHeaderViewable = true;
                 }
             }
+        },
+
+        locateShip: function(ship) {
+            var map = this.model,
+                size = new OpenLayers.Size(30,30),
+                icon = new OpenLayers.Icon('../../img/target.png',size),
+                markerLayer = map.getLayersByName("shipMarkers")[0],
+                projection = OpenLayersUtil.getProjection();
+
+            //We need to transform the points to properly place the popup
+            
+            if ( typeof markerLayer == "undefined" ) {
+                markerLayer = new OpenLayers.Layer.Markers( "shipMarkers" );
+                map.addLayer(markerLayer);
+            }
+            else {
+                markerLayer.clearMarkers();
+                markerLayer.redraw();
+            }
+
+            markerLayer.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(ship.get("longitude"), ship.get("latitude")).transform(projection.displayProjection, projection.projection),icon));
         },
 
         getShipList: function() {
