@@ -51,7 +51,7 @@ define([
             this.addSubView(editFilters);
             this.addSubView(savedFilters);
             editFilters.render(true);
-            savedFilters.render();
+            savedFilters.render(false, true);
 
             return this;
         }

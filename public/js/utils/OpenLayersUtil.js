@@ -164,7 +164,7 @@ define([
             
         },
 
-        addControlsToMap: function(view) {
+        addControlsToMap: function(view, currentFilter) {
             var map = view.model,
                 oInfoControl = new OpenLayers.Control.WMSGetFeatureInfo({
                     name: "GetFeatureInfo",
@@ -172,6 +172,7 @@ define([
                         title: 'Identify features by clicking',
                     infoFormat: "application/vnd.ogc.gml",
                     queryVisible: true,
+                    filter: this.convertXMLFilterToOLFilter(currentFilter),
                     eventListeners: {
                         getfeatureinfo: function(evt) {
                             view.showInfo(evt, view);

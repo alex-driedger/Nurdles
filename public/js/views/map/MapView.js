@@ -89,7 +89,6 @@ define([
             this.bindTo(Backbone.globalEvents, "cacheSearchedShips", function(ships) {view.cachedSearchedShips = ships;}, this);
             this.bindTo(Backbone.globalEvents, "locateShip", this.locateShip, this);
 
-            OpenLayersUtil.addControlsToMap(this);
             this.getExactEarthLayers(this.getUserLayers);
         },
 
@@ -319,7 +318,7 @@ define([
             var map = this.model;
 
             var layers = _.reject(map.layers, function(layer) {
-                return layer.isBaseLayer || layer.markers;
+                return layer.isBaseLayer || layer.markers || layer.getVisibility() == false;
             });
             var offset = map.layers.length - layers.length;
 
@@ -388,6 +387,8 @@ define([
         loadInitialFilters: function() {
             if (this.layersLoaded && this.initialFiltersToLoad.length > 0) {
                 this.updateFilters(this.initialFiltersToLoad);
+
+                OpenLayersUtil.addControlsToMap(this, this.model.getLayersByName("exactAIS:LVI")[0].params.FILTER);
                 delete this.initialFiltersToLoad;
             }
         },

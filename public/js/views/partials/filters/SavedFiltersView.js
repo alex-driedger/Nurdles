@@ -99,7 +99,7 @@ define([
             });
         },
 
-        render: function (isLocalRender, isSidebarSwitch) {
+        render: function (isLocalRender, isInitialLoad) {
             if (typeof isLocalRender == "undefined" || isLocalRender == false) {
                 console.log("Fetching from DB");
                 var view = this,
@@ -112,7 +112,7 @@ define([
 
                         view.loadSavedFiltersView(view.filters, view);
 
-                        if (view.activeFilters.length > 0 && isSidebarSwitch) {
+                        if (view.activeFilters.length > 0 && isInitialLoad) {
                             Backbone.globalEvents.trigger("initialFilterLoad", view.activeFilters);
                         }
                     },
