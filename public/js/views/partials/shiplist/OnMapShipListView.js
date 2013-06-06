@@ -14,9 +14,9 @@ define([
 
             this.bindTo(Backbone.globalEvents, "fetchedShipsList", this.displayShipList, this);
             this.bindTo(Backbone.globalEvents, "tooManyShipsToFetch", function(shipCount) {
-                $("#onMapShipListContainer").html("Too many ships to retrieve. Please zoom in");
+                $("#onMapShipListContainer").html("<div class='vtupadded10 lpadding20'>Too many ships to retrieve. Please zoom in.</div>");
             }, this);
-            this.bindTo(Backbone.globalEvents, "zoomEnd", function() {
+            this.bindTo(Backbone.globalEvents, "refreshShipList", function() {
                 view.ships.reset();
                 view.load = true;
                 view.showLoadScreen();

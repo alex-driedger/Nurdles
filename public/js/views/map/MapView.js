@@ -78,7 +78,7 @@ define([
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
             this.bindTo(Backbone.globalEvents, "toggleMeasure", this.toggleMeasure, this);
             this.bindTo(Backbone.globalEvents, "search", this.handleSearch, this);
-            this.bindTo(Backbone.globalEvents, "getShipList", this.checkShipCount, this);
+            this.bindTo(Backbone.globalEvents, "getShipList", this.getShipList, this);
             this.bindTo(Backbone.globalEvents, "showShiplistView", function() {
                 if (view.cachedSearchedShips)
                     setTimeout(function() {
@@ -128,51 +128,40 @@ define([
             markerLayer.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(ship.get("longitude"), ship.get("latitude")).transform(projection.displayProjection, projection.projection),icon));
         },
 
-        checkShipCount: function(response) {
-            var map = this.model,
-                view = this,
-                mapFilter = map.getLayersByName("exactAIS:LVI")[0].params.FILTER;
-
-            OpenLayersUtil.getShipCount(map.getExtent(), mapFilter, function(count) {
-                view.shipCount = count;
-                if (count <= 500) {
-                    view.getShipList();
-                }
-                else
-                    Backbone.globalEvents.trigger("tooManyShipsToFetch");
-            });
-        },
-
         getShipList: function() {
             var filter,
                 map = this.model,
                 mapFilter = map.getLayersByName("exactAIS:LVI")[0].params.FILTER;
 
-            filter = new OpenLayers.Filter.Spatial({ 
-                type: OpenLayers.Filter.Spatial.BBOX, 
-                property: "position", 
-                value: map.getExtent().transform(map.projection, map.displayProjection)
-            });
+            if (this.shipCount >= 500) {
+                Backbone.globalEvents.trigger("tooManyShipsToFetch");
+            }
+            else {
+                filter = new OpenLayers.Filter.Spatial({ 
+                    type: OpenLayers.Filter.Spatial.BBOX, 
+                    property: "position", 
+                    value: map.getExtent().transform(map.projection, map.displayProjection)
+                });
 
-            filter = OpenLayersUtil.mergeActiveFilters(filter, mapFilter);
+                filter = OpenLayersUtil.mergeActiveFilters(filter, mapFilter);
 
-            var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
-                url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
-                featurePrefix: "", 
-                featureType: "exactAIS:LVI",
-            }); 
+                var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
+                    url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
+                    featurePrefix: "", 
+                    featureType: "exactAIS:LVI",
+                }); 
 
-            Backbone.globalEvents.trigger("showLoader");
+                Backbone.globalEvents.trigger("showLoader");
 
-            wfsProtocol.read ({ 
-                filter: filter, 
-                callback: function(response) {
-                    Backbone.globalEvents.trigger("hideLoader");
-                    Backbone.globalEvents.trigger("fetchedShipsList", response.features);
-                },
-                scope: new OpenLayers.Strategy.Fixed
-            }); 
-            
+                wfsProtocol.read ({ 
+                    filter: filter, 
+                    callback: function(response) {
+                        Backbone.globalEvents.trigger("hideLoader");
+                        Backbone.globalEvents.trigger("fetchedShipsList", response.features);
+                    },
+                    scope: new OpenLayers.Strategy.Fixed
+                }); 
+            }
         },
 
         handleSearch: function(searchTerm) {
@@ -385,10 +374,14 @@ define([
         //filters from the db AND when we're done loading the layers on the map.
         //Only once both are done can we apply the filters to the map.
         loadInitialFilters: function() {
+            var currentFilter = this.model.getLayersByName("exactAIS:LVI")[0].params.FILTER;
             if (this.layersLoaded && this.initialFiltersToLoad.length > 0) {
                 this.updateFilters(this.initialFiltersToLoad);
 
-                OpenLayersUtil.addControlsToMap(this, this.model.getLayersByName("exactAIS:LVI")[0].params.FILTER);
+                OpenLayersUtil.addControlsToMap(this, currentFilter);
+                OpenLayersUtil.getShipCount(this.model.getExtent(), currentFilter, function(count) {
+                    this.shipCount = count;
+                });
                 delete this.initialFiltersToLoad;
             }
         },
@@ -502,21 +495,26 @@ define([
             map.render("map");
             OpenLayers.Util.onImageLoadError = function () { }
 
+
+            map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
+
+            map.zoomToMaxExtent();
+
             map.events.register("mousemove", map, function(e) { 
                 var latlon = map.getLonLatFromViewPortPx(e.xy) ;
                 latlon.transform( map.projection, map.displayProjection);
                 OpenLayers.Util.getElement("coordinates").innerHTML = latlon.lat + ", " + latlon.lon;
             });
             map.events.register("moveend", map, function(e) {
-                Backbone.globalEvents.trigger("moveEnd");
+                var view = this;
+                OpenLayersUtil.getShipCount(map.getExtent(), map.getLayersByName("exactAIS:LVI")[0].params.FILTER, function(count) {
+                    view.shipCount = count;
+                    if (count < 500)
+                        Backbone.globalEvents.trigger("refreshShipList", count);
+                    else
+                        Backbone.globalEvents.trigger("tooManyShipsToFetch", count);
+                });
             });
-            map.events.register("zoomend", map, function(e) {
-                Backbone.globalEvents.trigger("zoomEnd");
-            });
-
-            map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
-
-            map.zoomToMaxExtent();
 
             window.map = map; //BAD BAD BAD BAD but easy to manipulate the map through the console.
         }
