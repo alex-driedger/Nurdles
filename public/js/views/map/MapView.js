@@ -374,12 +374,16 @@ define([
         //filters from the db AND when we're done loading the layers on the map.
         //Only once both are done can we apply the filters to the map.
         loadInitialFilters: function() {
-            var currentFilter = this.model.getLayersByName("exactAIS:LVI")[0].params.FILTER;
+            var currentFilter;
             if (this.layersLoaded && this.initialFiltersToLoad.length > 0) {
+                currentFilter = this.model.getLayersByName("exactAIS:LVI")[0].params.FILTER;
                 this.updateFilters(this.initialFiltersToLoad);
+                OpenLayersUtil.addControlsToMap(this, this.initialFiltersToLoad);
 
-                OpenLayersUtil.addControlsToMap(this, currentFilter);
-                OpenLayersUtil.getShipCount(this.model.getExtent(), currentFilter, function(count) {
+                //All controls and layers are lodead -- ready to render the map
+                this.model.render("map");
+
+                OpenLayersUtil.getShipCount(this.model.getExtent(), this.initialFiltersToLoad, function(count) {
                     this.shipCount = count;
                 });
                 delete this.initialFiltersToLoad;
@@ -392,7 +396,7 @@ define([
 
             var exactAISLayer = map.getLayersByName("exactAIS:LVI")[0],
                 styles = exactAISLayer.params.STYLES.split(","),
-                filterParam = this.createOpenLayersFilters(filters);
+                filterParam = OpenLayersUtil.createOpenLayersFilters(filters);
 
             this.filter = filterParam;
 
@@ -410,15 +414,6 @@ define([
                 exactAISLayer.mergeNewParams({"FILTER": ""});
         },
 
-        createOpenLayersFilters: function(filters) {
-            var simplifiedFilters = [];
-
-            for (var i = 0, len = filters.length; i< len; i++) {
-                simplifiedFilters.push({operators: filters[i].get("operators")})
-            };
-
-            return OpenLayersUtil.convertFilterToFilterParam(simplifiedFilters);
-        },
 
         toggleGraticule: function(activate) {
             _.each(this.model.controls, function(control) {
@@ -492,9 +487,7 @@ define([
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
-            map.render("map");
             OpenLayers.Util.onImageLoadError = function () { }
-
 
             map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
 
