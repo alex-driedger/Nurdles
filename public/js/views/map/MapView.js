@@ -36,7 +36,6 @@ define([
                 this.destroy();
             }
         },
-
     };
 
     var MapView = BaseView.extend({
@@ -46,7 +45,13 @@ define([
             this.model = new OpenLayers.Map({
                 controls: [
                     new OpenLayers.Control.Zoom({ name: "Zoom", 'position': new OpenLayers.Pixel(50, 50) }),
-                    new OpenLayers.Control.Navigation({name: "Navigation"})
+                    new OpenLayers.Control.Navigation({
+                        name: "Navigation",
+                        mouseWheelOptions: {
+                            cummulative: true,
+                            interval: 100
+                        }
+                    })
                 ],
                 projection: new OpenLayers.Projection("EPSG:900913"),
                 displayProjection: new OpenLayers.Projection("EPSG:4326"),
@@ -73,7 +78,7 @@ define([
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
             this.bindTo(Backbone.globalEvents, "toggleMeasure", this.toggleMeasure, this);
             this.bindTo(Backbone.globalEvents, "search", this.handleSearch, this);
-            this.bindTo(Backbone.globalEvents, "getShipList", this.getShipList, this);
+            this.bindTo(Backbone.globalEvents, "getShipList", this.checkShipCount, this);
             this.bindTo(Backbone.globalEvents, "showShiplistView", function() {
                 if (view.cachedSearchedShips)
                     setTimeout(function() {
@@ -122,6 +127,21 @@ define([
             }
 
             markerLayer.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(ship.get("longitude"), ship.get("latitude")).transform(projection.displayProjection, projection.projection),icon));
+        },
+
+        checkShipCount: function(response) {
+            var map = this.model,
+                view = this,
+                mapFilter = map.getLayersByName("exactAIS:LVI")[0].params.FILTER;
+
+            OpenLayersUtil.getShipCount(map.getExtent(), mapFilter, function(count) {
+                view.shipCount = count;
+                if (count <= 500) {
+                    view.getShipList();
+                }
+                else
+                    Backbone.globalEvents.trigger("tooManyShipsToFetch");
+            });
         },
 
         getShipList: function() {
@@ -467,7 +487,8 @@ define([
 
             var controlsView = new TopToolsRow(),
                 graticuleControl,
-                map = this.model;
+                map = this.model,
+                view = this;
 
             controlsView.render();
             this.addSubView(controlsView);

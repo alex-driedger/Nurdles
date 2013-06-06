@@ -13,7 +13,10 @@ define([
             this.ships = new BaseCollection([], {model: Ship});
 
             this.bindTo(Backbone.globalEvents, "fetchedShipsList", this.displayShipList, this);
-            this.bindTo(Backbone.globalEvents, "moveEnd", function() {
+            this.bindTo(Backbone.globalEvents, "tooManyShipsToFetch", function(shipCount) {
+                $("#onMapShipListContainer").html("Too many ships to retrieve. Please zoom in");
+            }, this);
+            this.bindTo(Backbone.globalEvents, "zoomEnd", function() {
                 view.ships.reset();
                 view.load = true;
                 view.showLoadScreen();

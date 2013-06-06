@@ -310,7 +310,41 @@ define([
 
         },
 
+        getShipCount: function(bounds, currentFilter, callback) {
+            var filter;
+
+            filter = new OpenLayers.Filter.Spatial({ 
+                type: OpenLayers.Filter.Spatial.BBOX, 
+                property: "position", 
+                value: bounds.transform(map.projection, map.displayProjection)
+            });
+
+            filter = this.mergeActiveFilters(filter, currentFilter);
+
+            var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
+                url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
+                featurePrefix: "", 
+                featureType: "exactAIS:LVI",
+            }); 
+
+            wfsProtocol.read ({ 
+                filter: filter, 
+                callback: function(response) {
+                    Backbone.globalEvents.trigger("fetchedShipCount", response.numberOfFeatures);
+
+                    if (_.isFunction(callback)) {
+                        callback(response.numberOfFeatures);
+                    }
+                },
+                readOptions: {output: "object"},
+                resultType: "hits",
+                maxFeatures: null,
+                scope: new OpenLayers.Strategy.Fixed
+            }); 
+            
+        }
     };
+
 
     return OpenLayersUtil;
 });

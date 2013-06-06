@@ -2,15 +2,17 @@
     Ship List
 </div>
 
+<div id="onMapShipListContainer">
+
 <% if (load) { %>
-<div class="clearfix vtupadded10">
-    <div class="pull-left lpadding20">
-        Fetching ship list. Please wait...
+    <div class="clearfix vtupadded10">
+        <div class="pull-left lpadding20">
+            Fetching ship list. Please wait...
+        </div>
+        <div class="pull-right rpadding15">
+            <img class="small-loader" src="../../img/loader-big.gif" />
+        </div>
     </div>
-    <div class="pull-right rpadding15">
-        <img class="small-loader" src="../../img/loader-big.gif" />
-    </div>
-</div>
 
 <% } else { %>
 
@@ -112,4 +114,6 @@
     </table>
     <% 
     } 
-} %>
+    } %>
+
+</div>
