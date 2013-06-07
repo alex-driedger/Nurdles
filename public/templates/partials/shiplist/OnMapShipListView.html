@@ -2,10 +2,12 @@
     <div class="pull-left centered-to-button">
         Ship List 
     </div>
-    <form id="shipListForm" action="/api/shiplist/download"  method="post" class="pull-right rpadding15 no-margin">
-        <button id="downloadShipList" class="btn btn-link"> Download CSV </button>
-        <input type="hidden" id="serializedShipList" name="serializedShipList" />
-    </form>
+    <% if (ships.length > 0) { %>
+        <form id="shipListForm" action="/api/shiplist/download"  method="post" class="pull-right rpadding15 no-margin">
+            <button id="downloadShipList" class="btn btn-link"> Download CSV </button>
+            <input type="hidden" id="serializedShipList" name="serializedShipList" />
+        </form>
+    <% } %>
 </div>
 
 <div id="onMapShipListContainer">
@@ -26,7 +28,9 @@
     <div class="lpadding20 muted clearfix">
         No ships to display
         <div class="pull-right rpadding15">
-            <button id="getShipList" class="btn btn-primary">Get Ship List</button>
+            <% if (load) { %>
+                <button id="getShipList" class="btn btn-primary">Get Ship List</button>
+            <% } %>
         </div>
     </div>
     <% } else { %>
