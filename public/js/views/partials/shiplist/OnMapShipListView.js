@@ -32,7 +32,38 @@ define([
 
         events: {
             "click .shipHeader": "handleExpand",
-            "click .locateButton": "handleLocate"
+            "click .locateButton": "handleLocate",
+            "click #downloadShipList": "downloadShipList"
+        },
+
+        downloadShipList: function(e) {
+            var serializedShipList = this.serializeShipList();
+            e.preventDefault();
+            console.log(this.ships);
+            $("#serializedShipList").val(serializedShipList);
+            console.log($("#serializedShipList").val());
+            $("#shipListForm").submit();
+        },
+
+        serializeShipList: function() {
+            var serializedShipList = "",
+                jsonShipList = {
+                    headers: "",
+                    ships: []
+                },
+                ship = this.ships.at(0);
+
+            for (var key in ship.attributes) {
+                jsonShipList.headers += key + ", ";
+            }
+
+            jsonShipList.headers = jsonShipList.headers.substring(0, jsonShipList.headers.length - 1);
+
+            this.ships.each(function(ship) {
+                jsonShipList.ships.push(ship.attributes);
+            });
+
+            return JSON.stringify(jsonShipList);
         },
 
         displayShipList: function(eeShips) {

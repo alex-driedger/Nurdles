@@ -3,6 +3,7 @@ function bind(app, passport) {
     map = require('./map'),
     proxy = require('./proxy'),
     filter = require('./filter'),
+    shiplist = require('./shiplist'),
     layer = require('./layer'),
     stateManager = require('./statemanager');
 
@@ -24,6 +25,8 @@ function bind(app, passport) {
     app.post("/api/layers/save", ensureAuthenticated, layer.create);
     app.put("/api/layers/:layerId/update", ensureAuthenticated, layer.update);
     app.delete("/api/layers/:layerId", ensureAuthenticated, layer.remove);
+
+    app.post("/api/shiplist/download", ensureAuthenticated, shiplist.download);
 
     app.post("/proxy", proxy.defaultProxy);
     app.get("/proxy", proxy.defaultProxy);

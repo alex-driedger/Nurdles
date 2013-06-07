@@ -42,6 +42,7 @@ define([
 
         initialize: function(args) {
             var view = this;
+            this.$el.html(mapTemplate);
             this.model = new OpenLayers.Map({
                 controls: [
                     new OpenLayers.Control.Zoom({ name: "Zoom", 'position': new OpenLayers.Pixel(50, 50) }),
@@ -382,6 +383,8 @@ define([
 
                 //All controls and layers are lodead -- ready to render the map
                 this.model.render("map");
+                this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
+                this.model.zoomToMaxExtent();
 
                 OpenLayersUtil.getShipCount(this.model.getExtent(), this.initialFiltersToLoad, function(count) {
                     this.shipCount = count;
@@ -472,7 +475,6 @@ define([
         },
 
         render: function () {
-            this.$el.html(mapTemplate);
 
             var controlsView = new TopToolsRow(),
                 graticuleControl,
@@ -489,9 +491,7 @@ define([
 
             OpenLayers.Util.onImageLoadError = function () { }
 
-            map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
 
-            map.zoomToMaxExtent();
 
             map.events.register("mousemove", map, function(e) { 
                 var latlon = map.getLonLatFromViewPortPx(e.xy) ;

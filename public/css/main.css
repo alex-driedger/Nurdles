@@ -28,8 +28,20 @@ input[type="radio"] {
     vertical-align: middle;
 }
 
+.no-padding {
+    padding: 0px
+}
+
+.no-margin {
+    margin: 0px
+}
+
 .centered {
     text-align: center;
+}
+
+.header .centered-to-button {
+    padding: 5px 0;
 }
 
 /*-------------------------Step Styles---------------------------*/

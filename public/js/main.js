@@ -18,11 +18,7 @@ require.config({
 
   shim: {
       bootstrap: {
-          deps: ['jquery']
-      },
-
-      jqueryui: {
-          deps: ['bootstrap']
+          deps: ['jquery', 'jqueryui']
       },
 
       underscore: { 

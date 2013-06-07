@@ -1,10 +1,11 @@
-<div class="header bordered">
-    <div class="pull-left">
+<div class="header bordered clearfix">
+    <div class="pull-left centered-to-button">
         Ship List 
     </div>
-    <div class="pull-right rpadding15">
+    <form id="shipListForm" action="/api/shiplist/download"  method="post" class="pull-right rpadding15 no-margin">
         <button id="downloadShipList" class="btn btn-link"> Download CSV </button>
-    </div>
+        <input type="hidden" id="serializedShipList" name="serializedShipList" />
+    </form>
 </div>
 
 <div id="onMapShipListContainer">
