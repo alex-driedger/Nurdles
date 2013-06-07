@@ -4,7 +4,7 @@ var express = require('express'),
     db = require('./db'),
     repl = require('repl'),
     passport = require('passport'),
-    utils = require('./node_modules/connect/lib/utils'), 
+    utils = require('connect').utils, 
     parser = require('xml2js');
 
 function xmlBodyParser(req, res, next) {
