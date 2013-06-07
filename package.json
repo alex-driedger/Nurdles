@@ -13,7 +13,8 @@
     "passport-local": "0.1.x",
     "needle": ">=0.5",
     "ent": ">=0.0.0",
-    "xml2json": ">=0.3.2"
+    "xml2json": ">=0.3.2",
+    "xml2js": ">=0.2.7",
     "connect": ">=2.7.11"
   },
   "devDependencies": {
