@@ -36,17 +36,23 @@ define([
                 this.destroy();
             }
         },
-
     };
 
     var MapView = BaseView.extend({
 
         initialize: function(args) {
             var view = this;
+            this.$el.html(mapTemplate);
             this.model = new OpenLayers.Map({
                 controls: [
                     new OpenLayers.Control.Zoom({ name: "Zoom", 'position': new OpenLayers.Pixel(50, 50) }),
-                    new OpenLayers.Control.Navigation({name: "Navigation"})
+                    new OpenLayers.Control.Navigation({
+                        name: "Navigation",
+                        mouseWheelOptions: {
+                            cummulative: true,
+                            interval: 100
+                        }
+                    })
                 ],
                 projection: new OpenLayers.Projection("EPSG:900913"),
                 displayProjection: new OpenLayers.Projection("EPSG:4326"),
@@ -82,8 +88,8 @@ define([
                     //This allows us to make sure the view that handles the event is the view that was loaded from clicking on shiplist on the side bar.
             }, this);
             this.bindTo(Backbone.globalEvents, "cacheSearchedShips", function(ships) {view.cachedSearchedShips = ships;}, this);
+            this.bindTo(Backbone.globalEvents, "locateShip", this.locateShip, this);
 
-            OpenLayersUtil.addControlsToMap(this);
             this.getExactEarthLayers(this.getUserLayers);
         },
 
@@ -102,36 +108,61 @@ define([
             }
         },
 
+        locateShip: function(ship) {
+            var map = this.model,
+                size = new OpenLayers.Size(30,30),
+                icon = new OpenLayers.Icon('../../img/target.png',size),
+                markerLayer = map.getLayersByName("shipMarkers")[0],
+                projection = OpenLayersUtil.getProjection();
+
+            //We need to transform the points to properly place the popup
+            
+            if ( typeof markerLayer == "undefined" ) {
+                markerLayer = new OpenLayers.Layer.Markers( "shipMarkers" );
+                map.addLayer(markerLayer);
+            }
+            else {
+                markerLayer.clearMarkers();
+                markerLayer.redraw();
+            }
+
+            markerLayer.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(ship.get("longitude"), ship.get("latitude")).transform(projection.displayProjection, projection.projection),icon));
+        },
+
         getShipList: function() {
             var filter,
                 map = this.model,
                 mapFilter = map.getLayersByName("exactAIS:LVI")[0].params.FILTER;
 
-            filter = new OpenLayers.Filter.Spatial({ 
-                type: OpenLayers.Filter.Spatial.BBOX, 
-                property: "position", 
-                value: map.getExtent().transform(map.projection, map.displayProjection)
-            });
+            if (this.shipCount >= 500) {
+                Backbone.globalEvents.trigger("tooManyShipsToFetch");
+            }
+            else {
+                filter = new OpenLayers.Filter.Spatial({ 
+                    type: OpenLayers.Filter.Spatial.BBOX, 
+                    property: "position", 
+                    value: map.getExtent().transform(map.projection, map.displayProjection)
+                });
 
-            filter = OpenLayersUtil.mergeActiveFilters(filter, mapFilter);
+                filter = OpenLayersUtil.mergeActiveFilters(filter, mapFilter);
 
-            var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
-                url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
-                featurePrefix: "", 
-                featureType: "exactAIS:LVI",
-            }); 
+                var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
+                    url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
+                    featurePrefix: "", 
+                    featureType: "exactAIS:LVI",
+                }); 
 
-            Backbone.globalEvents.trigger("showLoader");
+                Backbone.globalEvents.trigger("showLoader");
 
-            wfsProtocol.read ({ 
-                filter: filter, 
-                callback: function(response) {
-                    Backbone.globalEvents.trigger("hideLoader");
-                    Backbone.globalEvents.trigger("fetchedShipsList", response.features);
-                },
-                scope: new OpenLayers.Strategy.Fixed
-            }); 
-            
+                wfsProtocol.read ({ 
+                    filter: filter, 
+                    callback: function(response) {
+                        Backbone.globalEvents.trigger("hideLoader");
+                        Backbone.globalEvents.trigger("fetchedShipsList", response.features);
+                    },
+                    scope: new OpenLayers.Strategy.Fixed
+                }); 
+            }
         },
 
         handleSearch: function(searchTerm) {
@@ -277,7 +308,7 @@ define([
             var map = this.model;
 
             var layers = _.reject(map.layers, function(layer) {
-                return layer.isBaseLayer;
+                return layer.isBaseLayer || layer.markers || layer.getVisibility() == false;
             });
             var offset = map.layers.length - layers.length;
 
@@ -289,6 +320,11 @@ define([
                 else
                     map.setLayerIndex(layer, map.layers.length - i - 1);
             }
+
+            _.each(map.layers, function(olLayer) {
+                if (olLayer.markers)
+                    map.setLayerIndex(olLayer, map.layers.length - 1)
+            });
         },
 
         updateLayerStyles: function(layer) {
@@ -339,8 +375,20 @@ define([
         //filters from the db AND when we're done loading the layers on the map.
         //Only once both are done can we apply the filters to the map.
         loadInitialFilters: function() {
+            var currentFilter;
             if (this.layersLoaded && this.initialFiltersToLoad.length > 0) {
+                currentFilter = this.model.getLayersByName("exactAIS:LVI")[0].params.FILTER;
                 this.updateFilters(this.initialFiltersToLoad);
+                OpenLayersUtil.addControlsToMap(this, this.initialFiltersToLoad);
+
+                //All controls and layers are lodead -- ready to render the map
+                this.model.render("map");
+                this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
+                this.model.zoomToMaxExtent();
+
+                OpenLayersUtil.getShipCount(this.model.getExtent(), this.initialFiltersToLoad, function(count) {
+                    this.shipCount = count;
+                });
                 delete this.initialFiltersToLoad;
             }
         },
@@ -351,7 +399,7 @@ define([
 
             var exactAISLayer = map.getLayersByName("exactAIS:LVI")[0],
                 styles = exactAISLayer.params.STYLES.split(","),
-                filterParam = this.createOpenLayersFilters(filters);
+                filterParam = OpenLayersUtil.createOpenLayersFilters(filters);
 
             this.filter = filterParam;
 
@@ -369,15 +417,6 @@ define([
                 exactAISLayer.mergeNewParams({"FILTER": ""});
         },
 
-        createOpenLayersFilters: function(filters) {
-            var simplifiedFilters = [];
-
-            for (var i = 0, len = filters.length; i< len; i++) {
-                simplifiedFilters.push({operators: filters[i].get("operators")})
-            };
-
-            return OpenLayersUtil.convertFilterToFilterParam(simplifiedFilters);
-        },
 
         toggleGraticule: function(activate) {
             _.each(this.model.controls, function(control) {
@@ -436,11 +475,11 @@ define([
         },
 
         render: function () {
-            this.$el.html(mapTemplate);
 
             var controlsView = new TopToolsRow(),
                 graticuleControl,
-                map = this.model;
+                map = this.model,
+                view = this;
 
             controlsView.render();
             this.addSubView(controlsView);
@@ -450,8 +489,9 @@ define([
             OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
             OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
 
-            map.render("map");
             OpenLayers.Util.onImageLoadError = function () { }
+
+
 
             map.events.register("mousemove", map, function(e) { 
                 var latlon = map.getLonLatFromViewPortPx(e.xy) ;
@@ -459,15 +499,15 @@ define([
                 OpenLayers.Util.getElement("coordinates").innerHTML = latlon.lat + ", " + latlon.lon;
             });
             map.events.register("moveend", map, function(e) {
-                Backbone.globalEvents.trigger("moveEnd");
+                var view = this;
+                OpenLayersUtil.getShipCount(map.getExtent(), map.getLayersByName("exactAIS:LVI")[0].params.FILTER, function(count) {
+                    view.shipCount = count;
+                    if (count < 500)
+                        Backbone.globalEvents.trigger("refreshShipList", count);
+                    else
+                        Backbone.globalEvents.trigger("tooManyShipsToFetch", count);
+                });
             });
-            map.events.register("zoomend", map, function(e) {
-                Backbone.globalEvents.trigger("zoomEnd");
-            });
-
-            map.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
-
-            map.zoomToMaxExtent();
 
             window.map = map; //BAD BAD BAD BAD but easy to manipulate the map through the console.
         }

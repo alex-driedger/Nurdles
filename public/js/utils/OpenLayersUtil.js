@@ -144,6 +144,16 @@ define([
             return newFilter;
         },
 
+        createOpenLayersFilters: function(filters) {
+            var simplifiedFilters = [];
+
+            for (var i = 0, len = filters.length; i< len; i++) {
+                simplifiedFilters.push({operators: filters[i].get("operators")})
+            };
+
+            return this.convertFilterToFilterParam(simplifiedFilters);
+        },
+
         convertFilterToFilterParam: function(filters) {
             var olFilters = new OpenLayers.Filter.Logical({
                 type: OpenLayers.Filter.Logical.AND 
@@ -164,7 +174,7 @@ define([
             
         },
 
-        addControlsToMap: function(view) {
+        addControlsToMap: function(view, currentFilter) {
             var map = view.model,
                 oInfoControl = new OpenLayers.Control.WMSGetFeatureInfo({
                     name: "GetFeatureInfo",
@@ -172,6 +182,7 @@ define([
                         title: 'Identify features by clicking',
                     infoFormat: "application/vnd.ogc.gml",
                     queryVisible: true,
+                    filter: this.convertXMLFilterToOLFilter(currentFilter),
                     eventListeners: {
                         getfeatureinfo: function(evt) {
                             view.showInfo(evt, view);
@@ -310,7 +321,45 @@ define([
 
         },
 
+        getShipCount: function(bounds, currentFilter, callback) {
+            var filter,
+                mapProjection = this.getProjection();
+
+            filter = new OpenLayers.Filter.Spatial({ 
+                type: OpenLayers.Filter.Spatial.BBOX, 
+                property: "position", 
+                value: bounds.transform(mapProjection.projection, mapProjection.displayProjection)
+            });
+
+            if (currentFilter instanceof Array)
+                currentFilter = this.createOpenLayersFilters(currentFilter);
+
+            filter = this.mergeActiveFilters(filter, currentFilter);
+
+            var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
+                url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
+                featurePrefix: "", 
+                featureType: "exactAIS:LVI",
+            }); 
+
+            wfsProtocol.read ({ 
+                filter: filter, 
+                callback: function(response) {
+                    Backbone.globalEvents.trigger("fetchedShipCount", response.numberOfFeatures);
+
+                    if (_.isFunction(callback)) {
+                        callback(response.numberOfFeatures);
+                    }
+                },
+                readOptions: {output: "object"},
+                resultType: "hits",
+                maxFeatures: null,
+                scope: new OpenLayers.Strategy.Fixed
+            }); 
+            
+        }
     };
+
 
     return OpenLayersUtil;
 });
