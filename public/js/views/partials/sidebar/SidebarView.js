@@ -2,7 +2,7 @@ define([
   'baseview',
   '../filters/FiltersView',
   '../layers/MapLayersView',
-  '../shiplist/ShiplistView',
+  '../shiplist/ShipListView',
   '../sidebar/SideBarToolsRow',
   'text!templates/partials/sidebar/SidebarView.html'
 ], function(Baseview, FiltersView, MapLayersView, ShiplistView, SideBarToolsRow, sidebarViewTemplate){
