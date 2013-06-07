@@ -33,7 +33,14 @@ define([
         events: {
             "click .shipHeader": "handleExpand",
             "click .locateButton": "handleLocate",
-            "click #downloadShipList": "downloadShipList"
+            "click #downloadShipList": "downloadShipList",
+            "click #getShipList": "handleGetShipList"
+        },
+
+        handleGetShipList: function() {
+            this.load = true;
+            this.showLoadScreen();
+            Backbone.globalEvents.trigger("getShipList");
         },
 
         downloadShipList: function(e) {
@@ -74,6 +81,7 @@ define([
             });
 
             this.load = false;
+            this.refreshed = true;
             this.reRender();
         },
 
@@ -105,7 +113,8 @@ define([
         render: function () {
             this.fadeInViewElements((this.template({
                 ships: this.ships,
-                load: this.load
+                load: this.load,
+                refreshed: this.refreshed
             })));
 
             return this;

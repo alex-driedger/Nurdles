@@ -33,6 +33,7 @@ define([
         },
 
         transformShipData: function(eeShips) {
+            this.ships.reset();
             var view = this;
             _.each(eeShips, function(eeShip) {
                 view.ships.add(new Ship(eeShip.attributes));

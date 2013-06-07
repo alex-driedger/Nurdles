@@ -28,7 +28,7 @@
     <div class="lpadding20 muted clearfix">
         No ships to display
         <div class="pull-right rpadding15">
-            <% if (load) { %>
+            <% if (!refreshed) { %>
                 <button id="getShipList" class="btn btn-primary">Get Ship List</button>
             <% } %>
         </div>
