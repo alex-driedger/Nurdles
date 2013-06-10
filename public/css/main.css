@@ -624,6 +624,9 @@ table.wms, td.wms
 
 .sub-filter-marker-active {
     width: 100%;
+    height: auto;
+    left: 100%;
+    border: 1px solid #ddd;
 }
 
 .subFilter:hover {

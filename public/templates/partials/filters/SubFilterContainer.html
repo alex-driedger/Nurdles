@@ -3,7 +3,7 @@
 </div>
 
 <div class="vpadded10">
-    <input id="filterName" type="text" placeholder="Name" value="<%= model.get('name') %>" style="margin-left: 5px;"/>
+    <input id="filterName-<%= subFilterLevel %>" type="text" placeholder="Name" value="<%= model.get('name') %>" style="margin-left: 5px;"/>
 </div>
 
 <table class="table table-condensed" style="margin-bottom: 0px;">
@@ -11,7 +11,7 @@
             <td colspan="2">
                 Type:
             </td>
-            <td colspan="2">
+            <td colspan="4">
                 Value:
             </td>
         </tr>
@@ -20,28 +20,28 @@
 
         <tr>
         <td>
-            <select id="<%= operator.id + '-property' %>">
+            <select id="<%= operator.id + '-property-' +  subFilterLevel %>">
                 <% _.each(features, function(feature) { %>
                 <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                 <% }); %>
             </select>
         </td>
         <td>
-            <select id="<%= operator.id + '-type' %>">
+            <select id="<%= operator.id + '-type-' +  subFilterLevel %>">
                 <% _.each(types, function(type) { %>
                 <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
                 <% }); %>
             </select>
         </td>
         <td <%= operator.upperBoundary ? '' : 'colspan="2"' %>> 
-            <input id="<%= operator.id + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+            <input id="<%= operator.id + '-lower-' +  subFilterLevel %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
         </td>
         <td class="<%= operator.upperBoundary ? '' : 'hide' %>"> 
-            <input id="<%= operator.id + '-upper' %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
+            <input id="<%= operator.id + '-upper-' +  subFilterLevel %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
         </td>
         <td>
             <div class="plus-minus-container">
-                <img id="<%=operator.id%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                <img id="<%=operator.id + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
             </div>
         </td>
     </tr>
@@ -50,24 +50,24 @@
 
     <tr>
         <td>
-            <select id="newProperty">
+            <select id="newProperty-<%= subFilterLevel %>" class="newProperty">
                 <% _.each(features, function(feature) { %>
                     <option value="<%= feature.name %>"><%= feature.name %></option>
                 <% }); %>
             </select>
         </td>
         <td>
-            <select id="newType">
+            <select id="newType-<%= subFilterLevel %>" class="newType">
                 <% _.each(types, function(type) { %>
                     <option value="<%= type %>"><%= type %></option>
                 <% }); %>
             </select>
         </td>
         <td> 
-            <input id="newLower" type="text" class="wide-90" />
+            <input id="newLower-<%= subFilterLevel %>" type="text" class="wide-90" />
         </td>
         <td> 
-            <input id="newUpper" type="text" class="wide-90" />
+            <input id="newUpper-<%= subFilterLevel %>" type="text" class="wide-90" />
         </td>
         <td>
             <div class="plus-minus-container">
@@ -79,9 +79,9 @@
 </table>
 
 <div class="pull-right padded">
-    <button id="clearFilter" class="btn"> Clear </button>
-    <button id="createFilter" class="btn"> Create </button>
-    <button id="applyFilter" class="btn"> Apply </button>
+    <button id="clearFilter" class="btn clearFilter"> Clear </button>
+    <button id="createFilter" class="btn createFilter"> Create </button>
+    <button id="applyFilter" class="btn applyFilter"> Apply </button>
 </div>
 
 

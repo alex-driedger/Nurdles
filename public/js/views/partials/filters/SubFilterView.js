@@ -25,12 +25,11 @@ define([
         events: {
             "click .delete-row": "deleteRow",
             "click .add-row": "addRow",
-            "click #clearFilter": "clearFilter",
-            "click #createFilter": "createFilter",
-            "click #applyFilter": "applyFilter",
-            "click #newSubFilterContainer": "showSubFilterUI",
-            "change #newType": "handleTextFieldsChange",
-            "change #newProperty": "handlePropertyChange"
+            "click .clearFilter": "clearFilter",
+            "click .createFilter": "createFilter",
+            "click .applyFilter": "applyFilter",
+            "change .newType": "handleTextFieldsChange",
+            "change .newProperty": "handlePropertyChange"
         },
 
         applyFilter: function(e) {
@@ -50,17 +49,17 @@ define([
 
         cacheOperators: function() {
             _.each(this.model.getOperators(), function(operator) {
-                operator.property = $("#" + operator.id + "-property").val();
-                operator.type = $("#" + operator.id + "-type").val();
+                operator.property = $("#" + operator.id + "-property-" + this.subFilterLevel).val();
+                operator.type = $("#" + operator.id + "-type-" + this.subFilterLevel).val();
                 if (operator.upperBoundary) {
-                    operator.lowerBoundary = $("#" + operator.id + "-lower").val();
-                    operator.upperBoundary = $("#" + operator.id + "-upper").val();
+                    operator.lowerBoundary = $("#" + operator.id + "-lower-" + this.subFilterLevel).val();
+                    operator.upperBoundary = $("#" + operator.id + "-upper-" + this.subFilterLevel).val();
                 }
                 else
-                    operator.value = $("#" + operator.id + "-lower").val();
+                    operator.value = $("#" + operator.id + "-lower-" + this.subFilterLevel).val();
             });
 
-            this.model.set("name", $("#filterName").val());
+            this.model.set("name", $("#filterName-" + this.subFilterLevel).val());
         },
 
         clearFilter: function() {
@@ -70,7 +69,7 @@ define([
 
         createFilter: function(e) {
             var view = this;
-            this.model.set("name", $("#filterName").val());
+            this.model.set("name", $("#filterName-" + this.subFilterLevel).val());
             this.model.save(null, {
                 success: function(response){
                     Backbone.globalEvents.trigger("addedFilter", response);
@@ -92,21 +91,22 @@ define([
             var selectedVal = target.val(),
                 type = _.findWhere(this.features, {name:selectedVal}).type,
                 types = Utils.getTypeDropdownValues(type),
-                selecteProperty = $("#newType").val();
+                selecteProperty = $("#newType-" + this.subFilterLevel).val(),
+                view = this;
                  
             this.types = types;
-            $("#newType").html("");
+            $("#newType-" + this.subFilterLevel).html("");
 
             _.each(types, function(type) {
-                $('<option/>').val(type).text(type).appendTo($('#newType'));
+                $('<option/>').val(type).text(type).appendTo($("#newType-" + view.subFilterLevel));
             });
 
-            $("#newType").val(selecteProperty);
-            this.updateValueTextFields($("#newType"), $("#newUpper"));
+            $("#newType-" + this.subFilterLevel).val(selecteProperty);
+            this.updateValueTextFields($("#newType-" + this.subFilterLevel), $("#newUpper-" + this.subFilterLevel));
         },
 
         handleTextFieldsChange: function(e) {
-            this.updateValueTextFields($(e.target), $("#newUpper"));
+            this.updateValueTextFields($(e.target), $("#newUpper-" + this.subFilterLevel));
         },
 
         updateValueTextFields: function(target, fieldToToggle) {
@@ -132,19 +132,19 @@ define([
         addRow: function(e) {
             var newOperator = {
                id: private.operatorCounter++,
-                property: $("#newProperty").val(),
-                type: $("#newType").val(),
-                lowerBoundary: $("#newLower").val(),
-                upperBoundary: $("#newUpper").val()
+                property: $("#newProperty-" + this.subFilterLevel).val(),
+                type: $("#newType-" + this.subFilterLevel).val(),
+                lowerBoundary: $("#newLower-" + this.subFilterLevel).val(),
+                upperBoundary: $("#newUpper-" + this.subFilterLevel).val()
             };
 
-            if ($("#newUpper").val() == "") {
+            if ($("#newUpper-" + this.subFilterLevel).val() == "") {
                 newOperator.value = newOperator.lowerBoundary;
                 delete newOperator.lowerBoundary;
                 delete newOperator.upperBoundary;
             }
 
-            this.model.set("name", $("#filterName").val());
+            this.model.set("name", $("#filterName-" + this.subFilterLevel).val());
             console.log(newOperator);
 
             this.cacheOperators();
@@ -153,18 +153,17 @@ define([
         },
 
         render: function () {
-            /*var templateData = {
+            var templateData = {
                 types: this.types,
                 features: this.features,
-                model: this.model
+                model: this.model,
+                subFilterLevel: this.subFilterLevel
             };
 
-            this.$el.html(this.template(templateData));
-            this.updateAssociatedTypes($("#newProperty"));
-            this.updateValueTextFields($("#newType"), $("#newUpper"));
-            */
-
-            this.$el.html("LKDSHFGKSHVOIOSDJLKSDNV KLHDSFL KJSLDFJK LSDFKJ LSKJDF ");
+            this.$el.html(this.template(templateData)).addClass("wide-95");
+            this.updateAssociatedTypes($("#newProperty-" + this.subFilterLevel));
+            this.updateValueTextFields($("#newType-" + this.subFilterLevel), $("#newUpper"));
+            
             return this;
         }
     });

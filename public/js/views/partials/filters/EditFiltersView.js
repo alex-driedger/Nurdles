@@ -29,7 +29,7 @@ define([
             "click #clearFilter": "clearFilter",
             "click #createFilter": "createFilter",
             "click #applyFilter": "applyFilter",
-            "click #newSubFilterContainer": "showSubFilterUI",
+            "click .subFilter": "showSubFilterUI",
             "change #newType": "handleTextFieldsChange",
             "change #newProperty": "handlePropertyChange"
         },
@@ -40,9 +40,11 @@ define([
         },
 
         showSubFilterUI: function(e) {
-            $(e.target).closest(".sub-filter-marker").toggleClass("sub-filter-marker-active")
+            $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
                 .toggleClass("subFilter");
             var subFilter = new SubFilter({
+                features: this.features,
+                types: this.types,
                 $el: $("#newSubFilterContainer"),
                 subFilterLevel: 1
             });
