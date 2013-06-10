@@ -263,7 +263,6 @@ input[type="radio"] {
     z-index: 1100;
     height: 100%;
     width: 40%;
-    -webkit-transition: width 0.2s; /* Safari and Chrome */
 }
 
 #toolContainer {

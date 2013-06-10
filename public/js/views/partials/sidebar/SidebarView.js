@@ -15,7 +15,7 @@ define([
             this.bindTo(Backbone.globalEvents, "showFiltersView", this.showFiltersView, this);
             this.bindTo(Backbone.globalEvents, "showShiplistView", this.showShiplistView, this);
             this.bindTo(Backbone.globalEvents, "search", function() { 
-                if ($("#sidebar").hasClass("hide") || !$("#shiplist").hasClass("active")) {
+                if ($("#sidebar").css("style", "none") || !$("#shiplist").hasClass("active")) {
                     Backbone.globalEvents.trigger("activatePane", $("#shiplist"));
                     view.showShiplistView(true); 
                 }

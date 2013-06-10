@@ -22,21 +22,20 @@ define([
 
     events: {
         "click #separator": function(e) { 
+            $("#sidebar").animate({width: 'toggle'}, 10, "linear");
             if (this.sidebarActive) {
                 //Doing this because I'm setting width's on multiple divs so a simple transition 
                 //renders an animation in the wrong direction. Here, I can set the width and then
                 //disappear the sidebar after the animation for the width change is done.
                 //TODO: Make this not suck as much.
                 $("#controlsContainer").css("width", "100%");
-                $("#sidebar").addClass("hide");
                 $("#separator").removeClass("extended");
                 $("#collapseImage").attr("src", "../../img/arrow-right.png");
                 this.sidebarActive = false;
             }
             else {
-                $("#sidebar").removeClass("hide");
-                $("#controlsContainer").css("width", "60%");
                 $("#separator").addClass("extended");
+                $("#controlsContainer").css("width", "60%");
                 $("#collapseImage").attr("src", "../../img/arrow-left.png");
                 this.sidebarActive = true;
             }
