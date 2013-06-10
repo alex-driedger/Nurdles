@@ -40,7 +40,8 @@ define([
         render: function () {
             var editFilters = new EditFiltersView({
                     $el: $("#editFilter"),
-                    features: private.features
+                    features: private.features,
+                    filters: this.filters,
                 }),
                 savedFilters = new SavedFiltersView({
                     filters: this.filters,

@@ -41,19 +41,32 @@ define([
         },
 
         toggleSubFilterContainer: function(e) {
-            $("#newSubFilter").prop("src", $("#newSubFilter").prop("src").replace("left", "right"));
-            $(e.target).closest(".sub-filter-marker").toggleClass("sub-filter-marker-active");
+            var img = $("#newSubFilter");
+            $(e.target).closest(".sub-filter-marker").toggleClass("sub-filter-marker-active")
+                .toggleClass("pull-right");
+            $(".canFade").toggleClass("faded");
+            if (img.prop("src").indexOf("left") != -1)
+                img.prop("src", img.prop("src").replace("left", "right"));
+            else
+                img.prop("src", img.prop("src").replace("right", "left"));
         },
 
         showSubFilterUI: function(e) {
-            $("#newSubFilter").prop("src", $("#newSubFilter").prop("src").replace("right", "left"));
+            var img = $("#newSubFilter");
+            if (img.prop("src").indexOf("left") != -1)
+                img.prop("src", img.prop("src").replace("left", "right"));
+            else
+                img.prop("src", img.prop("src").replace("right", "left"));
+
             $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
                 .toggleClass("subFilter");
+            $(".canFade").toggleClass("faded");
             var subFilter = new SubFilter({
                 features: this.features,
                 types: this.types,
                 $el: $("#newSubFilterContainer"),
-                subFilterLevel: 1
+                subFilterLevel: 1,
+                filters: this.filters
             });
 
             subFilter.render();

@@ -49,27 +49,27 @@
     <% }); %>
 
     <tr>
-        <td>
+        <td class="canFade">
             <select id="newProperty">
                 <% _.each(features, function(feature) { %>
                     <option value="<%= feature.name %>"><%= feature.name %></option>
                 <% }); %>
             </select>
         </td>
-        <td>
+        <td class="canFade">
             <select id="newType">
                 <% _.each(types, function(type) { %>
                     <option value="<%= type %>"><%= type %></option>
                 <% }); %>
             </select>
         </td>
-        <td> 
+        <td class="canFade"> 
             <input id="newLower" type="text" class="wide-90" />
         </td>
-        <td> 
+        <td class="canFade"> 
             <input id="newUpper" type="text" class="wide-90" />
         </td>
-        <td>
+        <td class="canFade">
             <div class="plus-minus-container">
                 <img src="../../img/plus.png" class="icon-small vpadded5 add-row" />
             </div>
@@ -79,7 +79,7 @@
                 <div class="pull-right">
                     <img id="newSubFilter" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                 </div>
-                <div id="newSubFilterContainer" class="pull-right padded5">
+                <div id="newSubFilterContainer" class="pull-right margin-centered padded5">
                     New Sub-filter
                 </div>
             </div>

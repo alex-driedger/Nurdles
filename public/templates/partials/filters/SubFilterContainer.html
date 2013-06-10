@@ -1,9 +1,22 @@
-<div class="header bordered">
-    Add Sub-Filter 
+<div class="vtupadded10 clearfix">
+    <label class="pull-left rpadding15 centered-to-control">
+        Pick an already existing filter:
+    </label>
+    <div class="controls">
+        <select id="listOfFilters">
+            <% filters.each(function(filter) { %>
+            <option value="<%= filter.get('_id') %>"><%= filter.get("name") %></option>
+            <% }); %>
+        </select>
+    </div>
 </div>
 
-<div class="vpadded10">
-    <input id="filterName-<%= subFilterLevel %>" type="text" placeholder="Name" value="<%= model.get('name') %>" style="margin-left: 5px;"/>
+<hr />
+
+<div>
+    <label class="centered-to-control">
+        Or create a brand new filter:
+    </label>
 </div>
 
 <table class="table table-condensed" style="margin-bottom: 0px;">

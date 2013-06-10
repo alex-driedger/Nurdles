@@ -157,9 +157,11 @@ define([
                 types: this.types,
                 features: this.features,
                 model: this.model,
-                subFilterLevel: this.subFilterLevel
+                subFilterLevel: this.subFilterLevel,
+                filters: this.filters
             };
 
+            this.$el.removeClass("pull-right");
             this.$el.html(this.template(templateData)).addClass("wide-95");
             this.updateAssociatedTypes($("#newProperty-" + this.subFilterLevel));
             this.updateValueTextFields($("#newType-" + this.subFilterLevel), $("#newUpper"));
