@@ -11,7 +11,7 @@
             <td colspan="2">
                 Type:
             </td>
-            <td colspan="4">
+            <td colspan="2">
                 Value:
             </td>
         </tr>
@@ -20,14 +20,14 @@
 
         <tr>
         <td>
-            <select id="<%= operator.id + '-property' %>" class="wide-30">
+            <select id="<%= operator.id + '-property' %>">
                 <% _.each(features, function(feature) { %>
                 <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                 <% }); %>
             </select>
         </td>
         <td>
-            <select id="<%= operator.id + '-type' %>" class="wide-30">
+            <select id="<%= operator.id + '-type' %>">
                 <% _.each(types, function(type) { %>
                 <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
                 <% }); %>
@@ -41,12 +41,12 @@
         </td>
         <td>
             <div class="plus-minus-container">
-                <img id="<%=operator.id%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                <img id="<%=operator.id%>" src="../../img/minus.png" class="icon-small vpadded5 delete-row" />
             </div>
         </td>
         <td style="width: 10px">
             <div class="plus-minus-container sub-filter-marker">
-                <img id="<%=operator.id%>-subfilter" src="../../img/arrow-right.png" class="icon-small vertical-5 delete-row" />
+                <img id="<%=operator.id%>-subfilter" src="../../img/arrow-right.png" class="icon-small vpadded5 delete-row" />
             </div>
         </td>
     </tr>
@@ -55,14 +55,14 @@
 
     <tr>
         <td>
-            <select id="newProperty" class="wide-30">
+            <select id="newProperty">
                 <% _.each(features, function(feature) { %>
                     <option value="<%= feature.name %>"><%= feature.name %></option>
                 <% }); %>
             </select>
         </td>
         <td>
-            <select id="newType" class="wide-30">
+            <select id="newType">
                 <% _.each(types, function(type) { %>
                     <option value="<%= type %>"><%= type %></option>
                 <% }); %>
@@ -76,15 +76,15 @@
         </td>
         <td>
             <div class="plus-minus-container">
-                <img src="../../img/plus.png" class="icon-small vertical-5 add-row" />
+                <img src="../../img/plus.png" class="icon-small vpadded5 add-row" />
             </div>
         </td>
         <td style="width: 10px">
-            <div class="plus-minus-container sub-filter-marker clearfix">
+            <div class="plus-minus-container sub-filter-marker subFilter clearfix">
                 <div class="pull-right">
-                    <img id="newSubFilter" src="../../img/arrow-right.png" class="icon-small vertical-5 delete-row" />
+                    <img id="newSubFilter" src="../../img/arrow-right.png" class="icon-small vpadded5 delete-row" />
                 </div>
-                <div class="pull-right padded5">
+                <div id="newSubFilterContainer" class="pull-right padded5">
                     New Sub-filter
                 </div>
             </div>

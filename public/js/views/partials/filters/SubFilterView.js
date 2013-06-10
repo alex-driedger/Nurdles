@@ -2,14 +2,13 @@ define([
   'baseview',
   'openlayersutil',
   '../../../models/Filter',
-  './SubFilterView',
-  'text!templates/partials/filters/EditFiltersView.html',
-], function(Baseview, Utils, Filter, SubFilter, editFiltersTemplate){
+  'text!templates/partials/filters/SubFilterContainer.html'
+], function(Baseview, Utils, Filter, subFilterTemplate){
     var private = {
         operatorCounter: 0
     };
 
-    var EditFiltersView = Baseview.extend({
+    var SubFilter = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
 
@@ -21,7 +20,7 @@ define([
             this.bindTo(this.model, "addOperator", this.render);
         },
 
-        template: _.template(editFiltersTemplate),
+        template: _.template(subFilterTemplate),
 
         events: {
             "click .delete-row": "deleteRow",
@@ -40,14 +39,12 @@ define([
         },
 
         showSubFilterUI: function(e) {
-            $(e.target).closest(".sub-filter-marker").toggleClass("sub-filter-marker-active")
-                .toggleClass("subFilter");
             var subFilter = new SubFilter({
-                $el: $("#newSubFilterContainer"),
-                subFilterLevel: 1
+                template: _.template(subFilterTemplate),
+                $el: $("#SubFilterContainer")
             });
 
-            subFilter.render();
+            subFilterView.render();
             this.addSubView(subFilter);
         },
 
@@ -156,7 +153,7 @@ define([
         },
 
         render: function () {
-            var templateData = {
+            /*var templateData = {
                 types: this.types,
                 features: this.features,
                 model: this.model
@@ -165,10 +162,13 @@ define([
             this.$el.html(this.template(templateData));
             this.updateAssociatedTypes($("#newProperty"));
             this.updateValueTextFields($("#newType"), $("#newUpper"));
+            */
 
+            this.$el.html("LKDSHFGKSHVOIOSDJLKSDNV KLHDSFL KJSLDFJK LSDFKJ LSKJDF ");
             return this;
         }
     });
 
-    return EditFiltersView;
+    return SubFilter;
 });
+

@@ -45,9 +45,28 @@ input[type="radio"] {
 }
 
 /*-------------------------Step Styles---------------------------*/
+.wide-30 {
+    width: 30%;
+}
+
+.wide-90 {
+    width: 90%;
+}
+
+.wide-95 {
+    width: 95%;
+}
+
+.wide-100 {
+    width: 100%;
+}
 
 .padded5 {
     padding: 5px;
+}
+
+.vpadded5 {
+    padding: 5px 0;
 }
 
 .vpadded10 {
@@ -69,7 +88,6 @@ input[type="radio"] {
 .rpadding15 {
     padding-right: 15px;
 }
-
 /*-------------------------Loader--------------------------------*/
 .loading {
     height: 100%;
@@ -315,19 +333,8 @@ input[type="radio"] {
     width: 20px;
 }
 
-//---------------End Sidebar-----------------
+//---------------End Sidebar-----------------//
 
-.wide-30 {
-    width: 30%;
-}
-
-.wide-90 {
-    width: 90%
-}
-
-.wide-95 {
-    width: 95%
-}
 
 .vertical-5 {
     padding-top: 5px;
@@ -607,6 +614,7 @@ table.wms, td.wms
     overflow: hidden;
     height: 2em;
     width: 30px;
+    cursor: pointer;
     -webkit-transition:width 0.2s ease-in;  
     -moz-border-radius-bottomright: 2px 2px;
     border-bottom-right-radius: 2px 2px;
@@ -614,6 +622,10 @@ table.wms, td.wms
     border-top-right-radius: 2px 2px;
 }
 
-.sub-filter-marker:hover {
+.sub-filter-marker-active {
+    width: 100%;
+}
+
+.subFilter:hover {
     width: 130px;
 }

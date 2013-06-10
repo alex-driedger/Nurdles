@@ -20,14 +20,14 @@
 
         <tr>
         <td>
-            <select id="<%= operator.id + '-property' %>" class="wide-30">
+            <select id="<%= operator.id + '-property' %>">
                 <% _.each(features, function(feature) { %>
                 <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                 <% }); %>
             </select>
         </td>
         <td>
-            <select id="<%= operator.id + '-type' %>" class="wide-30">
+            <select id="<%= operator.id + '-type' %>">
                 <% _.each(types, function(type) { %>
                 <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
                 <% }); %>
@@ -50,14 +50,14 @@
 
     <tr>
         <td>
-            <select id="newProperty" class="wide-30">
+            <select id="newProperty">
                 <% _.each(features, function(feature) { %>
                     <option value="<%= feature.name %>"><%= feature.name %></option>
                 <% }); %>
             </select>
         </td>
         <td>
-            <select id="newType" class="wide-30">
+            <select id="newType">
                 <% _.each(types, function(type) { %>
                     <option value="<%= type %>"><%= type %></option>
                 <% }); %>
@@ -71,7 +71,7 @@
         </td>
         <td>
             <div class="plus-minus-container">
-                <img src="../../img/plus.png" class="icon-small vertical-5 add-row" />
+                <img src="../../img/plus.png" class="icon-small vpadded5 add-row" />
             </div>
         </td>
     </tr>
