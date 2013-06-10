@@ -1,5 +1,5 @@
 <div class="header bordered">
-    Add New filter 
+    Add Sub-Filter 
 </div>
 
 <div class="vpadded10">
@@ -11,7 +11,7 @@
             <td colspan="2">
                 Type:
             </td>
-            <td colspan="4">
+            <td colspan="2">
                 Value:
             </td>
         </tr>
@@ -44,11 +44,6 @@
                 <img id="<%=operator.id%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
             </div>
         </td>
-        <td style="width: 10px">
-            <div class="plus-minus-container sub-filter-marker">
-                <img id="<%=operator.id%>-subfilter" src="../../img/arrow-right.png" class="icon-small vertical-5 delete-row" />
-            </div>
-        </td>
     </tr>
 
     <% }); %>
@@ -79,16 +74,6 @@
                 <img src="../../img/plus.png" class="icon-small vertical-5 add-row" />
             </div>
         </td>
-        <td style="width: 10px">
-            <div class="plus-minus-container sub-filter-marker clearfix">
-                <div class="pull-right">
-                    <img id="newSubFilter" src="../../img/arrow-right.png" class="icon-small vertical-5 delete-row" />
-                </div>
-                <div class="pull-right padded5">
-                    New Sub-filter
-                </div>
-            </div>
-        </td>
     </tr>
 
 </table>
@@ -98,4 +83,5 @@
     <button id="createFilter" class="btn"> Create </button>
     <button id="applyFilter" class="btn"> Apply </button>
 </div>
+
 

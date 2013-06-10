@@ -46,6 +46,10 @@ input[type="radio"] {
 
 /*-------------------------Step Styles---------------------------*/
 
+.padded5 {
+    padding: 5px;
+}
+
 .vpadded10 {
     padding: 10px 0;
 }
@@ -593,4 +597,23 @@ table.wms, td.wms
 .sortable.no-padding li {
     padding: 0px;
     padding-left: 0px;
+}
+
+/*--------------------------Filter UI-------------------------*/
+
+.sub-filter-marker {
+    position: absolute;
+    background-color: #fff;
+    overflow: hidden;
+    height: 2em;
+    width: 30px;
+    -webkit-transition:width 0.2s ease-in;  
+    -moz-border-radius-bottomright: 2px 2px;
+    border-bottom-right-radius: 2px 2px;
+    -moz-border-radius-topright: 2px 2px;
+    border-top-right-radius: 2px 2px;
+}
+
+.sub-filter-marker:hover {
+    width: 130px;
 }
