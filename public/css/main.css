@@ -616,6 +616,7 @@ table.wms, td.wms
     width: 30px;
     cursor: pointer;
     -webkit-transition:width 0.2s ease-in;  
+    -webkit-transition:overflow 0.2s ease-in;  
     -moz-border-radius-bottomright: 2px 2px;
     border-bottom-right-radius: 2px 2px;
     -moz-border-radius-topright: 2px 2px;
@@ -627,6 +628,7 @@ table.wms, td.wms
     height: auto;
     left: 100%;
     border: 1px solid #ddd;
+    overflow: visible;
 }
 
 .subFilter:hover {

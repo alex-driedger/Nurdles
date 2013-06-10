@@ -30,6 +30,7 @@ define([
             "click #createFilter": "createFilter",
             "click #applyFilter": "applyFilter",
             "click .subFilter": "showSubFilterUI",
+            "click #newSubFilter": "toggleSubFilterContainer",
             "change #newType": "handleTextFieldsChange",
             "change #newProperty": "handlePropertyChange"
         },
@@ -39,7 +40,13 @@ define([
             console.log(this.model);
         },
 
+        toggleSubFilterContainer: function(e) {
+            $("#newSubFilter").prop("src", $("#newSubFilter").prop("src").replace("left", "right"));
+            $(e.target).closest(".sub-filter-marker").toggleClass("sub-filter-marker-active");
+        },
+
         showSubFilterUI: function(e) {
+            $("#newSubFilter").prop("src", $("#newSubFilter").prop("src").replace("right", "left"));
             $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
                 .toggleClass("subFilter");
             var subFilter = new SubFilter({
