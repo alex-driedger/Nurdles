@@ -40,6 +40,7 @@ define([
         },
 
         showSubFilterUI: function(e) {
+            e.stopPropagation();
             var img = $("#newSubFilter-" + this.subFilterLevel);
             if (img.prop("src").indexOf("left") != -1)
                 img.prop("src", img.prop("src").replace("left", "right"));
@@ -53,7 +54,7 @@ define([
                 features: this.features,
                 types: this.types,
                 $el: $("#newSubFilterContainer-" + this.subFilterLevel),
-                subFilterLevel: this.subFilterLevel++,
+                subFilterLevel: this.subFilterLevel + 1,
                 filters: this.filters
             });
 
