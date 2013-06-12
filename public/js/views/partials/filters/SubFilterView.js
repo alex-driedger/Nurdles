@@ -18,6 +18,8 @@ define([
             this.bindTo(this.model, "removeOperator", this.cacheOperators);
             this.bindTo(this.model, "clearOperators", this.reRender);
             this.bindTo(this.model, "addOperator", this.render);
+
+            this.events["click .subFilter-" + this.subFilterLevel] = "showSubFilterUI";
         },
 
         template: _.template(subFilterTemplate),
@@ -38,12 +40,24 @@ define([
         },
 
         showSubFilterUI: function(e) {
+            var img = $("#newSubFilter-" + this.subFilterLevel);
+            if (img.prop("src").indexOf("left") != -1)
+                img.prop("src", img.prop("src").replace("left", "right"));
+            else
+                img.prop("src", img.prop("src").replace("right", "left"));
+
+            $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
+                .toggleClass("subFilter");
+            $(".canFade .subFilterLevel-" + this.subFilterLevel).toggleClass("faded");
             var subFilter = new SubFilter({
-                template: _.template(subFilterTemplate),
-                $el: $("#SubFilterContainer")
+                features: this.features,
+                types: this.types,
+                $el: $("#newSubFilterContainer-" + this.subFilterLevel),
+                subFilterLevel: this.subFilterLevel++,
+                filters: this.filters
             });
 
-            subFilterView.render();
+            subFilter.render();
             this.addSubView(subFilter);
         },
 

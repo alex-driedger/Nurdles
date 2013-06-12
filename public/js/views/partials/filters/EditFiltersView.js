@@ -29,7 +29,7 @@ define([
             "click #clearFilter": "clearFilter",
             "click #createFilter": "createFilter",
             "click #applyFilter": "applyFilter",
-            "click .subFilter": "showSubFilterUI",
+            "click .subFilter-1": "showSubFilterUI",
             "click #newSubFilter": "toggleSubFilterContainer",
             "change #newType": "handleTextFieldsChange",
             "change #newProperty": "handlePropertyChange"
@@ -42,8 +42,7 @@ define([
 
         toggleSubFilterContainer: function(e) {
             var img = $("#newSubFilter");
-            $(e.target).closest(".sub-filter-marker").toggleClass("sub-filter-marker-active")
-                .toggleClass("pull-right");
+            $(e.target).closest(".sub-filter-marker").toggleClass("sub-filter-marker-active");
             $(".canFade").toggleClass("faded");
             if (img.prop("src").indexOf("left") != -1)
                 img.prop("src", img.prop("src").replace("left", "right"));
