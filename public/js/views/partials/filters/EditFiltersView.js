@@ -41,6 +41,7 @@ define([
         },
 
         toggleSubFilterContainer: function(e) {
+            e.stopPropagation();
             var img = $("#newSubFilter");
             $(e.target).closest(".sub-filter-marker").toggleClass("sub-filter-marker-active");
             $(".canFade").toggleClass("faded");

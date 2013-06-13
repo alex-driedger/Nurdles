@@ -20,6 +20,7 @@ define([
             this.bindTo(this.model, "addOperator", this.render);
 
             this.events["click .subFilter-" + this.subFilterLevel] = "showSubFilterUI";
+            this.events["click #newSubFilter-" + this.subFilterLevel] = "toggleSubFilterContainer";
         },
 
         template: _.template(subFilterTemplate),
@@ -37,6 +38,17 @@ define([
         applyFilter: function(e) {
             Backbone.globalEvents.trigger("filtersChanged", [this.model]);
             console.log(this.model);
+        },
+
+        toggleSubFilterContainer: function(e) {
+            e.stopPropagation();
+            var img = $("#newSubFilter-" + this.subFilterLevel);
+            $(e.target).closest(".sub-filter-marker").toggleClass("sub-filter-marker-active");
+            $(".canFade .subFilterLevel-" + this.subFilterLevel).toggleClass("faded");
+            if (img.prop("src").indexOf("left") != -1)
+                img.prop("src", img.prop("src").replace("left", "right"));
+            else
+                img.prop("src", img.prop("src").replace("right", "left"));
         },
 
         hideView: function() {
@@ -57,7 +69,7 @@ define([
 
             $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
                 .toggleClass("subFilter");
-            $(".canFade .subFilterLevel-" + this.subFilterLevel).toggleClass("faded");
+            $(".canFade.subFilterLevel-" + this.subFilterLevel).toggleClass("faded");
             var subFilter = new SubFilter({
                 features: this.features,
                 types: this.types,
@@ -172,7 +184,7 @@ define([
             }
 
             this.model.set("name", $("#filterName-" + this.subFilterLevel).val());
-            console.log(newOperator);
+            console.log("Subfilter " + this.subFilterLevel + ": ", newOperator);
 
             this.cacheOperators();
             this.model.addOperator(newOperator);
