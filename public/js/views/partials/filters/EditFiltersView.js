@@ -159,8 +159,14 @@ define([
 
         },
 
+        deleteSubFilter: function(subFilterView) {
+            this.removeSubView(subFilterView.cid);
+            this.reRender();
+        },
+
         deleteRow: function(e) {
             this.model.removeOperator(e.target.id.toString());
+            this.reRender();
         },
 
         addRow: function(e) {
