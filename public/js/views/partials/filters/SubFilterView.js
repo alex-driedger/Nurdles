@@ -20,6 +20,7 @@ define([
             this.bindTo(this.model, "addOperator", this.render);
 
             this.events["click .subFilter-" + this.subFilterLevel] = "showSubFilterUI";
+            this.events["click #deleteFilter-" + this.subFilterLevel] = "deleteFilter";
             this.events["click #newSubFilter-" + this.subFilterLevel] = "toggleSubFilterContainer";
         },
 
@@ -104,6 +105,17 @@ define([
         clearFilter: function() {
             this.model.set("name", "");
             this.model.clearOperators();
+        },
+
+        deleteSubFilter: function(subFilterView) {
+            this.removeSubView(subFilterView.cid);
+            this.reRender();
+            this.parentView.showView();
+        },
+
+        deleteFilter: function() {
+            this.parentView.deleteSubFilter(this);
+            this.close();
         },
 
         createFilter: function(e) {
