@@ -303,6 +303,7 @@ input[type="radio"] {
     z-index: 1100;
     height: 100%;
     width: 40%;
+    -webkit-transition: left 0.5s; /* Safari and Chrome */
 }
 
 #toolContainer {
@@ -646,6 +647,7 @@ table.wms, td.wms
     left: 100%;
     border: 1px solid #ddd;
     overflow: visible;
+    -webkit-transition: left 0.5s; /* Safari and Chrome */
 }
 
 .subFilter:hover {

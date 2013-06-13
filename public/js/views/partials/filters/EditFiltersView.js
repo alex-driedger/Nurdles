@@ -50,6 +50,14 @@ define([
                 img.prop("src", img.prop("src").replace("right", "left"));
         },
 
+        hideView: function() {
+            $("#sidebar").css("left", "-40%");
+        },
+
+        showView: function() {
+            $("#sidebar").css("left", "0");
+        },
+
         showSubFilterUI: function(e) {
             var img = $("#newSubFilter");
             if (img.prop("src").indexOf("left") != -1)
@@ -65,7 +73,8 @@ define([
                 types: this.types,
                 $el: $("#newSubFilterContainer-1"),
                 subFilterLevel: 2,
-                filters: this.filters
+                filters: this.filters,
+                parentView: this
             });
 
             subFilter.render();

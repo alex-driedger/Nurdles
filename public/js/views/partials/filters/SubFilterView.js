@@ -39,6 +39,14 @@ define([
             console.log(this.model);
         },
 
+        hideView: function() {
+            this.$el.parent().css("left", 0);
+        },
+        
+        showView: function() {
+            this.$el.parent().css("left", "100%");
+        },
+
         showSubFilterUI: function(e) {
             e.stopPropagation();
             var img = $("#newSubFilter-" + this.subFilterLevel);
@@ -55,11 +63,15 @@ define([
                 types: this.types,
                 $el: $("#newSubFilterContainer-" + this.subFilterLevel),
                 subFilterLevel: this.subFilterLevel + 1,
-                filters: this.filters
+                filters: this.filters,
+                parentView: this
             });
 
             subFilter.render();
             this.addSubView(subFilter);
+
+            if (this.subFilterLevel > 1)
+                this.parentView.hideView();
         },
 
         cacheOperators: function() {
