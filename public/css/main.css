@@ -203,7 +203,11 @@ input[type="radio"] {
     right: -10px;
     z-index: 999;
     background-color: rgba(50, 50, 50, 0.5);
-    -webkit-transition: width 0.2s; /* Safari and Chrome */
+}
+
+.map-tools-row {
+    position: relative;
+    -webkit-transition: left 0.2s; /* Safari and Chrome */
 }
 
 .side-controls-container{
