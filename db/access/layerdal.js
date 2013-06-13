@@ -35,6 +35,26 @@ var self = {
             callback(err);
         });
     },
+
+    setBaseLayer: function(userId, layerId, callback) {
+        var ObjectId = mongoose.Types.ObjectId;
+
+        Layer.update({
+            owner: new ObjectId(userId.toString()),
+            _id: {
+                $ne: new ObjectId(layerId.toString())
+            },
+            isBaseLayer: true
+        },
+            {
+                $set: {
+                    active: false
+                }
+            }, function(err) {
+                callback(err);
+            }
+        );
+    }
 };
 
 module.exports = self;

@@ -239,16 +239,20 @@ define([
                             { 
                                 isBaseLayer: true, 
                                 wrapDateLine: true,
-                                transitionEffect: "resize"
+                                transitionEffect: "resize",
+                                tileOptions: {crossOriginKeyword: null}
                             });
                         break;
                     case "WMS":
-                        eeBaseLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://labs.metacarta.com/wms/vmap0?", 
-                            {layers: "basic"}, 
+                        eeBaseLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
+                            {
+                                layers: "basic"
+                            }, 
                             { 
                                 isBaseLayer: true, 
                                 wrapDateLine: true,
-                                transitionEffect: "resize"
+                                transitionEffect: "resize",
+                                tileOptions: {crossOriginKeyword: null}
                             });
                         break;
                 }
@@ -271,11 +275,12 @@ define([
                     { 
                         isBaseLayer: true, 
                         wrapDateLine: true,
-                        transitionEffect: "resize"
+                        transitionEffect: "resize",
+                        tileOptions: {crossOriginKeyword: null}
                     });
                 view.model.addLayer(basicMapLayer);
 
-                var basicMapLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://labs.metacarta.com/wms/vmap0?", 
+                var basicMapLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
                     {layers: "basic"}, 
                     { 
                         isBaseLayer: true, 

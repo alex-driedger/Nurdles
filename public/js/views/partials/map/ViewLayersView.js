@@ -65,7 +65,14 @@ define([
                 layer = this.baseLayers.findWhere({_id: id});
 
             layer.set("active", isActivated);
-            //layer.update();
+            layer.update();
+            $.ajax({
+                url: "/api/layers/" + layer.get("_id") + "/setBaseLayer",
+                type: "POST",
+                success: function(response) {
+                    console.log("Setting base layer worked");
+                }
+            });
 
             Backbone.globalEvents.trigger("baseLayerSelected", layer);
         },

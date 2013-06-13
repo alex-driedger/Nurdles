@@ -24,6 +24,7 @@ function bind(app, passport) {
     app.get("/api/layers/getAllForUser", ensureAuthenticated, layer.getAllForUser);
     app.post("/api/layers/save", ensureAuthenticated, layer.create);
     app.put("/api/layers/:layerId/update", ensureAuthenticated, layer.update);
+    app.post("/api/layers/:layerId/setBaseLayer", ensureAuthenticated, layer.setBaseLayer);
     app.delete("/api/layers/:layerId", ensureAuthenticated, layer.remove);
 
     app.post("/api/shiplist/download", ensureAuthenticated, shiplist.download);
