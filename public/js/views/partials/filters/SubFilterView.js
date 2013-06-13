@@ -19,9 +19,16 @@ define([
             this.bindTo(this.model, "clearOperators", this.reRender);
             this.bindTo(this.model, "addOperator", this.render);
 
+            //Dynamically bound operations based on subfilter level
+            //Somewhat faking the event delegation in backbone but it's technically legit
+            //Do this on init so I don't need to redelegate events later on
             this.events["click .subFilter-" + this.subFilterLevel] = "showSubFilterUI";
             this.events["click #deleteFilter-" + this.subFilterLevel] = "deleteFilter";
+            this.events["click #clearFilter-" + this.subFilterLevel] = "clearFilter";
+            this.events["click #createFilter-" + this.subFilterLevel] = "createFilter";
             this.events["click #newSubFilter-" + this.subFilterLevel] = "toggleSubFilterContainer";
+            this.events["click #newLower-" + this.subFilterLevel] = "stopPropagation";
+            this.events["click #newUpper-" + this.subFilterLevel] = "stopPropagation";
         },
 
         template: _.template(subFilterTemplate),
@@ -29,11 +36,12 @@ define([
         events: {
             "click .delete-row": "deleteRow",
             "click .add-row": "addRow",
-            "click .clearFilter": "clearFilter",
-            "click .createFilter": "createFilter",
-            "click .applyFilter": "applyFilter",
             "change .newType": "handleTextFieldsChange",
             "change .newProperty": "handlePropertyChange"
+        },
+
+        stopPropagation: function(e) {
+            e.stopPropagation();
         },
 
         applyFilter: function(e) {
@@ -83,20 +91,21 @@ define([
             subFilter.render();
             this.addSubView(subFilter);
 
-            if (this.subFilterLevel > 1)
+            if (this.subFilterLevel >= 1)
                 this.parentView.hideView();
         },
 
         cacheOperators: function() {
+            var view = this;
             _.each(this.model.getOperators(), function(operator) {
-                operator.property = $("#" + operator.id + "-property-" + this.subFilterLevel).val();
-                operator.type = $("#" + operator.id + "-type-" + this.subFilterLevel).val();
+                operator.property = $("#" + operator.id + "-property-" + view.subFilterLevel).val();
+                operator.type = $("#" + operator.id + "-type-" + view.subFilterLevel).val();
                 if (operator.upperBoundary) {
-                    operator.lowerBoundary = $("#" + operator.id + "-lower-" + this.subFilterLevel).val();
-                    operator.upperBoundary = $("#" + operator.id + "-upper-" + this.subFilterLevel).val();
+                    operator.lowerBoundary = $("#" + operator.id + "-lower-" + view.subFilterLevel).val();
+                    operator.upperBoundary = $("#" + operator.id + "-upper-" + view.subFilterLevel).val();
                 }
                 else
-                    operator.value = $("#" + operator.id + "-lower-" + this.subFilterLevel).val();
+                    operator.value = $("#" + operator.id + "-lower-" + view.subFilterLevel).val();
             });
 
             this.model.set("name", $("#filterName-" + this.subFilterLevel).val());
@@ -118,20 +127,14 @@ define([
             this.close();
         },
 
+        appendSubFilter: function(subFilter) {
+            this.model.addSubFilter(subFilter);
+        },
+
         createFilter: function(e) {
             var view = this;
             this.model.set("name", $("#filterName-" + this.subFilterLevel).val());
-            this.model.save(null, {
-                success: function(response){
-                    Backbone.globalEvents.trigger("addedFilter", response);
-                    view.model = new Filter();
-                    view.reRender();
-                },
-                error: function(err){
-                    console.log(err); 
-                },
-                url: "/api/filters/save"
-            });
+            this.parentView.appendSubFilter(this.model);
         },
 
         handlePropertyChange: function(e) {

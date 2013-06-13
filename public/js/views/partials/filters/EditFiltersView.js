@@ -72,8 +72,8 @@ define([
             var subFilter = new SubFilter({
                 features: this.features,
                 types: this.types,
-                $el: $("#newSubFilterContainer-1"),
-                subFilterLevel: 2,
+                $el: $("#newSubFilterContainer"),
+                subFilterLevel: 1,
                 filters: this.filters,
                 parentView: this
             });
