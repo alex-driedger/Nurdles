@@ -147,6 +147,8 @@ define([
             this.cacheOperators();
             this.close();
             this.parentView.reRender();
+            if (this.parentView.parentView)
+                this.parentView.parentView.showView();
         },
 
         createFilter: function(e) {
