@@ -74,7 +74,7 @@ define([
         showSubFilterUI: function(e, model, container) {
             e.stopPropagation();
             if (!container) 
-                container = $("#newSavedSubFilterContainer");
+                container = $("#" + this.model.get("_id") + "-newSavedSubFilterContainer-1");
 
             $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
                 .toggleClass("subFilter");
