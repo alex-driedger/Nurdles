@@ -30,6 +30,7 @@ define([
             this.events["click #cancelFilter-" + this.subFilterLevel] = "cancelFilter";
             this.events["click #clearFilter-" + this.subFilterLevel] = "clearFilter";
             this.events["click #createFilter-" + this.subFilterLevel] = "createFilter";
+            this.events["click #updateFilter-" + this.subFilterLevel] = "updateFilter";
             this.events["click #newLower-" + this.subFilterLevel] = "stopPropagation";
             this.events["click #newUpper-" + this.subFilterLevel] = "stopPropagation";
         },
@@ -41,7 +42,8 @@ define([
             "click .add-row": "addRow",
             "change .newType": "handleTextFieldsChange",
             "change .newProperty": "handlePropertyChange",
-            "click .sub-filter-marker": "stopPropagation"
+            "click .sub-filter-marker": "stopPropagation",
+            "click input": "stopPropagation"
         },
 
         stopPropagation: function(e) {
@@ -129,7 +131,8 @@ define([
             this.parentView.removeSubView(this.cid);
             this.close();
             this.parentView.reRender();
-            this.parentView.parentView.showView();
+            if (this.parentView.parentView)
+                this.parentView.parentView.showView();
         },
 
         appendSubFilter: function(subFilter) {
@@ -140,10 +143,25 @@ define([
             this.delegateEvents();
         },
 
+        updateSubFilter: function(subFilter) {
+            var subFilterToUpdate = _.findWhere(this.model.get("operators"), {id: subFilter.id});
+            console.log(subFilterToUpdate);
+        },
+
         createFilter: function(e) {
             this.model.isNew = false;
             this.parentView.appendSubFilter(this.model);
             this.close();
+            if (this.parentView.parentView)
+                this.parentView.parentView.showView();
+        },
+
+        updateFilter: function(e) {
+            this.cacheOperators();
+            this.parentView.updateSubFilter(this.model);
+            this.close();
+            if (this.parentView.parentView)
+                this.parentView.parentView.showView();
         },
 
         handlePropertyChange: function(e) {

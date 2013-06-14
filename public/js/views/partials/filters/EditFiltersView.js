@@ -13,7 +13,8 @@ define([
         initialize: function(args) {
             this.initArgs(args);
 
-            this.model = new Filter();
+            if (!this.model)
+                this.model = new Filter();
 
             //If anything happens to our operators collection, show the user.
             this.bindTo(this.model, "removeOperator", this.cacheOperators);
@@ -30,7 +31,7 @@ define([
             "click #createFilter": "createFilter",
             "click #applyFilter": "applyFilter",
             "click .subFilter-1": "showSubFilterUI",
-            "click #newSubFilter": "toggleSubFilterContainer",
+            "click .viewSubFilter-1": "showSubFilterUIWithSeed",
             "change #newType": "handleTextFieldsChange",
             "change #newProperty": "handlePropertyChange"
         },
@@ -38,17 +39,6 @@ define([
         applyFilter: function(e) {
             Backbone.globalEvents.trigger("filtersChanged", [this.model]);
             console.log(this.model);
-        },
-
-        toggleSubFilterContainer: function(e) {
-            e.stopPropagation();
-            var img = $("#newSubFilter");
-            $(e.target).closest(".sub-filter-marker").toggleClass("sub-filter-marker-active");
-            $(".canFade").toggleClass("faded");
-            if (img.prop("src").indexOf("left") != -1)
-                img.prop("src", img.prop("src").replace("left", "right"));
-            else
-                img.prop("src", img.prop("src").replace("right", "left"));
         },
 
         hideView: function() {
@@ -59,12 +49,17 @@ define([
             $("#sidebar").css("left", "0");
         },
 
-        showSubFilterUI: function(e) {
-            var img = $("#newSubFilter");
-            if (img.prop("src").indexOf("left") != -1)
-                img.prop("src", img.prop("src").replace("left", "right"));
-            else
-                img.prop("src", img.prop("src").replace("right", "left"));
+        showSubFilterUIWithSeed: function(e) {
+            var id = $(e.target).prop("id").split("-")[0],
+                filter = _.findWhere(this.model.get("operators"), {id: parseInt(id)});
+
+            this.showSubFilterUI(e, filter, $("#" + id + "-subFilterContainer-1"));
+        },
+
+        showSubFilterUI: function(e, model, container) {
+            e.stopPropagation();
+            if (!container) 
+                container = $("#newSubFilterContainer");
 
             $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
                 .toggleClass("subFilter");
@@ -72,10 +67,11 @@ define([
             var subFilter = new SubFilter({
                 features: this.features,
                 types: this.types,
-                $el: $("#newSubFilterContainer"),
+                $el: container,
                 subFilterLevel: 1,
                 filters: this.filters,
-                parentView: this
+                parentView: this,
+                model: model
             });
 
             subFilter.render();
@@ -100,6 +96,19 @@ define([
         clearFilter: function() {
             this.model.set("name", "");
             this.model.clearOperators();
+        },
+
+        appendSubFilter: function(subFilter) {
+            subFilter.isSubFilter = true;
+            subFilter.id = private.operatorCounter++;
+            this.model.addOperator(subFilter);
+
+            this.delegateEvents();
+        },
+
+        updateSubFilter: function(subFilter) {
+            var subFilterToUpdate = _.findWhere(this.model.get("operators"), {id: subFilter.id});
+            console.log(subFilterToUpdate);
         },
 
         createFilter: function(e) {

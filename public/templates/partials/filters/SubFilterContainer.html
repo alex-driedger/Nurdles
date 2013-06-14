@@ -130,7 +130,11 @@
     <% } %>
     <button id="cancelFilter-<%= subFilterLevel %>" class="btn btn-warning"> Cancel </button>
     <button id="clearFilter-<%= subFilterLevel %>" class="btn"> Clear </button>
-    <button id="createFilter-<%= subFilterLevel %>" class="btn"> Create </button>
+    <% if (model.isNew) { %>
+        <button id="createFilter-<%= subFilterLevel %>" class="btn"> Create </button>
+    <% } else {%>
+        <button id="updateFilter-<%= subFilterLevel %>" class="btn"> Update </button>
+    <% } %>
 </div>
 
 
