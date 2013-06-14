@@ -26,7 +26,7 @@ define([
             "click .deleteFilter": "handleDeleteFilter",
             "click .saveFilter": "handleSaveFilter",
             "click .savedSubFilter-1": "showSubFilterUI",
-            "click .viewSavedSubFilter-1": "showSubFilterUIWithSeed"
+            "click .viewSavedSubFilter-1": "showSavedSubFilter"
         },
 
         cacheOperators: function() {
@@ -62,9 +62,9 @@ define([
             $("#sidebar").css("left", "0");
         },
 
-        showSubFilterUIWithSeed: function(e) {
+        showSavedSubFilter: function(e) {
             var id = $(e.target).prop("id").split("-")[0],
-                filter = _.findWhere(this.model.get("operators"), {subFilterId: parseInt(id)}),
+                filter = _.findWhere(this.model.get("operators"), {id: parseInt(id)}),
                 operators = filter.operators;
 
             filter = new Filter(filter).set("operators", operators);
