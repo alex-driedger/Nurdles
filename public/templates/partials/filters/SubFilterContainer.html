@@ -29,35 +29,59 @@
             </td>
         </tr>
 
-        <% _.each(model.get("operators"), function(operator) { %>
+        <% _.each(model.get("operators"), function(operator) {
+        if (operator.isSubFilter) { %>
+                <tr>
+                    <td colspan="4">
+                        Subfilter 
+                    </td>
+                    <td>
+                        <div class="plus-minus-container">
+                            <img id="<%=operator.id + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                        </div>
+                    </td>
+                    <td style="width: 10px">
+                        <div class="plus-minus-container sub-filter-marker subFilter subFilter-<%= subFilterLevel %> clearfix">
+                            <div class="pull-right">
+                                <img id="<%= operator.id %>-subFilter-<%= subFilterLevel %>" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                            </div>
+                            <div id="<%= operator.id %>-subFilterContainer-<%= subFilterLevel %>" class="pull-right padded5 viewSubFilter-<%= subFilterLevel %>">
+                                View Sub-filter
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            <% } 
+            else { %>
 
-        <tr>
-        <td>
-            <select id="<%= operator.id + '-property-' +  subFilterLevel %>">
-                <% _.each(features, function(feature) { %>
-                <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
-                <% }); %>
-            </select>
-        </td>
-        <td>
-            <select id="<%= operator.id + '-type-' +  subFilterLevel %>">
-                <% _.each(types, function(type) { %>
-                <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
-                <% }); %>
-            </select>
-        </td>
-        <td <%= operator.upperBoundary ? '' : 'colspan="2"' %>> 
-            <input id="<%= operator.id + '-lower-' +  subFilterLevel %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
-        </td>
-        <td class="<%= operator.upperBoundary ? '' : 'hide' %>"> 
-            <input id="<%= operator.id + '-upper-' +  subFilterLevel %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
-        </td>
-        <td>
-            <div class="plus-minus-container">
-                <img id="<%=operator.id + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
-            </div>
-        </td>
-    </tr>
+                <tr>
+                <td>
+                    <select id="<%= operator.id + '-property-' +  subFilterLevel %>">
+                        <% _.each(features, function(feature) { %>
+                        <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
+                        <% }); %>
+                    </select>
+                </td>
+                <td>
+                    <select id="<%= operator.id + '-type-' +  subFilterLevel %>">
+                        <% _.each(types, function(type) { %>
+                        <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
+                        <% }); %>
+                    </select>
+                </td>
+                <td <%= operator.upperBoundary ? '' : 'colspan="2"' %>> 
+                    <input id="<%= operator.id + '-lower-' +  subFilterLevel %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                </td>
+                <td class="<%= operator.upperBoundary ? '' : 'hide' %>"> 
+                    <input id="<%= operator.id + '-upper-' +  subFilterLevel %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
+                </td>
+                <td>
+                    <div class="plus-minus-container">
+                        <img id="<%=operator.id + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                    </div>
+                </td>
+            </tr>
+        <% } %>
 
     <% }); %>
 
@@ -101,10 +125,12 @@
 </table>
 
 <div class="pull-right padded">
-    <button id="deleteFilter-<%= subFilterLevel %>" class="btn btn-danger"> Delete </button>
+    <% if (!model.isNew) { %>
+        <button id="deleteFilter-<%= subFilterLevel %>" class="btn btn-danger"> Delete </button>
+    <% } %>
+    <button id="cancelFilter-<%= subFilterLevel %>" class="btn btn-warning"> Cancel </button>
     <button id="clearFilter-<%= subFilterLevel %>" class="btn"> Clear </button>
     <button id="createFilter-<%= subFilterLevel %>" class="btn"> Create </button>
-    <button id="applyFilter-<%= subFilterLevel %>" class="btn"> Apply </button>
 </div>
 
 

@@ -20,33 +20,46 @@
                 </tr>
 
                 <% var counter = 0; %>
-                <% _.each(filter.get('operators'), function(operator) { %>
-
-                <tr>
-                <td>
-                    <select id="<%= operator.id + '-' + filter.get('_id') + '-property' %>" class="wide-30 savedFilter">
-                        <% _.each(features, function(feature) { %>
-                        <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
-                        <% }); %>
-                    </select>
-                </td>
-                <td>
-                    <select id="<%= operator.id + '-' + filter.get('_id') + '-type' %>" class="wide-30 savedFilter">
-                        <option value="<%= operator.type %>"><%= operator.type %></option>
-                    </select>
-                </td>
-                <td> 
-                    <input id="<%=operator.id + '-' + filter.get('_id') + '-lower' %>" type="text" class="wide-90 savedFilter" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
-                </td>
-                <td> 
-                    <input id="<%=operator.id + '-' + filter.get('_id') + '-upper' %>" type="text" class="wide-90 savedFilter" value="<%= operator.upperBoundary %>" />
-                </td>
-                <td>
-                    <div class="plus-minus-container minus">
-                        <img id="<%=operator.id + '-' + filter.get('_id')%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
-                    </div>
-                </td>
-            </tr>
+                <% _.each(filter.get('operators'), function(operator) {
+                if (operator.isSubFilter) { %>
+                    <tr>
+                        <td colspan="3">
+                            SubFilter 
+                        </td>
+                        <td>
+                            <div id="<%= filter.get('_id') %>-removeSubFilterOperators" class="plus-minus-container">
+                                <img src="../../img/plus.png" class="icon-small vertical-5 add-row" />
+                            </div>
+                        </td>
+                    </tr>
+                <% }
+                else { %>
+                    <tr>
+                    <td>
+                        <select id="<%= operator.id + '-' + filter.get('_id') + '-property' %>" class="wide-30 savedFilter">
+                            <% _.each(features, function(feature) { %>
+                            <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
+                            <% }); %>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="<%= operator.id + '-' + filter.get('_id') + '-type' %>" class="wide-30 savedFilter">
+                            <option value="<%= operator.type %>"><%= operator.type %></option>
+                        </select>
+                    </td>
+                    <td> 
+                        <input id="<%=operator.id + '-' + filter.get('_id') + '-lower' %>" type="text" class="wide-90 savedFilter" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                    </td>
+                    <td> 
+                        <input id="<%=operator.id + '-' + filter.get('_id') + '-upper' %>" type="text" class="wide-90 savedFilter" value="<%= operator.upperBoundary %>" />
+                    </td>
+                    <td>
+                        <div class="plus-minus-container minus">
+                            <img id="<%=operator.id + '-' + filter.get('_id')%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                        </div>
+                    </td>
+                </tr>
+            <% } %>
 
                 <% counter++; %>
             <% }); %>

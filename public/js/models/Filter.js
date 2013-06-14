@@ -15,10 +15,6 @@ define([
             this.set("operators", operators);
         },
 
-        addSubFilter: function(subFilter) {
-            console.log(subFilter);
-        },
-
         addOperator: function(operator) {
             this.get("operators").push(operator);
             this.trigger("addOperator");

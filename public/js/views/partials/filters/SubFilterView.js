@@ -10,9 +10,11 @@ define([
 
     var SubFilter = Baseview.extend({
         initialize: function(args) {
+            this.isNew = true;
             this.initArgs(args);
 
-            this.model = new Filter();
+            if (!this.model)
+                this.model = new Filter();
 
             //If anything happens to our operators collection, show the user.
             this.bindTo(this.model, "removeOperator", this.cacheOperators);
@@ -23,10 +25,11 @@ define([
             //Somewhat faking the event delegation in backbone but it's technically legit
             //Do this on init so I don't need to redelegate events later on
             this.events["click .subFilter-" + this.subFilterLevel] = "showSubFilterUI";
+            this.events["click .viewSubFilter-" + this.subFilterLevel] = "showSubFilterUIWithSeed";
             this.events["click #deleteFilter-" + this.subFilterLevel] = "deleteFilter";
+            this.events["click #cancelFilter-" + this.subFilterLevel] = "cancelFilter";
             this.events["click #clearFilter-" + this.subFilterLevel] = "clearFilter";
             this.events["click #createFilter-" + this.subFilterLevel] = "createFilter";
-            this.events["click #newSubFilter-" + this.subFilterLevel] = "toggleSubFilterContainer";
             this.events["click #newLower-" + this.subFilterLevel] = "stopPropagation";
             this.events["click #newUpper-" + this.subFilterLevel] = "stopPropagation";
         },
@@ -37,7 +40,8 @@ define([
             "click .delete-row": "deleteRow",
             "click .add-row": "addRow",
             "change .newType": "handleTextFieldsChange",
-            "change .newProperty": "handlePropertyChange"
+            "change .newProperty": "handlePropertyChange",
+            "click .sub-filter-marker": "stopPropagation"
         },
 
         stopPropagation: function(e) {
@@ -49,17 +53,6 @@ define([
             console.log(this.model);
         },
 
-        toggleSubFilterContainer: function(e) {
-            e.stopPropagation();
-            var img = $("#newSubFilter-" + this.subFilterLevel);
-            $(e.target).closest(".sub-filter-marker").toggleClass("sub-filter-marker-active");
-            $(".canFade .subFilterLevel-" + this.subFilterLevel).toggleClass("faded");
-            if (img.prop("src").indexOf("left") != -1)
-                img.prop("src", img.prop("src").replace("left", "right"));
-            else
-                img.prop("src", img.prop("src").replace("right", "left"));
-        },
-
         hideView: function() {
             this.$el.parent().css("left", 0);
         },
@@ -68,13 +61,17 @@ define([
             this.$el.parent().css("left", "100%");
         },
 
-        showSubFilterUI: function(e) {
+        showSubFilterUIWithSeed: function(e) {
+            var id = $(e.target).prop("id").split("-")[0],
+                filter = _.findWhere(this.model.get("operators"), {id: parseInt(id)});
+
+            this.showSubFilterUI(e, filter, $("#" + id + "-subFilterContainer-" + this.subFilterLevel));
+        },
+
+        showSubFilterUI: function(e, model, container) {
             e.stopPropagation();
-            var img = $("#newSubFilter-" + this.subFilterLevel);
-            if (img.prop("src").indexOf("left") != -1)
-                img.prop("src", img.prop("src").replace("left", "right"));
-            else
-                img.prop("src", img.prop("src").replace("right", "left"));
+            if (!container) 
+                container = $("#newSubFilterContainer-" + this.subFilterLevel);
 
             $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
                 .toggleClass("subFilter");
@@ -82,10 +79,11 @@ define([
             var subFilter = new SubFilter({
                 features: this.features,
                 types: this.types,
-                $el: $("#newSubFilterContainer-" + this.subFilterLevel),
+                $el: container,
                 subFilterLevel: this.subFilterLevel + 1,
                 filters: this.filters,
-                parentView: this
+                parentView: this,
+                model: model
             });
 
             subFilter.render();
@@ -127,14 +125,25 @@ define([
             this.close();
         },
 
+        cancelFilter: function() {
+            this.parentView.removeSubView(this.cid);
+            this.close();
+            this.parentView.reRender();
+            this.parentView.parentView.showView();
+        },
+
         appendSubFilter: function(subFilter) {
-            this.model.addSubFilter(subFilter);
+            subFilter.isSubFilter = true;
+            subFilter.id = private.operatorCounter++;
+            this.model.addOperator(subFilter);
+
+            this.delegateEvents();
         },
 
         createFilter: function(e) {
-            var view = this;
-            this.model.set("name", $("#filterName-" + this.subFilterLevel).val());
+            this.model.isNew = false;
             this.parentView.appendSubFilter(this.model);
+            this.close();
         },
 
         handlePropertyChange: function(e) {
