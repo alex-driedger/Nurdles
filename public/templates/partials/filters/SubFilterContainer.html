@@ -30,22 +30,22 @@
         </tr>
 
         <% _.each(model.get("operators"), function(operator) {
-        if (operator.isSubFilter) { %>
+        if (operator.get && operator.get("isSubFilter")) { %>
                 <tr>
                     <td colspan="4">
                         Subfilter 
                     </td>
                     <td>
                         <div class="plus-minus-container">
-                            <img id="<%=operator.id + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                            <img id="<%=operator.get('subFilterId') + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                         </div>
                     </td>
                     <td style="width: 10px">
                         <div class="plus-minus-container sub-filter-marker subFilter subFilter-<%= subFilterLevel %> clearfix">
                             <div class="pull-right">
-                                <img id="<%= operator.id %>-subFilter-<%= subFilterLevel %>" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                                <img id="<%= operator.get('subFilterId') %>-subFilter-<%= subFilterLevel %>" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                             </div>
-                            <div id="<%= operator.id %>-subFilterContainer-<%= subFilterLevel %>" class="pull-right padded5 viewSubFilter-<%= subFilterLevel %>">
+                            <div id="<%= operator.get('subFilterId') %>-subFilterContainer-<%= subFilterLevel %>" class="pull-right padded5 viewSubFilter-<%= subFilterLevel %>">
                                 View Sub-filter
                             </div>
                         </div>
@@ -128,7 +128,7 @@
     <% if (!model.isNew) { %>
         <button id="deleteFilter-<%= subFilterLevel %>" class="btn btn-danger"> Delete </button>
     <% } else { %>
-        <button id="cancelFilter-<%= subFilterLevel %>" class="btn btn-warning"> Cancel </button>
+        <button id="cancelFilter-<%= subFilterLevel %>" class="btn btn-danger"> Cancel </button>
     <% } %>
     <button id="clearFilter-<%= subFilterLevel %>" class="btn btn-warning"> Clear </button>
     <% if (model.isNew) { %>

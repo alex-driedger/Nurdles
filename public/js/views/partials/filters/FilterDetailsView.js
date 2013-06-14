@@ -1,9 +1,10 @@
 define([
   'baseview',
   'openlayersutil',
+  './SubFilterView',
   '../../../models/Filter',
   'text!templates/partials/filters/FilterDetailsView.html'
-], function(Baseview, Utils, Filter, filterDetailsTemplate){
+], function(Baseview, Utils, SubFilter, Filter, filterDetailsTemplate){
 
     var private = {};
 
@@ -23,7 +24,9 @@ define([
             "click .delete-row": "handleRowRemoval",
             "click .add-row": "handleAddRow",
             "click .deleteFilter": "handleDeleteFilter",
-            "click .saveFilter": "handleSaveFilter"
+            "click .saveFilter": "handleSaveFilter",
+            "click .savedSubFilter-1": "showSubFilterUI",
+            "click .viewSavedSubFilter-1": "showSubFilterUIWithSeed"
         },
 
         cacheOperators: function() {
@@ -49,6 +52,45 @@ define([
                 this.tempOperator.value = $("#" + this.model.get("_id") + "-newLower").val();
 
             this.tempChecked = $("#" + this.model.get("_id") + "-checkbox").prop("checked");
+        },
+
+        hideView: function() {
+            $("#sidebar").css("left", "-40%");
+        },
+
+        showView: function() {
+            $("#sidebar").css("left", "0");
+        },
+
+        showSubFilterUIWithSeed: function(e) {
+            var id = $(e.target).prop("id").split("-")[0],
+                filter = _.findWhere(this.model.get("operators"), {subFilterId: parseInt(id)}),
+                operators = filter.operators;
+
+            filter = new Filter(filter).set("operators", operators);
+            this.showSubFilterUI(e, filter, $("#" + id + "-savedSubFilterContainer-1"));
+        },
+
+        showSubFilterUI: function(e, model, container) {
+            e.stopPropagation();
+            if (!container) 
+                container = $("#newSavedSubFilterContainer");
+
+            $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
+                .toggleClass("subFilter");
+            $(".canFade").toggleClass("faded");
+            var subFilter = new SubFilter({
+                features: this.features,
+                types: this.types,
+                $el: container,
+                subFilterLevel: 1,
+                filters: this.filters,
+                parentView: this,
+                model: model
+            });
+
+            subFilter.render();
+            this.addSubView(subFilter);
         },
 
         updateModel: function() {
@@ -214,8 +256,10 @@ define([
             var view = this;
 
             _.each(view.model.get("operators"), function(operator) {
-                view.updateAssociatedTypes($("#" + operator.id + "-" + view.model.get("_id") + "-property"), $("#" + operator.id + "-" + view.model.get("_id") + "-type"));
-                view.updateValueTextFields($("#" + operator.id + "-" + view.model.get("_id") + "-type"), $("#" + operator.id + "-" + view.model.get("_id") + "-upper"));
+                if (!operator.isSubFilter) {
+                    view.updateAssociatedTypes($("#" + operator.id + "-" + view.model.get("_id") + "-property"), $("#" + operator.id + "-" + view.model.get("_id") + "-type"));
+                    view.updateValueTextFields($("#" + operator.id + "-" + view.model.get("_id") + "-type"), $("#" + operator.id + "-" + view.model.get("_id") + "-upper"));
+                }
             });
 
             this.updateAssociatedTypes($("#" + this.model.get("_id") + "-newProperty"), $("#" + this.model.get("_id") + "-newType"));

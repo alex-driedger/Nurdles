@@ -99,8 +99,9 @@ define([
         },
 
         appendSubFilter: function(subFilter) {
-            subFilter.isSubFilter = true;
+            subFilter.set("isSubFilter", true);
             subFilter.id = private.operatorCounter++;
+            subFilter.set("subFilterId", subFilter.id);
             this.model.addOperator(subFilter);
 
             this.delegateEvents();
@@ -125,6 +126,7 @@ define([
                 },
                 url: "/api/filters/save"
             });
+            console.log(this.model);
         },
 
         handlePropertyChange: function(e) {

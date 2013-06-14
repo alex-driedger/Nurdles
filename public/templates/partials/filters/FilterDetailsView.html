@@ -14,7 +14,7 @@
                     <td colspan="2">
                         Type:
                     </td>
-                    <td colspan="2">
+                    <td colspan="4">
                         Value:
                     </td>
                 </tr>
@@ -22,28 +22,38 @@
                 <% var counter = 0; %>
                 <% _.each(filter.get('operators'), function(operator) {
                 if (operator.isSubFilter) { %>
-                    <tr>
-                        <td colspan="3">
-                            SubFilter 
-                        </td>
-                        <td>
-                            <div id="<%= filter.get('_id') %>-removeSubFilterOperators" class="plus-minus-container">
-                                <img src="../../img/plus.png" class="icon-small vertical-5 add-row" />
-                            </div>
-                        </td>
-                    </tr>
-                <% }
-                else { %>
+                        <tr>
+                            <td colspan="4">
+                                Subfilter 
+                            </td>
+                            <td>
+                                <div class="plus-minus-container">
+                                    <img id="<%=operator.subFilterId %>-1" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                                </div>
+                            </td>
+                            <td style="width: 10px">
+                                <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
+                                    <div class="pull-right">
+                                        <img id="<%= operator.subFilterId %>-savedSuubFilter-1" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                                    </div>
+                                    <div id="<%= operator.subFilterId %>-savedSubFilterContainer-1" class="pull-right padded5 viewSavedSubFilter-1">
+                                        View Sub-filter
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    <% } 
+                    else { %>
                     <tr>
                     <td>
-                        <select id="<%= operator.id + '-' + filter.get('_id') + '-property' %>" class="wide-30 savedFilter">
+                        <select id="<%= operator.id + '-' + filter.get('_id') + '-property' %>" class="savedFilter">
                             <% _.each(features, function(feature) { %>
                             <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                             <% }); %>
                         </select>
                     </td>
                     <td>
-                        <select id="<%= operator.id + '-' + filter.get('_id') + '-type' %>" class="wide-30 savedFilter">
+                        <select id="<%= operator.id + '-' + filter.get('_id') + '-type' %>" class="savedFilter">
                             <option value="<%= operator.type %>"><%= operator.type %></option>
                         </select>
                     </td>
@@ -65,14 +75,14 @@
             <% }); %>
             <tr>
                 <td>
-                    <select id="<%= filter.get('_id') %>-newProperty" class="wide-30">
+                    <select id="<%= filter.get('_id') %>-newProperty">
                         <% _.each(features, function(feature) { %>
                         <option value="<%= feature.name %>"<% if (tempOperator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                         <% }); %>
                     </select>
                 </td>
                 <td>
-                    <select id="<%= filter.get('_id') %>-newType" class="wide-30">
+                    <select id="<%= filter.get('_id') %>-newType">
                             <option value="<%= tempOperator.type %>"><%= tempOperator.type %></option>
                     </select>
                 </td>
@@ -85,6 +95,16 @@
                 <td>
                     <div id="<%= filter.get('_id') %>-addOperator" class="plus-minus-container">
                         <img src="../../img/plus.png" class="icon-small vertical-5 add-row" />
+                    </div>
+                </td>
+                <td style="width: 10px">
+                    <div class="plus-minus-container sub-filter-marker subFilter savedSubFilter-1 clearfix">
+                        <div class="pull-right">
+                            <img id="newSubFilter" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                        </div>
+                        <div id="newSavedSubFilterContainer" class="pull-right margin-centered padded5">
+                            New Sub-filter
+                        </div>
                     </div>
                 </td>
             </tr>

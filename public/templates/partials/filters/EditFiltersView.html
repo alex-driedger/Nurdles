@@ -17,7 +17,7 @@
         </tr>
 
         <% _.each(model.get("operators"), function(operator) { 
-        if (operator.isSubFilter) { %>
+        if (operator.get && operator.get("isSubFilter")) { %>
                 <tr>
                     <td colspan="4">
                         Subfilter 
@@ -30,9 +30,9 @@
                     <td style="width: 10px">
                         <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
                             <div class="pull-right">
-                                <img id="<%= operator.id %>-subFilter-1" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                                <img id="<%= operator.get('subFilterId') %>-subFilter-1" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                             </div>
-                            <div id="<%= operator.id %>-subFilterContainer-1" class="pull-right padded5 viewSubFilter-1">
+                            <div id="<%= operator.get('subFilterId') %>-subFilterContainer-1" class="pull-right padded5 viewSubFilter-1">
                                 View Sub-filter
                             </div>
                         </div>

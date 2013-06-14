@@ -81,6 +81,7 @@ define([
             }
         },
 
+
         loadSavedFiltersView: function(filters, view) {
             //Remember, filters is a backbone collection 
             //Use Collection methods 
@@ -91,6 +92,7 @@ define([
                     model: filter,
                     tempOperator: {}, //operator used to populate last row
                     features: view.features,
+                    filters: view.filters
                 });
 
                 view.addSubView(detailsView);
