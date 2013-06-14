@@ -127,13 +127,14 @@
 <div class="pull-right padded">
     <% if (!model.isNew) { %>
         <button id="deleteFilter-<%= subFilterLevel %>" class="btn btn-danger"> Delete </button>
+    <% } else { %>
+        <button id="cancelFilter-<%= subFilterLevel %>" class="btn btn-warning"> Cancel </button>
     <% } %>
-    <button id="cancelFilter-<%= subFilterLevel %>" class="btn btn-warning"> Cancel </button>
     <button id="clearFilter-<%= subFilterLevel %>" class="btn"> Clear </button>
     <% if (model.isNew) { %>
         <button id="createFilter-<%= subFilterLevel %>" class="btn"> Create </button>
     <% } else {%>
-        <button id="updateFilter-<%= subFilterLevel %>" class="btn"> Update </button>
+        <button id="doneFilter-<%= subFilterLevel %>" class="btn"> Done </button>
     <% } %>
 </div>
 

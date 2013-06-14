@@ -30,7 +30,7 @@ define([
             this.events["click #cancelFilter-" + this.subFilterLevel] = "cancelFilter";
             this.events["click #clearFilter-" + this.subFilterLevel] = "clearFilter";
             this.events["click #createFilter-" + this.subFilterLevel] = "createFilter";
-            this.events["click #updateFilter-" + this.subFilterLevel] = "updateFilter";
+            this.events["click #doneFilter-" + this.subFilterLevel] = "doneFilter";
             this.events["click #newLower-" + this.subFilterLevel] = "stopPropagation";
             this.events["click #newUpper-" + this.subFilterLevel] = "stopPropagation";
         },
@@ -143,9 +143,10 @@ define([
             this.delegateEvents();
         },
 
-        updateSubFilter: function(subFilter) {
-            var subFilterToUpdate = _.findWhere(this.model.get("operators"), {id: subFilter.id});
-            console.log(subFilterToUpdate);
+        doneFilter: function(subFilter) {
+            this.cacheOperators();
+            this.close();
+            this.parentView.reRender();
         },
 
         createFilter: function(e) {
