@@ -37,15 +37,15 @@
                     </td>
                     <td>
                         <div class="plus-minus-container">
-                            <img id="<%=operator.get('subFilterId') + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                            <img id="<%=operator.get('subFilterOrder') + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                         </div>
                     </td>
                     <td style="width: 10px">
                         <div class="plus-minus-container sub-filter-marker subFilter subFilter-<%= subFilterLevel %> clearfix">
                             <div class="pull-right">
-                                <img id="<%= operator.get('subFilterId') %>-subFilter-<%= subFilterLevel %>" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                                <img id="<%= operator.get('subFilterOrder') %>-subFilter-<%= subFilterLevel %>" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                             </div>
-                            <div id="<%= operator.get('subFilterId') %>-subFilterContainer-<%= subFilterLevel %>" class="pull-right padded5 viewSubFilter-<%= subFilterLevel %>">
+                            <div id="<%= operator.get('subFilterOrder') %>-subFilterContainer-<%= subFilterLevel %>" class="pull-right padded5 viewSubFilter-<%= subFilterLevel %>">
                                 View Sub-filter
                             </div>
                         </div>
@@ -56,28 +56,28 @@
 
                 <tr>
                 <td>
-                    <select id="<%= operator.id + '-property-' +  subFilterLevel %>">
+                    <select id="<%= operator.order + '-property-' +  subFilterLevel %>">
                         <% _.each(features, function(feature) { %>
                         <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                         <% }); %>
                     </select>
                 </td>
                 <td>
-                    <select id="<%= operator.id + '-type-' +  subFilterLevel %>">
+                    <select id="<%= operator.order + '-type-' +  subFilterLevel %>">
                         <% _.each(types, function(type) { %>
                         <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
                         <% }); %>
                     </select>
                 </td>
                 <td <%= operator.upperBoundary ? '' : 'colspan="2"' %>> 
-                    <input id="<%= operator.id + '-lower-' +  subFilterLevel %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                    <input id="<%= operator.order + '-lower-' +  subFilterLevel %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                 </td>
                 <td class="<%= operator.upperBoundary ? '' : 'hide' %>"> 
-                    <input id="<%= operator.id + '-upper-' +  subFilterLevel %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
+                    <input id="<%= operator.order + '-upper-' +  subFilterLevel %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
                 </td>
                 <td>
                     <div class="plus-minus-container">
-                        <img id="<%=operator.id + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                        <img id="<%=operator.order + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                     </div>
                 </td>
             </tr>

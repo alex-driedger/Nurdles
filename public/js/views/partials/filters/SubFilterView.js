@@ -91,13 +91,13 @@ define([
         },
 
         showSubFilterUIWithSeed: function(e) {
-            var id = $(e.target).prop("id").split("-")[0],
-                filter = _.findWhere(this.model.get("operators"), {id: parseInt(id)});
+            var order = $(e.target).prop("id").split("-")[0],
+                filter = _.findWhere(this.model.get("operators"), {order: parseInt(order)});
 
             if (!filter)
-                filter = _.findWhere(this.model.get("operators"), {subFilterId: parseInt(id)});
+                filter = _.findWhere(this.model.get("operators"), {subFilterOrder: parseInt(order)});
 
-            this.showSubFilterUI(e, filter, $("#" + id + "-subFilterContainer-" + this.subFilterLevel));
+            this.showSubFilterUI(e, filter, $("#" + order + "-subFilterContainer-" + this.subFilterLevel));
         },
 
         showSavedSubFilter: function(e) {
@@ -174,8 +174,8 @@ define([
 
         appendSubFilter: function(subFilter) {
             subFilter.set("isSubFilter", true);
-            subFilter.id = private.operatorCounter++;
-            subFilter.set("subFilterId", subFilter.id);
+            subFilter.subFilterOrder = private.operatorCounter++;
+            subFilter.set("subFilterOrder", subFilter.subFilterOrder);
             this.model.addOperator(subFilter);
 
             this.delegateEvents();

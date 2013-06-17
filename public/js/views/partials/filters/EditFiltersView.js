@@ -80,14 +80,14 @@ define([
 
         cacheOperators: function() {
             _.each(this.model.getOperators(), function(operator) {
-                operator.property = $("#" + operator.id + "-property").val();
-                operator.type = $("#" + operator.id + "-type").val();
+                operator.property = $("#" + operator.order + "-property").val();
+                operator.type = $("#" + operator.order + "-type").val();
                 if (operator.upperBoundary) {
-                    operator.lowerBoundary = $("#" + operator.id + "-lower").val();
-                    operator.upperBoundary = $("#" + operator.id + "-upper").val();
+                    operator.lowerBoundary = $("#" + operator.order + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.order + "-upper").val();
                 }
                 else
-                    operator.value = $("#" + operator.id + "-lower").val();
+                    operator.value = $("#" + operator.order + "-lower").val();
             });
 
             this.model.set("name", $("#filterName").val());
@@ -100,15 +100,15 @@ define([
 
         appendSubFilter: function(subFilter) {
             subFilter.set("isSubFilter", true);
-            subFilter.id = private.operatorCounter++;
-            subFilter.set("subFilterId", subFilter.id);
+            subFilter.subFilterOrder = private.operatorCounter++;
+            subFilter.set("subFilterOrder", subFilter.subFilterOrder);
             this.model.addOperator(subFilter);
 
             this.delegateEvents();
         },
 
         updateSubFilter: function(subFilter) {
-            var subFilterToUpdate = _.findWhere(this.model.get("operators"), {id: subFilter.id});
+            var subFilterToUpdate = _.findWhere(this.model.get("operators"), {subFilterId: subFilter.subFilterId});
             console.log(subFilterToUpdate);
         },
 

@@ -24,15 +24,15 @@
                     </td>
                     <td>
                         <div class="plus-minus-container">
-                            <img id="<%=operator.id %>-1" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                            <img id="<%=operator.order %>-1" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                         </div>
                     </td>
                     <td style="width: 10px">
                         <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
                             <div class="pull-right">
-                                <img id="<%= operator.get('subFilterId') %>-subFilter-1" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                                <img id="<%= operator.get('subFilterOrder') %>-subFilter-1" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                             </div>
-                            <div id="<%= operator.get('subFilterId') %>-subFilterContainer-1" class="pull-right padded5 viewSubFilter-1">
+                            <div id="<%= operator.get('subFilterOrder') %>-subFilterContainer-1" class="pull-right padded5 viewSubFilter-1">
                                 View Sub-filter
                             </div>
                         </div>
@@ -42,28 +42,28 @@
             else { %>
                 <tr>
                 <td>
-                    <select id="<%= operator.id + '-property' %>">
+                    <select id="<%= operator.order + '-property' %>">
                         <% _.each(features, function(feature) { %>
                         <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                         <% }); %>
                     </select>
                 </td>
                 <td>
-                    <select id="<%= operator.id + '-type' %>">
+                    <select id="<%= operator.order + '-type' %>">
                         <% _.each(types, function(type) { %>
                         <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
                         <% }); %>
                     </select>
                 </td>
                 <td <%= operator.upperBoundary ? '' : 'colspan="2"' %>> 
-                    <input id="<%= operator.id + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                    <input id="<%= operator.order + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                 </td>
                 <td class="<%= operator.upperBoundary ? '' : 'hide' %>"> 
-                    <input id="<%= operator.id + '-upper' %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
+                    <input id="<%= operator.order + '-upper' %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
                 </td>
                 <td>
                     <div class="plus-minus-container">
-                        <img id="<%=operator.id%>" src="../../img/minus.png" class="icon-small vpadded5 delete-row" />
+                        <img id="<%=operator.order%>" src="../../img/minus.png" class="icon-small vpadded5 delete-row" />
                     </div>
                 </td>
             </tr>

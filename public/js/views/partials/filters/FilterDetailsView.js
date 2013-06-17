@@ -29,7 +29,7 @@ define([
                                 filter.set(key, operator.operators[j][key]);
                             }
                             filter.isSubFilter = true;
-                            filter.subFilterId = filter.get("subFilterId");
+                            filter.subFilterOrder = filter.get("subFilterOrder");
                             filter.id = filter.get("id");
                             operator.operators[j] = filter;
                         }
@@ -89,7 +89,7 @@ define([
 
         showSavedSubFilter: function(e) {
             var id = $(e.target).prop("id").split("-")[0],
-                filter = _.findWhere(this.model.get("operators"), {subFilterId: parseInt(id)}),
+                filter = _.findWhere(this.model.get("operators"), {subFilterOrder: parseInt(id)}),
                 operators = filter.operators;
 
             filter = new Filter(filter).set("operators", operators);
