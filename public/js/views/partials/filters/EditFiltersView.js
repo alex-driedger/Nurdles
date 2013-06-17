@@ -100,8 +100,8 @@ define([
 
         appendSubFilter: function(subFilter) {
             subFilter.set("isSubFilter", true);
-            subFilter.subFilterOrder = private.operatorCounter++;
-            subFilter.set("subFilterOrder", subFilter.subFilterOrder);
+            subFilter.order = private.operatorCounter++;
+            subFilter.set("order", subFilter.order);
             this.model.addOperator(subFilter);
 
             this.delegateEvents();

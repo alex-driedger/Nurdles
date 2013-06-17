@@ -20,22 +20,33 @@ define([
             this.trigger("addOperator");
         },
 
-        removeOperator: function(id) {
-            var operatorWithIndex = this.findOperatorById(id)
+        removeOperator: function(order) {
+            var operatorWithIndex = this.findOperatorByOrder(order)
             this.get("operators").splice(operatorWithIndex.index, 1);
+            this.resetOperatorOrder(order);
             this.trigger("removeOperator");
             console.log("Now have " + this.get("operators").length + " operators");
         },
 
-        findOperatorById: function(id) {
+        findOperatorByOrder: function(order) {
             var operators = this.get("operators");
             for (var i = 0, len = operators.length; i < len; i++) {
-                if (operators[i].id == id)
+                if (operators[i].order == order)
                     return {
                         operator: operators[i],
                         index: i
                     }
             }
+        },
+
+        resetOperatorOrder: function(lastOperatorRemoved) {
+            var operators = this.getOperators();
+            
+            for (var i = lastOperatorRemoved, len = operators.length; i < len; i++) {
+                operators[i].order--;
+            }
+
+            this.setOperators(operators);
         },
 
         clearOperators: function() {
