@@ -35,6 +35,31 @@ define([
             this.events["click #newUpper-" + this.subFilterLevel] = "stopPropagation";
 
             this.events["click #" + this.model.get("subFilterId") + "-savedSubFilterContainer-" + this.subFilterLevel] = "showSavedSubFilter";
+
+            var transformedOperators = [],
+                operators = this.model.getOperators();
+
+            for (var i = 0, len = operators.length; i < len; i++) {
+                var operator = operators[i],
+                    filter = new Filter();
+
+                if (operator.operators) {
+                    for (var j = 0, oLen = operator.operators.length; j < oLen; j++) {
+                        if (operator.operators[j].isSubFilter) {
+                            for (var key in operator.operators[j]) {
+                                filter.set(key, operator.operators[j][key]);
+                            }
+                            filter.isSubFilter = true;
+                            filter.subFilterId = filter.get("subFilterId");
+                            filter.id = filter.get("id");
+                            operator.operators[j] = filter;
+                        }
+                    }
+                }
+                transformedOperators.push(operator);
+            };
+
+            this.model.setOperators(transformedOperators);
         },
 
         template: _.template(subFilterTemplate),
@@ -68,6 +93,9 @@ define([
         showSubFilterUIWithSeed: function(e) {
             var id = $(e.target).prop("id").split("-")[0],
                 filter = _.findWhere(this.model.get("operators"), {id: parseInt(id)});
+
+            if (!filter)
+                filter = _.findWhere(this.model.get("operators"), {subFilterId: parseInt(id)});
 
             this.showSubFilterUI(e, filter, $("#" + id + "-subFilterContainer-" + this.subFilterLevel));
         },

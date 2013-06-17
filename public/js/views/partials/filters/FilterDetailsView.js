@@ -14,6 +14,31 @@ define([
 
             this.isExpanded = this.isActive = false;
             this.listenTo(this.model, "change", this.cacheOperators);
+
+            var transformedOperators = [],
+                operators = this.model.getOperators();
+
+            for (var i = 0, len = operators.length; i < len; i++) {
+                var operator = operators[i],
+                    filter = new Filter();
+
+                if (operator.operators) {
+                    for (var j = 0, oLen = operator.operators.length; j < oLen; j++) {
+                        if (operator.operators[j].isSubFilter) {
+                            for (var key in operator.operators[j]) {
+                                filter.set(key, operator.operators[j][key]);
+                            }
+                            filter.isSubFilter = true;
+                            filter.subFilterId = filter.get("subFilterId");
+                            filter.id = filter.get("id");
+                            operator.operators[j] = filter;
+                        }
+                    }
+                }
+                transformedOperators.push(operator);
+            };
+
+            this.model.setOperators(transformedOperators);
         },
 
         template: _.template(filterDetailsTemplate),
@@ -64,7 +89,7 @@ define([
 
         showSavedSubFilter: function(e) {
             var id = $(e.target).prop("id").split("-")[0],
-                filter = _.findWhere(this.model.get("operators"), {id: parseInt(id)}),
+                filter = _.findWhere(this.model.get("operators"), {subFilterId: parseInt(id)}),
                 operators = filter.operators;
 
             filter = new Filter(filter).set("operators", operators);
