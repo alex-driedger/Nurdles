@@ -141,6 +141,7 @@ input[type="radio"] {
 }
 
 .content {
+    overflow: auto;
     top: 55px;
     position: fixed;
     right: 0;

@@ -29,8 +29,7 @@ define([
                                 filter.set(key, operator.operators[j][key]);
                             }
                             filter.isSubFilter = true;
-                            filter.subFilterOrder = filter.get("subFilterOrder");
-                            filter.id = filter.get("id");
+                            filter.order = filter.get("order");
                             operator.operators[j] = filter;
                         }
                     }
@@ -88,12 +87,12 @@ define([
         },
 
         showSavedSubFilter: function(e) {
-            var id = $(e.target).prop("id").split("-")[0],
-                filter = _.findWhere(this.model.get("operators"), {subFilterOrder: parseInt(id)}),
+            var order = $(e.target).prop("id").split("-")[0],
+                filter = _.findWhere(this.model.get("operators"), {order: parseInt(order)}),
                 operators = filter.operators;
 
             filter = new Filter(filter).set("operators", operators);
-            this.showSubFilterUI(e, filter, $("#" + id + "-savedSubFilterContainer-1"));
+            this.showSubFilterUI(e, filter, $("#" + order + "-savedSubFilterContainer-1"));
         },
 
         showSubFilterUI: function(e, model, container) {
