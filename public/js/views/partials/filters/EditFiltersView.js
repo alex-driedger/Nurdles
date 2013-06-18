@@ -5,10 +5,6 @@ define([
   './SubFilterView',
   'text!templates/partials/filters/EditFiltersView.html',
 ], function(Baseview, Utils, Filter, SubFilter, editFiltersTemplate){
-    var private = {
-        operatorCounter: 0
-    };
-
     var EditFiltersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
@@ -50,10 +46,10 @@ define([
         },
 
         showSubFilterUIWithSeed: function(e) {
-            var id = $(e.target).prop("id").split("-")[0],
-                filter = _.findWhere(this.model.get("operators"), {id: parseInt(id)});
+            var order = $(e.target).prop("id").split("-")[0],
+                filter = _.findWhere(this.model.get("operators"), {order: parseInt(order)});
 
-            this.showSubFilterUI(e, filter, $("#" + id + "-subFilterContainer-1"));
+            this.showSubFilterUI(e, filter, $("#" + order + "-subFilterContainer-1"));
         },
 
         showSubFilterUI: function(e, model, container) {
@@ -100,9 +96,7 @@ define([
 
         appendSubFilter: function(subFilter) {
             subFilter.set("isSubFilter", true);
-            subFilter.order = private.operatorCounter++;
-            subFilter.set("order", subFilter.order);
-            this.model.addOperator(subFilter);
+            this.model.addOperator(subFilter, true);
 
             this.delegateEvents();
         },
@@ -182,7 +176,6 @@ define([
 
         addRow: function(e) {
             var newOperator = {
-               id: private.operatorCounter++,
                 property: $("#newProperty").val(),
                 type: $("#newType").val(),
                 lowerBoundary: $("#newLower").val(),

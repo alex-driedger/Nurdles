@@ -5,6 +5,7 @@ define([
 ], function($, _, Backbone){
     var Filter = Backbone.Model.extend({
         idAttribute: "_id",
+        operatorCounter: 0,
 
         initialize: function(attributes) {
             this.set("operators", []);
@@ -15,7 +16,11 @@ define([
             this.set("operators", operators);
         },
 
-        addOperator: function(operator) {
+        addOperator: function(operator, isSubFilter) {
+            operator.order = this.operatorCounter++;
+            if (isSubFilter)
+                operator.set("order", operator.order);
+
             this.get("operators").push(operator);
             this.trigger("addOperator");
         },
@@ -23,6 +28,7 @@ define([
         removeOperator: function(order) {
             var operatorWithIndex = this.findOperatorByOrder(order)
             this.get("operators").splice(operatorWithIndex.index, 1);
+            this.operatorCounter--;
             this.resetOperatorOrder(order);
             this.trigger("removeOperator");
             console.log("Now have " + this.get("operators").length + " operators");
@@ -51,6 +57,7 @@ define([
 
         clearOperators: function() {
             this.set("operators", []);
+            this.operatorCounter = 0;
             this.trigger("clearOperators");
         },
 

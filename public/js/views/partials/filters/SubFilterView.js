@@ -9,7 +9,6 @@ define([
     };
 
     var SubFilter = Baseview.extend({
-        operatorCounter: 0,
         initialize: function(args) {
             this.isNew = true;
             this.initArgs(args);
@@ -171,9 +170,7 @@ define([
 
         appendSubFilter: function(subFilter) {
             subFilter.set("isSubFilter", true);
-            subFilter.order = this.operatorCounter++;
-            subFilter.set("order", subFilter.order);
-            this.model.addOperator(subFilter);
+            this.model.addOperator(subFilter, true);
 
             this.delegateEvents();
         },
@@ -253,7 +250,6 @@ define([
         addRow: function(e) {
             e.stopPropagation();
             var newOperator = {
-                order: this.operatorCounter++,
                 property: $("#newProperty-" + this.subFilterLevel).val(),
                 type: $("#newType-" + this.subFilterLevel).val(),
                 lowerBoundary: $("#newLower-" + this.subFilterLevel).val(),
