@@ -37,6 +37,7 @@ define([
             var transformedOperators = [],
                 operators = this.model.getOperators();
 
+            this.model.operatorCounter = operators.length;
             for (var i = 0, len = operators.length; i < len; i++) {
                 var operator = operators[i],
                     filter = new Filter();

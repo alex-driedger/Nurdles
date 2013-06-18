@@ -19,7 +19,6 @@
                     </td>
                 </tr>
 
-                <% var counter = 0; %>
                 <% _.each(filter.get('operators'), function(operator) {
                 if (operator.isSubFilter) { %>
                         <tr>
@@ -46,33 +45,31 @@
                     else { %>
                     <tr>
                     <td>
-                        <select id="<%= operator.id + '-' + filter.get('_id') + '-property' %>" class="savedFilter">
+                        <select id="<%= operator.order + '-' + filter.get('_id') + '-property' %>" class="savedFilter">
                             <% _.each(features, function(feature) { %>
                             <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                             <% }); %>
                         </select>
                     </td>
                     <td>
-                        <select id="<%= operator.id + '-' + filter.get('_id') + '-type' %>" class="savedFilter">
+                        <select id="<%= operator.order + '-' + filter.get('_id') + '-type' %>" class="savedFilter">
                             <option value="<%= operator.type %>"><%= operator.type %></option>
                         </select>
                     </td>
                     <td> 
-                        <input id="<%=operator.id + '-' + filter.get('_id') + '-lower' %>" type="text" class="wide-90 savedFilter" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                        <input id="<%=operator.order + '-' + filter.get('_id') + '-lower' %>" type="text" class="wide-90 savedFilter" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                     </td>
                     <td> 
-                        <input id="<%=operator.id + '-' + filter.get('_id') + '-upper' %>" type="text" class="wide-90 savedFilter" value="<%= operator.upperBoundary %>" />
+                        <input id="<%=operator.order + '-' + filter.get('_id') + '-upper' %>" type="text" class="wide-90 savedFilter" value="<%= operator.upperBoundary %>" />
                     </td>
                     <td>
                         <div class="plus-minus-container minus">
-                            <img id="<%=operator.id + '-' + filter.get('_id')%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                            <img id="<%=operator.order + '-' + filter.get('_id')%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                         </div>
                     </td>
                 </tr>
-            <% } %>
-
-                <% counter++; %>
-            <% }); %>
+            <% }
+            }); %>
             <tr>
                 <td>
                     <select id="<%= filter.get('_id') %>-newProperty">

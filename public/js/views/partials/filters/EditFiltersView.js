@@ -101,11 +101,6 @@ define([
             this.delegateEvents();
         },
 
-        updateSubFilter: function(subFilter) {
-            var subFilterToUpdate = _.findWhere(this.model.get("operators"), {subFilterId: subFilter.subFilterId});
-            console.log(subFilterToUpdate);
-        },
-
         createFilter: function(e) {
             var view = this;
             this.model.set("name", $("#filterName").val());

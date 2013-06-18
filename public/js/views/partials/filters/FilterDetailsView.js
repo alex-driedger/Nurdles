@@ -18,11 +18,13 @@ define([
             var transformedOperators = [],
                 operators = this.model.getOperators();
 
+
+            this.model.operatorCounter = operators.length;
             for (var i = 0, len = operators.length; i < len; i++) {
                 var operator = operators[i],
                     filter = new Filter();
 
-                if (operator.operators) {
+                if (operator.isSubFilter) {
                     for (var j = 0, oLen = operator.operators.length; j < oLen; j++) {
                         if (operator.operators[j].isSubFilter) {
                             for (var key in operator.operators[j]) {
@@ -56,14 +58,14 @@ define([
         cacheOperators: function() {
             var view = this;
             _.each(this.model.getOperators(), function(operator) {
-                operator.property = $("#" + operator.id + "-" + view.model.get("_id") + "-property").val();
-                operator.type = $("#" + operator.id + "-" + view.model.get("_id") + "-type").val();
+                operator.property = $("#" + operator.order + "-" + view.model.get("_id") + "-property").val();
+                operator.type = $("#" + operator.order + "-" + view.model.get("_id") + "-type").val();
                 if (operator.upperBoundary) {
-                    operator.lowerBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
-                    operator.upperBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-upper").val();
+                    operator.lowerBoundary = $("#" + operator.order + "-" + view.model.get("_id") + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.order + "-" + view.model.get("_id") + "-upper").val();
                 }
                 else
-                    operator.value = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
+                    operator.value = $("#" + operator.order + "-" + view.model.get("_id") + "-lower").val();
             });
 
             this.tempOperator.property = $("#" + view.model.get("_id") + "-newProperty").val();
@@ -123,14 +125,14 @@ define([
                 view = this;
 
             _.each(this.model.getOperators(), function(operator) {
-                operator.property = $("#" + operator.id + "-" + view.model.get("_id") + "-property").val();
-                operator.type = $("#" + operator.id + "-" + view.model.get("_id") + "-type").val();
+                operator.property = $("#" + operator.order + "-" + view.model.get("_id") + "-property").val();
+                operator.type = $("#" + operator.order + "-" + view.model.get("_id") + "-type").val();
                 if (operator.upperBoundary) {
-                    operator.lowerBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
-                    operator.upperBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-upper").val();
+                    operator.lowerBoundary = $("#" + operator.order + "-" + view.model.get("_id") + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.order + "-" + view.model.get("_id") + "-upper").val();
                 }
                 else
-                    operator.value = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
+                    operator.value = $("#" + operator.order + "-" + view.model.get("_id") + "-lower").val();
 
                 operators.push(operator);
             });
@@ -150,7 +152,15 @@ define([
                 }
             });
         },
-        
+
+        appendSubFilter: function(subFilter) {
+            subFilter.set("isSubFilter", true);
+            this.model.addOperator(subFilter, true);
+            this.reRender();
+
+            this.delegateEvents();
+        },
+
         handleSaveFilter: function(e) {
             this.updateModel();
             var filterId = $(e.target).prop("id").split("-")[0];
@@ -161,8 +171,8 @@ define([
 
         handleAddRow: function(e) {
             var highestId = _.reduce(this.model.getOperators(), function(memo, operator) {
-                if (operator.id > memo)
-                    return parseInt(operator.id);
+                if (operator.order > memo)
+                    return parseInt(operator.order);
                 else
                     return parseInt(memo);
             }, 0);
@@ -282,8 +292,8 @@ define([
 
             _.each(view.model.get("operators"), function(operator) {
                 if (!operator.isSubFilter) {
-                    view.updateAssociatedTypes($("#" + operator.id + "-" + view.model.get("_id") + "-property"), $("#" + operator.id + "-" + view.model.get("_id") + "-type"));
-                    view.updateValueTextFields($("#" + operator.id + "-" + view.model.get("_id") + "-type"), $("#" + operator.id + "-" + view.model.get("_id") + "-upper"));
+                    view.updateAssociatedTypes($("#" + operator.order + "-" + view.model.get("_id") + "-property"), $("#" + operator.order + "-" + view.model.get("_id") + "-type"));
+                    view.updateValueTextFields($("#" + operator.order + "-" + view.model.get("_id") + "-type"), $("#" + operator.order + "-" + view.model.get("_id") + "-upper"));
                 }
             });
 
