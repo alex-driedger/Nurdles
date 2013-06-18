@@ -95,6 +95,7 @@ define([
             if (!filter)
                 filter = _.findWhere(this.model.get("operators"), {order: parseInt(order)});
 
+            filter.isNew = false;
             this.showSubFilterUI(e, filter, $("#" + order + "-subFilterContainer-" + this.subFilterLevel));
         },
 

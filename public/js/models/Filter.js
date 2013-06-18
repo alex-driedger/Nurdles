@@ -11,7 +11,6 @@ define([
             this.set("operators", []);
         },
 
-
         setOperators: function(operators) {
             this.set("operators", operators);
         },

@@ -92,6 +92,7 @@ define([
                 operators = filter.operators;
 
             filter = new Filter(filter).set("operators", operators);
+            filter.isNew = false;
             this.showSubFilterUI(e, filter, $("#" + order + "-savedSubFilterContainer-1"));
         },
 
