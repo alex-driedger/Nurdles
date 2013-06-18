@@ -20,7 +20,7 @@
                 </tr>
 
                 <% _.each(filter.get('operators'), function(operator) {
-                if (operator.isSubFilter) { %>
+                if (operator.get && operator.get("isSubFilter")) { %>
                         <tr>
                             <td colspan="4">
                                 Subfilter 

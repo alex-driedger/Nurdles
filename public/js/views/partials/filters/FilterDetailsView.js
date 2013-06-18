@@ -93,7 +93,6 @@ define([
                 filter = _.findWhere(this.model.get("operators"), {order: parseInt(order)}),
                 operators = filter.operators;
 
-            filter = new Filter(filter).set("operators", operators);
             filter.isNew = false;
             this.showSubFilterUI(e, filter, $("#" + order + "-savedSubFilterContainer-1"));
         },
@@ -291,7 +290,7 @@ define([
             var view = this;
 
             _.each(view.model.get("operators"), function(operator) {
-                if (!operator.isSubFilter) {
+                if (!(operator.get && operator.get("isSubFilter"))) {
                     view.updateAssociatedTypes($("#" + operator.order + "-" + view.model.get("_id") + "-property"), $("#" + operator.order + "-" + view.model.get("_id") + "-type"));
                     view.updateValueTextFields($("#" + operator.order + "-" + view.model.get("_id") + "-type"), $("#" + operator.order + "-" + view.model.get("_id") + "-upper"));
                 }

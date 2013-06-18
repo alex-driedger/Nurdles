@@ -49,6 +49,8 @@ define([
             
             for (var i = lastOperatorRemoved, len = operators.length; i < len; i++) {
                 operators[i].order--;
+                if (operators[i].set)
+                    operators[i].set("order", operators[i].order);
             }
 
             this.setOperators(operators);
