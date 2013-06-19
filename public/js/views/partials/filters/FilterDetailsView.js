@@ -33,11 +33,18 @@ define([
             "click .saveFilter": "handleSaveFilter",
             "click .savedSubFilter-1": "showSubFilterUI",
             "click .viewSavedSubFilter-1": "showSavedSubFilter",
-            "click .logicalOperatorContainer": "stopPropagation"
+            "click .logicalOperatorContainer": "handleLogicalOperatorSwitch"
         },
 
-        stopPropagation: function(e) {
+        handleLogicalOperatorSwitch: function(e) {
             e.stopPropagation();
+            e.preventDefault();
+
+            var checkbox = $(e.target).parent().prev();
+            checkbox.prop("checked", !checkbox.prop("checked"));
+            this.model.set("logicalOperator", checkbox.prop("checked") ? "&&" : "||");
+
+            this.model.update();
         },
 
         cacheOperators: function() {
@@ -267,6 +274,7 @@ define([
             }));
 
             this.delegateEvents(this.events);
+
             
             return this;
         },
@@ -287,6 +295,10 @@ define([
             if (!this.isExpanded)
                 $("#" + this.model.get("_id") + "-container").hide();
 
+            if (this.model.get("logicalOperator") == OpenLayers.Filter.Logical.OR) {
+                $("#" + this.model.get("_id") + "-logicalOperator").click();
+                $("#" + this.model.get("_id") + "-logicalOperatorCheckbox").prop("checked", false);
+            }
             return this;
         }
     });

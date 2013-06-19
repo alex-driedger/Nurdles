@@ -8,13 +8,13 @@
         </div>
     </div>
         <label class="logicalOperatorContainer checkbox toggle well">
-            <input id="view" type="checkbox" checked />
+            <input id="<%= filter.get('_id') %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
             <p>
             <span>AND</span>
             <span>OR</span>
             </p>
 
-            <a class="btn btn-info slide-button"></a>
+            <a id="<%= filter.get('_id') %>-logicalOperator" class="btn btn-info slide-button"></a>
         </label>
 
 </div>
