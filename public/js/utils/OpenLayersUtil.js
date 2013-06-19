@@ -144,42 +144,78 @@ define([
             return newFilter;
         },
 
+        constructLogicalFilters: function(filters, index) {
+            var innerFilter = new OpenLayers.Filter.Logical(),
+                outerFilter = new OpenLayers.Filter.Logical(),
+                filter1 = filters[index],
+                filter2 = filters[index + 1];
+
+            outerFilter.type = filter1.type;
+            innerFilter.type = "&&";
+
+            innerFilter.filters.push(filter1);
+            innerFilter.filters.push(filter2);
+
+            outerFilter.filters.push(innerFilter);
+
+            if (index >= filters.length- 2)
+                return outerFilter;
+            else
+                outerFilter.filters.push(this.constructLogicalFilters(filters, index + 2));
+        },
+
         createOpenLayersFilters: function(filters) {
             var simplifiedFilters = [];
-            var olFilters = new OpenLayers.Filter.Logical({
-                type: OpenLayers.Filter.Logical.AND 
-            });
+            var outerFilter = new OpenLayers.Filter.Logical(),
+                finalFilter = new OpenLayers.Filter.Logical();
 
             for (var i = 0, len = filters.length; i< len; i++) {
-                olFilters.filters.push(this.convertFilterToFilterParam(filters[i]))
+                var innerFilter = new OpenLayers.Filter.Logical();
+
+                innerFilter.type = filters[i].get("logicalOperator");
+                innerFilter.filters.push(this.convertFilterToFilterParam(filters[i]));
+                outerFilter.filters.push(innerFilter);
+
+                if (i == len - 1)
+                    finalFilter.type = filters[i].get("logicalOperator");
             };
+
+            var firstFilter = this.constructLogicalFilters(outerFilter.filters, 0);
+            if (outerFilter.filters.length % 2 == 0) {
+                for (var i = 0, len = firstFilter.filters[0].filters.length; i < len; i++) {
+                    finalFilter.filters.push(firstFilter.filters[0].filters[i]);
+                }
+            }
+            else {
+                finalFilter.filters.push(firstFilter);
+                finalFilter.filters.push(outerFilter.filters[outerFilter.length - 1]);
+            }
 
             var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
             var xml = new OpenLayers.Format.XML(); 
-            var filter_param = xml.write(filter_1_0.write(olFilters));
+            var filter_param = xml.write(filter_1_0.write(finalFilter));
             console.log(filter_param);
 
             return filter_param;
         },
 
         convertFilterToFilterParam: function(filter) {
-            var olFilters = new OpenLayers.Filter.Logical({
-                type: OpenLayers.Filter.Logical.AND 
-            }),
-            operators = filter.getOperators();
+            var outerFilter = new OpenLayers.Filter.Logical();
+            outerFilter.type = "&&";
 
+            operators = filter.getOperators();
             for (var j = 0, olen = operators.length; j < olen; j++) {
                 var operator = operators[j];
                 if (operator.get && operator.get("isSubFilter")) {
                     subFilter = this.convertFilterToFilterParam(operator);
-                    olFilters.filters.push(subFilter);
+                    outerFilter.filters.push(subFilter);
                 }
                 else {
-                    olFilters.filters.push(operator);
+                    outerFilter.filters.push(operator);
                 }
             }
 
-            return olFilters;
+            return outerFilter;
         },
 
         addControlsToMap: function(view, currentFilter) {
