@@ -25,6 +25,9 @@ define([
                 this.push(parsedModel);
             }
 
+            if (this.modelSpecificParse)
+                this.models = this.modelSpecificParse(this.models);
+
             return this.models;
         }
     });

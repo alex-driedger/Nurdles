@@ -36,15 +36,56 @@ input[type="radio"] {
     margin: 0px
 }
 
+.margin-centered {
+    margin: 0 auto;
+}
+
 .centered {
     text-align: center;
+}
+
+.centered-to-control {
+    line-height: 2em;
 }
 
 .header .centered-to-button {
     padding: 5px 0;
 }
 
+.faded {
+    background-color: #eee;
+    opacity: 0.5;
+}
+
+.not-faded {
+    background-color: #fff;
+    opacity: 1;
+}
+
 /*-------------------------Step Styles---------------------------*/
+.wide-30 {
+    width: 30%;
+}
+
+.wide-90 {
+    width: 90%;
+}
+
+.wide-95 {
+    width: 95%;
+}
+
+.wide-100 {
+    width: 100%;
+}
+
+.padded5 {
+    padding: 5px;
+}
+
+.vpadded5 {
+    padding: 5px 0;
+}
 
 .vpadded10 {
     padding: 10px 0;
@@ -65,7 +106,6 @@ input[type="radio"] {
 .rpadding15 {
     padding-right: 15px;
 }
-
 /*-------------------------Loader--------------------------------*/
 .loading {
     height: 100%;
@@ -101,6 +141,7 @@ input[type="radio"] {
 }
 
 .content {
+    overflow: auto;
     top: 55px;
     position: fixed;
     right: 0;
@@ -141,7 +182,7 @@ input[type="radio"] {
 }
 
 .header-image {
-    height: 90%;
+    width: 80px;
 }
 
 .header-title {
@@ -163,7 +204,11 @@ input[type="radio"] {
     right: -10px;
     z-index: 999;
     background-color: rgba(50, 50, 50, 0.5);
-    -webkit-transition: width 0.2s; /* Safari and Chrome */
+}
+
+.map-tools-row {
+    position: relative;
+    -webkit-transition: left 0.2s; /* Safari and Chrome */
 }
 
 .side-controls-container{
@@ -263,6 +308,7 @@ input[type="radio"] {
     z-index: 1100;
     height: 100%;
     width: 40%;
+    -webkit-transition: left 0.5s; /* Safari and Chrome */
 }
 
 #toolContainer {
@@ -311,19 +357,8 @@ input[type="radio"] {
     width: 20px;
 }
 
-//---------------End Sidebar-----------------
+//---------------End Sidebar-----------------//
 
-.wide-30 {
-    width: 30%;
-}
-
-.wide-90 {
-    width: 90%
-}
-
-.wide-95 {
-    width: 95%
-}
 
 .vertical-5 {
     padding-top: 5px;
@@ -593,4 +628,33 @@ table.wms, td.wms
 .sortable.no-padding li {
     padding: 0px;
     padding-left: 0px;
+}
+
+/*--------------------------Filter UI-------------------------*/
+
+.sub-filter-marker {
+    position: absolute;
+    background-color: #fff;
+    overflow: hidden;
+    height: 2em;
+    width: 30px;
+    cursor: pointer;
+    -webkit-transition:width 0.2s ease-in;  
+    -moz-border-radius-bottomright: 2px 2px;
+    border-bottom-right-radius: 2px 2px;
+    -moz-border-radius-topright: 2px 2px;
+    border-top-right-radius: 2px 2px;
+}
+
+.sub-filter-marker-active {
+    width: 100%;
+    height: auto;
+    left: 100%;
+    border: 1px solid #ddd;
+    overflow: visible;
+    -webkit-transition: left 0.5s; /* Safari and Chrome */
+}
+
+.subFilter:hover {
+    width: 130px;
 }

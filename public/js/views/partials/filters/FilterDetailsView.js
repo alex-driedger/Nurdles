@@ -1,9 +1,10 @@
 define([
   'baseview',
   'openlayersutil',
+  './SubFilterView',
   '../../../models/Filter',
   'text!templates/partials/filters/FilterDetailsView.html'
-], function(Baseview, Utils, Filter, filterDetailsTemplate){
+], function(Baseview, Utils, SubFilter, Filter, filterDetailsTemplate){
 
     var private = {};
 
@@ -13,6 +14,32 @@ define([
 
             this.isExpanded = this.isActive = false;
             this.listenTo(this.model, "change", this.cacheOperators);
+
+            var transformedOperators = [],
+                operators = this.model.getOperators();
+
+
+            this.model.operatorCounter = operators.length;
+            for (var i = 0, len = operators.length; i < len; i++) {
+                var operator = operators[i],
+                    filter = new Filter();
+
+                if (operator.isSubFilter) {
+                    for (var j = 0, oLen = operator.operators.length; j < oLen; j++) {
+                        if (operator.operators[j].isSubFilter) {
+                            for (var key in operator.operators[j]) {
+                                filter.set(key, operator.operators[j][key]);
+                            }
+                            filter.isSubFilter = true;
+                            filter.order = filter.get("order");
+                            operator.operators[j] = filter;
+                        }
+                    }
+                }
+                transformedOperators.push(operator);
+            };
+
+            this.model.setOperators(transformedOperators);
         },
 
         template: _.template(filterDetailsTemplate),
@@ -23,20 +50,22 @@ define([
             "click .delete-row": "handleRowRemoval",
             "click .add-row": "handleAddRow",
             "click .deleteFilter": "handleDeleteFilter",
-            "click .saveFilter": "handleSaveFilter"
+            "click .saveFilter": "handleSaveFilter",
+            "click .savedSubFilter-1": "showSubFilterUI",
+            "click .viewSavedSubFilter-1": "showSavedSubFilter"
         },
 
         cacheOperators: function() {
             var view = this;
             _.each(this.model.getOperators(), function(operator) {
-                operator.property = $("#" + operator.id + "-" + view.model.get("_id") + "-property").val();
-                operator.type = $("#" + operator.id + "-" + view.model.get("_id") + "-type").val();
+                operator.property = $("#" + operator.order + "-" + view.model.get("_id") + "-property").val();
+                operator.type = $("#" + operator.order + "-" + view.model.get("_id") + "-type").val();
                 if (operator.upperBoundary) {
-                    operator.lowerBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
-                    operator.upperBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-upper").val();
+                    operator.lowerBoundary = $("#" + operator.order + "-" + view.model.get("_id") + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.order + "-" + view.model.get("_id") + "-upper").val();
                 }
                 else
-                    operator.value = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
+                    operator.value = $("#" + operator.order + "-" + view.model.get("_id") + "-lower").val();
             });
 
             this.tempOperator.property = $("#" + view.model.get("_id") + "-newProperty").val();
@@ -51,19 +80,58 @@ define([
             this.tempChecked = $("#" + this.model.get("_id") + "-checkbox").prop("checked");
         },
 
+        hideView: function() {
+            $("#sidebar").css("left", "-40%");
+        },
+
+        showView: function() {
+            $("#sidebar").css("left", "0");
+        },
+
+        showSavedSubFilter: function(e) {
+            var order = $(e.target).prop("id").split("-")[0],
+                filter = _.findWhere(this.model.get("operators"), {order: parseInt(order)}),
+                operators = filter.operators;
+
+            filter.isNew = false;
+            this.showSubFilterUI(e, filter, $("#" + order + "-savedSubFilterContainer-1"));
+        },
+
+        showSubFilterUI: function(e, model, container) {
+            e.stopPropagation();
+            if (!container) 
+                container = $("#" + this.model.get("_id") + "-newSavedSubFilterContainer-1");
+
+            $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
+                .toggleClass("subFilter");
+            $(".canFade").toggleClass("faded");
+            var subFilter = new SubFilter({
+                features: this.features,
+                types: this.types,
+                $el: container,
+                subFilterLevel: 1,
+                filters: this.filters,
+                parentView: this,
+                model: model
+            });
+
+            subFilter.render();
+            this.addSubView(subFilter);
+        },
+
         updateModel: function() {
             var operators = [],
                 view = this;
 
             _.each(this.model.getOperators(), function(operator) {
-                operator.property = $("#" + operator.id + "-" + view.model.get("_id") + "-property").val();
-                operator.type = $("#" + operator.id + "-" + view.model.get("_id") + "-type").val();
+                operator.property = $("#" + operator.order + "-" + view.model.get("_id") + "-property").val();
+                operator.type = $("#" + operator.order + "-" + view.model.get("_id") + "-type").val();
                 if (operator.upperBoundary) {
-                    operator.lowerBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
-                    operator.upperBoundary = $("#" + operator.id + "-" + view.model.get("_id") + "-upper").val();
+                    operator.lowerBoundary = $("#" + operator.order + "-" + view.model.get("_id") + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.order + "-" + view.model.get("_id") + "-upper").val();
                 }
                 else
-                    operator.value = $("#" + operator.id + "-" + view.model.get("_id") + "-lower").val();
+                    operator.value = $("#" + operator.order + "-" + view.model.get("_id") + "-lower").val();
 
                 operators.push(operator);
             });
@@ -83,7 +151,15 @@ define([
                 }
             });
         },
-        
+
+        appendSubFilter: function(subFilter) {
+            subFilter.set("isSubFilter", true);
+            this.model.addOperator(subFilter, true);
+            this.reRender();
+
+            this.delegateEvents();
+        },
+
         handleSaveFilter: function(e) {
             this.updateModel();
             var filterId = $(e.target).prop("id").split("-")[0];
@@ -94,8 +170,8 @@ define([
 
         handleAddRow: function(e) {
             var highestId = _.reduce(this.model.getOperators(), function(memo, operator) {
-                if (operator.id > memo)
-                    return parseInt(operator.id);
+                if (operator.order > memo)
+                    return parseInt(operator.order);
                 else
                     return parseInt(memo);
             }, 0);
@@ -214,8 +290,10 @@ define([
             var view = this;
 
             _.each(view.model.get("operators"), function(operator) {
-                view.updateAssociatedTypes($("#" + operator.id + "-" + view.model.get("_id") + "-property"), $("#" + operator.id + "-" + view.model.get("_id") + "-type"));
-                view.updateValueTextFields($("#" + operator.id + "-" + view.model.get("_id") + "-type"), $("#" + operator.id + "-" + view.model.get("_id") + "-upper"));
+                if (!(operator.get && operator.get("isSubFilter"))) {
+                    view.updateAssociatedTypes($("#" + operator.order + "-" + view.model.get("_id") + "-property"), $("#" + operator.order + "-" + view.model.get("_id") + "-type"));
+                    view.updateValueTextFields($("#" + operator.order + "-" + view.model.get("_id") + "-type"), $("#" + operator.order + "-" + view.model.get("_id") + "-upper"));
+                }
             });
 
             this.updateAssociatedTypes($("#" + this.model.get("_id") + "-newProperty"), $("#" + this.model.get("_id") + "-newType"));

@@ -146,24 +146,13 @@ define([
 
         createOpenLayersFilters: function(filters) {
             var simplifiedFilters = [];
-
-            for (var i = 0, len = filters.length; i< len; i++) {
-                simplifiedFilters.push({operators: filters[i].get("operators")})
-            };
-
-            return this.convertFilterToFilterParam(simplifiedFilters);
-        },
-
-        convertFilterToFilterParam: function(filters) {
             var olFilters = new OpenLayers.Filter.Logical({
                 type: OpenLayers.Filter.Logical.AND 
             });
 
             for (var i = 0, len = filters.length; i< len; i++) {
-                for (var j = 0, olen = filters[i].operators.length; j < olen; j++) {
-                    olFilters.filters.push(filters[i].operators[j]);
-                }
-            }
+                olFilters.filters.push(this.convertFilterToFilterParam(filters[i]))
+            };
 
             var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
             var xml = new OpenLayers.Format.XML(); 
@@ -171,7 +160,26 @@ define([
             console.log(filter_param);
 
             return filter_param;
-            
+        },
+
+        convertFilterToFilterParam: function(filter) {
+            var olFilters = new OpenLayers.Filter.Logical({
+                type: OpenLayers.Filter.Logical.AND 
+            }),
+            operators = filter.getOperators();
+
+            for (var j = 0, olen = operators.length; j < olen; j++) {
+                var operator = operators[j];
+                if (operator.get && operator.get("isSubFilter")) {
+                    subFilter = this.convertFilterToFilterParam(operator);
+                    olFilters.filters.push(subFilter);
+                }
+                else {
+                    olFilters.filters.push(operator);
+                }
+            }
+
+            return olFilters;
         },
 
         addControlsToMap: function(view, currentFilter) {
@@ -239,16 +247,20 @@ define([
                             { 
                                 isBaseLayer: true, 
                                 wrapDateLine: true,
-                                transitionEffect: "resize"
+                                transitionEffect: "resize",
+                                tileOptions: {crossOriginKeyword: null}
                             });
                         break;
                     case "WMS":
-                        eeBaseLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://labs.metacarta.com/wms/vmap0?", 
-                            {layers: "basic"}, 
+                        eeBaseLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
+                            {
+                                layers: "basic"
+                            }, 
                             { 
                                 isBaseLayer: true, 
                                 wrapDateLine: true,
-                                transitionEffect: "resize"
+                                transitionEffect: "resize",
+                                tileOptions: {crossOriginKeyword: null}
                             });
                         break;
                 }
@@ -271,11 +283,12 @@ define([
                     { 
                         isBaseLayer: true, 
                         wrapDateLine: true,
-                        transitionEffect: "resize"
+                        transitionEffect: "resize",
+                        tileOptions: {crossOriginKeyword: null}
                     });
                 view.model.addLayer(basicMapLayer);
 
-                var basicMapLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://labs.metacarta.com/wms/vmap0?", 
+                var basicMapLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
                     {layers: "basic"}, 
                     { 
                         isBaseLayer: true, 

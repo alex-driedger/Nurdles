@@ -28,14 +28,14 @@ define([
                 //renders an animation in the wrong direction. Here, I can set the width and then
                 //disappear the sidebar after the animation for the width change is done.
                 //TODO: Make this not suck as much.
-                $("#controlsContainer").css("width", "100%");
+                $(".map-tools-row").css("left", "0");
                 $("#separator").removeClass("extended");
                 $("#collapseImage").attr("src", "../../img/arrow-right.png");
                 this.sidebarActive = false;
             }
             else {
                 $("#separator").addClass("extended");
-                $("#controlsContainer").css("width", "60%");
+                $(".map-tools-row").css("left", "40%");
                 $("#collapseImage").attr("src", "../../img/arrow-left.png");
                 this.sidebarActive = true;
             }

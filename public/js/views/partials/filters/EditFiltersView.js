@@ -2,17 +2,15 @@ define([
   'baseview',
   'openlayersutil',
   '../../../models/Filter',
-  'text!templates/partials/filters/EditFiltersView.html'
-], function(Baseview, Utils, Filter, editFiltersTemplate){
-    var private = {
-        operatorCounter: 0
-    };
-
+  './SubFilterView',
+  'text!templates/partials/filters/EditFiltersView.html',
+], function(Baseview, Utils, Filter, SubFilter, editFiltersTemplate){
     var EditFiltersView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
 
-            this.model = new Filter();
+            if (!this.model)
+                this.model = new Filter();
 
             //If anything happens to our operators collection, show the user.
             this.bindTo(this.model, "removeOperator", this.cacheOperators);
@@ -28,6 +26,8 @@ define([
             "click #clearFilter": "clearFilter",
             "click #createFilter": "createFilter",
             "click #applyFilter": "applyFilter",
+            "click .subFilter-1": "showSubFilterUI",
+            "click .viewSubFilter-1": "showSubFilterUIWithSeed",
             "change #newType": "handleTextFieldsChange",
             "change #newProperty": "handlePropertyChange"
         },
@@ -37,16 +37,53 @@ define([
             console.log(this.model);
         },
 
+        hideView: function() {
+            $("#sidebar").css("left", "-40%");
+        },
+
+        showView: function() {
+            $("#sidebar").css("left", "0");
+        },
+
+        showSubFilterUIWithSeed: function(e) {
+            var order = $(e.target).prop("id").split("-")[0],
+                filter = _.findWhere(this.model.get("operators"), {order: parseInt(order)});
+
+            this.showSubFilterUI(e, filter, $("#" + order + "-subFilterContainer-1"));
+        },
+
+        showSubFilterUI: function(e, model, container) {
+            e.stopPropagation();
+            if (!container) 
+                container = $("#newSubFilterContainer");
+
+            $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
+                .toggleClass("subFilter");
+            $(".canFade").toggleClass("faded");
+            var subFilter = new SubFilter({
+                features: this.features,
+                types: this.types,
+                $el: container,
+                subFilterLevel: 1,
+                filters: this.filters,
+                parentView: this,
+                model: model
+            });
+
+            subFilter.render();
+            this.addSubView(subFilter);
+        },
+
         cacheOperators: function() {
             _.each(this.model.getOperators(), function(operator) {
-                operator.property = $("#" + operator.id + "-property").val();
-                operator.type = $("#" + operator.id + "-type").val();
+                operator.property = $("#" + operator.order + "-property").val();
+                operator.type = $("#" + operator.order + "-type").val();
                 if (operator.upperBoundary) {
-                    operator.lowerBoundary = $("#" + operator.id + "-lower").val();
-                    operator.upperBoundary = $("#" + operator.id + "-upper").val();
+                    operator.lowerBoundary = $("#" + operator.order + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.order + "-upper").val();
                 }
                 else
-                    operator.value = $("#" + operator.id + "-lower").val();
+                    operator.value = $("#" + operator.order + "-lower").val();
             });
 
             this.model.set("name", $("#filterName").val());
@@ -55,6 +92,13 @@ define([
         clearFilter: function() {
             this.model.set("name", "");
             this.model.clearOperators();
+        },
+
+        appendSubFilter: function(subFilter) {
+            subFilter.set("isSubFilter", true);
+            this.model.addOperator(subFilter, true);
+
+            this.delegateEvents();
         },
 
         createFilter: function(e) {
@@ -71,6 +115,7 @@ define([
                 },
                 url: "/api/filters/save"
             });
+            console.log(this.model);
         },
 
         handlePropertyChange: function(e) {
@@ -114,13 +159,18 @@ define([
 
         },
 
+        deleteSubFilter: function(subFilterView) {
+            this.removeSubView(subFilterView.cid);
+            this.reRender();
+        },
+
         deleteRow: function(e) {
             this.model.removeOperator(e.target.id.toString());
+            this.reRender();
         },
 
         addRow: function(e) {
             var newOperator = {
-               id: private.operatorCounter++,
                 property: $("#newProperty").val(),
                 type: $("#newType").val(),
                 lowerBoundary: $("#newLower").val(),

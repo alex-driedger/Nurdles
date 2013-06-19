@@ -5,32 +5,38 @@ define([
 ], function($, _, Backbone){
     var Filter = Backbone.Model.extend({
         idAttribute: "_id",
+        operatorCounter: 0,
 
         initialize: function(attributes) {
             this.set("operators", []);
         },
 
-
         setOperators: function(operators) {
             this.set("operators", operators);
         },
 
-        addOperator: function(operator) {
+        addOperator: function(operator, isSubFilter) {
+            operator.order = this.operatorCounter++;
+            if (isSubFilter)
+                operator.set("order", operator.order);
+
             this.get("operators").push(operator);
             this.trigger("addOperator");
         },
 
-        removeOperator: function(id) {
-            var operatorWithIndex = this.findOperatorById(id)
+        removeOperator: function(order) {
+            var operatorWithIndex = this.findOperatorByOrder(order)
             this.get("operators").splice(operatorWithIndex.index, 1);
+            this.operatorCounter--;
+            this.resetOperatorOrder(order);
             this.trigger("removeOperator");
             console.log("Now have " + this.get("operators").length + " operators");
         },
 
-        findOperatorById: function(id) {
+        findOperatorByOrder: function(order) {
             var operators = this.get("operators");
             for (var i = 0, len = operators.length; i < len; i++) {
-                if (operators[i].id == id)
+                if (operators[i].order == order)
                     return {
                         operator: operators[i],
                         index: i
@@ -38,8 +44,21 @@ define([
             }
         },
 
+        resetOperatorOrder: function(lastOperatorRemoved) {
+            var operators = this.getOperators();
+            
+            for (var i = lastOperatorRemoved, len = operators.length; i < len; i++) {
+                operators[i].order--;
+                if (operators[i].set)
+                    operators[i].set("order", operators[i].order);
+            }
+
+            this.setOperators(operators);
+        },
+
         clearOperators: function() {
             this.set("operators", []);
+            this.operatorCounter = 0;
             this.trigger("clearOperators");
         },
 

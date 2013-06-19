@@ -1,0 +1,141 @@
+<div class="vtupadded10 clearfix">
+    <label class="pull-left rpadding15 centered-to-control">
+        Pick an already existing filter:
+    </label>
+    <div class="controls">
+        <select id="listOfFilters">
+            <% filters.each(function(filter) { %>
+            <option value="<%= filter.get('_id') %>"><%= filter.get("name") %></option>
+            <% }); %>
+        </select>
+    </div>
+</div>
+
+<hr />
+
+<div>
+    <label class="centered-to-control">
+        Or create a brand new filter:
+    </label>
+</div>
+
+<table class="table table-condensed" style="margin-bottom: 0px;">
+        <tr>
+            <td colspan="2">
+                Type:
+            </td>
+            <td colspan="4">
+                Value:
+            </td>
+        </tr>
+
+        <% _.each(model.get("operators"), function(operator) {
+        if (operator.get && operator.get("isSubFilter")) { %>
+                <tr>
+                    <td colspan="4">
+                        Subfilter 
+                    </td>
+                    <td>
+                        <div class="plus-minus-container">
+                            <img id="<%=operator.get('order') + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                        </div>
+                    </td>
+                    <td style="width: 10px">
+                        <div class="plus-minus-container sub-filter-marker subFilter subFilter-<%= subFilterLevel %> clearfix">
+                            <div class="pull-right">
+                                <img id="<%= operator.get('order') %>-subFilter-<%= subFilterLevel %>" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                            </div>
+                            <div id="<%= operator.get('order') %>-subFilterContainer-<%= subFilterLevel %>" class="pull-right padded5 viewSubFilter-<%= subFilterLevel %>">
+                                View Sub-filter
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            <% } 
+            else { %>
+
+                <tr>
+                <td>
+                    <select id="<%= operator.order + '-property-' +  subFilterLevel %>">
+                        <% _.each(features, function(feature) { %>
+                        <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
+                        <% }); %>
+                    </select>
+                </td>
+                <td>
+                    <select id="<%= operator.order + '-type-' +  subFilterLevel %>">
+                        <% _.each(types, function(type) { %>
+                        <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
+                        <% }); %>
+                    </select>
+                </td>
+                <td <%= operator.upperBoundary ? '' : 'colspan="2"' %>> 
+                    <input id="<%= operator.order + '-lower-' +  subFilterLevel %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                </td>
+                <td class="<%= operator.upperBoundary ? '' : 'hide' %>"> 
+                    <input id="<%= operator.order + '-upper-' +  subFilterLevel %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
+                </td>
+                <td>
+                    <div class="plus-minus-container">
+                        <img id="<%=operator.order + '-' +  subFilterLevel%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                    </div>
+                </td>
+            </tr>
+        <% } %>
+
+    <% }); %>
+
+    <tr>
+        <td class="canFade subFilterLevel-<%= subFilterLevel %>">
+            <select id="newProperty-<%= subFilterLevel %>" class="newProperty">
+                <% _.each(features, function(feature) { %>
+                    <option value="<%= feature.name %>"><%= feature.name %></option>
+                <% }); %>
+            </select>
+        </td>
+        <td class="canFade subFilterLevel-<%= subFilterLevel %>">
+            <select id="newType-<%= subFilterLevel %>" class="newType">
+                <% _.each(types, function(type) { %>
+                    <option value="<%= type %>"><%= type %></option>
+                <% }); %>
+            </select>
+        </td>
+        <td class="canFade subFilterLevel-<%= subFilterLevel %>">
+            <input id="newLower-<%= subFilterLevel %>" type="text" class="wide-90" />
+        </td>
+        <td class="canFade subFilterLevel-<%= subFilterLevel %>">
+            <input id="newUpper-<%= subFilterLevel %>" type="text" class="wide-90" />
+        </td>
+        <td class="canFade subFilterLevel-<%= subFilterLevel %>">
+            <div class="plus-minus-container">
+                <img src="../../img/plus.png" class="icon-small vpadded5 add-row" />
+            </div>
+        </td>
+        <td style="width: 10px">
+            <div class="plus-minus-container sub-filter-marker subFilter subFilter-<%= subFilterLevel %> clearfix">
+                <div class="pull-right">
+                    <img id="newSubFilter-<%= subFilterLevel %>" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                </div>
+                <div id="newSubFilterContainer-<%= subFilterLevel %>" class="pull-right padded5">
+                    New Sub-filter
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div class="pull-right padded">
+    <% if (!model.isNew) { %>
+        <button id="deleteFilter-<%= subFilterLevel %>" class="btn btn-danger"> Delete </button>
+    <% } else { %>
+        <button id="cancelFilter-<%= subFilterLevel %>" class="btn btn-danger"> Cancel </button>
+    <% } %>
+    <button id="clearFilter-<%= subFilterLevel %>" class="btn btn-warning"> Clear </button>
+    <% if (model.isNew) { %>
+        <button id="createFilter-<%= subFilterLevel %>" class="btn"> Create </button>
+    <% } else {%>
+        <button id="doneFilter-<%= subFilterLevel %>" class="btn"> Done </button>
+    <% } %>
+</div>
+
+

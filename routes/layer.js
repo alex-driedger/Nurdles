@@ -58,7 +58,20 @@ var self = {
             }
         });
 
-    }
+    },
+
+    setBaseLayer: function(req, res) {
+        layerdal.setBaseLayer(req.user._id, req.params.layerId, function(err, layer) {
+            if (err) {
+                console.log(err);
+                res.statusCode = 500;
+                res.send({error: err});
+            }
+            else {
+                res.send(layer);
+            }
+        });
+    },
 
 };
 
