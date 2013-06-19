@@ -18,8 +18,10 @@ define([
             var transformedOperators = [],
                 operators = this.model.getOperators();
 
-
             this.model.operatorCounter = operators.length;
+
+            this.events["click #" + this.model.get("_id") + "-logicalOperator"] = "preventDefault";
+            this.delegateEvents();
         },
 
         template: _.template(filterDetailsTemplate),
@@ -34,6 +36,11 @@ define([
             "click .savedSubFilter-1": "showSubFilterUI",
             "click .viewSavedSubFilter-1": "showSavedSubFilter",
             "click .logicalOperatorContainer": "handleLogicalOperatorSwitch"
+        },
+
+        preventDefault: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
         },
 
         handleLogicalOperatorSwitch: function(e) {
