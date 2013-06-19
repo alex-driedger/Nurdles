@@ -4,9 +4,19 @@
     </div>
     <div class="pull-right">
         <div class="collapsed-checkbox">
-            <input id="<%= filter.get('_id') %>-checkbox" class="checkbox" type="checkbox" <% if (filter.get("active")) { %> checked <% } %>/>
+            <input id="<%= filter.get('_id') %>-checkbox" class="activateCheckbox" type="checkbox" <% if (filter.get("active")) { %> checked <% } %>/>
         </div>
     </div>
+        <label class="logicalOperatorContainer checkbox toggle well">
+            <input id="view" type="checkbox" checked />
+            <p>
+            <span>AND</span>
+            <span>OR</span>
+            </p>
+
+            <a class="btn btn-info slide-button"></a>
+        </label>
+
 </div>
 <div id="<%= filter.get('_id') %>-container" class="filter-operands-container clearfix">
         <table id="<%= filter.get('_id') %>-table" class="table table-condensed" style="margin-bottom: 0px;">

@@ -20,39 +20,24 @@ define([
 
 
             this.model.operatorCounter = operators.length;
-            for (var i = 0, len = operators.length; i < len; i++) {
-                var operator = operators[i],
-                    filter = new Filter();
-
-                if (operator.isSubFilter) {
-                    for (var j = 0, oLen = operator.operators.length; j < oLen; j++) {
-                        if (operator.operators[j].isSubFilter) {
-                            for (var key in operator.operators[j]) {
-                                filter.set(key, operator.operators[j][key]);
-                            }
-                            filter.isSubFilter = true;
-                            filter.order = filter.get("order");
-                            operator.operators[j] = filter;
-                        }
-                    }
-                }
-                transformedOperators.push(operator);
-            };
-
-            this.model.setOperators(transformedOperators);
         },
 
         template: _.template(filterDetailsTemplate),
 
         events: {
             "click .collapsed": "handleExpand",
-            "click .checkbox": "handleFilterToggle",
+            "click .activateCheckbox": "handleFilterToggle",
             "click .delete-row": "handleRowRemoval",
             "click .add-row": "handleAddRow",
             "click .deleteFilter": "handleDeleteFilter",
             "click .saveFilter": "handleSaveFilter",
             "click .savedSubFilter-1": "showSubFilterUI",
-            "click .viewSavedSubFilter-1": "showSavedSubFilter"
+            "click .viewSavedSubFilter-1": "showSavedSubFilter",
+            "click .logicalOperatorContainer": "stopPropagation"
+        },
+
+        stopPropagation: function(e) {
+            e.stopPropagation();
         },
 
         cacheOperators: function() {

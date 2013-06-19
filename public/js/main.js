@@ -30,8 +30,7 @@ require.config({
           deps: ['underscore'],
           exports: 'Backbone'
       }
-  }
-
+  },
 });
 
 require(['app'], function(App){

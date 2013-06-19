@@ -542,11 +542,12 @@ table.wms, td.wms
 /*-------------------------Accordion--------------------------------*/
 
 .collapsed {
-    height: 30px;
+    height: 35px;
     overflow: hidden;
-    border: 1px solid #ddd; 
+    border: 1px solid #ddd;
     padding-left: 5px;
-    line-height: 2.1em;
+    line-height: 30px;
+    overflow: visible;
 }
 
 .collapsed.selected {
@@ -657,4 +658,14 @@ table.wms, td.wms
 
 .subFilter:hover {
     width: 130px;
+}
+
+/*-----------------------Logical Operators------------------------------*/
+
+.logicalOperatorContainer {
+    width: 100px;
+    position: relative;
+    margin-top: 20px;
+    left: 10%;
+    z-index: 1030;
 }
