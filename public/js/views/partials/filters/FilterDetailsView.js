@@ -19,7 +19,6 @@ define([
                 operators = this.model.getOperators();
 
             this.model.operatorCounter = operators.length;
-
             this.events["click #" + this.model.get("_id") + "-logicalOperator"] = "preventDefault";
             this.delegateEvents();
         },
@@ -116,6 +115,12 @@ define([
 
             subFilter.render();
             this.addSubView(subFilter);
+
+            if (this.lastFilter && $("#sidebar").height() <= $("#content").height()) {
+                $('#sidebar').css('height',$('#sidebar').height() + container.height() + 75);
+                $("#main-content").animate({ scrollTop: $('#sidebar').height()}, 500);
+                this.lastFilter = false;
+            }
         },
 
         updateModel: function() {
@@ -307,6 +312,10 @@ define([
                 $("#" + this.model.get("_id") + "-logicalOperatorCheckbox").prop("checked", false);
             }
             return this;
+        },
+
+        onClose: function() {
+            $("#sidebar").css("height", "100%");
         }
     });
 

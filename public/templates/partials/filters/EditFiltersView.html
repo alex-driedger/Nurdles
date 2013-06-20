@@ -67,6 +67,19 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td colspan="6">
+                    <label class="logicalOperatorContainer checkbox toggle well between-operators">
+                        <input id="<%= operator.order %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
+                        <p>
+                        <span>AND</span>
+                        <span>OR</span>
+                        </p>
+
+                        <a id="<%= operator.order %>-logicalOperator" class="btn btn-info slide-button"></a>
+                    </label>
+                </td>
+            </tr>
         <% } %>
 
     <% }); %>
