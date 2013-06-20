@@ -9,7 +9,7 @@
     </div>
     <% if (!lastFilter) { %>
         <label class="logicalOperatorContainer checkbox toggle well">
-            <input id="<%= filter.get('_id') %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
+            <input id="<%= filter.get('_id') %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (filter.get("logicalOperator") == "&&") { %> checked <% } %> />
             <p>
             <span>AND</span>
             <span>OR</span>
@@ -56,7 +56,7 @@
                             <tr>
                                 <td colspan="6">
                                     <label class="logicalOperatorContainer checkbox toggle well between-operators">
-                                        <input id="<%= operator.order %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
+                                        <input id="<%= operator.order %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (operator.get("logicalOperator") == "&&") { %> checked <% } %> />
                                         <p>
                                         <span>AND</span>
                                         <span>OR</span>

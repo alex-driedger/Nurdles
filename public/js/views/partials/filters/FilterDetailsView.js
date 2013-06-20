@@ -308,10 +308,6 @@ define([
             if (!this.isExpanded)
                 $("#" + this.model.get("_id") + "-container").hide();
 
-            if (this.model.get("logicalOperator") == OpenLayers.Filter.Logical.OR) {
-                $("#" + this.model.get("_id") + "-logicalOperator").click();
-                $("#" + this.model.get("_id") + "-logicalOperatorCheckbox").prop("checked", false);
-            }
             return this;
         },
 
