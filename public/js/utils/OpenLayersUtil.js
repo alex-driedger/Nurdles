@@ -156,12 +156,16 @@ define([
             innerFilter.filters.push(filter1);
             innerFilter.filters.push(filter2);
 
-            outerFilter.filters.push(innerFilter);
+            if (!filter2) {
+                return filter1;
+            }
+            else {
+                outerFilter.filters.push(innerFilter);
+                if (filters.length - index > 2)
+                    outerFilter.filters.push(this.constructLogicalFilters(filters, index + 2));
 
-            if (index >= filters.length- 2)
                 return outerFilter;
-            else
-                outerFilter.filters.push(this.constructLogicalFilters(filters, index + 2));
+            }
         },
 
         createOpenLayersFilters: function(filters) {
@@ -173,23 +177,18 @@ define([
                 var innerFilter = new OpenLayers.Filter.Logical();
 
                 innerFilter.type = filters[i].get("logicalOperator");
-                innerFilter.filters.push(this.convertFilterToFilterParam(filters[i]));
+                innerFilterOperands = this.convertFilterToFilterParam(filters[i]);
+                _.each(innerFilterOperands, function(operand) {
+                    innerFilter.filters.push(operand);
+                });
+
                 outerFilter.filters.push(innerFilter);
 
-                if (i == len - 1)
+                if (i == len - 2)
                     finalFilter.type = filters[i].get("logicalOperator");
             };
 
-            var firstFilter = this.constructLogicalFilters(outerFilter.filters, 0);
-            if (outerFilter.filters.length % 2 == 0) {
-                for (var i = 0, len = firstFilter.filters[0].filters.length; i < len; i++) {
-                    finalFilter.filters.push(firstFilter.filters[0].filters[i]);
-                }
-            }
-            else {
-                finalFilter.filters.push(firstFilter);
-                finalFilter.filters.push(outerFilter.filters[outerFilter.length - 1]);
-            }
+            var finalFilter = this.constructLogicalFilters(outerFilter.filters, 0);
 
             var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
             var xml = new OpenLayers.Format.XML(); 
@@ -200,22 +199,29 @@ define([
         },
 
         convertFilterToFilterParam: function(filter) {
-            var outerFilter = new OpenLayers.Filter.Logical();
+            var outerFilter = new OpenLayers.Filter.Logical(),
+                subFilter = new OpenLayers.Filter.Logical(),
+                operands = [];
             outerFilter.type = "&&";
+            subFilter.type = "&&";
 
             operators = filter.getOperators();
-            for (var j = 0, olen = operators.length; j < olen; j++) {
+            for (var j = 0; j < operators.length; j++) {
                 var operator = operators[j];
                 if (operator.get && operator.get("isSubFilter")) {
-                    subFilter = this.convertFilterToFilterParam(operator);
+                    subfilterOperands = this.convertFilterToFilterParam(operator);
+                    _.each(subfilterOperands, function(operand) {
+                        subFilter.filters.push(operand);
+                    });
                     outerFilter.filters.push(subFilter);
+                    operands.push(outerFilter);
                 }
                 else {
-                    outerFilter.filters.push(operator);
+                    operands.push(operator);
                 }
             }
 
-            return outerFilter;
+            return operands;
         },
 
         addControlsToMap: function(view, currentFilter) {

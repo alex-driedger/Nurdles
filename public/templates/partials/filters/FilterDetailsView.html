@@ -7,6 +7,7 @@
             <input id="<%= filter.get('_id') %>-checkbox" class="activateCheckbox" type="checkbox" <% if (filter.get("active")) { %> checked <% } %>/>
         </div>
     </div>
+    <% if (!lastFilter) { %>
         <label class="logicalOperatorContainer checkbox toggle well">
             <input id="<%= filter.get('_id') %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
             <p>
@@ -16,7 +17,7 @@
 
             <a id="<%= filter.get('_id') %>-logicalOperator" class="btn btn-info slide-button"></a>
         </label>
-
+    <% } %>
 </div>
 <div id="<%= filter.get('_id') %>-container" class="filter-operands-container clearfix">
         <table id="<%= filter.get('_id') %>-table" class="table table-condensed" style="margin-bottom: 0px;">
@@ -29,18 +30,18 @@
                     </td>
                 </tr>
 
-                <% _.each(filter.get('operators'), function(operator) {
+                <% _.each(filter.get('operators'), function(operator, index, list) {
                 if (operator.get && operator.get("isSubFilter")) { %>
                         <tr>
-                            <td colspan="4">
+                            <td class="operator-row" colspan="4">
                                 Subfilter 
                             </td>
-                            <td>
+                            <td class="operator-row">
                                 <div class="plus-minus-container">
                                     <img id="<%=operator.order %>-1" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                                 </div>
                             </td>
-                            <td style="width: 10px">
+                            <td class="operator-row" style="width: 10px">
                                 <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
                                     <div class="pull-right">
                                         <img id="<%= operator.order %>-savedSuubFilter-1" src="../../img/arrow-right.png" class="icon-small vpadded5" />
@@ -51,86 +52,90 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="6">
-                                <label class="logicalOperatorContainer checkbox toggle well between-operators">
-                                    <input id="<%= operator.order %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
-                                    <p>
-                                    <span>AND</span>
-                                    <span>OR</span>
-                                    </p>
+                        <% if (index != list.length - 1) { %>
+                            <tr>
+                                <td colspan="6">
+                                    <label class="logicalOperatorContainer checkbox toggle well between-operators">
+                                        <input id="<%= operator.order %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
+                                        <p>
+                                        <span>AND</span>
+                                        <span>OR</span>
+                                        </p>
 
-                                    <a id="<%= operator.order %>-logicalOperator" class="btn btn-info slide-button"></a>
-                                </label>
-                            </td>
-                        </tr>
+                                        <a id="<%= operator.order %>-logicalOperator" class="btn btn-info slide-button"></a>
+                                    </label>
+                                </td>
+                            </tr>
+                        <% } %>
                     <% } 
                     else { %>
                     <tr>
-                    <td>
+                    <td class="operator-row">
                         <select id="<%= operator.order + '-' + filter.get('_id') + '-property' %>" class="savedFilter">
                             <% _.each(features, function(feature) { %>
                             <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                             <% }); %>
                         </select>
                     </td>
-                    <td>
+                    <td class="operator-row">
                         <select id="<%= operator.order + '-' + filter.get('_id') + '-type' %>" class="savedFilter">
                             <option value="<%= operator.type %>"><%= operator.type %></option>
                         </select>
                     </td>
-                    <td> 
+                    <td class="operator-row"> 
                         <input id="<%=operator.order + '-' + filter.get('_id') + '-lower' %>" type="text" class="wide-90 savedFilter" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                     </td>
-                    <td> 
+                    <td class="operator-row"> 
                         <input id="<%=operator.order + '-' + filter.get('_id') + '-upper' %>" type="text" class="wide-90 savedFilter" value="<%= operator.upperBoundary %>" />
                     </td>
-                    <td>
+                    <td class="operator-row">
                         <div class="plus-minus-container minus">
                             <img id="<%=operator.order + '-' + filter.get('_id')%>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="6">
-                        <label class="logicalOperatorContainer checkbox toggle well between-operators">
-                            <input id="<%= operator.order %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
-                            <p>
-                            <span>AND</span>
-                            <span>OR</span>
-                            </p>
+                <% if (index != list.length - 1) { %>
+                    <tr>
+                        <td colspan="6">
+                            <label class="logicalOperatorContainer checkbox toggle well between-operators">
+                                <input id="<%= operator.order %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
+                                <p>
+                                <span>AND</span>
+                                <span>OR</span>
+                                </p>
 
-                            <a id="<%= operator.order %>-logicalOperator" class="btn btn-info slide-button"></a>
-                        </label>
-                    </td>
-                </tr>
+                                <a id="<%= operator.order %>-logicalOperator" class="btn btn-info slide-button"></a>
+                            </label>
+                        </td>
+                    </tr>
+                <% } %>
             <% }
             }); %>
             <tr>
-                <td>
+                <td class="operator-row">
                     <select id="<%= filter.get('_id') %>-newProperty">
                         <% _.each(features, function(feature) { %>
                         <option value="<%= feature.name %>"<% if (tempOperator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                         <% }); %>
                     </select>
                 </td>
-                <td>
+                <td class="operator-row">
                     <select id="<%= filter.get('_id') %>-newType">
                             <option value="<%= tempOperator.type %>"><%= tempOperator.type %></option>
                     </select>
                 </td>
-                <td> 
+                <td class="operator-row"> 
                     <input id="<%= filter.get('_id') %>-newLower" type="text" class="wide-90" value="<%= tempOperator.value ? tempOperator.value : tempOperator.lowerBoundary %>"/>
                 </td>
-                <td> 
+                <td class="operator-row"> 
                     <input id="<%= filter.get('_id') %>-newUpper" type="text" class="wide-90" value="<%= tempOperator.upperBoundary %>"/>
                 </td>
-                <td>
+                <td class="operator-row">
                     <div id="<%= filter.get('_id') %>-addOperator" class="plus-minus-container">
                         <img src="../../img/plus.png" class="icon-small vertical-5 add-row" />
                     </div>
                 </td>
-                <td style="width: 10px">
+                <td class="operator-row" style="width: 10px">
                     <div class="plus-minus-container sub-filter-marker subFilter savedSubFilter-1 clearfix">
                         <div class="pull-right">
                             <img id="newSubFilter" src="../../img/arrow-right.png" class="icon-small vpadded5" />

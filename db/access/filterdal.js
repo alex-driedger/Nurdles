@@ -11,8 +11,13 @@ var self = {
 
     getAllForUser: function(id, callback) {
         var ObjectId = mongoose.Types.ObjectId;
-        Filter.find({owner: new ObjectId(id.toString())}, function(err, filters) {
-            callback(err, filters);
+        Filter.find({owner: new ObjectId(id.toString()), active: true}).sort({order: 1}).exec(function(err, filters) {
+            Filter.find({owner: new ObjectId(id.toString()), active: false}).sort({order: 1}).exec(function(err, inactiveFilters) {
+                for (var i = 0; i < inactiveFilters.length; i++) {
+                    filters.push(inactiveFilters[i]);
+                }
+                callback(err, filters);
+            });
         });
     },
 

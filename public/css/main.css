@@ -536,9 +536,13 @@ table.wms, td.wms
     background-color: #eee;
 }
 
-.saved-filter {
-
+.operator-row {
+    font-weight: 600;
+    border-top: 1px solid black !important;
+    border-bottom: 1px solid black !important;
+    background-color: #fff;
 }
+
 
 /*-------------------------Accordion--------------------------------*/
 
@@ -635,6 +639,7 @@ table.wms, td.wms
 /*--------------------------Filter UI-------------------------*/
 
 .sub-filter-marker {
+    margin-top: -4px;
     position: absolute;
     background-color: #fff;
     overflow: hidden;

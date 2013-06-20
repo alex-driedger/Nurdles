@@ -116,9 +116,9 @@ define([
             subFilter.render();
             this.addSubView(subFilter);
 
-            if (this.lastFilter && $("#sidebar").height() <= $("#content").height()) {
-                $('#sidebar').css('height',$('#sidebar').height() + container.height() + 75);
-                $("#main-content").animate({ scrollTop: $('#sidebar').height()}, 500);
+            if ($("#sidebar").height() <= $("#content").height()) {
+                //$('#sidebar').css('height',$('#sidebar').height() + container.height() + 75);
+                //$("#main-content").animate({ scrollTop: $('#sidebar').height()}, 500);
                 this.lastFilter = false;
             }
         },
@@ -282,7 +282,8 @@ define([
                 tempOperator: this.tempOperator,
                 tempChecked: this.tempChecked,
                 features: this.features,
-                types: []
+                types: [],
+                lastFilter: this.lastFilter
             }));
 
             this.delegateEvents(this.events);
