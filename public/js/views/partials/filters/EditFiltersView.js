@@ -84,6 +84,7 @@ define([
             _.each(this.model.getOperators(), function(operator) {
                 operator.property = $("#" + operator.order + "-property").val();
                 operator.type = $("#" + operator.order + "-type").val();
+                operator.logicalOperator = $("#" + operator.order + "-newLogicalOperator").prop("checked") ? "&&" : "||";
                 if (operator.upperBoundary) {
                     operator.lowerBoundary = $("#" + operator.order + "-lower").val();
                     operator.upperBoundary = $("#" + operator.order + "-upper").val();

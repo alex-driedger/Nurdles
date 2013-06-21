@@ -38,15 +38,15 @@
                             </td>
                             <td class="operator-row">
                                 <div class="plus-minus-container">
-                                    <img id="<%=operator.order %>-1" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                                    <img id="<%=operator.get('order') %>-1" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                                 </div>
                             </td>
                             <td class="operator-row" style="width: 10px">
                                 <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
                                     <div class="pull-right">
-                                        <img id="<%= operator.order %>-savedSuubFilter-1" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                                        <img id="<%= operator.get('order') %>-savedSuubFilter-1" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                                     </div>
-                                    <div id="<%= operator.order %>-savedSubFilterContainer-1" class="pull-right padded5 viewSavedSubFilter-1">
+                                    <div id="<%= operator.get('order') %>-savedSubFilterContainer-1" class="pull-right padded5 viewSavedSubFilter-1">
                                         View Sub-filter
                                     </div>
                                 </div>
@@ -56,13 +56,13 @@
                             <tr>
                                 <td colspan="6">
                                     <label class="logicalOperatorContainer checkbox toggle well between-operators">
-                                        <input id="<%= operator.order %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (operator.get("logicalOperator") == "&&") { %> checked <% } %> />
+                                        <input id="<%= operator.get('order') %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (operator.get("logicalOperator") == "&&") { %> checked <% } %> />
                                         <p>
                                         <span>AND</span>
                                         <span>OR</span>
                                         </p>
 
-                                        <a id="<%= operator.order %>-logicalOperator" class="btn btn-info slide-button"></a>
+                                        <a id="<%= operator.get('order') %>-logicalOperator" class="btn btn-info slide-button"></a>
                                     </label>
                                 </td>
                             </tr>
