@@ -67,6 +67,7 @@ define([
         },
 
         update: function(success, fail, context) {
+            console.log("TEST");
             this.save(null, { 
                 url: "/api/filters/" + this.get("_id") + "/update",
                 success: function(data) {

@@ -46,16 +46,28 @@ define([
             e.stopPropagation();
             e.preventDefault();
 
-            var checkbox = $(e.target).parent().prev();
-            checkbox.prop("checked", !checkbox.prop("checked"));
-            this.model.set("logicalOperator", checkbox.prop("checked") ? "&&" : "||");
+            var checkbox = $(e.target).parent().prev(),
+                order = checkbox.prop("id").split("-")[0],
+                operators = this.model.getOperators(),
+                operator = _.findWhere(operators, {order: parseInt(order)});
 
+            checkbox.prop("checked", !checkbox.prop("checked"));
+            if (checkbox.prop("checked"))
+                operator.logicalOperator =  "&&";
+            else
+                operator.logicalOperator =  "||";
+
+            if (operator.get && operator.get("isSubFilter"))
+                operator.set("logicalOperator", operator.logicalOperator);
+
+            this.model.setOperators(operators);
             this.model.update();
         },
 
         cacheOperators: function() {
             var view = this;
             _.each(this.model.getOperators(), function(operator) {
+                operator.logicalOperator = $("#" + operator.order + "-" + view.model.get("_id") + "-logicalOperatorCheckbox").prop("checked") ? "&&" : "||";
                 operator.property = $("#" + operator.order + "-" + view.model.get("_id") + "-property").val();
                 operator.type = $("#" + operator.order + "-" + view.model.get("_id") + "-type").val();
                 if (operator.upperBoundary) {

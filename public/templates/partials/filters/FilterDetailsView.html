@@ -56,13 +56,13 @@
                             <tr>
                                 <td colspan="6">
                                     <label class="logicalOperatorContainer checkbox toggle well between-operators">
-                                        <input id="<%= operator.get('order') %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (operator.get("logicalOperator") == "&&") { %> checked <% } %> />
+                                        <input id="<%= operator.get('order') + '-' + filter.get('_id') %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (operator.get("logicalOperator") == "&&") { %> checked <% } %> />
                                         <p>
                                         <span>AND</span>
                                         <span>OR</span>
                                         </p>
 
-                                        <a id="<%= operator.get('order') %>-logicalOperator" class="btn btn-info slide-button"></a>
+                                        <a id="<%= operator.get('order') + '-' + filter.get('_id') %>-logicalOperator" class="btn btn-info slide-button"></a>
                                     </label>
                                 </td>
                             </tr>
@@ -98,13 +98,13 @@
                     <tr>
                         <td colspan="6">
                             <label class="logicalOperatorContainer checkbox toggle well between-operators">
-                                <input id="<%= operator.order %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
+                                <input id="<%= operator.order + '-' + filter.get('_id') %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
                                 <p>
                                 <span>AND</span>
                                 <span>OR</span>
                                 </p>
 
-                                <a id="<%= operator.order %>-logicalOperator" class="btn btn-info slide-button"></a>
+                                <a id="<%= operator.order + '-' + filter.get('_id') %>-logicalOperator" class="btn btn-info slide-button"></a>
                             </label>
                         </td>
                     </tr>
