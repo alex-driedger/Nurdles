@@ -43,8 +43,7 @@ define([
         },
 
         handleLogicalOperatorSwitch: function(e) {
-            e.stopPropagation();
-            e.preventDefault();
+            this.preventDefault(e);
 
             var checkbox = $(e.target).parent().prev(),
                 order = checkbox.prop("id").split("-")[0],
@@ -52,6 +51,16 @@ define([
                 operator = _.findWhere(operators, {order: parseInt(order)});
 
             checkbox.prop("checked", !checkbox.prop("checked"));
+            if (operator) //If operator is not set, we're dealing with a top level filter
+                this.setOperator(checkbox, operator);
+            else 
+                this.model.set("logicalOperator", checkbox.prop("checked") == true ? "&&" : "||");
+
+            this.model.update();
+            Backbone.globalEvents.trigger("updateFilter", this.model);
+        },
+
+        setOperator: function(checkbox, operator) {
             if (checkbox.prop("checked"))
                 operator.logicalOperator =  "&&";
             else
@@ -61,7 +70,6 @@ define([
                 operator.set("logicalOperator", operator.logicalOperator);
 
             this.model.setOperators(operators);
-            this.model.update();
         },
 
         cacheOperators: function() {
@@ -140,6 +148,11 @@ define([
                 view = this;
 
             _.each(this.model.getOperators(), function(operator) {
+                if (operator.get && operator.get("isSubFilter"))
+                    view.setOperator($("#" + operator.get("order") + "-" + view.model.get("_id") + "-logicalOperatorCheckbox"), operator);
+                else
+                    view.setOperator($("#" + operator.order + "-" + view.model.get("_id") + "-logicalOperatorCheckbox"), operator);
+
                 operator.property = $("#" + operator.order + "-" + view.model.get("_id") + "-property").val();
                 operator.type = $("#" + operator.order + "-" + view.model.get("_id") + "-type").val();
                 if (operator.upperBoundary) {
@@ -177,8 +190,8 @@ define([
         },
 
         handleSaveFilter: function(e) {
-            this.updateModel();
             var filterId = $(e.target).prop("id").split("-")[0];
+            this.updateModel();
             this.model.update();
 
             Backbone.globalEvents.trigger("updateFilter", this.model);

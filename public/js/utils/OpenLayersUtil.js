@@ -189,6 +189,7 @@ define([
             };
 
             var finalFilter = this.constructLogicalFilters(outerFilter.filters, 0);
+            console.log("FINAL FILTER: ", finalFilter);
 
             var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
             var xml = new OpenLayers.Format.XML(); 

@@ -29,7 +29,7 @@
             </td>
         </tr>
 
-        <% _.each(model.get("operators"), function(operator) {
+        <% _.each(model.get("operators"), function(operator, index, list) {
         if (operator.get && operator.get("isSubFilter")) { %>
                 <tr>
                     <td colspan="4">
@@ -51,9 +51,23 @@
                         </div>
                     </td>
                 </tr>
+                <% if (index != list.length - 1) { %>
+                    <tr>
+                        <td colspan="6">
+                            <label class="logicalOperatorContainer checkbox toggle well between-operators">
+                                <input id="<%= operator.get('order') %>-logicalOperatorCheckbox-<%= subFilterLevel %>" class="logicalOperator" type="checkbox" <% if (operator.get("logicalOperator") == "&&") { %> checked <% } %> />
+                                <p>
+                                <span>AND</span>
+                                <span>OR</span>
+                                </p>
+
+                                <a id="<%= operator.get('order') %>-logicalOperator-<%= subFilterLevel %>" class="btn btn-info slide-button"></a>
+                            </label>
+                        </td>
+                    </tr>
+                <% } %>
             <% } 
             else { %>
-
                 <tr>
                 <td>
                     <select id="<%= operator.order + '-property-' +  subFilterLevel %>">
@@ -81,10 +95,23 @@
                     </div>
                 </td>
             </tr>
+            <% if (index != list.length - 1) { %>
+                <tr>
+                    <td colspan="6">
+                        <label class="logicalOperatorContainer checkbox toggle well between-operators">
+                            <input id="<%= operator.order %>-logicalOperatorCheckbox-<%= subFilterLevel %>" class="logicalOperator" type="checkbox" <% if (operator.logicalOperator == "&&") { %> checked <% } %> />
+                            <p>
+                            <span>AND</span>
+                            <span>OR</span>
+                            </p>
+
+                            <a id="<%= operator.order %>-logicalOperator-<%= subFilterLevel %>" class="btn btn-info slide-button"></a>
+                        </label>
+                    </td>
+                </tr>
+            <% } %>
         <% } %>
-
     <% }); %>
-
     <tr>
         <td class="canFade subFilterLevel-<%= subFilterLevel %>">
             <select id="newProperty-<%= subFilterLevel %>" class="newProperty">

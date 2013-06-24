@@ -69,11 +69,42 @@ define([
             "change .newType": "handleTextFieldsChange",
             "change .newProperty": "handlePropertyChange",
             "click .sub-filter-marker": "stopPropagation",
-            "click input": "stopPropagation"
+            "click input": "stopPropagation",
+            "click .logicalOperatorContainer": "handleLogicalOperatorSwitch"
         },
 
         stopPropagation: function(e) {
             e.stopPropagation();
+        },
+
+        preventDefault: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        },
+
+        handleLogicalOperatorSwitch: function(e) {
+            this.preventDefault(e);
+
+            var checkbox = $(e.target).parent().prev(),
+                order = checkbox.prop("id").split("-")[0],
+                operators = this.model.getOperators(),
+                operator = _.findWhere(operators, {order: parseInt(order)});
+
+            checkbox.prop("checked", !checkbox.prop("checked"));
+            if (operator.get && operator.get("isSubFilter"))
+                this.model.set("logicalOperator", checkbox.prop("checked") == true ? "&&" : "||");
+            else 
+                this.setOperator(checkbox, operator);
+        },
+
+        setOperator: function(checkbox, operator) {
+            if (checkbox.prop("checked"))
+                operator.logicalOperator =  "&&";
+            else
+                operator.logicalOperator =  "||";
+
+            if (operator.get && operator.get("isSubFilter"))
+                operator.set("logicalOperator", operator.logicalOperator);
         },
 
         applyFilter: function(e) {
