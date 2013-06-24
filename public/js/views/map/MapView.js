@@ -381,16 +381,17 @@ define([
                 this.updateFilters(this.initialFiltersToLoad);
                 OpenLayersUtil.addControlsToMap(this, this.initialFiltersToLoad);
 
-                //All controls and layers are lodead -- ready to render the map
-                this.model.render("map");
-                this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
-                this.model.zoomToMaxExtent();
-
-                OpenLayersUtil.getShipCount(this.model.getExtent(), this.initialFiltersToLoad, function(count) {
-                    this.shipCount = count;
-                });
                 delete this.initialFiltersToLoad;
             }
+           
+            //All controls and layers are lodead -- ready to render the map
+            this.model.render("map");
+            this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
+            this.model.zoomToMaxExtent();
+
+            OpenLayersUtil.getShipCount(this.model.getExtent(), this.initialFiltersToLoad, function(count) {
+                this.shipCount = count;
+            });
         },
 
         updateFilters: function(filters) {

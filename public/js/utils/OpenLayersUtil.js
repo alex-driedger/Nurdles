@@ -150,21 +150,36 @@ define([
                 filter1 = filters[index],
                 filter2 = filters[index + 1];
 
-            outerFilter.type = filter1.type;
-            innerFilter.type = "&&";
+            if (filter1.logicalOperator)
+                outerFilter.type = filter1.logicalOperator;
+            else
+                outerFilter.type = filter1.type;
 
             innerFilter.filters.push(filter1);
             innerFilter.filters.push(filter2);
 
             if (!filter2) {
+                if (filter1.filters[0].logicalOperator)
+                    filter1.type = filter1.filters[0].logicalOperator;
+                else
+                    filter1.type = filter1.filters[0].type;
+
                 return filter1;
             }
             else {
+                if (filter1.logicalOperator)
+                    innerFilter.type = filter2.logicalOperator;
+                else
+                    innerFilter.type = filter2.type;
+
                 outerFilter.filters.push(innerFilter);
                 if (filters.length - index > 2)
                     outerFilter.filters.push(this.constructLogicalFilters(filters, index + 2));
 
-                return outerFilter;
+                if (outerFilter.filters.length == 1)
+                    return outerFilter.filters[0];
+                else
+                    return outerFilter;
             }
         },
 
@@ -176,19 +191,16 @@ define([
             for (var i = 0, len = filters.length; i< len; i++) {
                 var innerFilter = new OpenLayers.Filter.Logical();
 
-                innerFilter.type = filters[i].get("logicalOperator");
-                innerFilterOperands = this.convertFilterToFilterParam(filters[i]);
-                _.each(innerFilterOperands, function(operand) {
-                    innerFilter.filters.push(operand);
-                });
-
+                innerFilter = this.constructLogicalFilters(this.convertFilterToFilterParam(filters[i]), 0);
                 outerFilter.filters.push(innerFilter);
 
                 if (i == len - 2)
                     finalFilter.type = filters[i].get("logicalOperator");
             };
 
-            var finalFilter = this.constructLogicalFilters(outerFilter.filters, 0);
+
+            finalFilter = this.constructLogicalFilters(outerFilter.filters, 0);
+
             console.log("FINAL FILTER: ", finalFilter);
 
             var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
@@ -203,7 +215,7 @@ define([
             var outerFilter = new OpenLayers.Filter.Logical(),
                 subFilter = new OpenLayers.Filter.Logical(),
                 operands = [];
-            outerFilter.type = "&&";
+            outerFilter.type = filter.get("logicalOperator");
             subFilter.type = "&&";
 
             operators = filter.getOperators();
@@ -387,32 +399,31 @@ define([
                 value: bounds.transform(mapProjection.projection, mapProjection.displayProjection)
             });
 
-            if (currentFilter instanceof Array)
+            if (currentFilter instanceof Array && currentFilter.length != 0) {
                 currentFilter = this.createOpenLayersFilters(currentFilter);
+                filter = this.mergeActiveFilters(filter, currentFilter);
 
-            filter = this.mergeActiveFilters(filter, currentFilter);
+                var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
+                    url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
+                    featurePrefix: "", 
+                    featureType: "exactAIS:LVI",
+                }); 
 
-            var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
-                url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
-                featurePrefix: "", 
-                featureType: "exactAIS:LVI",
-            }); 
+                wfsProtocol.read ({ 
+                    filter: filter, 
+                    callback: function(response) {
+                        Backbone.globalEvents.trigger("fetchedShipCount", response.numberOfFeatures);
 
-            wfsProtocol.read ({ 
-                filter: filter, 
-                callback: function(response) {
-                    Backbone.globalEvents.trigger("fetchedShipCount", response.numberOfFeatures);
-
-                    if (_.isFunction(callback)) {
-                        callback(response.numberOfFeatures);
-                    }
-                },
-                readOptions: {output: "object"},
-                resultType: "hits",
-                maxFeatures: null,
-                scope: new OpenLayers.Strategy.Fixed
-            }); 
-            
+                        if (_.isFunction(callback)) {
+                            callback(response.numberOfFeatures);
+                        }
+                    },
+                    readOptions: {output: "object"},
+                    resultType: "hits",
+                    maxFeatures: null,
+                    scope: new OpenLayers.Strategy.Fixed
+                }); 
+            }
         }
     };
 

@@ -3,9 +3,13 @@ var Filter = require('../models/Filter').Filter,
 
 var self = {
     create: function(userId, filter, callback) {
-        filter.owner = userId;
-        Filter.create(filter, function(err, filter) {
-            callback(null, filter);
+        var ObjectId = mongoose.Types.ObjectId;
+        Filter.findOne({owner: ObjectId(userId)}).sort({order: -1}).exec(function(err, maxFilter) {
+            filter.owner = userId;
+            filter.order = maxFilter.order + 1;
+            Filter.create(filter, function(err, filter) {
+                callback(null, filter);
+            });
         });
     },
 
