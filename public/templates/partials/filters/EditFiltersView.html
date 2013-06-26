@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<div id="binContainer" class="logic-bin">
+<div id="newTopLevelBin" class="logic-bin">
     <div id="logicBin1" class="wide-100 clearfix">
         <div class="wide-100 clearfix">
             <div id="binLogicOperator" class="logic-bin-operator pull-left inner-logic-operator">
@@ -54,76 +54,79 @@
 
         </div>
     </div>
-    <% _.each(model.get("operators"), function(operator) { 
-    if (operator.get && operator.get("isSubFilter")) { %>
-    <div class="operator-container clearfix">
-        <div class="wide-50">
-            <div class="clearfix operator">
-                <div class="pull-left">
-                    Subfilter 
+    <ul class="sortable ui-sortable">
+        <% _.each(model.get("operators"), function(operator) { %>
+        <li id="<%= operator.order %>" class="ui-state-default">
+        <% if (operator.get && operator.get("isSubFilter")) { %>
+            <div class="operator-container clearfix">
+                <div class="wide-50">
+                    <div class="clearfix operator">
+                        <div class="pull-left">
+                            Subfilter 
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="wide-50">
-            <div class="clearfix subFilter-operator">
-                <div class="pull-right">
-                    <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
+                <div class="wide-50">
+                    <div class="clearfix subFilter-operator">
                         <div class="pull-right">
-                            <img id="<%= operator.get('order') %>-subFilter-1" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                            <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
+                                <div class="pull-right">
+                                    <img id="<%= operator.get('order') %>-subFilter-1" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                                </div>
+                                <div id="<%= operator.get('order') %>-subFilterContainer-1" class="pull-right padded5 viewSubFilter-1">
+                                    View Sub-filter
+                                </div>
+                            </div>
                         </div>
-                        <div id="<%= operator.get('order') %>-subFilterContainer-1" class="pull-right padded5 viewSubFilter-1">
-                            View Sub-filter
+                        <div class="pull-right wide-20 centered">
+                            <div class="plus-minus-container">
+                                <img id="<%=operator.order %>-1" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="pull-right wide-20 centered">
-                    <div class="plus-minus-container">
-                        <img id="<%=operator.order %>-1" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+            </div>
+                <% } 
+                else { %>
+            <div class="operator-container clearfix">
+                <div class="wide-50 clearfix">
+                    <div class="clearfix">
+                        <div class="pull-left operator">
+                            <select id="<%= operator.order + '-property' %>">
+                                <% _.each(features, function(feature) { %>
+                                <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="centered inline operator-type-select">
+                                <select id="<%= operator.order + '-type' %>">
+                                    <% _.each(types, function(type) { %>
+                                    <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
+                                    <% }); %>
+                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="wide-50 clearfix">
+                    <div class="clearfix">
+                        <div class="pull-left wide-80">
+                            <div class="inline <%= operator.upperBoundary ? 'wide-50' : 'wide-100' %>">
+                                <input id="<%= operator.order + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                            </div>
+                            <div class="inline <%= operator.upperBoundary ? 'wide-50' : 'hide' %>">
+                                <input id="<%= operator.order + '-upper' %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
+                            </div>
+                        </div>
+                        <div class="pull-right plus-minus-container wide-20 centered">
+                            <img id="<%=operator.order%>" src="../../img/minus.png" class="icon-small vpadded5 delete-row" />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-        <% } 
-        else { %>
-    <div class="operator-container clearfix">
-        <div class="wide-50 clearfix">
-            <div class="clearfix">
-                <div class="pull-left operator">
-                    <select id="<%= operator.order + '-property' %>">
-                        <% _.each(features, function(feature) { %>
-                        <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
-                        <% }); %>
-                    </select>
-                </div>
-                <div class="centered inline operator-type-select">
-                        <select id="<%= operator.order + '-type' %>">
-                            <% _.each(types, function(type) { %>
-                            <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
-                            <% }); %>
-                        </select>
-                </div>
-            </div>
-        </div>
-        <div class="wide-50 clearfix">
-            <div class="clearfix">
-                <div class="pull-left wide-80">
-                    <div class="inline <%= operator.upperBoundary ? 'wide-50' : 'wide-100' %>">
-                        <input id="<%= operator.order + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
-                    </div>
-                    <div class="inline <%= operator.upperBoundary ? 'wide-50' : 'hide' %>">
-                        <input id="<%= operator.order + '-upper' %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
-                    </div>
-                </div>
-                <div class="pull-right plus-minus-container wide-20 centered">
-                    <img id="<%=operator.order%>" src="../../img/minus.png" class="icon-small vpadded5 delete-row" />
-                </div>
-            </div>
-        </div>
-    </div>
-    <% } %>
-
-<% }); %>
+            <% } %>
+        </li>
+        <% }); %>
+    </ul>
 </div>
 
 <div id="newOperatorsContainer">

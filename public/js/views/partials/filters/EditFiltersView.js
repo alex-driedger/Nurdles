@@ -208,6 +208,15 @@ define([
             this.updateAssociatedTypes($("#newProperty"));
             this.updateValueTextFields($("#newType"), $("#newUpper"));
 
+            $( "#newTopLevelBin").sortable({
+                placeholder: "ui-state-highlight",
+                items: "li:not(.ui-state-disabled)",
+                cancel: ".ui-state-disabled",
+                stop: function(event, ui) {
+                    console.log($("#newTopLevelBin").sortable("toArray"));
+                }
+            });
+
             return this;
         }
     });
