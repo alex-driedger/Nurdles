@@ -15,7 +15,24 @@
     </div>
 </div>
 
-<div id="newOperatorsContainer">
+<div class="wide-100 clearfix">
+    <div id="binLogicOperator" class="logic-bin-operator pull-left">
+        <label class="logicalOperatorContainer checkbox toggle well between-operators">
+            <input id="<logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
+            <p>
+            <span>AND</span>
+            <span>OR</span>
+            </p>
+
+            <a id="logicalOperator" class="btn btn-info slide-button"></a>
+        </label>
+    </div>
+    <div id="addLogicBin" class="pull-left add-logic-bin">
+        <img id="<%= model.get('_id') %>-addLogicBin-1" src="../../img/plus.png" class="icon-small vpadded2 pointer" />
+    </div>
+</div>
+
+<div id="binContainer" class="logic-bin">
     <% _.each(model.get("operators"), function(operator) { 
     if (operator.get && operator.get("isSubFilter")) { %>
     <div class="operator-container clearfix">
