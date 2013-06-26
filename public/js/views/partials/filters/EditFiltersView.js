@@ -29,8 +29,7 @@ define([
             "click .subFilter-1": "showSubFilterUI",
             "click .viewSubFilter-1": "showSubFilterUIWithSeed",
             "change #newType": "handleTextFieldsChange",
-            "change #newProperty": "handlePropertyChange",
-            "click .logicalOperator": "preventDefault"
+            "change #newProperty": "handlePropertyChange"
         },
 
         preventDefault: function(e) {

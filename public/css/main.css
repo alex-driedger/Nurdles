@@ -739,7 +739,6 @@ table.wms, td.wms
 
 .logic-bin {
     border: 1px solid #333;
-    width: 100%;
 }
 
 .add-logic-bin {
@@ -747,14 +746,21 @@ table.wms, td.wms
 }
 
 .logic-bin-operator {
-    border: 1px solid #333;
     width: 105px;
     top: 0;
-    padding: 0 5px;
+    padding: 5px 5px 0 5px;
     background-color: #F7F7F7;
     font-size: medium;
     font-weight: bolder;
-    border-bottom: 2px solid #fff;
+}
+
+.inner-logic-operator {
+    margin-left: 20px;
+}
+
+.inner-logic-bin-container {
+    min-height: 50px;
+    border: 1px solid #333;
 }
 
 /*-----------------------Logical Operators------------------------------*/
@@ -765,6 +771,7 @@ table.wms, td.wms
     margin-top: 20px;
     left: 10%;
     z-index: 1030;
+    border: 1px solid black;
 }
 
 .between-operators {

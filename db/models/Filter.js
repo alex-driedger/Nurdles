@@ -5,9 +5,11 @@ var FilterSchema = new mongoose.Schema({
     name: { type: String, required: false},
     active: { type: Boolean, required: true, default: false },
     operators: {type: mongoose.Schema.Types.Mixed, required: true },
+    topOperatorId: {type: Number, required: true, default: -1},
     isSubFilter: { type: Boolean, required: true, default: false },
-    order: {type: Number, required: true, default: -1 },
-    logicalOperator: { type: String, required: true, default: "&&" }
+    id: {type: Number, required: true, default: -1 },
+    topLevelBin: {type: mongoose.Schema.Types.Mixed, required: true, default: {type: "&&", operators: []} },
+    bins: {type: mongoose.Schema.Types.Mixed, required: true, default: {type: "&&", operators: []} }
 });
 
 var Filter = mongoose.model("Filter", FilterSchema);
