@@ -68,8 +68,6 @@ define([
 
             if (operator.get && operator.get("isSubFilter"))
                 operator.set("logicalOperator", operator.logicalOperator);
-
-            this.model.setOperators(operators);
         },
 
         cacheOperators: function() {
@@ -139,7 +137,7 @@ define([
             if ($("#sidebar").height() <= $("#content").height()) {
                 //$('#sidebar').css('height',$('#sidebar').height() + container.height() + 75);
                 //$("#main-content").animate({ scrollTop: $('#sidebar').height()}, 500);
-                this.lastFilter = false;
+                //this.lastFilter = false;
             }
         },
 
@@ -190,7 +188,11 @@ define([
         },
 
         handleSaveFilter: function(e) {
-            var filterId = $(e.target).prop("id").split("-")[0];
+            var filterId = $(e.target).prop("id").split("-")[0],
+                operators = this.model.getOperators();
+
+            operators[operators.length - 1].logicalOperator = "&&";
+
             this.updateModel();
             this.model.update();
 

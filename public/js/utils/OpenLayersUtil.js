@@ -168,9 +168,9 @@ define([
             }
             else {
                 if (filter1.logicalOperator)
-                    innerFilter.type = filter2.logicalOperator;
+                    innerFilter.type = filter1.logicalOperator;
                 else
-                    innerFilter.type = filter2.type;
+                    innerFilter.type = filter1.type;
 
                 outerFilter.filters.push(innerFilter);
                 if (filters.length - index > 2)
@@ -186,7 +186,8 @@ define([
         createOpenLayersFilters: function(filters) {
             var simplifiedFilters = [];
             var outerFilter = new OpenLayers.Filter.Logical(),
-                finalFilter = new OpenLayers.Filter.Logical();
+                finalFilter = new OpenLayers.Filter.Logical(),
+                finalFilterType = "&&"; //default logical operator
 
             for (var i = 0, len = filters.length; i< len; i++) {
                 var innerFilter = new OpenLayers.Filter.Logical();
@@ -195,11 +196,12 @@ define([
                 outerFilter.filters.push(innerFilter);
 
                 if (i == len - 2)
-                    finalFilter.type = filters[i].get("logicalOperator");
+                    finalFilterType = filters[i].get("logicalOperator");
             };
 
 
             finalFilter = this.constructLogicalFilters(outerFilter.filters, 0);
+            finalFilter.type = finalFilterType;
 
             console.log("FINAL FILTER: ", finalFilter);
 
@@ -214,11 +216,12 @@ define([
         convertFilterToFilterParam: function(filter) {
             var outerFilter = new OpenLayers.Filter.Logical(),
                 subFilter = new OpenLayers.Filter.Logical(),
-                operands = [];
+                operands = [],
+                operators = filter.getOperators();
+
             outerFilter.type = filter.get("logicalOperator");
             subFilter.type = "&&";
 
-            operators = filter.getOperators();
             for (var j = 0; j < operators.length; j++) {
                 var operator = operators[j];
                 if (operator.get && operator.get("isSubFilter")) {
