@@ -9,6 +9,13 @@ define([
 
         initialize: function(attributes) {
             this.set("operators", []);
+            this.set("topLevelBin", {type: "&&", operators: []});
+            this.set("bins", []);
+            this.operatorCounter = this.get("topOperatorId");
+        },
+
+        findBinById: function(id) {
+            return _.findWhere(this.get("bins"), {id: id});
         },
 
         setOperators: function(operators) {
@@ -16,11 +23,9 @@ define([
         },
 
         addOperator: function(operator, isSubFilter) {
-            operator.order = this.operatorCounter++;
-            if (isSubFilter)
-                operator.set("order", operator.order);
+            this.set("topOperatorId", this.operatorCounter++);
 
-            this.get("operators").push(operator);
+            this.get("topLevelBin").operators.push(operator);
             this.trigger("addOperator");
         },
 
@@ -31,6 +36,10 @@ define([
             this.resetOperatorOrder(order);
             this.trigger("removeOperator");
             console.log("Now have " + this.get("operators").length + " operators");
+        },
+
+        moveOperatorToBin: function(operatorId, fromBin, toBin) {
+            console.log(_.findWhere(this.get("bins"), {id: fromBin}));
         },
 
         findOperatorByOrder: function(order) {

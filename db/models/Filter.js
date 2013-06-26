@@ -9,7 +9,7 @@ var FilterSchema = new mongoose.Schema({
     isSubFilter: { type: Boolean, required: true, default: false },
     id: {type: Number, required: true, default: -1 },
     topLevelBin: {type: mongoose.Schema.Types.Mixed, required: true, default: {type: "&&", operators: []} },
-    bins: {type: mongoose.Schema.Types.Mixed, required: true, default: {type: "&&", operators: []} }
+    bins: {type: [mongoose.Schema.Types.Mixed], required: true, default: [] }
 });
 
 var Filter = mongoose.model("Filter", FilterSchema);

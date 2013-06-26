@@ -208,10 +208,11 @@ define([
             this.updateAssociatedTypes($("#newProperty"));
             this.updateValueTextFields($("#newType"), $("#newUpper"));
 
-            $( "#newTopLevelBin").sortable({
+            $( "#newTopLevelBin, #innerBin").sortable({
                 placeholder: "ui-state-highlight",
                 items: "li:not(.ui-state-disabled)",
                 cancel: ".ui-state-disabled",
+                connectWith: ".connectedWith",
                 stop: function(event, ui) {
                     console.log($("#newTopLevelBin").sortable("toArray"));
                 }
