@@ -666,6 +666,10 @@ table.wms, td.wms
     border-top-right-radius: 2px 2px;
 }
 
+.sub-filter-marker.new {
+    margin-top: 0;
+}
+
 .sub-filter-marker-active {
     width: 100%;
     height: auto;
