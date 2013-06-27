@@ -56,6 +56,7 @@
                         <ul id="<%= bin.id %>-innerBin" class="sortable ui-sortable inner-bin connected">
                             <% _.each(bin.operators, function(operator) { %>
                             <li id="<%= operator.id %>-<%= bin.id %>-newOperator" class="ui-state-default">
+                                <span class="handle" />
                                 <% if (operator.get && operator.get("isSubFilter")) { %>
                                     <div class="operator-container clearfix">
                                         <div class="wide-50">

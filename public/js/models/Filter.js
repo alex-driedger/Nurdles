@@ -40,9 +40,10 @@ define([
 
             bin.id = this.topBinId;
             bin.type = "&&";
-            bin.operator = [];
+            bin.operators = [];
 
             this.get("bins").push(bin);
+            return bin.id;
         },
 
         removeBin: function(id) {

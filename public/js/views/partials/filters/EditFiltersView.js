@@ -30,33 +30,35 @@ define([
             "click .viewSubFilter-1": "showSubFilterUIWithSeed",
             "change #newType": "handleTextFieldsChange",
             "change #newProperty": "handlePropertyChange",
-            "drop .innerBin": "removeOperatorFromSubBin",
-            "drop #newTopLevelBin": "removeOperatorFromTopLevel",
-            "add .innerBin": "addOperatorToInnerBin",
             "add #newTopLevelBin": "addOperatorToTopLevel",
             "click #newAddLogicBin": "addBin"
         },
 
-        removeOperatorFromSubBin: function(e, itemId) {
-            this.stopPropagation(e);
-        },
-
-        removeOperatorFromTopLevel: function(e, itemId) {
-            this.stopPropagation(e);
-            var operatorArray = $("#newTopLevelBin").sortable("toArray");
-
-            operatorArray.splice(operatorArray.indexOf(itemId), 1);
-            console.log(operatorArray);
-        },
-
         addOperatorToTopLevel: function(e, itemInfo) {
             this.stopPropagation(e);
+            var oldBin =  _.findWhere(this.model.getBins(), {id: parseInt(itemInfo.sender.prop("id").split("-")[0])});
+            var bin = this.model.get("topLevelBin");
+            var operator = _.findWhere(oldBin.operators, {id: parseInt(itemInfo.itemId.split("-")[0])}),
+                newOperatorList = _.reject(oldBin.operators, function(operator) {
+                    return operator.id == parseInt(itemInfo.itemId.split("-")[0]);
+                });
+            
             console.log("SENDER: ", itemInfo.sender);
+            oldBin.operators = newOperatorList;
+            bin.operators.push(operator);
         },
 
         addOperatorToInnerBin: function(e, itemInfo) {
             this.stopPropagation(e);
-            console.log("SENDER: ", itemInfo.sender);
+            var oldBin = itemInfo.sender.prop("id") === "newTopLevelBin" ? this.model.get("topLevelBin") : _.findWhere(this.model.getBins(), {id: parseInt(itemInfo.sender.prop("id").split("-")[0])});
+            var bin =  _.findWhere(this.model.getBins(), {id: parseInt($(e.target).prop("id").split("-")[0])});
+            var operator = _.findWhere(oldBin.operators, {id: parseInt(itemInfo.itemId.split("-")[0])}),
+                newOperatorList = _.reject(oldBin.operators, function(operator) {
+                    return operator.id == parseInt(itemInfo.itemId.split("-")[0]);
+                });
+            
+            oldBin.operators = newOperatorList;
+            bin.operators.push(operator);
         },
 
         preventDefault: function(e) {
@@ -69,7 +71,10 @@ define([
         },
 
         addBin: function() {
-            this.model.addBin();
+            var id = this.model.addBin();
+
+            this.events["add #" + id + "-innerBin"] = "addOperatorToInnerBin";
+            this.delegateEvents();
             this.reRender();
         },
 
@@ -266,7 +271,7 @@ define([
                 handle: "span",
                 receive: function(event, ui) {
                     console.log($(this).prop("id") + " got a new operator");
-                    $(this).trigger('add', {itemId: ui.item.prop("id"), sender: ui.sender});
+                    $(event.target).trigger('add', {itemId: ui.item.prop("id"), sender: ui.sender});
                 }
             }).disableSelection();
 
