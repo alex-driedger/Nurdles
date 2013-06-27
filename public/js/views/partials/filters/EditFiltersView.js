@@ -29,7 +29,13 @@ define([
             "click .subFilter-1": "showSubFilterUI",
             "click .viewSubFilter-1": "showSubFilterUIWithSeed",
             "change #newType": "handleTextFieldsChange",
-            "change #newProperty": "handlePropertyChange"
+            "change #newProperty": "handlePropertyChange",
+            "drop .innerBin": "test"
+        },
+
+        test: function(attribute) {
+            console.log(this);
+            console.log($("#innerBin").sortable("toArray"));
         },
 
         preventDefault: function(e) {
@@ -202,19 +208,31 @@ define([
                 types: this.types,
                 features: this.features,
                 model: this.model
-            };
+            },
+            view = this;
 
             this.$el.html(this.template(templateData));
             this.updateAssociatedTypes($("#newProperty"));
             this.updateValueTextFields($("#newType"), $("#newUpper"));
 
-            $( "#newTopLevelBin, #innerBin").sortable({
+            $( "#newTopLevelBin").sortable({
                 placeholder: "ui-state-highlight",
                 items: "li:not(.ui-state-disabled)",
                 cancel: ".ui-state-disabled",
-                connectWith: ".connectedWith",
+                connectWith: ".inner-bin",
                 stop: function(event, ui) {
                     console.log($("#newTopLevelBin").sortable("toArray"));
+                }
+            });
+
+            $( ".inner-bin").sortable({
+                placeholder: "ui-state-highlight",
+                items: "li:not(.ui-state-disabled)",
+                cancel: ".ui-state-disabled",
+                connectWith: ".inner-bin, #newTopLevelBin",
+                stop: function(event, ui) {
+                    $(ui.item).parent().trigger('drop', ui.item.index());
+                    console.log($("#innerBin").sortable("toArray"));
                 }
             });
 

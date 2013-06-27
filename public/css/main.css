@@ -639,6 +639,7 @@ table.wms, td.wms
     margin: 0 5px 5px 5px;
     padding: 0.5em;
     padding-left: 1.5em;
+    cursor: move;
 }
 
 .sortable label {
@@ -759,8 +760,16 @@ table.wms, td.wms
 }
 
 .inner-logic-bin-container {
-    min-height: 50px;
+    min-height: 30px;
     border: 1px solid #333;
+}
+
+.inner-bin {
+    min-height: 30px;
+}
+
+.inner-logic-bin-container {
+    padding: 5px 0;
 }
 
 .logic-bin ul p {
@@ -769,7 +778,8 @@ table.wms, td.wms
 
 .sortable .remove-default {
     margin: 0;
-    padding: 0;
+    padding: 5px;
+    border: 0;
 }
 
 /*-----------------------Logical Operators------------------------------*/
