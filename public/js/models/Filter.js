@@ -15,11 +15,48 @@ define([
             if (!this.get("topOperatorId"))
                 this.set("topOperatorId", 0);
 
+            if (!this.get("topBinId"))
+                this.set("topBinId", 0);
+
             this.operatorCounter = this.get("topOperatorId");
+            this.topBinId = this.get("topBinId");
+        },
+
+        getBins: function() {
+            return this.get("bins");
+        },
+
+        setBins: function(bins) {
+            this.set("bins", bins);
         },
 
         findBinById: function(id) {
             return _.findWhere(this.get("bins"), {id: id});
+        },
+
+        addBin: function() {
+            var bin = {};
+            this.set("topBinId", this.topBinId++);
+
+            bin.id = this.topBinId;
+            bin.type = "&&";
+            bin.operator = [];
+
+            this.get("bins").push(bin);
+        },
+
+        removeBin: function(id) {
+            var bins = this.getBins(),
+                binsToKeep = _.reject(bins, {id: id}),
+                bin = _.findWhere(bins, {id: id}),
+                topLevelBin = this.get("topLevelBin");
+
+
+            _.each(bin.operators, function(operator) {
+                topLevelBin.operators.push(operator);
+            });
+            this.setBins(binsToKeep);
+            delete bin;
         },
 
         setOperators: function(operators) {

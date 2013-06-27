@@ -30,15 +30,15 @@ define([
             "click .viewSubFilter-1": "showSubFilterUIWithSeed",
             "change #newType": "handleTextFieldsChange",
             "change #newProperty": "handlePropertyChange",
-            "drop #innerBin": "removeOperatorFromSubBin",
+            "drop .innerBin": "removeOperatorFromSubBin",
             "drop #newTopLevelBin": "removeOperatorFromTopLevel",
-            "add #innerBin": "addOperatorToInnerBin",
-            "add #newTopLevelBin": "addOperatorToTopLevel"
+            "add .innerBin": "addOperatorToInnerBin",
+            "add #newTopLevelBin": "addOperatorToTopLevel",
+            "click #newAddLogicBin": "addBin"
         },
 
         removeOperatorFromSubBin: function(e, itemId) {
             this.stopPropagation(e);
-            console.log($(".innerBin").sortable("toArray"));
         },
 
         removeOperatorFromTopLevel: function(e, itemId) {
@@ -66,6 +66,11 @@ define([
 
         stopPropagation: function(e) {
             e.stopPropagation();
+        },
+
+        addBin: function() {
+            this.model.addBin();
+            this.reRender();
         },
 
         applyFilter: function(e) {
@@ -111,10 +116,22 @@ define([
         },
 
         cacheOperators: function() {
-            _.each(this.model.getOperators(), function(operator) {
+            _.each(this.model.getBins(), function(bin) {
+                _.each(bin.operators, function(operator) {
+                    operator.property = $("#" + operator.order + "-" + bin.id + "-property").val();
+                    operator.type = $("#" + operator.order + "-" + bin.id + "-type").val();
+                    if (operator.upperBoundary) {
+                        operator.lowerBoundary = $("#" + operator.order + "-" + bin.id + "-lower").val();
+                        operator.upperBoundary = $("#" + operator.order + "-" + bin.id + "-upper").val();
+                    }
+                    else
+                        operator.value = $("#" + operator.order + "-" + bin.id + "-lower").val();
+                });
+            });
+
+            _.each(this.model.get("topLevelBin").operators, function(operator) {
                 operator.property = $("#" + operator.order + "-property").val();
                 operator.type = $("#" + operator.order + "-type").val();
-                operator.logicalOperator = $("#" + operator.order + "-newLogicalOperator").prop("checked") ? "&&" : "||";
                 if (operator.upperBoundary) {
                     operator.lowerBoundary = $("#" + operator.order + "-lower").val();
                     operator.upperBoundary = $("#" + operator.order + "-upper").val();
@@ -246,16 +263,12 @@ define([
                 items: "li:not(.ui-state-disabled)",
                 cancel: ".ui-state-disabled",
                 connectWith: "#newTopLevelBinContainer ul",
+                handle: "span",
                 receive: function(event, ui) {
-                    console.log(this + " got a new operator");
+                    console.log($(this).prop("id") + " got a new operator");
                     $(this).trigger('add', {itemId: ui.item.prop("id"), sender: ui.sender});
-                },
-                remove: function(event, ui) {
-                    console.log(this + " lost an operator");
-                    $(this).trigger('drop', ui.item.prop("id"));
                 }
-            });
-
+            }).disableSelection();
 
             return this;
         }

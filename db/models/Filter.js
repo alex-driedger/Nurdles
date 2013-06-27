@@ -6,6 +6,7 @@ var FilterSchema = new mongoose.Schema({
     active: { type: Boolean, required: true, default: false },
     operators: {type: mongoose.Schema.Types.Mixed, required: true },
     topOperatorId: {type: Number, required: true, default: -1},
+    topBinId: {type: Number, required: true, default: -1},
     isSubFilter: { type: Boolean, required: true, default: false },
     id: {type: Number, required: true, default: -1 },
     topLevelBin: {type: mongoose.Schema.Types.Mixed, required: true, default: {type: "&&", operators: []} },

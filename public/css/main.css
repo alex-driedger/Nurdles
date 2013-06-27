@@ -126,6 +126,11 @@ input[type="radio"] {
 .rpadding15 {
     padding-right: 15px;
 }
+
+.vmargin5 {
+    margin-top: 5px;
+}
+
 /*-------------------------Loader--------------------------------*/
 .loading {
     height: 100%;
@@ -639,7 +644,6 @@ table.wms, td.wms
     margin: 0 5px 5px 5px;
     padding: 0.5em;
     padding-left: 1.5em;
-    cursor: move;
 }
 
 .sortable label {
@@ -780,6 +784,13 @@ table.wms, td.wms
     margin: 0;
     padding: 5px;
     border: 0;
+}
+
+.handle {
+    cursor: move;
+    width: 25px;
+    height: 50px;
+    margin-top: -5px;
 }
 
 /*-----------------------Logical Operators------------------------------*/
