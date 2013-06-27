@@ -30,16 +30,41 @@ define([
             "click .viewSubFilter-1": "showSubFilterUIWithSeed",
             "change #newType": "handleTextFieldsChange",
             "change #newProperty": "handlePropertyChange",
-            "drop .innerBin": "test"
+            "drop #innerBin": "removeOperatorFromSubBin",
+            "drop #newTopLevelBin": "removeOperatorFromTopLevel",
+            "add #innerBin": "addOperatorToInnerBin",
+            "add #newTopLevelBin": "addOperatorToTopLevel"
         },
 
-        test: function(attribute) {
-            console.log(this);
-            console.log($("#innerBin").sortable("toArray"));
+        removeOperatorFromSubBin: function(e, itemId) {
+            this.stopPropagation(e);
+            console.log($(".innerBin").sortable("toArray"));
+        },
+
+        removeOperatorFromTopLevel: function(e, itemId) {
+            this.stopPropagation(e);
+            var operatorArray = $("#newTopLevelBin").sortable("toArray");
+
+            operatorArray.splice(operatorArray.indexOf(itemId), 1);
+            console.log(operatorArray);
+        },
+
+        addOperatorToTopLevel: function(e, itemInfo) {
+            this.stopPropagation(e);
+            console.log("SENDER: ", itemInfo.sender);
+        },
+
+        addOperatorToInnerBin: function(e, itemInfo) {
+            this.stopPropagation(e);
+            console.log("SENDER: ", itemInfo.sender);
         },
 
         preventDefault: function(e) {
             e.preventDefault();
+            this.stopPropagation(e);
+        },
+
+        stopPropagation: function(e) {
             e.stopPropagation();
         },
 
@@ -215,26 +240,22 @@ define([
             this.updateAssociatedTypes($("#newProperty"));
             this.updateValueTextFields($("#newType"), $("#newUpper"));
 
-            $( "#newTopLevelBin").sortable({
+
+            $( "#newTopLevelBinContainer ul").sortable({
                 placeholder: "ui-state-highlight",
                 items: "li:not(.ui-state-disabled)",
                 cancel: ".ui-state-disabled",
-                connectWith: ".inner-bin",
-                stop: function(event, ui) {
-                    console.log($("#newTopLevelBin").sortable("toArray"));
+                connectWith: "#newTopLevelBinContainer ul",
+                receive: function(event, ui) {
+                    console.log(this + " got a new operator");
+                    $(this).trigger('add', {itemId: ui.item.prop("id"), sender: ui.sender});
+                },
+                remove: function(event, ui) {
+                    console.log(this + " lost an operator");
+                    $(this).trigger('drop', ui.item.prop("id"));
                 }
             });
 
-            $( ".inner-bin").sortable({
-                placeholder: "ui-state-highlight",
-                items: "li:not(.ui-state-disabled)",
-                cancel: ".ui-state-disabled",
-                connectWith: ".inner-bin, #newTopLevelBin",
-                stop: function(event, ui) {
-                    $(ui.item).parent().trigger('drop', ui.item.index());
-                    console.log($("#innerBin").sortable("toArray"));
-                }
-            });
 
             return this;
         }

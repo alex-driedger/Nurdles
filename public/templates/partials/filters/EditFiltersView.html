@@ -32,8 +32,8 @@
     </div>
 </div>
 
-<div id="newTopLevelBin" class="logic-bin">
-    <ul class="sortable ui-sortable connectedWith">
+<div id="newTopLevelBinContainer" class="logic-bin">
+    <ul id="newTopLevelBin" class="sortable ui-sortable connected">
         <li id="BIN-ID" class="ui-state-default remove-default">
             <div id="logicBin1" class="wide-100 clearfix">
                 <div class="wide-100 clearfix">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div id="logicBinContainer1" class="inner-logic-bin-container">
-                    <ul id="innerBin" class="sortable ui-sortable inner-bin">
+                    <ul id="innerBin" class="sortable ui-sortable inner-bin connected">
 
                     </ul>
 
@@ -85,7 +85,7 @@
             </div>
         </li>
         <% _.each(bin.operators, function(operator) { %>
-            <li id="<%= operator.order %>" class="ui-state-default">
+            <li id="<%= operator.id %>-newOperator" class="ui-state-default">
             <% if (operator.get && operator.get("isSubFilter")) { %>
                 <div class="operator-container clearfix">
                     <div class="wide-50">
@@ -158,7 +158,7 @@
             <% }); %>
 
             <% _.each(model.get("topLevelBin").operators, function(operator) { %>
-            <li id="<%= operator.order %>" class="ui-state-default">
+            <li id="<%= operator.id %>-newOperator" class="ui-state-default">
             <% if (operator.get && operator.get("isSubFilter")) { %>
                 <div class="operator-container clearfix">
                     <div class="wide-50">
