@@ -28,8 +28,8 @@ define([
             "click #applyFilter": "applyFilter",
             "click .subFilter-1": "showSubFilterUI",
             "click .viewSubFilter-1": "showSubFilterUIWithSeed",
-            "change #newType": "handleTextFieldsChange",
-            "change #newProperty": "handlePropertyChange",
+            "change .type": "handleTextFieldsChange",
+            "change .property": "handlePropertyChange",
             "add #newTopLevelBin": "addOperatorToTopLevel",
             "click #newAddLogicBin": "addBin",
             "click #newLogicalOperatorCheckbox": "toggleTopLevelBinType"
@@ -80,7 +80,19 @@ define([
 
             this.events["add #" + id + "-innerBin"] = "addOperatorToInnerBin";
             this.events["click #" + id + "-logicalOperatorCheckbox"] = "toggleInnerBinType";
+            this.events["click #" + id + "-removeBin"] = "removeBin";
             this.delegateEvents();
+            this.reRender();
+        },
+
+        removeBin: function(e) {
+            var binId = $(e.target).prop("id").split("-")[0];
+
+            this.model.removeBin(binId);
+            delete this.events["add #" + binId + "-innerBin"];
+            delete this.events["click #" + binId + "-logicalOperatorCheckbox"];
+            delete this.events["click #" + binId + "-removeBin"];
+
             this.reRender();
         },
 
@@ -202,37 +214,39 @@ define([
             var selectedVal = target.val(),
                 type = _.findWhere(this.features, {name:selectedVal}).type,
                 types = Utils.getTypeDropdownValues(type),
-                selecteProperty = $("#newType").val();
+                selectedProperty = $(target.parent().next().children()[0]),
+                selectedValue = selectedProperty.val(),
+                textPrefix = selectedProperty.prop("id").substring(0, selectedProperty.prop("id").toLowerCase().indexOf("type")),
+                textFieldToUpdate = $("#" + textPrefix + (textPrefix == "new" ? "Upper" : "upper"));
                  
             this.types = types;
-            $("#newType").html("");
+            selectedProperty.html("");
 
             _.each(types, function(type) {
-                $('<option/>').val(type).text(type).appendTo($('#newType'));
+                $('<option/>').val(type).text(type).appendTo(selectedProperty);
             });
 
-            $("#newType").val(selecteProperty);
-            this.updateValueTextFields($("#newType"), $("#newUpper"));
+            selectedProperty.val(selectedValue);
+            this.updateValueTextFields(selectedProperty, textFieldToUpdate);
         },
 
         handleTextFieldsChange: function(e) {
-            this.updateValueTextFields($(e.target), $("#newUpper"));
+            var textPrefix = $(e.target).prop("id").substring(0, $(e.target).prop("id").toLowerCase().indexOf("type")),
+                textFieldToUpdate = $("#" + textPrefix + (textPrefix == "new" ? "Upper" : "upper"));
+
+            this.updateValueTextFields($(e.target), textFieldToUpdate);
         },
 
         updateValueTextFields: function(target, fieldToToggle) {
-            $("#editFilter .staged").toggleClass("wide-95");
             if (target.val() == "..") {
-                target.closest("td").next().prop("colspan", "1")
-                fieldToToggle.removeClass("hide");
                 fieldToToggle.parent().removeClass("hide");
+                fieldToToggle.parent().prev().addClass("wide-45i");
             }
             else {
-                fieldToToggle.addClass("hide");
-                fieldToToggle.parent().addClass("hide");
-                fieldToToggle.html("");
-                target.closest("td").next().prop("colspan", "2")
+                fieldToToggle.parent().addClass("hide")
+                    .prev().removeClass("wide-45i");
+                fieldToToggle.val("");
             }
-
         },
 
         deleteSubFilter: function(subFilterView) {

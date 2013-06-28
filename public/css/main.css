@@ -79,6 +79,14 @@ input[type="radio"] {
     width: 50%;
 }
 
+.wide-45 {
+    width: 45%;
+}
+
+.wide-45i {
+    width: 45% !important;
+}
+
 .wide-80 {
     width: 80%;
 }

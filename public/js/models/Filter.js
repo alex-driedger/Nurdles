@@ -48,8 +48,10 @@ define([
 
         removeBin: function(id) {
             var bins = this.getBins(),
-                binsToKeep = _.reject(bins, {id: id}),
-                bin = _.findWhere(bins, {id: id}),
+                binsToKeep = _.reject(bins, function(bin) {
+                    return bin.id == parseInt(id);
+                }),
+                bin = _.findWhere(bins, {id: parseInt(id)}),
                 topLevelBin = this.get("topLevelBin");
 
 

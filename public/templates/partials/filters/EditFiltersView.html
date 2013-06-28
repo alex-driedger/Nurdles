@@ -51,6 +51,9 @@
                                 <a id="logicalOperator" class="btn btn-info slide-button"></a>
                             </label>
                         </div>
+                        <div class="pull-left add-logic-bin">
+                            <img id="<%= bin.id %>-removeBin" src="../../img/minus.png" class="icon-small vpadded5 pointer" />
+                        </div>
                     </div>
                     <div id="<%= bin.id %>-logicBinContainer" class="inner-logic-bin-container">
                         <ul id="<%= bin.id %>-innerBin" class="sortable ui-sortable inner-bin connected">
@@ -92,14 +95,14 @@
                                         <div class="wide-50 clearfix">
                                             <div class="clearfix">
                                                 <div class="pull-left operator">
-                                                    <select id="<%= operator.id + '-' + bin.id + '-property' %>">
+                                                    <select id="<%= operator.id + '-' + bin.id + '-property' %>" class="property">
                                                         <% _.each(features, function(feature) { %>
                                                         <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                                                         <% }); %>
                                                     </select>
                                                 </div>
                                                 <div class="centered inline operator-type-select">
-                                                        <select id="<%= operator.id + '-' + bin.id + '-type' %>">
+                                                        <select id="<%= operator.id + '-' + bin.id + '-type' %>" class="type">
                                                             <% _.each(types, function(type) { %>
                                                             <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
                                                             <% }); %>
@@ -110,11 +113,11 @@
                                         <div class="wide-50 clearfix">
                                             <div class="clearfix">
                                                 <div class="pull-left wide-80">
-                                                    <div class="inline <%= operator.upperBoundary ? 'wide-50' : 'wide-100' %>">
+                                                    <div class="inline <%= operator.upperBoundary ? 'wide-45i' : '' %> wide-100">
                                                         <input id="<%= operator.id + '-' + bin.id + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                                                     </div>
-                                                    <div class="inline <%= operator.upperBoundary ? 'wide-50' : 'hide' %>">
-                                                        <input id="<%= operator.id + '-' + bin.id +'-upper' %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
+                                                    <div class="inline <%= operator.upperBoundary ? 'wide-45' : 'hide' %> pull-right">
+                                                        <input id="<%= operator.id + '-' + bin.id +'-upper' %>" type="text" class="wide-90 staged" value="<%= operator.upperBoundary %>" />
                                                     </div>
                                                 </div>
                                                 <div class="pull-right plus-minus-container wide-20 centered">
@@ -169,14 +172,14 @@
                 <div class="wide-50 clearfix">
                     <div class="clearfix">
                         <div class="pull-left operator">
-                            <select id="<%= operator.id + '-property' %>">
+                            <select id="<%= operator.id + '-property' %>" class="property">
                                 <% _.each(features, function(feature) { %>
                                 <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                                 <% }); %>
                             </select>
                         </div>
                         <div class="centered inline operator-type-select">
-                                <select id="<%= operator.id + '-type' %>">
+                                <select id="<%= operator.id + '-type' %>" class="type">
                                     <% _.each(types, function(type) { %>
                                     <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
                                     <% }); %>
@@ -187,10 +190,10 @@
                 <div class="wide-50 clearfix">
                     <div class="clearfix">
                         <div class="pull-left wide-80">
-                            <div class="inline <%= operator.upperBoundary ? 'wide-50' : 'wide-100' %>">
+                            <div class="inline <%= operator.upperBoundary ? 'wide-45i' : '' %> wide-100">
                                 <input id="<%= operator.id + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                             </div>
-                            <div class="inline <%= operator.upperBoundary ? 'wide-50' : 'hide' %>">
+                            <div class="inline <%= operator.upperBoundary ? 'wide-45' : 'hide' %> pull-right">
                                 <input id="<%= operator.id + '-upper' %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
                             </div>
                         </div>
@@ -212,14 +215,14 @@
         <div class="wide-50 clearfix">
             <div class="clearfix">
                 <div class="pull-left operator">
-                    <select id="newProperty">
+                    <select id="newProperty" class="property">
                         <% _.each(features, function(feature) { %>
                             <option value="<%= feature.name %>"><%= feature.name %></option>
                         <% }); %>
                     </select>
                 </div>
                 <div class="centered inline operator-type-select">
-                    <select id="newType">
+                    <select id="newType" class="type">
                         <% _.each(types, function(type) { %>
                             <option value="<%= type %>"><%= type %></option>
                         <% }); %>
@@ -230,11 +233,11 @@
         <div class="wide-50 clearfix">
             <div class="clearfix">
                 <div class="pull-left wide-80">
-                    <div class="inline wide-100">
+                    <div id="newLowerContainer" class="inline wide-100">
                         <input id="newLower" type="text" class="wide-90 staged" >
                     </div>
-                    <div class="inline wide-50">
-                        <input id="newUpper" type="text" class="wide-90 staged hide">
+                    <div class="inline wide-45 pull-right">
+                        <input id="newUpper" type="text" class="wide-90 staged">
                     </div>
                 </div>
                 <div class="pull-right">
