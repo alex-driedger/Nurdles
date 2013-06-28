@@ -19,7 +19,7 @@
 <div class="wide-100 clearfix">
     <div id="binLogicOperator" class="logic-bin-operator pull-left">
         <label class="logicalOperatorContainer checkbox toggle well between-operators">
-            <input id="newLogicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
+            <input id="newLogicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (model.get("topLevelBin").type == "&&") { %> checked <% } %> />
             <p>
             <span>AND</span>
             <span>OR</span>
@@ -42,7 +42,7 @@
                     <div class="wide-100 clearfix">
                         <div id="binLogicOperator" class="logic-bin-operator pull-left inner-logic-operator">
                             <label class="logicalOperatorContainer checkbox toggle well between-operators">
-                                <input id="<%= bin.id %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" checked />
+                                <input id="<%= bin.id %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (bin.type == "&&") { %> checked <% } %>/>
                                 <p>
                                 <span>AND</span>
                                 <span>OR</span>
