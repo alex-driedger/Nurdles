@@ -13,8 +13,9 @@ define([
             this.isNew = true;
             this.initArgs(args);
 
-            if (!this.model)
+            if (!this.model) {
                 this.model = new Filter();
+            }
 
             //If anything happens to our operators collection, show the user.
             this.bindTo(this.model, "removeOperator", this.cacheOperators);
@@ -38,27 +39,6 @@ define([
                 operators = this.model.getOperators();
 
             this.model.operatorCounter = operators.length;
-            for (var i = 0, len = operators.length; i < len; i++) {
-                var operator = operators[i],
-                    filter = new Filter();
-
-                if (operator.operators) {
-                    for (var j = 0, oLen = operator.operators.length; j < oLen; j++) {
-                        if (operator.operators[j].isSubFilter) {
-                            for (var key in operator.operators[j]) {
-                                filter.set(key, operator.operators[j][key]);
-                            }
-                            filter.isSubFilter = true;
-                            filter.subFilterId = filter.get("subFilterId");
-                            filter.id = filter.get("id");
-                            operator.operators[j] = filter;
-                        }
-                    }
-                }
-                transformedOperators.push(operator);
-            };
-
-            this.model.setOperators(transformedOperators);
         },
 
         template: _.template(subFilterTemplate),
