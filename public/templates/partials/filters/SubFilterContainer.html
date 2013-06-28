@@ -49,13 +49,13 @@
 <div id="<%= subFilterLevel %>-topLevelBinContainer" class="logic-bin">
     <ul id="<%= subFilterLevel %>-topLevelBin" class="sortable ui-sortable connected">
         <% _.each(model.get("bins"), function(bin) { %>
-        <li id="<%= bin.id %>-bin-<%= subFilterLevel %>" class="ui-state-default remove-default">
+        <li id="<%= bin.id %>-<%= subFilterLevel %>-bin" class="ui-state-default remove-default">
             <span class="handle" />
                 <div id="logicBin" class="wide-100 clearfix">
                     <div class="wide-100 clearfix">
                         <div id="binLogicOperator" class="logic-bin-operator pull-left inner-logic-operator">
                             <label class="logicalOperatorContainer checkbox toggle well between-operators">
-                                <input id="<%= bin.id %>-logicalOperatorCheckbox-<%= subFilterLevel %>-" class="logicalOperator" type="checkbox" <% if (bin.type == "&&") { %> checked <% } %>/>
+                                <input id="<%= bin.id %>-<%= subFilterLevel %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (bin.type == "&&") { %> checked <% } %>/>
                                 <p>
                                 <span>AND</span>
                                 <span>OR</span>
@@ -65,13 +65,13 @@
                             </label>
                         </div>
                         <div class="pull-left add-logic-bin">
-                            <img id="<%= bin.id %>-removeBin-<%= subFilterLevel %>-" src="../../img/minus.png" class="icon-small vpadded5 pointer" />
+                            <img id="<%= bin.id %>-<%= subFilterLevel %>-removeBin" src="../../img/minus.png" class="icon-small vpadded5 pointer" />
                         </div>
                     </div>
-                    <div id="<%= bin.id %>-logicBinContainer-<%= subFilterLevel %>-" class="inner-logic-bin-container">
-                        <ul id="<%= bin.id %>-innerBin-<%= subFilterLevel %>-" class="sortable ui-sortable inner-bin connected">
+                    <div id="<%= bin.id %>-<%= subFilterLevel %>-logicBinContainer" class="inner-logic-bin-container">
+                        <ul id="<%= bin.id %>-<%= subFilterLevel %>-innerBin" class="sortable ui-sortable inner-bin connected">
                             <% _.each(bin.operators, function(operator) { %>
-                            <li id="<%= operator.id %>-<%= bin.id %>-newOperator-<%= subFilterLevel %>-" class="ui-state-default">
+                            <li id="<%= operator.id %>-<%= bin.id %>-<%= subFilterLevel %>-newOperator" class="ui-state-default">
                                 <span class="handle" />
                                 <% if (operator.get && operator.get("isSubFilter")) { %>
                                     <div class="operator-container clearfix">
@@ -87,16 +87,16 @@
                                                 <div class="pull-right">
                                                     <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
                                                         <div class="pull-right">
-                                                            <img id="<%= operator.get('order') %>-<%= bin.id %>-subFilter-<%= subFilterLevel %>-" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                                                            <img id="<%= operator.get('order') %>-<%= bin.id %>-<%= subFilterLevel %>-subFilter" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                                                         </div>
-                                                        <div id="<%= operator.get('order') %>-<%= bin.id %>-subFilterContainer-<%= subFilterLevel %>-" class="pull-right padded5 viewSubFilter-1">
+                                                        <div id="<%= operator.get('order') %>-<%= bin.id %>-<%= subFilterLevel %>-subFilterContainer" class="pull-right padded5 viewSubFilter-1">
                                                             View Sub-filter
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="pull-right wide-20 centered">
                                                     <div class="plus-minus-container">
-                                                        <img id="<%=operator.id %>-<%= bin.id %>-<%= subFilterLevel %>-" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                                                        <img id="<%=operator.id %>-<%= bin.id %>-<%= subFilterLevel %>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -108,14 +108,14 @@
                                         <div class="wide-50 clearfix">
                                             <div class="clearfix">
                                                 <div class="pull-left operator">
-                                                    <select id="<%= operator.id + '-' + bin.id + '-property' %>-<%= subFilterLevel %>-" class="property">
+                                                    <select id="<%= operator.id + '-' + bin.id + '-' + subFilterLevel + '-property' %>" class="property">
                                                         <% _.each(features, function(feature) { %>
                                                         <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                                                         <% }); %>
                                                     </select>
                                                 </div>
                                                 <div class="centered inline operator-type-select">
-                                                        <select id="<%= operator.id + '-' + bin.id + '-type' %>-<%= subFilterLevel %>-" class="type">
+                                                        <select id="<%= operator.id + '-' + bin.id + '-' + subFilterLevel + '-type' %>" class="type">
                                                             <% _.each(types, function(type) { %>
                                                             <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
                                                             <% }); %>
@@ -127,14 +127,14 @@
                                             <div class="clearfix">
                                                 <div class="pull-left wide-80">
                                                     <div class="inline <%= operator.upperBoundary ? 'wide-45i' : '' %> wide-100">
-                                                        <input id="<%= operator.id + '-' + bin.id + '-lower' %>-<%= subFilterLevel %>-" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                                                        <input id="<%= operator.id + '-' + bin.id + '-' + subFilterLevel + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                                                     </div>
                                                     <div class="inline <%= operator.upperBoundary ? '' : 'hide' %> wide-45 pull-right">
-                                                        <input id="<%= operator.id + '-' + bin.id +'-upper' %>-<%= subFilterLevel %>-" type="text" class="wide-90 staged" value="<%= operator.upperBoundary %>" />
+                                                        <input id="<%= operator.id + '-' + bin.id + '-' + subFilterLevel + '-upper' %>" type="text" class="wide-90 staged" value="<%= operator.upperBoundary %>" />
                                                     </div>
                                                 </div>
                                                 <div class="pull-right plus-minus-container wide-20 centered">
-                                                    <img id="<%=operator.id %>-<%= bin.id %>-<%= subFilterLevel %>-" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
+                                                    <img id="<%=operator.id %>-<%= bin.id %>-<%= subFilterLevel %>" src="../../img/minus.png" class="icon-small vertical-5 delete-row" />
                                                 </div>
                                             </div>
                                         </div>
@@ -148,7 +148,7 @@
             </li>
         <% }); %>
     <% _.each(model.get("topLevelBin").operators, function(operator) { %>
-        <li id="<%= operator.id %>-newOperator-<%= subFilterLevel %>-" class="ui-state-default" style="margin-top: 5px">
+        <li id="<%= operator.id %>-<%= subFilterLevel %>-newOperator" class="ui-state-default" style="margin-top: 5px">
             <span class="handle" />
         <% if (operator.get && operator.get("isSubFilter")) { %>
             <div class="operator-container clearfix">
@@ -164,9 +164,9 @@
                         <div class="pull-right">
                             <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
                                 <div class="pull-right">
-                                    <img id="<%= operator.get('id') %>-subFilter-<%= subFilterLevel %>" src="../../img/arrow-right.png" class="icon-small vpadded5" />
+                                    <img id="<%= operator.get('id') %>-<%= subFilterLevel %>-subFilter" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                                 </div>
-                                <div id="<%= operator.get('id') %>-subFilterContainer-<%= subFilterLevel %>" class="pull-right padded5 viewSubFilter-1">
+                                <div id="<%= operator.get('id') %>-<%= subFilterLevel %>-subFilterContainer" class="pull-right padded5 viewSubFilter-1">
                                     View Sub-filter
                                 </div>
                             </div>
@@ -185,14 +185,14 @@
                 <div class="wide-50 clearfix">
                     <div class="clearfix">
                         <div class="pull-left operator">
-                            <select id="<%= operator.id + '-property' %>-<%= subFilterLevel %>" class="property">
+                            <select id="<%= operator.id + '-' + subFilterLevel + '-property' %>" class="property">
                                 <% _.each(features, function(feature) { %>
                                 <option value="<%= feature.name %>" <% if (operator.property == feature.name) { %> selected <% } %>><%= feature.name %></option>
                                 <% }); %>
                             </select>
                         </div>
                         <div class="centered inline operator-type-select">
-                                <select id="<%= operator.id + '-type' %>-<%= subFilterLevel %>" class="type">
+                                <select id="<%= operator.id + '-' + subFilterLevel + '-type' %>" class="type">
                                     <% _.each(types, function(type) { %>
                                     <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
                                     <% }); %>
@@ -204,14 +204,14 @@
                     <div class="clearfix">
                         <div class="pull-left wide-80">
                             <div class="inline <%= operator.upperBoundary ? 'wide-45i' : '' %> wide-100">
-                                <input id="<%= operator.id + '-lower' %>-<%= subFilterLevel %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
+                                <input id="<%= operator.id + '-' + subFilterLevel + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                             </div>
                             <div class="inline <%= operator.upperBoundary ? '' : 'hide' %> wide-45 pull-right">
-                                <input id="<%= operator.id + '-upper' %>-<%= subFilterLevel %>" type="text" class="wide-90 staged" value="<%= operator.upperBoundary %>" />
+                                <input id="<%= operator.id + '-' + subFilterLevel + '-upper' %>" type="text" class="wide-90 staged" value="<%= operator.upperBoundary %>" />
                             </div>
                         </div>
                         <div class="pull-right plus-minus-container wide-20 centered">
-                            <img id="<%=operator.id%>-newTopLevelBin-<%= subFilterLevel %>" src="../../img/minus.png" class="icon-small vpadded5 delete-row" />
+                            <img id="<%=operator.id%>-<%= subFilterLevel %>-newTopLevelBin" src="../../img/minus.png" class="icon-small vpadded5 delete-row" />
                         </div>
                     </div>
                 </div>
@@ -228,7 +228,7 @@
         <div class="wide-50 clearfix">
             <div class="clearfix">
                 <div class="pull-left operator">
-                    <select id="newProperty" class="property">
+                    <select id="<%= subFilterLevel %>-newProperty" class="property">
                         <% _.each(features, function(feature) { %>
                             <option value="<%= feature.name %>"><%= feature.name %></option>
                         <% }); %>
