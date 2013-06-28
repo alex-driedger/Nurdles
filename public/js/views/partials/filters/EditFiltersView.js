@@ -31,7 +31,8 @@ define([
             "change #newType": "handleTextFieldsChange",
             "change #newProperty": "handlePropertyChange",
             "add #newTopLevelBin": "addOperatorToTopLevel",
-            "click #newAddLogicBin": "addBin"
+            "click #newAddLogicBin": "addBin",
+            "click #newLogicalOperatorCheckbox": "toggleTopLevelBinType"
         },
 
         addOperatorToTopLevel: function(e, itemInfo) {
@@ -78,8 +79,20 @@ define([
             var id = this.model.addBin();
 
             this.events["add #" + id + "-innerBin"] = "addOperatorToInnerBin";
+            this.events["click #" + id + "-logicalOperatorCheckbox"] = "toggleInnerBinType";
             this.delegateEvents();
             this.reRender();
+        },
+
+        toggleTopLevelBinType: function(e) {
+            this.model.get("topLevelBin").type = $(e.target).prop("checked") ? "&&" : "||";
+        },
+
+        toggleInnerBinType: function(e) {
+            var binId = $(e.target).prop("id").split("-")[0],
+                bin = _.findWhere(this.model.getBins(), {id: parseInt(binId)});
+
+            bin.type = $(e.target).prop("checked") ? "&&" : "||";
         },
 
         applyFilter: function(e) {
