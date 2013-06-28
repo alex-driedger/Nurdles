@@ -46,6 +46,8 @@ define([
             console.log("SENDER: ", itemInfo.sender);
             oldBin.operators = newOperatorList;
             bin.operators.push(operator);
+
+            this.reRender();
         },
 
         addOperatorToInnerBin: function(e, itemInfo) {
@@ -59,6 +61,8 @@ define([
             
             oldBin.operators = newOperatorList;
             bin.operators.push(operator);
+
+            this.reRender();
         },
 
         preventDefault: function(e) {
@@ -123,26 +127,26 @@ define([
         cacheOperators: function() {
             _.each(this.model.getBins(), function(bin) {
                 _.each(bin.operators, function(operator) {
-                    operator.property = $("#" + operator.order + "-" + bin.id + "-property").val();
-                    operator.type = $("#" + operator.order + "-" + bin.id + "-type").val();
+                    operator.property = $("#" + operator.id + "-" + bin.id + "-property").val();
+                    operator.type = $("#" + operator.id + "-" + bin.id + "-type").val();
                     if (operator.upperBoundary) {
-                        operator.lowerBoundary = $("#" + operator.order + "-" + bin.id + "-lower").val();
-                        operator.upperBoundary = $("#" + operator.order + "-" + bin.id + "-upper").val();
+                        operator.lowerBoundary = $("#" + operator.id + "-" + bin.id + "-lower").val();
+                        operator.upperBoundary = $("#" + operator.id + "-" + bin.id + "-upper").val();
                     }
                     else
-                        operator.value = $("#" + operator.order + "-" + bin.id + "-lower").val();
+                        operator.value = $("#" + operator.id + "-" + bin.id + "-lower").val();
                 });
             });
 
             _.each(this.model.get("topLevelBin").operators, function(operator) {
-                operator.property = $("#" + operator.order + "-property").val();
-                operator.type = $("#" + operator.order + "-type").val();
+                operator.property = $("#" + operator.id + "-property").val();
+                operator.type = $("#" + operator.id + "-type").val();
                 if (operator.upperBoundary) {
-                    operator.lowerBoundary = $("#" + operator.order + "-lower").val();
-                    operator.upperBoundary = $("#" + operator.order + "-upper").val();
+                    operator.lowerBoundary = $("#" + operator.id + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.id + "-upper").val();
                 }
                 else
-                    operator.value = $("#" + operator.order + "-lower").val();
+                    operator.value = $("#" + operator.id + "-lower").val();
             });
 
             this.model.set("name", $("#filterName").val());
@@ -224,7 +228,11 @@ define([
         },
 
         deleteRow: function(e) {
-            this.model.removeOperator(e.target.id.toString());
+            var ids = $(e.target).prop("id").split("-"),
+                operatorId = ids[0],
+                binId = ids[1];
+
+            this.model.removeOperator(operatorId, binId, isNaN(parseInt(binId)));
             this.reRender();
         },
 

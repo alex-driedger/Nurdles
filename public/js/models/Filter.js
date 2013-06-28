@@ -72,13 +72,14 @@ define([
             this.trigger("addOperator");
         },
 
-        removeOperator: function(order) {
-            var operatorWithIndex = this.findOperatorByOrder(order)
-            this.get("operators").splice(operatorWithIndex.index, 1);
-            this.operatorCounter--;
-            this.resetOperatorOrder(order);
-            this.trigger("removeOperator");
-            console.log("Now have " + this.get("operators").length + " operators");
+        removeOperator: function(operatorId, binId, isTopLevelBin) {
+            var bin = isTopLevelBin ? this.get("topLevelBin") : _.findWhere(this.getBins(), {id: parseInt(binId)});
+
+            bin.operators = _.reject(bin.operators, function(operator) {
+                return operator.id == parseInt(operatorId);
+            });
+
+            console.log("Now have " + bin.operators.length + " operators in bin: " + binId);
         },
 
         moveOperatorToBin: function(operatorId, fromBin, toBin) {
