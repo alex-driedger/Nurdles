@@ -116,7 +116,7 @@
                                                     <div class="inline <%= operator.upperBoundary ? 'wide-45i' : '' %> wide-100">
                                                         <input id="<%= operator.id + '-' + bin.id + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                                                     </div>
-                                                    <div class="inline <%= operator.upperBoundary ? 'wide-45' : 'hide' %> pull-right">
+                                                    <div class="inline <%= operator.upperBoundary ? '' : 'hide' %> wide-45 pull-right">
                                                         <input id="<%= operator.id + '-' + bin.id +'-upper' %>" type="text" class="wide-90 staged" value="<%= operator.upperBoundary %>" />
                                                     </div>
                                                 </div>
@@ -193,8 +193,8 @@
                             <div class="inline <%= operator.upperBoundary ? 'wide-45i' : '' %> wide-100">
                                 <input id="<%= operator.id + '-lower' %>" type="text" class="wide-90 staged" value="<%= operator.value ? operator.value : operator.lowerBoundary %>" />
                             </div>
-                            <div class="inline <%= operator.upperBoundary ? 'wide-45' : 'hide' %> pull-right">
-                                <input id="<%= operator.id + '-upper' %>" type="text" class="wide-90 staged <%= operator.upperBoundary ? '' : 'hide' %>" value="<%= operator.upperBoundary %>" />
+                            <div class="inline <%= operator.upperBoundary ? '' : 'hide' %> wide-45 pull-right">
+                                <input id="<%= operator.id + '-upper' %>" type="text" class="wide-90 staged" value="<%= operator.upperBoundary %>" />
                             </div>
                         </div>
                         <div class="pull-right plus-minus-container wide-20 centered">
@@ -210,7 +210,7 @@
 </div>
 <% } %>
 
-<div id="newOperatorsContainer">
+<div id="newOperatorsContainer" <% if (model.get("topLevelBin").operators.length > 0 || model.getBins().length > 0) { %> class="new-operator" <% } %>>
     <div class="operator-container clearfix">
         <div class="wide-50 clearfix">
             <div class="clearfix">

@@ -36,7 +36,7 @@ define([
 
         addBin: function() {
             var bin = {};
-            this.set("topBinId", this.topBinId++);
+            this.set("topBinId", ++this.topBinId);
 
             bin.id = this.topBinId;
             bin.type = "&&";
@@ -67,7 +67,7 @@ define([
         },
 
         addOperator: function(operator, isSubFilter) {
-            this.set("topOperatorId", this.operatorCounter++);
+            this.set("topOperatorId", ++this.operatorCounter);
             operator.id = this.operatorCounter;
 
             this.get("topLevelBin").operators.push(operator);

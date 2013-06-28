@@ -801,6 +801,10 @@ table.wms, td.wms
     margin-top: -5px;
 }
 
+.new-operator {
+    padding-top: 30px;
+}
+
 /*-----------------------Logical Operators------------------------------*/
 
 .logicalOperatorContainer {
