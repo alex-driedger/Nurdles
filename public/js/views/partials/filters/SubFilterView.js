@@ -341,6 +341,17 @@ define([
             this.updateAssociatedTypes($("#" + this.subFilterLevel + "-newProperty"));
             this.updateValueTextFields($("#" + this.subFilterLevel + "-newType"), $("#" + this.subFilterLevel + "-newUpper"));
             
+            $( "#" + this.subFilterLevel + "-topLevelBinContainer ul").sortable({
+                placeholder: "ui-state-highlight",
+                items: "li:not(.ui-state-disabled)",
+                cancel: ".ui-state-disabled",
+                connectWith: "#" + this.subFilterLevel + "-topLevelBinContainer ul",
+                handle: "span",
+                receive: function(event, ui) {
+                    console.log($(this).prop("id") + " got a new operator");
+                    $(event.target).trigger('add', {itemId: ui.item.prop("id"), sender: ui.sender});
+                }
+            }).disableSelection();
             return this;
         }
     });
