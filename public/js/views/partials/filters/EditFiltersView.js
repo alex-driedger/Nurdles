@@ -121,10 +121,21 @@ define([
         },
 
         showSubFilterUIWithSeed: function(e) {
-            var order = $(e.target).prop("id").split("-")[0],
-                filter = _.findWhere(this.model.get("operators"), {order: parseInt(order)});
+            var ids = $(e.target).prop("id").split("-"),
+                bin, subFilter;
 
-            this.showSubFilterUI(e, filter, $("#" + order + "-subFilterContainer-1"));
+            if (ids.length > 3)
+                bin = _.findWhere(this.model.getBins(), {id: parseInt(ids[1])});
+            else
+                bin = this.model.get("topLevelBin");
+
+            subFilter = _.find(bin.operators, function(operator) {
+                if (operator.get && operator.get("isSubFilter")) {
+                    return operator.get("id") == ids[0];
+                }
+            });
+
+            this.showSubFilterUI(e, subFilter, $(e.target));
         },
 
         showSubFilterUI: function(e, model, container) {

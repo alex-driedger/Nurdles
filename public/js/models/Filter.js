@@ -69,6 +69,8 @@ define([
         addOperator: function(operator, isSubFilter) {
             this.set("topOperatorId", ++this.operatorCounter);
             operator.id = this.operatorCounter;
+            if (isSubFilter)
+                operator.set("id", operator.id);
 
             this.get("topLevelBin").operators.push(operator);
             this.trigger("addOperator");
