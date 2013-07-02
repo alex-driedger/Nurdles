@@ -26,8 +26,6 @@ define([
             "click #clearFilter": "clearFilter",
             "click #createFilter": "createFilter",
             "click #applyFilter": "applyFilter",
-            "click .subFilter-1": "showSubFilterUI",
-            "click .viewSubFilter-1": "showSubFilterUIWithSeed",
             "change .type": "handleTextFieldsChange",
             "change .property": "handlePropertyChange",
             "add #newTopLevelBin": "addOperatorToTopLevel",
@@ -136,6 +134,8 @@ define([
             });
 
             this.showSubFilterUI(e, subFilter, $(e.target));
+            delete this.events["click .viewSubFilter-1"];
+            this.delegateEvents();
         },
 
         showSubFilterUI: function(e, model, container) {
@@ -158,6 +158,9 @@ define([
 
             subFilter.render();
             this.addSubView(subFilter);
+
+            delete this.events["click .subFilter-1"];
+            this.delegateEvents();
         },
 
         cacheOperators: function() {
@@ -320,6 +323,11 @@ define([
                     $(event.target).trigger('add', {itemId: ui.item.prop("id"), sender: ui.sender});
                 }
             }).disableSelection();
+
+            this.events["click .subFilter-1"] = "showSubFilterUI";
+            this.events["click .viewSubFilter-1"] = "showSubFilterUIWithSeed";
+
+            this.delegateEvents();
 
             return this;
         }

@@ -6,7 +6,11 @@ var self = {
         var ObjectId = mongoose.Types.ObjectId;
         Filter.findOne({owner: ObjectId(userId.toString())}).sort({order: -1}).exec(function(err, maxFilter) {
             filter.owner = userId;
-            filter.order = maxFilter.order + 1;
+            if (maxFilter)
+                filter.order = maxFilter.order + 1;
+            else
+                filter.order = 0;
+
             Filter.create(filter, function(err, filter) {
                 callback(null, filter);
             });
