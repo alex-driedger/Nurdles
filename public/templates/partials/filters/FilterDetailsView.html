@@ -86,11 +86,11 @@
                                             <div class="wide-50">
                                                 <div class="clearfix subFilter-operator">
                                                     <div class="pull-right">
-                                                        <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
+                                                        <div class="plus-minus-container sub-filter-marker subFilter viewSavedSubFilter-1 clearfix">
                                                             <div class="pull-right">
                                                                 <img id="<%= operator.get('id') %>-<%= bin.id %>-<%= filter.get('_id') %>-subFilter" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                                                             </div>
-                                                            <div id="<%= operator.get('id') %>-<%= bin.id %>-<%= filter.get('_id') %>-subFilterContainer" class="pull-right padded5 viewSubFilter-1">
+                                                            <div id="<%= operator.get('id') %>-<%= bin.id %>-<%= filter.get('_id') %>-subFilterContainer" class="pull-right padded5">
                                                                 View Sub-filter
                                                             </div>
                                                         </div>
@@ -163,11 +163,11 @@
                     <div class="wide-50">
                         <div class="clearfix subFilter-operator">
                             <div class="pull-right">
-                                <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
+                                <div class="plus-minus-container sub-filter-marker subFilter viewSavedSubFilter-1 clearfix">
                                     <div class="pull-right">
                                         <img id="<%= operator.get('id') %>-<%= filter.get('_id') %>-subFilter" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                                     </div>
-                                    <div id="<%= operator.get('id') %>-<%= filter.get('_id') %>-subFilterContainer" class="pull-right padded5 viewSubFilter-1">
+                                    <div id="<%= operator.get('id') %>-<%= filter.get('_id') %>-subFilterContainer" class="pull-right padded5 ">
                                         View Sub-filter
                                     </div>
                                 </div>
@@ -212,7 +212,7 @@
                                 </div>
                             </div>
                             <div class="pull-right plus-minus-container wide-20 centered">
-                                <img id="<%=operator.id%>-<%= filter.get('_id') %>-newTopLevelBin" src="../../img/minus.png" class="icon-small vpadded5 delete-row" />
+                                <img id="<%=operator.id%>-topLevelBin-<%= filter.get('_id') %>" src="../../img/minus.png" class="icon-small vpadded5 delete-row" />
                             </div>
                         </div>
                     </div>
@@ -224,7 +224,7 @@
     </div>
     <% } %>
 
-    <div id="<%= filter.get('_id') %>-newOperatorsContainer" <% if (filter.get("topLevelBin").operators.length > 0 || filter.getBins().length > 0) { %> class="new-operator" <% } %>>
+    <div id="<%= filter.get('_id') %>-operatorsContainer" <% if (filter.get("topLevelBin").operators.length > 0 || filter.getBins().length > 0) { %> class="new-operator" <% } %>>
         <div class="operator-container clearfix">
             <div class="wide-50 clearfix">
                 <div class="clearfix">
@@ -255,11 +255,11 @@
                         </div>
                     </div>
                     <div class="pull-right">
-                        <div class="plus-minus-container sub-filter-marker new subFilter subFilter-1 clearfix">
+                        <div class="plus-minus-container sub-filter-marker new subFilter savedSubFilter-1 clearfix">
                             <div class="pull-right">
                                 <img id="<%= filter.get('_id') %>-newSubFilter" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                             </div>
-                            <div id="<%= filter.get('_id') %>-newSubFilterContainer" class="pull-right margin-centered padded5">
+                            <div id="<%= filter.get('_id') %>-newSavedSubFilterContainer-1" class="pull-right margin-centered padded5">
                                 New Sub-filter
                             </div>
                         </div>

@@ -5,7 +5,6 @@ define([
 ], function($, _, Backbone){
     var Filter = Backbone.Model.extend({
         idAttribute: "_id",
-        operatorCounter: 0,
 
         initialize: function(attributes) {
             this.set("operators", []);
@@ -18,7 +17,6 @@ define([
             if (!this.get("topBinId"))
                 this.set("topBinId", 0);
 
-            this.operatorCounter = this.get("topOperatorId");
             this.topBinId = this.get("topBinId");
         },
 
@@ -67,10 +65,10 @@ define([
         },
 
         addOperator: function(operator, isSubFilter) {
-            this.set("topOperatorId", ++this.operatorCounter);
-            operator.id = this.operatorCounter;
+            this.set("topOperatorId", this.get("topOperatorId") + 1);
+            operator.id = this.get("topOperatorId");
             if (isSubFilter)
-                operator.set("id", operator.id);
+                operator.set("id", this.get("topOperatorId"));
 
             this.get("topLevelBin").operators.push(operator);
             this.trigger("addOperator");
@@ -114,8 +112,10 @@ define([
         },
 
         clearOperators: function() {
-            this.set("operators", []);
-            this.operatorCounter = 0;
+            this.get("topLevelBin").operators = [];
+            this.set("bins", []);
+            this.set("topBinId", 0);
+            this.set("topOperatorId", 0);
             this.trigger("clearOperators");
         },
 

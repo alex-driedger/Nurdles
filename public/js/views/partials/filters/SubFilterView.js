@@ -310,8 +310,12 @@ define([
         },
 
         deleteRow: function(e) {
+            var ids = $(e.target).prop("id").split("-"),
+                operatorId = ids[0],
+                binId = ids[1];
+
             e.stopPropagation();
-            this.model.removeOperator($(e.target).prop("id").split("-")[0]);
+            this.model.removeOperator(operatorId, binId, isNaN(binId));
             this.reRender();
         },
 
