@@ -41,10 +41,10 @@ define([
                 filter.addBin();
                 for (var j = 0, len2 = bins[i].operators.length; j < len2; j++) {
                     if (bins[i].operators[j].isSubFilter) {
-                        filter.bins[j].operators.push(this.transformDataIntoModel(bins[i].operators[j]));
+                        filter.getBins()[i].operators.push(this.transformDataIntoModel(bins[i].operators[j]));
                     }
                     else
-                        filter.bins[j].operators.push(bins[i].operatos[j]);
+                        filter.getBins()[i].operators.push(bins[i].operators[j]);
                 }
             }
 

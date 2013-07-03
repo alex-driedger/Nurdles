@@ -46,9 +46,6 @@ define([
             "click .add-row": "addRow",
             "change .newType": "handleTextFieldsChange",
             "change .newProperty": "handlePropertyChange",
-            "click .sub-filter-marker": "stopPropagation",
-            "click input": "stopPropagation",
-            "click .sub-filter-marker-active": "preventDefault"
         },
 
         addOperatorToTopLevel: function(e, itemInfo) {
@@ -146,6 +143,8 @@ define([
                     return operator.get("id") == ids[0];
                 }
             });
+
+            subFilter.isNew = false;
 
             this.showSubFilterUI(e, subFilter, $(e.target));
 
