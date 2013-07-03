@@ -17,6 +17,7 @@ define([
                 this.model = new Filter();
             }
 
+
             //If anything happens to our operators collection, show the user.
             this.bindTo(this.model, "removeOperator", this.cacheOperators);
             this.bindTo(this.model, "clearOperators", this.reRender);
@@ -25,8 +26,6 @@ define([
             //Dynamically bound operations based on subfilter level
             //Somewhat faking the event delegation in backbone but it's technically legit
             //Do this on init so I don't need to redelegate events later on
-            this.events["click .subFilter-" + this.subFilterLevel] = "showSubFilterUI";
-            this.events["click .viewSubFilter-" + this.subFilterLevel] = "showSubFilterUIWithSeed";
             this.events["click #deleteFilter-" + this.subFilterLevel] = "deleteFilter";
             this.events["click #cancelFilter-" + this.subFilterLevel] = "cancelFilter";
             this.events["click #clearFilter-" + this.subFilterLevel] = "clearFilter";
@@ -37,7 +36,7 @@ define([
 
             this.events["add #" + this.subFilterLevel + "-topLevelBin"] = "addOperatorToTopLevel";
             this.events["click #" + this.subFilterLevel + "-addLogicBin"] = "addBin";
-            this.events["click #subFilterLogicalOperatorCheckbox"] = "toggleTopLevelBinType";
+            this.events["click #" + this.subFilterLevel + "-subFilterLogicalOperatorCheckbox"] = "toggleTopLevelBinType";
         },
 
         template: _.template(subFilterTemplate),
@@ -149,6 +148,9 @@ define([
             });
 
             this.showSubFilterUI(e, subFilter, $(e.target));
+
+            delete this.events["click .viewSubFilter-" + this.subFilterLevel];
+            this.delegateEvents();
         },
 
         showSubFilterUI: function(e, model, container) {
@@ -166,7 +168,16 @@ define([
                 subFilterLevel: this.subFilterLevel + 1,
                 filters: this.filters,
                 parentView: this,
-                model: model
+                model: model,
+                events: { //SPECIAL CASE. Since we're creating a subview of the same "class" as the class we're currently in, we need to reset the events otherwise they will transfer over because of the prototypal chain.
+                    "click .delete-row": "deleteRow",
+                    "click .add-row": "addRow",
+                    "change .newType": "handleTextFieldsChange",
+                    "change .newProperty": "handlePropertyChange",
+                    "click .sub-filter-marker": "stopPropagation",
+                    "click input": "stopPropagation",
+                    "click .sub-filter-marker-active": "preventDefault"
+                }
             });
 
             subFilter.render();
@@ -174,6 +185,9 @@ define([
 
             if (this.subFilterLevel >= 1)
                 this.parentView.hideView();
+
+            delete this.events["click .subFilter-" + this.subFilterLevel];
+            this.delegateEvents();
         },
 
         cacheOperators: function() {
@@ -367,6 +381,11 @@ define([
                     $(event.target).trigger('add', {itemId: ui.item.prop("id"), sender: ui.sender});
                 }
             }).disableSelection();
+
+            this.events["click .subFilter-" + this.subFilterLevel] = "showSubFilterUI";
+            this.events["click .viewSubFilter-" + this.subFilterLevel] = "showSubFilterUIWithSeed";
+            this.delegateEvents();
+
             return this;
         }
     });

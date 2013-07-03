@@ -32,7 +32,7 @@
 <div class="wide-100 clearfix">
     <div id="binLogicOperator" class="logic-bin-operator pull-left">
         <label class="logicalOperatorContainer checkbox toggle well between-operators">
-            <input id="subFilterLogicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (model.get("topLevelBin").type == "&&") { %> checked <% } %> />
+            <input id="<%= subFilterLevel %>-subFilterLogicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (model.get("topLevelBin").type == "&&") { %> checked <% } %> />
             <p>
             <span>AND</span>
             <span>OR</span>
@@ -85,11 +85,11 @@
                                         <div class="wide-50">
                                             <div class="clearfix subFilter-operator">
                                                 <div class="pull-right">
-                                                    <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
+                                                    <div class="plus-minus-container sub-filter-marker subFilter viewSubFilter-<%= subFilterLevel %> clearfix">
                                                         <div class="pull-right">
                                                             <img id="<%= operator.get('id') %>-<%= bin.id %>-<%= subFilterLevel %>-subFilter" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                                                         </div>
-                                                        <div id="<%= operator.get('id') %>-<%= bin.id %>-<%= subFilterLevel %>-subFilterContainer" class="pull-right padded5 viewSubFilter-1">
+                                                        <div id="<%= operator.get('id') %>-<%= bin.id %>-<%= subFilterLevel %>-subFilterContainer" class="pull-right padded5 ">
                                                             View Sub-filter
                                                         </div>
                                                     </div>
@@ -162,11 +162,11 @@
                 <div class="wide-50">
                     <div class="clearfix subFilter-operator">
                         <div class="pull-right">
-                            <div class="plus-minus-container sub-filter-marker subFilter subFilter-1 clearfix">
+                            <div class="plus-minus-container sub-filter-marker subFilter viewSubFilter-<%= subFilterLevel %> clearfix">
                                 <div class="pull-right">
                                     <img id="<%= operator.get('id') %>-<%= subFilterLevel %>-subFilter" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                                 </div>
-                                <div id="<%= operator.get('id') %>-<%= subFilterLevel %>-subFilterContainer" class="pull-right padded5 viewSubFilter-1">
+                                <div id="<%= operator.get('id') %>-<%= subFilterLevel %>-subFilterContainer" class="pull-right padded5 ">
                                     View Sub-filter
                                 </div>
                             </div>
@@ -254,7 +254,7 @@
                     </div>
                 </div>
                 <div class="pull-right">
-                    <div class="plus-minus-container sub-filter-marker new subFilter subFilter-1 clearfix">
+                    <div class="plus-minus-container sub-filter-marker new subFilter subFilter-<%= subFilterLevel %> clearfix">
                         <div class="pull-right">
                             <img id="<%= subFilterLevel %>-newSubFilter" src="../../img/arrow-right.png" class="icon-small vpadded5" />
                         </div>

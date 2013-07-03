@@ -19,9 +19,12 @@ define([
                 }
             }
 
-
             if (this.restoreState)
                 this.restoreState();
+
+            //Events are "inherited" through the prototype chain so we need to re-delegate 
+            //them in order for this particular view to only respond to it's own events.
+            this.delegateEvents()
         },
 
         startLoad: function() {
