@@ -362,7 +362,9 @@ define([
                 model: this.model,
                 subFilterLevel: this.subFilterLevel,
                 filters: this.filters
-            };
+            },
+                view = this;
+
 
             this.$el.removeClass("pull-right");
             this.$el.html(this.template(templateData)).addClass("wide-95");
@@ -383,6 +385,11 @@ define([
 
             this.events["click .subFilter-" + this.subFilterLevel] = "showSubFilterUI";
             this.events["click .viewSubFilter-" + this.subFilterLevel] = "showSubFilterUIWithSeed";
+
+            _.each(this.model.getBins(), function(bin) {
+                view.events["click #" + bin.id + "-" + view.subFilterLevel + "-logicalOperatorCheckbox"] = "toggleInnerBinType";
+            });
+
             this.delegateEvents();
 
             return this;

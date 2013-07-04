@@ -7,17 +7,6 @@
             <input id="<%= filter.get('_id') %>-checkbox" class="activateCheckbox" type="checkbox" <% if (filter.get("active")) { %> checked <% } %>/>
         </div>
     </div>
-    <% if (!lastFilter) { %>
-        <label class="logicalOperatorContainer checkbox toggle well">
-            <input id="<%= filter.get('_id') %>-logicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (filter.get("logicalOperator") == "&&") { %> checked <% } %> />
-            <p>
-            <span>AND</span>
-            <span>OR</span>
-            </p>
-
-            <a id="<%= filter.get('_id') %>-logicalOperator" class="btn btn-info slide-button"></a>
-        </label>
-    <% } %>
 </div>
 <div id="<%= filter.get('_id') %>-container" class="filter-operands-container clearfix">
     <div id="filterHeader" class="filter-list-header clearfix">

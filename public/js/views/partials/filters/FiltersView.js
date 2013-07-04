@@ -46,6 +46,7 @@ define([
                     else
                         filter.getBins()[i].operators.push(bins[i].operators[j]);
                 }
+                filter.getBins()[i].type = bins[i].type;
             }
 
             return filter;
