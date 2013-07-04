@@ -144,42 +144,84 @@ define([
             return newFilter;
         },
 
-        createOpenLayersFilters: function(filters) {
-            var simplifiedFilters = [];
-            var olFilters = new OpenLayers.Filter.Logical({
-                type: OpenLayers.Filter.Logical.AND 
+        constructLogicalFilter: function(filter) {
+            var topLevelBin = filter.get("topLevelBin"),
+                bins = filter.getBins(),
+                util = this;
+
+            var olFilter = new OpenLayers.Filter.Logical({
+                type: topLevelBin.type 
             });
 
-            for (var i = 0, len = filters.length; i< len; i++) {
-                olFilters.filters.push(this.convertFilterToFilterParam(filters[i]))
-            };
+            _.each(topLevelBin.operators, function(operator) {
+                if (operator.get && operator.get("isSubFilter")) 
+                    olFilter.filters.push(util.constructLogicalFilter(operator));
+                else
+                    olFilter.filters.push(operator);
+            });
+
+            _.each(bins, function(bin) {
+                var innerOlFilter = new OpenLayers.Filter.Logical({
+                    type: bin.type
+                });
+
+                _.each(bin.operators, function(operator) {
+                if (operator.get && operator.get("isSubFilter")) 
+                    innerOlFilter.filters.push(util.constructLogicalFilter(operator));
+                else
+                    innerOlFilter.filters.push(operator);
+                });
+
+                olFilter.filters.push(innerOlFilter);
+            });
+
+            return olFilter;
+
+        },
+
+        createOpenLayersFilters: function(filters) {
+            var olFilter = new OpenLayers.Filter.Logical({
+                type: "&&"
+            }),
+                util = this;
+
+            _.each(filters, function(filter) {
+                olFilter.filters.push(util.constructLogicalFilter(filter));
+            });
 
             var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
             var xml = new OpenLayers.Format.XML(); 
-            var filter_param = xml.write(filter_1_0.write(olFilters));
+            var filter_param = xml.write(filter_1_0.write(olFilter));
             console.log(filter_param);
 
             return filter_param;
         },
 
         convertFilterToFilterParam: function(filter) {
-            var olFilters = new OpenLayers.Filter.Logical({
-                type: OpenLayers.Filter.Logical.AND 
-            }),
-            operators = filter.getOperators();
+            var outerFilter = new OpenLayers.Filter.Logical(),
+                subFilter = new OpenLayers.Filter.Logical(),
+                operands = [],
+                operators = filter.getOperators();
 
-            for (var j = 0, olen = operators.length; j < olen; j++) {
+            outerFilter.type = filter.get("logicalOperator");
+            subFilter.type = "&&";
+
+            for (var j = 0; j < operators.length; j++) {
                 var operator = operators[j];
                 if (operator.get && operator.get("isSubFilter")) {
-                    subFilter = this.convertFilterToFilterParam(operator);
-                    olFilters.filters.push(subFilter);
+                    subfilterOperands = this.convertFilterToFilterParam(operator);
+                    _.each(subfilterOperands, function(operand) {
+                        subFilter.filters.push(operand);
+                    });
+                    outerFilter.filters.push(subFilter);
+                    operands.push(outerFilter);
                 }
                 else {
-                    olFilters.filters.push(operator);
+                    operands.push(operator);
                 }
             }
 
-            return olFilters;
+            return operands;
         },
 
         addControlsToMap: function(view, currentFilter) {
@@ -344,32 +386,31 @@ define([
                 value: bounds.transform(mapProjection.projection, mapProjection.displayProjection)
             });
 
-            if (currentFilter instanceof Array)
+            if (currentFilter instanceof Array && currentFilter.length != 0) {
                 currentFilter = this.createOpenLayersFilters(currentFilter);
+                filter = this.mergeActiveFilters(filter, currentFilter);
 
-            filter = this.mergeActiveFilters(filter, currentFilter);
+                var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
+                    url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
+                    featurePrefix: "", 
+                    featureType: "exactAIS:LVI",
+                }); 
 
-            var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
-                url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
-                featurePrefix: "", 
-                featureType: "exactAIS:LVI",
-            }); 
+                wfsProtocol.read ({ 
+                    filter: filter, 
+                    callback: function(response) {
+                        Backbone.globalEvents.trigger("fetchedShipCount", response.numberOfFeatures);
 
-            wfsProtocol.read ({ 
-                filter: filter, 
-                callback: function(response) {
-                    Backbone.globalEvents.trigger("fetchedShipCount", response.numberOfFeatures);
-
-                    if (_.isFunction(callback)) {
-                        callback(response.numberOfFeatures);
-                    }
-                },
-                readOptions: {output: "object"},
-                resultType: "hits",
-                maxFeatures: null,
-                scope: new OpenLayers.Strategy.Fixed
-            }); 
-            
+                        if (_.isFunction(callback)) {
+                            callback(response.numberOfFeatures);
+                        }
+                    },
+                    readOptions: {output: "object"},
+                    resultType: "hits",
+                    maxFeatures: null,
+                    scope: new OpenLayers.Strategy.Fixed
+                }); 
+            }
         }
     };
 

@@ -13,8 +13,10 @@ define([
             this.isNew = true;
             this.initArgs(args);
 
-            if (!this.model)
+            if (!this.model) {
                 this.model = new Filter();
+            }
+
 
             //If anything happens to our operators collection, show the user.
             this.bindTo(this.model, "removeOperator", this.cacheOperators);
@@ -24,8 +26,6 @@ define([
             //Dynamically bound operations based on subfilter level
             //Somewhat faking the event delegation in backbone but it's technically legit
             //Do this on init so I don't need to redelegate events later on
-            this.events["click .subFilter-" + this.subFilterLevel] = "showSubFilterUI";
-            this.events["click .viewSubFilter-" + this.subFilterLevel] = "showSubFilterUIWithSeed";
             this.events["click #deleteFilter-" + this.subFilterLevel] = "deleteFilter";
             this.events["click #cancelFilter-" + this.subFilterLevel] = "cancelFilter";
             this.events["click #clearFilter-" + this.subFilterLevel] = "clearFilter";
@@ -34,31 +34,9 @@ define([
             this.events["click #newLower-" + this.subFilterLevel] = "stopPropagation";
             this.events["click #newUpper-" + this.subFilterLevel] = "stopPropagation";
 
-            var transformedOperators = [],
-                operators = this.model.getOperators();
-
-            this.model.operatorCounter = operators.length;
-            for (var i = 0, len = operators.length; i < len; i++) {
-                var operator = operators[i],
-                    filter = new Filter();
-
-                if (operator.operators) {
-                    for (var j = 0, oLen = operator.operators.length; j < oLen; j++) {
-                        if (operator.operators[j].isSubFilter) {
-                            for (var key in operator.operators[j]) {
-                                filter.set(key, operator.operators[j][key]);
-                            }
-                            filter.isSubFilter = true;
-                            filter.subFilterId = filter.get("subFilterId");
-                            filter.id = filter.get("id");
-                            operator.operators[j] = filter;
-                        }
-                    }
-                }
-                transformedOperators.push(operator);
-            };
-
-            this.model.setOperators(transformedOperators);
+            this.events["add #" + this.subFilterLevel + "-topLevelBin"] = "addOperatorToTopLevel";
+            this.events["click #" + this.subFilterLevel + "-addLogicBin"] = "addBin";
+            this.events["click #" + this.subFilterLevel + "-subFilterLogicalOperatorCheckbox"] = "toggleTopLevelBinType";
         },
 
         template: _.template(subFilterTemplate),
@@ -68,17 +46,79 @@ define([
             "click .add-row": "addRow",
             "change .newType": "handleTextFieldsChange",
             "change .newProperty": "handlePropertyChange",
-            "click .sub-filter-marker": "stopPropagation",
-            "click input": "stopPropagation"
+        },
+
+        addOperatorToTopLevel: function(e, itemInfo) {
+            this.stopPropagation(e);
+            var oldBin =  _.findWhere(this.model.getBins(), {id: parseInt(itemInfo.sender.prop("id").split("-")[0])});
+            var bin = this.model.get("topLevelBin");
+            var operator = _.findWhere(oldBin.operators, {id: parseInt(itemInfo.itemId.split("-")[0])}),
+                newOperatorList = _.reject(oldBin.operators, function(operator) {
+                    return operator.id == parseInt(itemInfo.itemId.split("-")[0]);
+                });
+            
+            console.log("SENDER: ", itemInfo.sender);
+            oldBin.operators = newOperatorList;
+            bin.operators.push(operator);
+
+            this.reRender();
+        },
+
+        addOperatorToInnerBin: function(e, itemInfo) {
+            this.stopPropagation(e);
+            var oldBin = itemInfo.sender.prop("id") === (this.subFilterLevel + "-topLevelBin") ? this.model.get("topLevelBin") : _.findWhere(this.model.getBins(), {id: parseInt(itemInfo.sender.prop("id").split("-")[0])});
+            var bin =  _.findWhere(this.model.getBins(), {id: parseInt($(e.target).prop("id").split("-")[0])});
+            var operator = _.findWhere(oldBin.operators, {id: parseInt(itemInfo.itemId.split("-")[0])}),
+                newOperatorList = _.reject(oldBin.operators, function(operator) {
+                    return operator.id == parseInt(itemInfo.itemId.split("-")[0]);
+                });
+            
+            oldBin.operators = newOperatorList;
+            bin.operators.push(operator);
+
+            this.reRender();
+        },
+
+        preventDefault: function(e) {
+            e.preventDefault();
+            this.stopPropagation(e);
         },
 
         stopPropagation: function(e) {
             e.stopPropagation();
         },
 
-        applyFilter: function(e) {
-            Backbone.globalEvents.trigger("filtersChanged", [this.model]);
-            console.log(this.model);
+        addBin: function() {
+            var id = this.model.addBin();
+
+            this.events["add #" + id + "-" + this.subFilterLevel + "-innerBin"] = "addOperatorToInnerBin";
+            this.events["click #" + id + "-" + this.subFilterLevel + "-logicalOperatorCheckbox"] = "toggleInnerBinType";
+            this.events["click #" + id + "-" + this.subFilterLevel + "-removeBin"] = "removeBin";
+            this.delegateEvents();
+            this.reRender();
+        },
+
+        removeBin: function(e) {
+            var binId = $(e.target).prop("id").split("-")[0];
+
+            this.model.removeBin(binId);
+            delete this.events["add #" + binId + "-" + this.subFilterLevel + "-innerBin"];
+            delete this.events["click #" + binId + "-" + this.subFilterLevel + "-logicalOperatorCheckbox"];
+            delete this.events["click #" + binId + "-" + this.subFilterLevel + "-removeBin"];
+
+            this.reRender();
+        },
+
+        toggleTopLevelBinType: function(e) {
+            e.stopPropagation();
+            this.model.get("topLevelBin").type = $(e.target).prop("checked") ? "&&" : "||";
+        },
+
+        toggleInnerBinType: function(e) {
+            var binId = $(e.target).prop("id").split("-")[0],
+                bin = _.findWhere(this.model.getBins(), {id: parseInt(binId)});
+
+            bin.type = $(e.target).prop("checked") ? "&&" : "||";
         },
 
         hideView: function() {
@@ -90,20 +130,32 @@ define([
         },
 
         showSubFilterUIWithSeed: function(e) {
-            var order = $(e.target).prop("id").split("-")[0],
-                filter = _.findWhere(this.model.get("operators"), {order: parseInt(order)});
+            var ids = $(e.target).prop("id").split("-"),
+                bin, subFilter;
 
-            if (!filter)
-                filter = _.findWhere(this.model.get("operators"), {order: parseInt(order)});
+            if (ids.length > 3)
+                bin = _.findWhere(this.model.getBins(), {id: parseInt(ids[1])});
+            else
+                bin = this.model.get("topLevelBin");
 
-            filter.isNew = false;
-            this.showSubFilterUI(e, filter, $("#" + order + "-subFilterContainer-" + this.subFilterLevel));
+            subFilter = _.find(bin.operators, function(operator) {
+                if (operator.get && operator.get("isSubFilter")) {
+                    return operator.get("id") == ids[0];
+                }
+            });
+
+            subFilter.isNew = false;
+
+            this.showSubFilterUI(e, subFilter, $(e.target));
+
+            delete this.events["click .viewSubFilter-" + this.subFilterLevel];
+            this.delegateEvents();
         },
 
         showSubFilterUI: function(e, model, container) {
             e.stopPropagation();
             if (!container) 
-                container = $("#newSubFilterContainer-" + this.subFilterLevel);
+                container = $("#" + this.subFilterLevel + "-newSubFilterContainer");
 
             $(e.target).closest(".subFilter").toggleClass("sub-filter-marker-active")
                 .toggleClass("subFilter");
@@ -115,7 +167,16 @@ define([
                 subFilterLevel: this.subFilterLevel + 1,
                 filters: this.filters,
                 parentView: this,
-                model: model
+                model: model,
+                events: { //SPECIAL CASE. Since we're creating a subview of the same "class" as the class we're currently in, we need to reset the events otherwise they will transfer over because of the prototypal chain.
+                    "click .delete-row": "deleteRow",
+                    "click .add-row": "addRow",
+                    "change .newType": "handleTextFieldsChange",
+                    "change .newProperty": "handlePropertyChange",
+                    "click .sub-filter-marker": "stopPropagation",
+                    "click input": "stopPropagation",
+                    "click .sub-filter-marker-active": "preventDefault"
+                }
             });
 
             subFilter.render();
@@ -123,22 +184,39 @@ define([
 
             if (this.subFilterLevel >= 1)
                 this.parentView.hideView();
+
+            delete this.events["click .subFilter-" + this.subFilterLevel];
+            this.delegateEvents();
         },
 
         cacheOperators: function() {
             var view = this;
-            _.each(this.model.getOperators(), function(operator) {
-                operator.property = $("#" + operator.order + "-property-" + view.subFilterLevel).val();
-                operator.type = $("#" + operator.order + "-type-" + view.subFilterLevel).val();
-                if (operator.upperBoundary) {
-                    operator.lowerBoundary = $("#" + operator.order + "-lower-" + view.subFilterLevel).val();
-                    operator.upperBoundary = $("#" + operator.order + "-upper-" + view.subFilterLevel).val();
-                }
-                else
-                    operator.value = $("#" + operator.order + "-lower-" + view.subFilterLevel).val();
+
+            _.each(this.model.getBins(), function(bin) {
+                _.each(bin.operators, function(operator) {
+                    operator.property = $("#" + operator.id + "-" + bin.id + "-" + view.subFilterLevel + "-property").val();
+                    operator.type = $("#" + operator.id + "-" + bin.id + "-type").val();
+                    if (operator.upperBoundary) {
+                        operator.lowerBoundary = $("#" + operator.id + "-" + bin.id + "-" + view.subFilterLevel + "-lower").val();
+                        operator.upperBoundary = $("#" + operator.id + "-" + bin.id + "-" + view.subFilterLevel + "-upper").val();
+                    }
+                    else
+                        operator.value = $("#" + operator.id + "-" + bin.id + "-" + view.subFilterLevel + "-lower").val();
+                });
             });
 
-            this.model.set("name", $("#filterName-" + this.subFilterLevel).val());
+            _.each(this.model.get("topLevelBin").operators, function(operator) {
+                operator.property = $("#" + operator.id + "-" + view.subFilterLevel + "-property").val();
+                operator.type = $("#" + operator.id + "-" + view.subFilterLevel + "-type").val();
+                if (operator.upperBoundary) {
+                    operator.lowerBoundary = $("#" + operator.id + "-" + view.subFilterLevel + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.id + "-" + view.subFilterLevel + "-upper").val();
+                }
+                else
+                    operator.value = $("#" + operator.id + "-" + view.subFilterLevel + "-lower").val();
+            });
+
+            this.model.set("name", $("#filterName").val());
         },
 
         clearFilter: function() {
@@ -209,62 +287,67 @@ define([
             var selectedVal = target.val(),
                 type = _.findWhere(this.features, {name:selectedVal}).type,
                 types = Utils.getTypeDropdownValues(type),
-                selecteProperty = $("#newType-" + this.subFilterLevel).val(),
-                view = this;
+                selectedProperty = $(target.parent().next().children()[0]),
+                selectedValue = selectedProperty.val(),
+                textPrefix = selectedProperty.prop("id").substring(0, selectedProperty.prop("id").toLowerCase().indexOf("type")),
+                textFieldToUpdate = $("#" + textPrefix + (textPrefix == (this.subFilterLevel + "-new") ? "Upper" : "upper"));
                  
             this.types = types;
-            $("#newType-" + this.subFilterLevel).html("");
+            selectedProperty.html("");
 
             _.each(types, function(type) {
-                $('<option/>').val(type).text(type).appendTo($("#newType-" + view.subFilterLevel));
+                $('<option/>').val(type).text(type).appendTo(selectedProperty);
             });
 
-            $("#newType-" + this.subFilterLevel).val(selecteProperty);
-            this.updateValueTextFields($("#newType-" + this.subFilterLevel), $("#newUpper-" + this.subFilterLevel));
+            selectedProperty.val(selectedValue);
+            this.updateValueTextFields(selectedProperty, textFieldToUpdate);
         },
 
         handleTextFieldsChange: function(e) {
-            this.updateValueTextFields($(e.target), $("#newUpper-" + this.subFilterLevel));
+            var textPrefix = $(e.target).prop("id").substring(0, $(e.target).prop("id").toLowerCase().indexOf("type")),
+                textFieldToUpdate = $("#" + textPrefix + (textPrefix == (this.subFilterLevel + "-new") ? "Upper" : "upper"));
+
+            this.updateValueTextFields($(e.target), textFieldToUpdate);
         },
 
         updateValueTextFields: function(target, fieldToToggle) {
-            $("#editFilter .staged").toggleClass("wide-95");
             if (target.val() == "..") {
-                target.closest("td").next().prop("colspan", "1")
-                fieldToToggle.removeClass("hide");
                 fieldToToggle.parent().removeClass("hide");
+                fieldToToggle.parent().prev().addClass("wide-45i");
             }
             else {
-                fieldToToggle.addClass("hide");
-                fieldToToggle.parent().addClass("hide");
-                fieldToToggle.html("");
-                target.closest("td").next().prop("colspan", "2")
+                fieldToToggle.parent().addClass("hide")
+                    .prev().removeClass("wide-45i");
+                fieldToToggle.val("");
             }
-
         },
 
         deleteRow: function(e) {
+            var ids = $(e.target).prop("id").split("-"),
+                operatorId = ids[0],
+                binId = ids[1];
+
             e.stopPropagation();
-            this.model.removeOperator($(e.target).prop("id").split("-")[0]);
+            this.model.removeOperator(operatorId, binId, isNaN(binId));
             this.reRender();
         },
 
         addRow: function(e) {
             e.stopPropagation();
             var newOperator = {
-                property: $("#newProperty-" + this.subFilterLevel).val(),
-                type: $("#newType-" + this.subFilterLevel).val(),
-                lowerBoundary: $("#newLower-" + this.subFilterLevel).val(),
-                upperBoundary: $("#newUpper-" + this.subFilterLevel).val()
+                property: $("#" + this.subFilterLevel + "-newProperty").val(),
+                type: $("#" + this.subFilterLevel + "-newType").val(),
+                lowerBoundary: $("#" + this.subFilterLevel + "-newLower").val(),
+                upperBoundary: $("#" + this.subFilterLevel + "-newUpper").val()
             };
 
-            if ($("#newUpper-" + this.subFilterLevel).val() == "") {
+            if ($("#" + this.subFilterLevel + "-newUpper").val() == "") {
                 newOperator.value = newOperator.lowerBoundary;
                 delete newOperator.lowerBoundary;
                 delete newOperator.upperBoundary;
             }
 
-            this.model.set("name", $("#filterName-" + this.subFilterLevel).val());
+            this.model.set("name", $("#" + this.subFilterLevel + "-filterName").val());
             console.log("Subfilter " + this.subFilterLevel + ": ", newOperator);
 
             this.cacheOperators();
@@ -279,13 +362,36 @@ define([
                 model: this.model,
                 subFilterLevel: this.subFilterLevel,
                 filters: this.filters
-            };
+            },
+                view = this;
+
 
             this.$el.removeClass("pull-right");
             this.$el.html(this.template(templateData)).addClass("wide-95");
-            this.updateAssociatedTypes($("#newProperty-" + this.subFilterLevel));
-            this.updateValueTextFields($("#newType-" + this.subFilterLevel), $("#newUpper"));
+            this.updateAssociatedTypes($("#" + this.subFilterLevel + "-newProperty"));
+            this.updateValueTextFields($("#" + this.subFilterLevel + "-newType"), $("#" + this.subFilterLevel + "-newUpper"));
             
+            $( "#" + this.subFilterLevel + "-topLevelBinContainer ul").sortable({
+                placeholder: "ui-state-highlight",
+                items: "li:not(.ui-state-disabled)",
+                cancel: ".ui-state-disabled",
+                connectWith: "#" + this.subFilterLevel + "-topLevelBinContainer ul",
+                handle: "span",
+                receive: function(event, ui) {
+                    console.log($(this).prop("id") + " got a new operator");
+                    $(event.target).trigger('add', {itemId: ui.item.prop("id"), sender: ui.sender});
+                }
+            }).disableSelection();
+
+            this.events["click .subFilter-" + this.subFilterLevel] = "showSubFilterUI";
+            this.events["click .viewSubFilter-" + this.subFilterLevel] = "showSubFilterUIWithSeed";
+
+            _.each(this.model.getBins(), function(bin) {
+                view.events["click #" + bin.id + "-" + view.subFilterLevel + "-logicalOperatorCheckbox"] = "toggleInnerBinType";
+            });
+
+            this.delegateEvents();
+
             return this;
         }
     });

@@ -3,16 +3,29 @@ var Filter = require('../models/Filter').Filter,
 
 var self = {
     create: function(userId, filter, callback) {
-        filter.owner = userId;
-        Filter.create(filter, function(err, filter) {
-            callback(null, filter);
+        var ObjectId = mongoose.Types.ObjectId;
+        Filter.findOne({owner: ObjectId(userId.toString())}).sort({order: -1}).exec(function(err, maxFilter) {
+            filter.owner = userId;
+            if (maxFilter)
+                filter.order = maxFilter.order + 1;
+            else
+                filter.order = 0;
+
+            Filter.create(filter, function(err, filter) {
+                callback(null, filter);
+            });
         });
     },
 
     getAllForUser: function(id, callback) {
         var ObjectId = mongoose.Types.ObjectId;
-        Filter.find({owner: new ObjectId(id.toString())}, function(err, filters) {
-            callback(err, filters);
+        Filter.find({owner: new ObjectId(id.toString()), active: true}).sort({order: 1}).exec(function(err, filters) {
+            Filter.find({owner: new ObjectId(id.toString()), active: false}).sort({order: 1}).exec(function(err, inactiveFilters) {
+                for (var i = 0; i < inactiveFilters.length; i++) {
+                    filters.push(inactiveFilters[i]);
+                }
+                callback(err, filters);
+            });
         });
     },
 

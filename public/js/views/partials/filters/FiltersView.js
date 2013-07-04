@@ -12,7 +12,7 @@ define([
         features: [],
 
         transformDataIntoModel: function(modelData) {
-            var operators, filter;
+            var topLevelOperators, bins, filter;
 
             filter = modelData;
             if (modelData.isSubFilter) {
@@ -24,15 +24,29 @@ define([
                 }
             }
 
-            operators = filter.getOperators();
+            topLevelOperators = filter.get("topLevelBin").operators;
+            bins = filter.getBins();
+
             filter.clearOperators();
 
-            for (var i = 0, len = operators.length; i < len; i++) {
-                if (operators[i].isSubFilter) {
-                    filter.addOperator(this.transformDataIntoModel(operators[i]));
+            for (var i = 0, len = topLevelOperators.length; i < len; i++) {
+                if (topLevelOperators[i].isSubFilter) {
+                    filter.addOperator(this.transformDataIntoModel(topLevelOperators[i]));
                 }
                 else
-                    filter.addOperator(operators[i]);
+                    filter.addOperator(topLevelOperators[i]);
+            }
+
+            for (var i = 0, len = bins.length; i < len; i++) {
+                filter.addBin();
+                for (var j = 0, len2 = bins[i].operators.length; j < len2; j++) {
+                    if (bins[i].operators[j].isSubFilter) {
+                        filter.getBins()[i].operators.push(this.transformDataIntoModel(bins[i].operators[j]));
+                    }
+                    else
+                        filter.getBins()[i].operators.push(bins[i].operators[j]);
+                }
+                filter.getBins()[i].type = bins[i].type;
             }
 
             return filter;

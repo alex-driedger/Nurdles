@@ -271,19 +271,22 @@ define([
         applyTrack: function(evt, view) {
             var shipInfo,
                 latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y)),
-                filter = {},
+                filter = new OpenLayers.Filter.Logical({type: "&&"}),
                 exactAISLayer = map.getLayersByName("exactAIS:HT30")[0];
 
             if (evt.features && evt.features.length > 0) {
                 shipInfo = evt.features[0];
-                filter.operators = [];
-                filter.operators.push({
+                filter.filters.push({
                     property: "mmsi",
                     value: shipInfo.data.mmsi,
                     type: "=="
                 });
 
-                exactAISLayer.params["FILTER"] = OpenLayersUtil.convertFilterToFilterParam([filter]);
+                var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
+                var xml = new OpenLayers.Format.XML(); 
+                var filter_param = xml.write(filter_1_0.write(filter));
+
+                exactAISLayer.params["FILTER"] = filter_param;
                 exactAISLayer.redraw();
             }
         },
@@ -381,16 +384,17 @@ define([
                 this.updateFilters(this.initialFiltersToLoad);
                 OpenLayersUtil.addControlsToMap(this, this.initialFiltersToLoad);
 
-                //All controls and layers are lodead -- ready to render the map
-                this.model.render("map");
-                this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
-                this.model.zoomToMaxExtent();
-
-                OpenLayersUtil.getShipCount(this.model.getExtent(), this.initialFiltersToLoad, function(count) {
-                    this.shipCount = count;
-                });
                 delete this.initialFiltersToLoad;
             }
+           
+            //All controls and layers are lodead -- ready to render the map
+            this.model.render("map");
+            this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
+            this.model.zoomToMaxExtent();
+
+            OpenLayersUtil.getShipCount(this.model.getExtent(), this.initialFiltersToLoad, function(count) {
+                this.shipCount = count;
+            });
         },
 
         updateFilters: function(filters) {

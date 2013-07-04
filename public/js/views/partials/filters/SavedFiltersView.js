@@ -87,12 +87,13 @@ define([
             //Use Collection methods 
             view.$el.html(view.template());
 
-            filters.forEach(function(filter) {
+            filters.forEach(function(filter, index, array) {
                 var detailsView = new FilterDetailsView({
                     model: filter,
                     tempOperator: {}, //operator used to populate last row
                     features: view.features,
-                    filters: view.filters
+                        filters: view.filters,
+                    lastFilter: index == array.length - 1
                 });
 
                 view.addSubView(detailsView);

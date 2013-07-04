@@ -26,10 +26,83 @@ define([
             "click #clearFilter": "clearFilter",
             "click #createFilter": "createFilter",
             "click #applyFilter": "applyFilter",
-            "click .subFilter-1": "showSubFilterUI",
-            "click .viewSubFilter-1": "showSubFilterUIWithSeed",
-            "change #newType": "handleTextFieldsChange",
-            "change #newProperty": "handlePropertyChange"
+            "change .type": "handleTextFieldsChange",
+            "change .property": "handlePropertyChange",
+            "add #newTopLevelBin": "addOperatorToTopLevel",
+            "click #newAddLogicBin": "addBin",
+            "click #newLogicalOperatorCheckbox": "toggleTopLevelBinType"
+        },
+
+        addOperatorToTopLevel: function(e, itemInfo) {
+            this.stopPropagation(e);
+            var oldBin =  _.findWhere(this.model.getBins(), {id: parseInt(itemInfo.sender.prop("id").split("-")[0])});
+            var bin = this.model.get("topLevelBin");
+            var operator = _.findWhere(oldBin.operators, {id: parseInt(itemInfo.itemId.split("-")[0])}),
+                newOperatorList = _.reject(oldBin.operators, function(operator) {
+                    return operator.id == parseInt(itemInfo.itemId.split("-")[0]);
+                });
+            
+            console.log("SENDER: ", itemInfo.sender);
+            oldBin.operators = newOperatorList;
+            bin.operators.push(operator);
+
+            this.reRender();
+        },
+
+        addOperatorToInnerBin: function(e, itemInfo) {
+            this.stopPropagation(e);
+            var oldBin = itemInfo.sender.prop("id") === "newTopLevelBin" ? this.model.get("topLevelBin") : _.findWhere(this.model.getBins(), {id: parseInt(itemInfo.sender.prop("id").split("-")[0])});
+            var bin =  _.findWhere(this.model.getBins(), {id: parseInt($(e.target).prop("id").split("-")[0])});
+            var operator = _.findWhere(oldBin.operators, {id: parseInt(itemInfo.itemId.split("-")[0])}),
+                newOperatorList = _.reject(oldBin.operators, function(operator) {
+                    return operator.id == parseInt(itemInfo.itemId.split("-")[0]);
+                });
+            
+            oldBin.operators = newOperatorList;
+            bin.operators.push(operator);
+
+            this.reRender();
+        },
+
+        preventDefault: function(e) {
+            e.preventDefault();
+            this.stopPropagation(e);
+        },
+
+        stopPropagation: function(e) {
+            e.stopPropagation();
+        },
+
+        addBin: function() {
+            var id = this.model.addBin();
+
+            this.events["add #" + id + "-innerBin"] = "addOperatorToInnerBin";
+            this.events["click #" + id + "-logicalOperatorCheckbox"] = "toggleInnerBinType";
+            this.events["click #" + id + "-removeBin"] = "removeBin";
+            this.delegateEvents();
+            this.reRender();
+        },
+
+        removeBin: function(e) {
+            var binId = $(e.target).prop("id").split("-")[0];
+
+            this.model.removeBin(binId);
+            delete this.events["add #" + binId + "-innerBin"];
+            delete this.events["click #" + binId + "-logicalOperatorCheckbox"];
+            delete this.events["click #" + binId + "-removeBin"];
+
+            this.reRender();
+        },
+
+        toggleTopLevelBinType: function(e) {
+            this.model.get("topLevelBin").type = $(e.target).prop("checked") ? "&&" : "||";
+        },
+
+        toggleInnerBinType: function(e) {
+            var binId = $(e.target).prop("id").split("-")[0],
+                bin = _.findWhere(this.model.getBins(), {id: parseInt(binId)});
+
+            bin.type = $(e.target).prop("checked") ? "&&" : "||";
         },
 
         applyFilter: function(e) {
@@ -46,10 +119,23 @@ define([
         },
 
         showSubFilterUIWithSeed: function(e) {
-            var order = $(e.target).prop("id").split("-")[0],
-                filter = _.findWhere(this.model.get("operators"), {order: parseInt(order)});
+            var ids = $(e.target).prop("id").split("-"),
+                bin, subFilter;
 
-            this.showSubFilterUI(e, filter, $("#" + order + "-subFilterContainer-1"));
+            if (ids.length > 3)
+                bin = _.findWhere(this.model.getBins(), {id: parseInt(ids[1])});
+            else
+                bin = this.model.get("topLevelBin");
+
+            subFilter = _.find(bin.operators, function(operator) {
+                if (operator.get && operator.get("isSubFilter")) {
+                    return operator.get("id") == ids[0];
+                }
+            });
+
+            this.showSubFilterUI(e, subFilter, $(e.target));
+            delete this.events["click .viewSubFilter-1"];
+            this.delegateEvents();
         },
 
         showSubFilterUI: function(e, model, container) {
@@ -72,18 +158,34 @@ define([
 
             subFilter.render();
             this.addSubView(subFilter);
+
+            delete this.events["click .subFilter-1"];
+            this.delegateEvents();
         },
 
         cacheOperators: function() {
-            _.each(this.model.getOperators(), function(operator) {
-                operator.property = $("#" + operator.order + "-property").val();
-                operator.type = $("#" + operator.order + "-type").val();
+            _.each(this.model.getBins(), function(bin) {
+                _.each(bin.operators, function(operator) {
+                    operator.property = $("#" + operator.id + "-" + bin.id + "-property").val();
+                    operator.type = $("#" + operator.id + "-" + bin.id + "-type").val();
+                    if (operator.upperBoundary) {
+                        operator.lowerBoundary = $("#" + operator.id + "-" + bin.id + "-lower").val();
+                        operator.upperBoundary = $("#" + operator.id + "-" + bin.id + "-upper").val();
+                    }
+                    else
+                        operator.value = $("#" + operator.id + "-" + bin.id + "-lower").val();
+                });
+            });
+
+            _.each(this.model.get("topLevelBin").operators, function(operator) {
+                operator.property = $("#" + operator.id + "-property").val();
+                operator.type = $("#" + operator.id + "-type").val();
                 if (operator.upperBoundary) {
-                    operator.lowerBoundary = $("#" + operator.order + "-lower").val();
-                    operator.upperBoundary = $("#" + operator.order + "-upper").val();
+                    operator.lowerBoundary = $("#" + operator.id + "-lower").val();
+                    operator.upperBoundary = $("#" + operator.id + "-upper").val();
                 }
                 else
-                    operator.value = $("#" + operator.order + "-lower").val();
+                    operator.value = $("#" + operator.id + "-lower").val();
             });
 
             this.model.set("name", $("#filterName").val());
@@ -126,37 +228,39 @@ define([
             var selectedVal = target.val(),
                 type = _.findWhere(this.features, {name:selectedVal}).type,
                 types = Utils.getTypeDropdownValues(type),
-                selecteProperty = $("#newType").val();
+                selectedProperty = $(target.parent().next().children()[0]),
+                selectedValue = selectedProperty.val(),
+                textPrefix = selectedProperty.prop("id").substring(0, selectedProperty.prop("id").toLowerCase().indexOf("type")),
+                textFieldToUpdate = $("#" + textPrefix + (textPrefix == "new" ? "Upper" : "upper"));
                  
             this.types = types;
-            $("#newType").html("");
+            selectedProperty.html("");
 
             _.each(types, function(type) {
-                $('<option/>').val(type).text(type).appendTo($('#newType'));
+                $('<option/>').val(type).text(type).appendTo(selectedProperty);
             });
 
-            $("#newType").val(selecteProperty);
-            this.updateValueTextFields($("#newType"), $("#newUpper"));
+            selectedProperty.val(selectedValue);
+            this.updateValueTextFields(selectedProperty, textFieldToUpdate);
         },
 
         handleTextFieldsChange: function(e) {
-            this.updateValueTextFields($(e.target), $("#newUpper"));
+            var textPrefix = $(e.target).prop("id").substring(0, $(e.target).prop("id").toLowerCase().indexOf("type")),
+                textFieldToUpdate = $("#" + textPrefix + (textPrefix == "new" ? "Upper" : "upper"));
+
+            this.updateValueTextFields($(e.target), textFieldToUpdate);
         },
 
         updateValueTextFields: function(target, fieldToToggle) {
-            $("#editFilter .staged").toggleClass("wide-95");
             if (target.val() == "..") {
-                target.closest("td").next().prop("colspan", "1")
-                fieldToToggle.removeClass("hide");
                 fieldToToggle.parent().removeClass("hide");
+                fieldToToggle.parent().prev().addClass("wide-45i");
             }
             else {
-                fieldToToggle.addClass("hide");
-                fieldToToggle.parent().addClass("hide");
-                fieldToToggle.html("");
-                target.closest("td").next().prop("colspan", "2")
+                fieldToToggle.parent().addClass("hide")
+                    .prev().removeClass("wide-45i");
+                fieldToToggle.val("");
             }
-
         },
 
         deleteSubFilter: function(subFilterView) {
@@ -165,7 +269,11 @@ define([
         },
 
         deleteRow: function(e) {
-            this.model.removeOperator(e.target.id.toString());
+            var ids = $(e.target).prop("id").split("-"),
+                operatorId = ids[0],
+                binId = ids[1];
+
+            this.model.removeOperator(operatorId, binId, isNaN(parseInt(binId)));
             this.reRender();
         },
 
@@ -196,11 +304,30 @@ define([
                 types: this.types,
                 features: this.features,
                 model: this.model
-            };
+            },
+            view = this;
 
             this.$el.html(this.template(templateData));
             this.updateAssociatedTypes($("#newProperty"));
             this.updateValueTextFields($("#newType"), $("#newUpper"));
+
+
+            $( "#newTopLevelBinContainer ul").sortable({
+                placeholder: "ui-state-highlight",
+                items: "li:not(.ui-state-disabled)",
+                cancel: ".ui-state-disabled",
+                connectWith: "#newTopLevelBinContainer ul",
+                handle: "span",
+                receive: function(event, ui) {
+                    console.log($(this).prop("id") + " got a new operator");
+                    $(event.target).trigger('add', {itemId: ui.item.prop("id"), sender: ui.sender});
+                }
+            }).disableSelection();
+
+            this.events["click .subFilter-1"] = "showSubFilterUI";
+            this.events["click .viewSubFilter-1"] = "showSubFilterUIWithSeed";
+
+            this.delegateEvents();
 
             return this;
         }

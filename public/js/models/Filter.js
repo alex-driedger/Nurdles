@@ -5,10 +5,59 @@ define([
 ], function($, _, Backbone){
     var Filter = Backbone.Model.extend({
         idAttribute: "_id",
-        operatorCounter: 0,
 
         initialize: function(attributes) {
             this.set("operators", []);
+            this.set("topLevelBin", {type: "&&", operators: []});
+            this.set("bins", []);
+
+            if (!this.get("topOperatorId"))
+                this.set("topOperatorId", 0);
+
+            if (!this.get("topBinId"))
+                this.set("topBinId", 0);
+
+            this.topBinId = this.get("topBinId");
+        },
+
+        getBins: function() {
+            return this.get("bins");
+        },
+
+        setBins: function(bins) {
+            this.set("bins", bins);
+        },
+
+        findBinById: function(id) {
+            return _.findWhere(this.get("bins"), {id: id});
+        },
+
+        addBin: function() {
+            var bin = {};
+            this.set("topBinId", ++this.topBinId);
+
+            bin.id = this.topBinId;
+            bin.type = "&&";
+            bin.operators = [];
+
+            this.get("bins").push(bin);
+            return bin.id;
+        },
+
+        removeBin: function(id) {
+            var bins = this.getBins(),
+                binsToKeep = _.reject(bins, function(bin) {
+                    return bin.id == parseInt(id);
+                }),
+                bin = _.findWhere(bins, {id: parseInt(id)}),
+                topLevelBin = this.get("topLevelBin");
+
+
+            _.each(bin.operators, function(operator) {
+                topLevelBin.operators.push(operator);
+            });
+            this.setBins(binsToKeep);
+            delete bin;
         },
 
         setOperators: function(operators) {
@@ -16,21 +65,27 @@ define([
         },
 
         addOperator: function(operator, isSubFilter) {
-            operator.order = this.operatorCounter++;
+            this.set("topOperatorId", this.get("topOperatorId") + 1);
+            operator.id = this.get("topOperatorId");
             if (isSubFilter)
-                operator.set("order", operator.order);
+                operator.set("id", this.get("topOperatorId"));
 
-            this.get("operators").push(operator);
+            this.get("topLevelBin").operators.push(operator);
             this.trigger("addOperator");
         },
 
-        removeOperator: function(order) {
-            var operatorWithIndex = this.findOperatorByOrder(order)
-            this.get("operators").splice(operatorWithIndex.index, 1);
-            this.operatorCounter--;
-            this.resetOperatorOrder(order);
-            this.trigger("removeOperator");
-            console.log("Now have " + this.get("operators").length + " operators");
+        removeOperator: function(operatorId, binId, isTopLevelBin) {
+            var bin = isTopLevelBin ? this.get("topLevelBin") : _.findWhere(this.getBins(), {id: parseInt(binId)});
+
+            bin.operators = _.reject(bin.operators, function(operator) {
+                return operator.id == parseInt(operatorId);
+            });
+
+            console.log("Now have " + bin.operators.length + " operators in bin: " + binId);
+        },
+
+        moveOperatorToBin: function(operatorId, fromBin, toBin) {
+            console.log(_.findWhere(this.get("bins"), {id: fromBin}));
         },
 
         findOperatorByOrder: function(order) {
@@ -57,8 +112,10 @@ define([
         },
 
         clearOperators: function() {
-            this.set("operators", []);
-            this.operatorCounter = 0;
+            this.get("topLevelBin").operators = [];
+            this.set("bins", []);
+            this.set("topBinId", 0);
+            this.set("topOperatorId", 0);
             this.trigger("clearOperators");
         },
 
@@ -67,6 +124,7 @@ define([
         },
 
         update: function(success, fail, context) {
+            console.log("TEST");
             this.save(null, { 
                 url: "/api/filters/" + this.get("_id") + "/update",
                 success: function(data) {
