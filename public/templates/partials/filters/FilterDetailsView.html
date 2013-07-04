@@ -106,9 +106,7 @@
                                                     </div>
                                                     <div class="centered inline operator-type-select">
                                                             <select id="<%= operator.id + '-' + bin.id + '-' + filter.get('_id') + '-type' %>" class="type">
-                                                                <% _.each(types, function(type) { %>
-                                                                <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
-                                                                <% }); %>
+                                                                <option value="<%= operator.type %>"  selected><%= operator.type %></option>
                                                             </select>
                                                     </div>
                                                 </div>
@@ -183,9 +181,7 @@
                             </div>
                             <div class="centered inline operator-type-select">
                                     <select id="<%= operator.id + '-' + filter.get('_id') + '-type' %>" class="type">
-                                        <% _.each(types, function(type) { %>
-                                        <option value="<%= type %>" <% if (operator.type == type) { %> selected <% } %>><%= type %></option>
-                                        <% }); %>
+                                        <option value="<%= operator.type %>"  selected><%= operator.type %></option>
                                     </select>
                             </div>
                         </div>
