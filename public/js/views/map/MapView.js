@@ -271,19 +271,22 @@ define([
         applyTrack: function(evt, view) {
             var shipInfo,
                 latLongOfClick = map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y)),
-                filter = {},
+                filter = new OpenLayers.Filter.Logical({type: "&&"}),
                 exactAISLayer = map.getLayersByName("exactAIS:HT30")[0];
 
             if (evt.features && evt.features.length > 0) {
                 shipInfo = evt.features[0];
-                filter.operators = [];
-                filter.operators.push({
+                filter.filters.push({
                     property: "mmsi",
                     value: shipInfo.data.mmsi,
                     type: "=="
                 });
 
-                exactAISLayer.params["FILTER"] = OpenLayersUtil.convertFilterToFilterParam([filter]);
+                var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
+                var xml = new OpenLayers.Format.XML(); 
+                var filter_param = xml.write(filter_1_0.write(filter));
+
+                exactAISLayer.params["FILTER"] = filter_param;
                 exactAISLayer.redraw();
             }
         },

@@ -22,7 +22,7 @@
     <div class="wide-100 clearfix">
         <div id="binLogicOperator" class="logic-bin-operator pull-left">
             <label class="logicalOperatorContainer checkbox toggle well between-operators">
-                <input id="subFilterLogicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (filter.get("topLevelBin").type == "&&") { %> checked <% } %> />
+                <input id="<%= filter.get('_id') %>-filterLogicalOperatorCheckbox" class="logicalOperator" type="checkbox" <% if (filter.get("topLevelBin").type == "&&") { %> checked <% } %> />
                 <p>
                 <span>AND</span>
                 <span>OR</span>

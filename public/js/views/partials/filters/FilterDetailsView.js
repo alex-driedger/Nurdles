@@ -21,6 +21,8 @@ define([
             this.model.operatorCounter = operators.length;
             this.events["click #" + this.model.get("_id") + "-logicalOperator"] = "preventDefault";
             this.delegateEvents();
+
+            this.events["click #" + this.model.get("_id") + "-filterLogicalOperatorCheckbox"] = "toggleTopLevelBinType";
         },
 
         template: _.template(filterDetailsTemplate),
@@ -37,6 +39,18 @@ define([
         preventDefault: function(e) {
             e.preventDefault();
             e.stopPropagation();
+        },
+
+        toggleTopLevelBinType: function(e) {
+            e.stopPropagation();
+            this.model.get("topLevelBin").type = $(e.target).prop("checked") ? "&&" : "||";
+        },
+
+        toggleInnerBinType: function(e) {
+            var binId = $(e.target).prop("id").split("-")[0],
+                bin = _.findWhere(this.model.getBins(), {id: parseInt(binId)});
+
+            bin.type = $(e.target).prop("checked") ? "&&" : "||";
         },
 
         cacheOperators: function() {
@@ -302,6 +316,10 @@ define([
 
             this.events["click .savedSubFilter-1"] = "showSubFilterUI";
             this.events["click .viewSavedSubFilter-1"] = "showSavedSubFilter";
+
+            _.each(this.model.getBins(), function(bin) {
+                view.events["click #" + bin.id + "-" + view.subFilterLevel + "-logicalOperatorCheckbox"] = "toggleInnerBinType";
+            });
 
             this.delegateEvents();
             return this;

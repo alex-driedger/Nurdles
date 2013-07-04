@@ -144,70 +144,54 @@ define([
             return newFilter;
         },
 
-        constructLogicalFilters: function(filters, index) {
-            var innerFilter = new OpenLayers.Filter.Logical(),
-                outerFilter = new OpenLayers.Filter.Logical(),
-                filter1 = filters[index],
-                filter2 = filters[index + 1];
+        constructLogicalFilter: function(filter) {
+            var topLevelBin = filter.get("topLevelBin"),
+                bins = filter.getBins(),
+                util = this;
 
-            if (filter1.logicalOperator)
-                outerFilter.type = filter1.logicalOperator;
-            else
-                outerFilter.type = filter1.type;
+            var olFilter = new OpenLayers.Filter.Logical({
+                type: topLevelBin.type 
+            });
 
-            innerFilter.filters.push(filter1);
-            innerFilter.filters.push(filter2);
-
-            if (!filter2) {
-                if (filter1.filters[0].logicalOperator)
-                    filter1.type = filter1.filters[0].logicalOperator;
+            _.each(topLevelBin.operators, function(operator) {
+                if (operator.get && operator.get("isSubFilter")) 
+                    olFilter.filters.push(util.constructLogicalFilter(operator));
                 else
-                    filter1.type = filter1.filters[0].type;
+                    olFilter.filters.push(operator);
+            });
 
-                return filter1;
-            }
-            else {
-                if (filter1.logicalOperator)
-                    innerFilter.type = filter1.logicalOperator;
+            _.each(bins, function(bin) {
+                var innerOlFilter = new OpenLayers.Filter.Logical({
+                    type: bin.type
+                });
+
+                _.each(bin.operators, function(operator) {
+                if (operator.get && operator.get("isSubFilter")) 
+                    innerOlFilter.filters.push(util.constructLogicalFilter(operator));
                 else
-                    innerFilter.type = filter1.type;
+                    innerOlFilter.filters.push(operator);
+                });
 
-                outerFilter.filters.push(innerFilter);
-                if (filters.length - index > 2)
-                    outerFilter.filters.push(this.constructLogicalFilters(filters, index + 2));
+                olFilter.filters.push(innerOlFilter);
+            });
 
-                if (outerFilter.filters.length == 1)
-                    return outerFilter.filters[0];
-                else
-                    return outerFilter;
-            }
+            return olFilter;
+
         },
 
         createOpenLayersFilters: function(filters) {
-            var simplifiedFilters = [];
-            var outerFilter = new OpenLayers.Filter.Logical(),
-                finalFilter = new OpenLayers.Filter.Logical(),
-                finalFilterType = "&&"; //default logical operator
+            var olFilter = new OpenLayers.Filter.Logical({
+                type: "&&"
+            }),
+                util = this;
 
-            for (var i = 0, len = filters.length; i< len; i++) {
-                var innerFilter = new OpenLayers.Filter.Logical();
-
-                innerFilter = this.constructLogicalFilters(this.convertFilterToFilterParam(filters[i]), 0);
-                outerFilter.filters.push(innerFilter);
-
-                if (i == len - 2)
-                    finalFilterType = filters[i].get("logicalOperator");
-            };
-
-
-            finalFilter = this.constructLogicalFilters(outerFilter.filters, 0);
-            finalFilter.type = finalFilterType;
-
-            console.log("FINAL FILTER: ", finalFilter);
+            _.each(filters, function(filter) {
+                olFilter.filters.push(util.constructLogicalFilter(filter));
+            });
 
             var filter_1_0 = new OpenLayers.Format.Filter({version: "1.1.0"});
             var xml = new OpenLayers.Format.XML(); 
-            var filter_param = xml.write(filter_1_0.write(finalFilter));
+            var filter_param = xml.write(filter_1_0.write(olFilter));
             console.log(filter_param);
 
             return filter_param;
