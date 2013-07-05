@@ -1,10 +1,11 @@
 define([
   'baseview',
+  '../searches/SearchView',
   '../filters/FiltersView',
   '../layers/MapLayersView',
   '../shiplist/ShipListView',
   'text!templates/partials/sidebar/SidebarView.html'
-], function(Baseview, FiltersView, MapLayersView, ShiplistView, sidebarViewTemplate){
+], function(Baseview, SearchView, FiltersView, MapLayersView, ShiplistView, sidebarViewTemplate){
     var SidebarView = Baseview.extend({
         initialize: function(args) {
             this.$el = args || $("#sidebar");
@@ -18,6 +19,13 @@ define([
 
         render: function () {
             this.$el.html(sidebarViewTemplate);
+
+            var searchView = new SearchView();
+
+            searchView.preRender($("#searchContainer"), function() {
+                searchView.render();
+            });
+            this.addSubView(searchView);
 
             var filtersView = new FiltersView();
 

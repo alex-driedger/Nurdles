@@ -135,6 +135,10 @@ input[type="radio"] {
     padding-right: 15px;
 }
 
+.rpadding20 {
+    padding-right: 20px;
+}
+
 .vmargin5 {
     margin-top: 5px;
 }
@@ -342,9 +346,7 @@ input[type="radio"] {
     -webkit-transition: left 0.5s; /* Safari and Chrome */
 }
 
-#toolContainer {
-    overflow: visible;
-    height: 93%;
+.tool-container {
     background-color: #fff;
 }
 
@@ -390,8 +392,12 @@ input[type="radio"] {
     width: 20px;
 }
 
-//---------------End Sidebar-----------------//
+/***************** Searches ******************/
 
+.new-search-container {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
 
 .vertical-5 {
     padding-top: 5px;

@@ -1,0 +1,22 @@
+<div id="newSearchContainer" class="new-search-container">
+    <div class="btn-group">
+        <button class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            Add Filter
+            <span class="caret"></span>
+        </button>
+        <ul id="newSearchFeatureList" class="dropdown-menu lpadding20 rpadding20">
+            <% _.each(spatialTypes, function(feature) { %>
+            <li value="<%= feature.name %>"><%= feature.name %></li>
+            <% }); %>
+            <li class="divider"></li>
+            <% _.each(numberTypes, function(feature) { %>
+            <li value="<%= feature.name %>"><%= feature.name %></li>
+            <% }); %>
+            <li class="divider"></li>
+            <% _.each(stringTypes, function(feature) { %>
+            <li value="<%= feature.name %>"><%= feature.name %></li>
+            <% }); %>
+        </ul>
+    </div>
+</div>
+
