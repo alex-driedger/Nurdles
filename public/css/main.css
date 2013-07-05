@@ -230,14 +230,11 @@ input[type="radio"] {
 }
 
 .controls-container {
-    width: 100%;
-    border: 1px solid #ccc;
     padding: 5px;
-    position:absolute;
-    top: 0;
-    right: -10px;
+    position: absolute;
+    top: 15px;
+    right: 0;
     z-index: 999;
-    background-color: rgba(50, 50, 50, 0.5);
 }
 
 .map-tools-row {
@@ -352,7 +349,7 @@ input[type="radio"] {
 
 #content {
     border-color: #CDC;
-    position: fixed;
+    position: absolute;
 }
 
 .sidebar-at-left #sidebar {margin-right: 1%;}
