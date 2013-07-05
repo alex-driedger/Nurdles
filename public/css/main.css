@@ -244,8 +244,8 @@ input[type="radio"] {
 
 .side-controls-container{
     position: relative;
-    width: auto;
-    right: 0;
+    top: 10px;
+    z-index: -1;
 }
 
 .mobile-container {
@@ -345,6 +345,7 @@ input[type="radio"] {
 #toolContainer {
     overflow: visible;
     height: 93%;
+    background-color: #fff;
 }
 
 #content {
