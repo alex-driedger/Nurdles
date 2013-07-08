@@ -17,7 +17,14 @@ define([
 
         template: _.template(searchViewTemplate),
 
-        events: {},
+        events: {
+            "click .feature": "addNewFilter"
+        },
+
+        addNewFilter: function(e) {
+            e.preventDefault();
+            $('#myModal').modal('show');
+        },
 
         preRender: function(containingDiv, callback) {
             var view = this;

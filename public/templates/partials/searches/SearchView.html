@@ -6,15 +6,21 @@
         </button>
         <ul id="newSearchFeatureList" class="dropdown-menu lpadding20 rpadding20">
             <% _.each(spatialTypes, function(feature) { %>
-            <li value="<%= feature.name %>"><%= feature.name %></li>
+            <li>
+                <a href="#" class="feature"><%= feature.name %></a>
+            </li>
             <% }); %>
                     <li class="divider"></li>
             <% _.each(numberTypes, function(feature) { %>
-            <li value="<%= feature.name %>"><%= feature.name %></li>
+            <li>
+                <a href="#" class="feature"><%= feature.name %></a>
+            </li>
             <% }); %>
             <li class="divider"></li>
             <% _.each(stringTypes, function(feature) { %>
-            <li value="<%= feature.name %>"><%= feature.name %></li>
+            <li>
+                <a href="#" class="feature"><%= feature.name %></a>
+            </li>
             <% }); %>
         </ul>
     </div>
@@ -116,4 +122,3 @@
         </div>
     </div>
 </div>
-
