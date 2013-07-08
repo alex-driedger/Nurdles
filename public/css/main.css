@@ -402,6 +402,10 @@ input[type="radio"] {
     width: 20px;
 }
 
+.dropdown-menu .feature {
+    padding: 0px 20px;
+}
+
 .sidebar-textfield {
     margin-left: 5px;
     margin-bottom: 0px !important;
@@ -435,10 +439,6 @@ input[type="radio"] {
 .item-row {
     width: 100%;
     padding: 0 0 10px 0;
-}
-
-.list-item {
-
 }
 
 /***************** Shiplist ******************/

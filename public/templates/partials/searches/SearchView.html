@@ -4,22 +4,22 @@
             Add Filter
             <span class="caret"></span>
         </button>
-        <ul id="newSearchFeatureList" class="dropdown-menu lpadding20 rpadding20">
+        <ul id="newSearchFeatureList" class="dropdown-menu"> 
             <% _.each(spatialTypes, function(feature) { %>
             <li>
-                <a href="#" class="feature"><%= feature.name %></a>
+                <a id="<%=feature.name + '-' + feature.type%>" href="#" class="feature"><%= feature.name %></a>
             </li>
             <% }); %>
                     <li class="divider"></li>
             <% _.each(numberTypes, function(feature) { %>
             <li>
-                <a href="#" class="feature"><%= feature.name %></a>
+                <a  id="<%=feature.name + '-' + feature.type%>"href="#" class="feature"><%= feature.name %></a>
             </li>
             <% }); %>
             <li class="divider"></li>
             <% _.each(stringTypes, function(feature) { %>
             <li>
-                <a href="#" class="feature"><%= feature.name %></a>
+                <a  id="<%=feature.name + '-' + feature.type%>"href="#" class="feature"><%= feature.name %></a>
             </li>
             <% }); %>
         </ul>

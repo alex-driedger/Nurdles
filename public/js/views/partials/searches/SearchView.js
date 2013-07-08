@@ -1,9 +1,10 @@
 define([
   'baseview',
   'openlayersutil',
-  './searchedShipListView',
+  './SearchedShipListView',
+  './SearchModalView',
   'text!templates/partials/searches/SearchView.html'
-], function(Baseview, OpenLayersUtil, SearchedShipList, searchViewTemplate){
+], function(Baseview, OpenLayersUtil, SearchedShipList, SearchModalView, searchViewTemplate){
     var private = {
         numberTypes: [],
         stringTypes: [],
@@ -23,7 +24,11 @@ define([
 
         addNewFilter: function(e) {
             e.preventDefault();
-            $('#myModal').modal('show');
+            var modal = new SearchModalView();
+            modal.attachToPopup($("#modalPopup"));
+            modal.render();
+
+            modal.show();
         },
 
         preRender: function(containingDiv, callback) {
