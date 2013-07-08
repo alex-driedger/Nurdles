@@ -127,6 +127,10 @@ input[type="radio"] {
     padding-top: 10px;
 }
 
+.lpadding10 {
+    padding-left: 10px;
+}
+
 .lpadding20 {
     padding-left: 20px;
 }
@@ -160,6 +164,11 @@ input[type="radio"] {
 }
 
 /*--------------------------General-------------------------------*/
+
+.inline-label {
+    display: inline;
+    width: auto;
+}
 
 .plus-minus-container {
     min-width: 15px;
@@ -390,6 +399,45 @@ input[type="radio"] {
 .small-loader {
     height: 20px;
     width: 20px;
+}
+
+.sidebar-textfield {
+    margin-left: 5px;
+    margin-bottom: 0px !important;
+    width: 60%;
+}
+
+.c20 {
+    width: 20%;
+    box-sizing: border-box;
+}
+
+.c25 {
+    width: 25%;
+    box-sizing: border-box;
+}
+
+.c33 {
+    width: 33%;
+    box-sizing: border-box;
+}
+
+.c40 {
+    width: 40%;
+    box-sizing: border-box;
+}
+
+.filter-list {
+    width: 75%;
+}
+
+.item-row {
+    width: 100%;
+    padding: 0 0 10px 0;
+}
+
+.list-item {
+
 }
 
 /***************** Searches ******************/
