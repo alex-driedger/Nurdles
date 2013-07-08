@@ -143,9 +143,14 @@ input[type="radio"] {
     padding-right: 20px;
 }
 
+.hpadding10 {
+    padding: 0 10px;
+}
+
 .vmargin5 {
     margin-top: 5px;
 }
+
 
 /*-------------------------Loader--------------------------------*/
 .loading {
@@ -438,6 +443,21 @@ input[type="radio"] {
 
 .list-item {
 
+}
+
+/***************** Shiplist ******************/
+
+.shiplist-header {
+    background-color: #bbb;
+    border: 1px solid #aaa;
+}
+
+.shiplist-row {
+    line-height: 3em;
+}
+
+.background-on {
+    background-color: #eee;
 }
 
 /***************** Searches ******************/
