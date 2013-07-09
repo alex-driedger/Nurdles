@@ -8,6 +8,16 @@ define([
     var private = {};
 
     var OpenLayersUtil = {
+        setUpUtilFunctions: function() {
+            String.prototype.capitalize = function(){
+                return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+            };
+
+            String.prototype.capitalizeShipAttributes = function(){
+                return this.replace(/_/g, " ").replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+            };
+        },
+
         getProjection: function() {
             return {
                 projection: new OpenLayers.Projection("EPSG:900913"), 

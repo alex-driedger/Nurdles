@@ -7,19 +7,19 @@
         <ul id="newSearchFeatureList" class="dropdown-menu"> 
             <% _.each(spatialTypes, function(feature) { %>
             <li>
-                <a id="<%=feature.name + '-' + feature.type%>" href="#" class="feature"><%= feature.name %></a>
+                <a id="<%=feature.name + '-' + feature.type%>" href="#" class="feature"><%= feature.name.capitalizeShipAttributes() %></a>
             </li>
             <% }); %>
                     <li class="divider"></li>
             <% _.each(numberTypes, function(feature) { %>
             <li>
-                <a  id="<%=feature.name + '-' + feature.type%>"href="#" class="feature"><%= feature.name %></a>
+                <a  id="<%=feature.name + '-' + feature.type%>"href="#" class="feature"><%= feature.name.capitalizeShipAttributes() %></a>
             </li>
             <% }); %>
             <li class="divider"></li>
             <% _.each(stringTypes, function(feature) { %>
             <li>
-                <a  id="<%=feature.name + '-' + feature.type%>"href="#" class="feature"><%= feature.name %></a>
+                <a  id="<%=feature.name + '-' + feature.type%>"href="#" class="feature"><%= feature.name.capitalizeShipAttributes() %></a>
             </li>
             <% }); %>
         </ul>

@@ -251,7 +251,7 @@ input[type="radio"] {
     padding: 5px;
     position: absolute;
     top: 15px;
-    right: 0;
+    right: 35px;
     z-index: 999;
 }
 
@@ -264,6 +264,7 @@ input[type="radio"] {
     position: relative;
     top: 10px;
     z-index: -1;
+    right: 0px;
 }
 
 .mobile-container {
