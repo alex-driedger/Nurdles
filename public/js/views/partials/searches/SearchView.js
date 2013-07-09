@@ -24,7 +24,11 @@ define([
 
         addNewFilter: function(e) {
             e.preventDefault();
-            var modal = new SearchModalView();
+            var modal = new SearchModalView({
+                property: $(e.target).prop("id").split("-")[0],
+                type: $(e.target).prop("id").split("-")[1],
+                prettyProperty: $(e.target).html()
+            });
             modal.attachToPopup($("#modalPopup"));
             modal.render();
 

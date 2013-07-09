@@ -1,12 +1,22 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="modalHeader">Modal header</h3>
+    <h3 id="modalHeader"><%= prettyProperty %></h3>
 </div>
 <div class="modal-body">
+    <% if (type == "string") { %>
+    <div class="vpadded10">
+        <label class="inline-label"> Search : </label>
+        <input id="propertySearchTerm" type="text" class="sidebar-textfield"/>
+        <div class="inline lpadding10">
+            <button id="propertySearchButton" class="btn btn-info"> Search </button>
+        </div>
+    </div>
+    <% } %>
+
     <p>One fine body…</p>
 </div>
 <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
+    <button id="closeModal" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button id="saveModalInformation" class="btn btn-primary">Save changes</button>
 </div>
 
