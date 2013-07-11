@@ -1,17 +1,15 @@
 define([
   'baseview',
-  '../searches/SearchView',
+  '../layers/SavedLayerView',
   '../filters/FiltersView',
-  '../layers/MapLayersView',
   '../shiplist/ShipListView',
   'text!templates/partials/sidebar/SidebarView.html'
-], function(Baseview, SearchView, FiltersView, MapLayersView, ShiplistView, sidebarViewTemplate){
+], function(Baseview, SavedLayerView, FiltersView, ShiplistView, sidebarViewTemplate){
     var SidebarView = Baseview.extend({
         initialize: function(args) {
             this.$el = args || $("#sidebar");
             var view = this;
 
-            this.bindTo(Backbone.globalEvents, "showMapLayersView", this.showMapLayersView, this);
             this.bindTo(Backbone.globalEvents, "showFiltersView", this.showFiltersView, this);
             this.bindTo(Backbone.globalEvents, "showShiplistView", this.showShiplistView, this);
         },
@@ -20,19 +18,12 @@ define([
         render: function () {
             this.$el.html(sidebarViewTemplate);
 
-            var searchView = new SearchView();
+            var savedLayerView = new SavedLayerView();
 
-            searchView.preRender($("#searchContainer"), function() {
-                searchView.render();
+            savedLayerView.preRender($("#layerContainer"), function() {
+                savedLayerView.render();
             });
-            this.addSubView(searchView);
-
-            var filtersView = new FiltersView();
-
-            filtersView.preRender($("#toolContainer"), function() {
-                filtersView.render();
-            });
-            this.addSubView(filtersView);
+            this.addSubView(savedLayerView);
 
             return this;
         }

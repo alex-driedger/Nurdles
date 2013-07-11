@@ -1,0 +1,125 @@
+<div id="newSearchContainer" class="new-search-container">
+    <div class="btn-group">
+        <button class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            Add Filter
+            <span class="caret"></span>
+        </button>
+        <ul id="newSearchFeatureList" class="dropdown-menu"> 
+            <% _.each(spatialTypes, function(feature) { %>
+            <li>
+                <a id="<%=feature.name%>-spatial" href="#" class="feature"><%= feature.name.capitalizeShipAttributes() %></a>
+            </li>
+            <% }); %>
+                    <li class="divider"></li>
+            <% _.each(numberTypes, function(feature) { %>
+            <li>
+                <a  id="<%=feature.name %>-number"href="#" class="feature"><%= feature.name.capitalizeShipAttributes() %></a>
+            </li>
+            <% }); %>
+            <li class="divider"></li>
+            <% _.each(stringTypes, function(feature) { %>
+            <li>
+                <a  id="<%=feature.name%>-string" href="#" class="feature"><%= feature.name.capitalizeShipAttributes() %></a>
+            </li>
+            <% }); %>
+        </ul>
+    </div>
+    <div class="vpadded10">
+        <label class="inline-label"> Search : </label>
+        <input id="searchTerm" type="text" placeholder="Find Name, MMSI, IMQ, Call Sign" class="sidebar-textfield"/>
+        <div class="inline lpadding10">
+            <button id="searchButton" class="btn btn-info"> Search </button>
+        </div>
+    </div>
+
+    <div id="newFiltersContainer" class="clearfix vtupadded10">
+        <div class="pull-left c25">
+            Filters: 
+        </div>
+        <div id="newFilterList" class="pull-left filter-list">
+            <div class="item-row clearfix">
+                <div class="pull-left c40">
+                    Country: 
+                </div>
+                <div class="pull-left c40">
+                    <div class="list-item">
+                        Canada
+                    </div>
+                    <div class="list-item">
+                        United States
+                    </div>
+                </div>
+                <div class="pull-left c20">
+                    <a href="#"> Edit </a>
+                    <img src="../../img/minus.png" class="lpadding10 icon-small pointer">
+                </div>
+            </div>
+            <div class="item-row clearfix">
+                <div class="pull-left c40">
+                    Vessel Type: 
+                </div>
+                <div class="pull-left c40">
+                    <div class="list-item">
+                        Blargh
+                    </div>
+                </div>
+                <div class="pull-left c20">
+                    <a href="#"> Edit </a>
+                    <img src="../../img/minus.png" class="lpadding10 icon-small pointer">
+                </div>
+            </div>
+        </div>
+        <div class="pull-right">
+            <a href="#"> Save Current Search </a>
+        </div>
+    </div>
+    <div id="newShipList" class="vtupadded10">
+        <div id="newShipListHeader" class="shiplist-header clearfix">
+            <div class="c33 pull-left" style="padding-left: 18px">
+                MMSI
+            </div>
+            <div class="c66 pull-left">
+                Name
+            </div>
+        </div>
+        <div id="newShipListList">
+            <div class="shiplist-row">
+                <div class="shiplist-row-header clearfix">
+                    <div class="inline pull-left c33 clearfix">
+                        <img src="../../img/arrow-right.png" class="icon-small" />
+                        <div class="inline">
+                            982375987345
+                        </div>
+                    </div>
+                    <div class="c66">
+                        <div class="inline pull-left">
+                            Chris' Ship
+                        </div>
+                        <div class="inline hpadding10 pull-right">
+                            <button class="btn btn-primary"> Locate </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="shiplist-row">
+                <div class="shiplist-row-header clearfix background-on">
+                    <div class="inline pull-left c33 clearfix">
+                        <img src="../../img/arrow-right.png" class="icon-small" />
+                        <div class="inline">
+                            NCC-1701
+                        </div>
+                    </div>
+                    <div class="c66">
+                        <div class="inline pull-left">
+                            USS Enterprise
+                        </div>
+                        <div class="inline hpadding10 pull-right">
+                            <button class="btn btn-primary"> Locate </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
