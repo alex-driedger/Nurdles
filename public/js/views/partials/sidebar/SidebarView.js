@@ -1,10 +1,10 @@
 define([
   'baseview',
-  '../layers/SavedLayerView',
+  '../layers/LayersView',
   '../filters/FiltersView',
   '../shiplist/ShipListView',
   'text!templates/partials/sidebar/SidebarView.html'
-], function(Baseview, SavedLayerView, FiltersView, ShiplistView, sidebarViewTemplate){
+], function(Baseview, LayersView, FiltersView, ShiplistView, sidebarViewTemplate){
     var SidebarView = Baseview.extend({
         initialize: function(args) {
             this.$el = args || $("#sidebar");
@@ -18,12 +18,12 @@ define([
         render: function () {
             this.$el.html(sidebarViewTemplate);
 
-            var savedLayerView = new SavedLayerView();
+            var layersView = new LayersView();
 
-            savedLayerView.preRender($("#layerContainer"), function() {
-                savedLayerView.render();
+            layersView.preRender($("#layersContainer"), function() {
+                layersView.render();
             });
-            this.addSubView(savedLayerView);
+            this.addSubView(layersView);
 
             return this;
         }
