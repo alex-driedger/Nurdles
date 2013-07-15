@@ -9,7 +9,9 @@
         <%= model.get("title") %>
     </div>
     <div class="pull-right rpadding15">
-        <img id="<%= model.get('_id') %>-arrow" src="../../img/arrow-up.png" class="icon-small" />
+        <span class="ship-count-span"> Ship count </span>
+        <img id="<%= model.get('_id') %>-edit" src="../../img/cog.png" class="pointer icon-small editLayer hpadding10" />
+        <img id="<%= model.get('_id') %>-delete" src="../../img/trash.png" class="pointer icon-small deleteLayer" />
     </div>
 </div>
 <div id="<%= model.get("_id") %>-container" class="filter-operands-container clearfix">

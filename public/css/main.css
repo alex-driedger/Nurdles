@@ -355,6 +355,7 @@ input[type="radio"] {
     min-height: 100%;
     width: 40%;
     -webkit-transition: left 0.5s; /* Safari and Chrome */
+    overflow: auto;
 }
 
 .tool-container {
@@ -641,7 +642,7 @@ table.wms, td.wms
 .filter-operands-container {
     border-bottom: 1px solid #aaa;
     background-color: #eee;
-    padding: 5px 0;
+    padding: 5px;
 }
 
 .operator-row {
@@ -915,3 +916,11 @@ table.wms, td.wms
     padding-left: 0;
     left: 0;
 }
+
+/***************** Layers ******************/
+.ship-count-span {
+    margin-top: 0 !important;
+    position: relative !important;
+    cursor: pointer !important;
+}
+
