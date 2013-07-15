@@ -13,7 +13,12 @@ define([
         template: _.template(savedLayerTemplate),
 
         events: {
-            "click .feature": "addNewFilter"
+            "click .feature": "addNewFilter",
+            "click .collapsed-header": "expandDetails"
+        },
+
+        expandDetails: function(e) {
+            console.log("TEST", e);
         },
 
         addNewFilter: function(e) {
@@ -36,6 +41,8 @@ define([
                 stringTypes: this.stringTypes,
                 spatialTypes: this.spatialTypes
             }));
+            
+            this.delegateEvents();
 
             return this;
         }

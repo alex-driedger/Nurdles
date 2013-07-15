@@ -42,37 +42,37 @@ define([
                     if ((!_.contains(private.numberTypes, response[i])) && (!_.contains(private.stringTypes, response[i])))
                         private.spatialTypes.push(response[i]);
                 }
+
+                setupSavedLayers(userLayers);
             });
 
-            setupSavedLayers(userLayers);
         },
 
         preRender: function(containingDiv, callback) {
             var view = this;
-            var htmlContent = "";
-
             this.$el.appendTo(containingDiv);
             OpenLayersUtil.getLayers(null, function(err, eeLayers) {
                 view.layers.fetch({
                     url: "/api/layers/getAllForUser",
                     success: function(userLayers, res, opt) {
                         view.setupFeatureTypes(userLayers, function(userLayers) {
-                            var htmlContent = "";
                             view.$el.html(view.template());
-                            $.each(userLayers.models, function(index, layer) {
+                            for (var i = 0, len = userLayers.models.length; i < len; i++) {
+                                view.$("#layersList").append("<li id='" + userLayers.models[i].get("_id") + "-listItem'></li>");
                                 var savedLayerView = new SavedLayerView({
-                                    model: layer,
+                                    model: userLayers.models[i],
                                     numberTypes: private.numberTypes,
                                     stringTypes: private.stringTypes,
                                     spatialTypes: private.spatialTypes
                                 });
+                                savedLayerView.$el = $("#" + userLayers.models[i].get("_id") + "-listItem");
 
-                                htmlContent += savedLayerView.render().$el.html();
-                            });
+                                $("#layersList").append(savedLayerView.render().$el);
+                                view.addSubView(savedLayerView);
+                            }
                                 
                             view.eeLayers = eeLayers;
-                            view.$el.append(htmlContent);
-                            view.fadeInViewElements(view.$el.html());
+                            view.fadeInViewElements();
                             callback();
                         });
                     }
@@ -82,6 +82,11 @@ define([
 
         render: function () {
             var view = this;
+
+            this.$(".collapsed-header").each(function(index, header) {
+                $(header).next().hide();
+            });
+
 
             return this;
         }

@@ -653,8 +653,8 @@ table.wms, td.wms
     height: 35px;
     overflow: hidden;
     border: 1px solid #ddd;
-    padding-left: 5px;
-    line-height: 30px;
+    padding-left: 1.5em;
+    line-height: 2.5em;
     overflow: visible;
 }
 
@@ -675,6 +675,7 @@ table.wms, td.wms
 
 .collapsed-checkbox {
     padding-right: 5px;
+    line-height: 1.9em;
 }
 
 .inline-icon {
@@ -732,11 +733,30 @@ table.wms, td.wms
     margin-left: -1.3em;
 }
 
+.sortable li .collapsed-header span { 
+    margin-top: 0.6em;
+    cursor: move;
+}
+
 .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+
+.header-move-arrows {
+    float: left;
+    margin-top: 0.7em;
+}
 
 .sortable.no-padding li {
     padding: 0px;
     padding-left: 0px;
+}
+
+#layersList li {
+    margin: 0;
+    padding-left: 0px;
+}
+
+.sortable .caret {
+    position: relative;
 }
 
 /*--------------------------Filter UI-------------------------*/
