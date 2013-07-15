@@ -18,7 +18,15 @@ define([
         },
 
         expandDetails: function(e) {
-            console.log("TEST", e);
+            var layerId = this.$(e.currentTarget).prop("id").split("-")[0],
+                arrow = this.$("#" + layerId + "-arrow"),
+                arrowSrc = arrow.prop("src");
+
+            $(e.currentTarget).next().slideToggle();
+            if (arrowSrc.indexOf("up") != -1)
+               arrow.prop("src", arrowSrc.replace("up", "down"));
+           else
+               arrow.prop("src", arrowSrc.replace("down", "up"));
         },
 
         addNewFilter: function(e) {

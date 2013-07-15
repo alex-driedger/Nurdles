@@ -65,6 +65,7 @@ define([
                                     stringTypes: private.stringTypes,
                                     spatialTypes: private.spatialTypes
                                 });
+                                //Set the el like so that if I close the view (delete the layer), I automagically remove the list item
                                 savedLayerView.$el = $("#" + userLayers.models[i].get("_id") + "-listItem");
 
                                 $("#layersList").append(savedLayerView.render().$el);
@@ -87,6 +88,15 @@ define([
                 $(header).next().hide();
             });
 
+            $("#layersList").sortable({
+                placeholder: "ui-state-highlight",
+                items: "li:not(.ui-state-disabled)",
+                cancel: ".ui-state-disabled",
+                handle: "span",
+                stop: function(event, ui) {
+                    //view.handleLayerReorder();
+                }
+            });
 
             return this;
         }

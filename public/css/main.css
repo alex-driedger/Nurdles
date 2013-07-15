@@ -407,6 +407,10 @@ input[type="radio"] {
     padding: 0px 20px;
 }
 
+.dropdown-menu .divider {
+    font-size: 1px;
+}
+
 .sidebar-textfield {
     margin-left: 5px;
     margin-bottom: 0px !important;
@@ -637,6 +641,7 @@ table.wms, td.wms
 .filter-operands-container {
     border-bottom: 1px solid #aaa;
     background-color: #eee;
+    padding: 5px 0;
 }
 
 .operator-row {
@@ -734,7 +739,7 @@ table.wms, td.wms
 }
 
 .sortable li .collapsed-header span { 
-    margin-top: 0.6em;
+    margin-top: 0.65em;
     cursor: move;
 }
 
@@ -752,7 +757,7 @@ table.wms, td.wms
 
 #layersList li {
     margin: 0;
-    padding-left: 0px;
+    padding: 0.2em 0.5em;
 }
 
 .sortable .caret {
