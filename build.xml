@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="My Project" default="build" basedir=".">
+<project name="Horizon" default="build" basedir=".">
 
     <target name="init" description="Create build folder and subfolders if required">
         <echo message="Creating Directories..." />
@@ -28,7 +28,7 @@
             <arg value="install" />
         </exec>
         <echo message="Running the tests ..." />
-    <exec executable="mocha"  output="build/testResults/mocha.xml" failonerror="true">
+    <exec executable="mocha"  output="build/testResults/mocha.xml" failonerror="false">
         <env key="NODE_PATH" value="/tmp/node_modules/" />
             <arg value="--reporter" />
             <arg value="xunit" />
