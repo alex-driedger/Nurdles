@@ -386,6 +386,34 @@ define([
 
         },
 
+        convertLayerToOLLayer: function(horizonLayer) {
+            var layer;
+
+            switch (horizonLayer.mapType) {
+                case "WMS":
+                    layer = new OpenLayers.Layer.WMS();
+                    break;
+                case "OSM":
+                    layer = new OpenLayers.Layer.OSM();
+                    break;
+            }
+            layer.name = horizonLayer.name;
+            layer.url = horizonLayer.url;
+            layer.params = horizonLayer.exactEarthParams;
+            layer.isBaseLayer = horizonLayer.isBaseLayer;
+            layer.options = {
+                    singleTile: false,
+                    ratio: 1,
+                    yx: { 'EPSG:4326': true },
+                    wrapDateLine: true
+            };
+
+            view.model.addLayer(layer);
+            view.model.setLayerIndex(layer, userLayer.get("order"));
+            layer.setVisibility(userLayer && userLayer.get("active"));
+            
+        },
+
         getShipCount: function(bounds, currentFilter, callback) {
             var filter,
                 mapProjection = this.getProjection();

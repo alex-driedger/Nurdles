@@ -340,7 +340,7 @@ define([
 
         },
 
-       setUpMap: function(renderWhenDone) {
+       setUpMap: function(layers, renderWhenDone) {
            var defaultLayer = new OpenLayers.Layer.WMS("default", "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
                 {
                     transparent : "true",
@@ -353,20 +353,64 @@ define([
                     ratio: 1,
                     yx: { 'EPSG:4326': true },
                     wrapDateLine: true
-                });
+                }),
 
-            defaultBaseLayer = new OpenLayers.Layer.OSM("OSMBaseMap", null,
-                { 
-                    isBaseLayer: true, 
-                    wrapDateLine: true,
-                    transitionEffect: "resize",
-                    tileOptions: {crossOriginKeyword: null}
-                });
-           
+                defaultBaseLayer = new OpenLayers.Layer.OSM("OSMBaseMap", null,
+                    { 
+                        isBaseLayer: true, 
+                        wrapDateLine: true,
+                        transitionEffect: "resize",
+                        tileOptions: {crossOriginKeyword: null}
+                    }),
+                view = this;
+
+
+           if (layers) {
+               var baseLayers = layers.filter(function(layer) {
+                   Utils.
+                   return layer.isBaseLayer == true;
+               });
+               var userLayers = _.difference(layers, baseLayers);
+
+               _.each(baseLayers, function(baseLayer) {
+                   view.model.addLayer(Utils.convertLayerToOLLayer(baseLayer));
+               });
+               _.each(userLayers, function(layer) {
+                   view.model.addLayer(Utils.convertLayerToOLLayer(layer));
+               });
+
+           }
+
+           else {
+               var horizonBaseLayer = new Layer();
+               var horizonLayer = new Layer();
+
+               horizonBaseLayer.owner = window.user._id;
+               horizonBaseLayer.isBaseLayer = true;
+               horizonBaseLayer.mapType = "OSM";
+               horizonBaseLayer.url = null;
+               horizonBaseLayer.exactEarthParams = { 
+                   isBaseLayer: true, 
+                   wrapDateLine: true,
+                   transitionEffect: "resize",
+                   tileOptions: {crossOriginKeyword: null}
+               };
+
+               horizonLayer.owner = window.user._id;
+               horizonLayer.isExactEarth = true;
+               horizonLayer.mapType = "WMS";
+               horizonLayer.url = "https://owsdemo.exactearth.com/wms?authKey=tokencoin";
+               horizonLayer.exactEarthParams = { 
+                   LAYERS : "exactAIS:LVI",
+                   STYLES : "VesselByType",
+                   format : "image/png",
+                   transparent : true
+               };
 
                this.model.addLayer(defaultBaseLayer);
                this.model.addLayer(defaultLayer);
                this.model.setBaseLayer(defaultBaseLayer);
+           }
 
            if (renderWhenDone)
                this.render();

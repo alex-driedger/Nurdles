@@ -66,7 +66,7 @@ define([
             sidebarView = new SideBarView();
 
       sidebarView.render();
-      mapView.setUpMap(true);
+      mapView.setUpMap(undefined, true);
       this.subviews.push(mapView);
       this.subviews.push(sidebarView);
     }
