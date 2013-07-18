@@ -8,7 +8,7 @@ define([
        '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html',
        '../../components/DynamicMeasure'
-], function(BaseView, BaseCollection, OpenLayersUtil, Layer, FeaturePopup, MeasurePopup, TopToolsRow, mapTemplate){
+], function(BaseView, BaseCollection, Utils, Layer, FeaturePopup, MeasurePopup, TopToolsRow, mapTemplate){
     var private = {
         /*-----
         * These are methods taken from the demo site.
@@ -61,7 +61,7 @@ define([
                 maxResolution: 156543,
                 units: 'm'
             });
-            this.userLayers = new BaseCollection([], {model: Layer});
+            this.layers = new BaseCollection([], {model: Layer});
             this.initialFiltersToLoad = [];
             this.filter = [];
             this.cachedSearchedShips = null;
@@ -102,7 +102,7 @@ define([
                 size = new OpenLayers.Size(30,30),
                 icon = new OpenLayers.Icon('../../img/target.png',size),
                 markerLayer = map.getLayersByName("shipMarkers")[0],
-                projection = OpenLayersUtil.getProjection();
+                projection = Utils.getProjection();
 
             //We need to transform the points to properly place the popup
             
@@ -145,7 +145,7 @@ define([
                     filters: [filter]
                 });
 
-            filter = OpenLayersUtil.mergeActiveFilters(filter, map.getLayersByName("exactAIS:LVI")[0].params.FILTER);
+            filter = Utils.mergeActiveFilters(filter, map.getLayersByName("exactAIS:LVI")[0].params.FILTER);
 
             var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
                 url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
@@ -165,7 +165,7 @@ define([
         onFeatureSelect: function(evt, map, view) {
             var featureInfo = evt.features[0],
                 bounds = null,
-                projection = OpenLayersUtil.getProjection();
+                projection = Utils.getProjection();
 
             //We need to transform the points to properly place the popup
             featureInfo.geometry.transform(projection.displayProjection, projection.projection)
@@ -340,7 +340,7 @@ define([
 
         },
 
-       setUpMap: function(layers, renderWhenDone) {
+       setUpMap: function(renderWhenDone) {
            var defaultLayer = new OpenLayers.Layer.WMS("default", "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
                 {
                     transparent : "true",
@@ -364,57 +364,94 @@ define([
                     }),
                 view = this;
 
+           this.layers.fetch({
+               url: "/api/layers/getAllForUser",
+               success: function(fetchedLayers) {
+                   if (fetchedLayers.models.length > 0) {
+                       var baseLayers = fetchedLayers.models.filter(function(layer) {
+                           return layer.isBaseLayer == true;
+                       });
+                       var userLayers = _.difference(fetchedLayers.models, baseLayers);
 
-           if (layers) {
-               var baseLayers = layers.filter(function(layer) {
-                   Utils.
-                   return layer.isBaseLayer == true;
-               });
-               var userLayers = _.difference(layers, baseLayers);
+                       _.each(baseLayers, function(baseLayer) {
+                           var olBaseLayer = Utils.convertLayerToOLLayer(baseLayer)
+                           view.model.addLayer(olBaseLayer);
+                           if (baseLayer.active)
+                               view.model.setBaseLayer(olBaseLayer);
+                       });
+                       _.each(userLayers, function(layer) {
+                           var olLayer = Utils.convertLayerToOLLayer(layer)
+                           view.model.addLayer(olLayer);
+                           view.model.setLayerIndex(olLayer, layer.get("order"));
+                           olLayer.setVisibility(layer.get("active"));
+                       });
+                   }
+                   else {
+                       var horizonBaseLayer = new Layer();
+                       var horizonLayer = new Layer();
 
-               _.each(baseLayers, function(baseLayer) {
-                   view.model.addLayer(Utils.convertLayerToOLLayer(baseLayer));
-               });
-               _.each(userLayers, function(layer) {
-                   view.model.addLayer(Utils.convertLayerToOLLayer(layer));
-               });
+                       horizonBaseLayer.set("isBaseLayer", true);
+                       horizonBaseLayer.set("mapType", "OSM");
+                       horizonBaseLayer.set("active", true);
+                       horizonBaseLayer.set("order", 0);
+                       horizonBaseLayer.set("url", null);
+                       horizonBaseLayer.set("exactEarthOptions", { 
+                           isBaseLayer: true, 
+                           wrapDateLine: true,
+                           transitionEffect: "resize",
+                           tileOptions: {crossOriginKeyword: null}
+                       });
 
-           }
+                       horizonLayer.set("isExactEarth", true);
+                       horizonLayer.set("mapType", "WMS");
+                       horizonLayer.set("active", true);
+                       horizonLayer.set("order", 0);
 
-           else {
-               var horizonBaseLayer = new Layer();
-               var horizonLayer = new Layer();
+                       horizonLayer.set("url", "https://owsdemo.exactearth.com/wms?authKey=tokencoin");
+                       horizonLayer.set("exactEarthParams", { 
+                           LAYERS : "exactAIS:LVI",
+                           STYLES : "VesselByType",
+                           FORMAT : "image/png",
+                           TRANSPARENT : true,
+                           SERVICE: "WMS",
+                           VERSION: "1.1.1",
+                           REQUEST: "GetMap"
+                       });
+                       horizonLayer.set("exactEarthOptions", { 
+                           singleTile: false,
+                           ratio: 1,
+                           yx: { 'EPSG:4326': true },
+                           wrapDateLine: true
+                       });
 
-               horizonBaseLayer.owner = window.user._id;
-               horizonBaseLayer.isBaseLayer = true;
-               horizonBaseLayer.mapType = "OSM";
-               horizonBaseLayer.url = null;
-               horizonBaseLayer.exactEarthParams = { 
-                   isBaseLayer: true, 
-                   wrapDateLine: true,
-                   transitionEffect: "resize",
-                   tileOptions: {crossOriginKeyword: null}
-               };
+                       view.model.addLayer(defaultBaseLayer);
+                       view.model.addLayer(defaultLayer);
+                       view.model.setBaseLayer(defaultBaseLayer);
 
-               horizonLayer.owner = window.user._id;
-               horizonLayer.isExactEarth = true;
-               horizonLayer.mapType = "WMS";
-               horizonLayer.url = "https://owsdemo.exactearth.com/wms?authKey=tokencoin";
-               horizonLayer.exactEarthParams = { 
-                   LAYERS : "exactAIS:LVI",
-                   STYLES : "VesselByType",
-                   format : "image/png",
-                   transparent : true
-               };
+                       horizonBaseLayer.save(null, {
+                           url: "/api/layers/save",
+                           success: function(res) {
+                               console.log("Successfully saved default base layer");
+                           },
+                           error: function(res) {
+                               console.log("ERROR when saving default base layer");
+                           }
+                       });
 
-               this.model.addLayer(defaultBaseLayer);
-               this.model.addLayer(defaultLayer);
-               this.model.setBaseLayer(defaultBaseLayer);
-           }
-
-           if (renderWhenDone)
-               this.render();
-
+                       horizonLayer.save(null, {
+                           url: "/api/layers/save",
+                           success: function(res) {
+                               console.log("Successfully saved default layer");
+                           },
+                           error: function(res) {
+                               console.log("ERROR when saving default layer");
+                           }
+                       });
+                   }
+                   if (renderWhenDone)
+                       view.render();
+               }
+           });
        },
 
         render: function () {
@@ -442,7 +479,7 @@ define([
             map.events.register("moveend", map, function(e) {
                 var view = this;
                 /*
-                OpenLayersUtil.getShipCount(map.getExtent(), map.getLayersByName("exactAIS:LVI")[0].params.FILTER, function(count) {
+                Utils.getShipCount(map.getExtent(), map.getLayersByName("exactAIS:LVI")[0].params.FILTER, function(count) {
                     view.shipCount = count;
                     if (count < 500)
                         Backbone.globalEvents.trigger("refreshShipList", count);
@@ -452,8 +489,8 @@ define([
                 */
             });
             this.model.render("map");
-                        this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
-                                    this.model.zoomToMaxExtent();
+            this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
+            this.model.zoomToMaxExtent();
 
             window.map = map; //BAD BAD BAD BAD but easy to manipulate the map through the console.
         }

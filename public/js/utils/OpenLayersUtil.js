@@ -389,29 +389,16 @@ define([
         convertLayerToOLLayer: function(horizonLayer) {
             var layer;
 
-            switch (horizonLayer.mapType) {
+            switch (horizonLayer.get("mapType")) {
                 case "WMS":
-                    layer = new OpenLayers.Layer.WMS();
+                    layer = new OpenLayers.Layer.WMS(horizonLayer.get("name"), horizonLayer.get("url"), horizonLayer.get("exactEarthParams"), horizonLayer.get("exactEarthOptions"));
                     break;
                 case "OSM":
-                    layer = new OpenLayers.Layer.OSM();
+                    layer = new OpenLayers.Layer.OSM(horizonLayer.get("name"), null, horizonLayer.get("exactEarthOptions"));
                     break;
             }
-            layer.name = horizonLayer.name;
-            layer.url = horizonLayer.url;
-            layer.params = horizonLayer.exactEarthParams;
-            layer.isBaseLayer = horizonLayer.isBaseLayer;
-            layer.options = {
-                    singleTile: false,
-                    ratio: 1,
-                    yx: { 'EPSG:4326': true },
-                    wrapDateLine: true
-            };
 
-            view.model.addLayer(layer);
-            view.model.setLayerIndex(layer, userLayer.get("order"));
-            layer.setVisibility(userLayer && userLayer.get("active"));
-            
+            return layer;
         },
 
         getShipCount: function(bounds, currentFilter, callback) {
