@@ -55,20 +55,42 @@ define([
                 view.layers.fetch({
                     url: "/api/layers/getAllForUser",
                     success: function(userLayers, res, opt) {
+                        var baseLayers = userLayers.filter(function(layer) {
+                            return layer.get("isBaseLayer") == true;
+                        });
+                        var nonBaseLayers = userLayers.filter(function(layer) {
+                            return layer.get("isBaseLayer") == false;
+                        });
+
                         view.setupFeatureTypes(userLayers, function(userLayers) {
                             view.$el.html(view.template());
-                            for (var i = 0, len = userLayers.models.length; i < len; i++) {
-                                view.$("#layersList").append("<li id='" + userLayers.models[i].get("_id") + "-listItem'></li>");
+                            for (var i = 0, len = nonBaseLayers.length; i < len; i++) {
+                                view.$("#layersList").append("<li id='" + nonBaseLayers[i].get("_id") + "-listItem'></li>");
                                 var savedLayerView = new SavedLayerView({
-                                    model: userLayers.models[i],
+                                    model: nonBaseLayers[i],
                                     numberTypes: private.numberTypes,
                                     stringTypes: private.stringTypes,
                                     spatialTypes: private.spatialTypes
                                 });
                                 //Set the el like so that if I close the view (delete the layer), I automagically remove the list item
-                                savedLayerView.$el = $("#" + userLayers.models[i].get("_id") + "-listItem");
+                                savedLayerView.$el = $("#" + nonBaseLayers[i].get("_id") + "-listItem");
 
                                 $("#layersList").append(savedLayerView.render().$el);
+                                view.addSubView(savedLayerView);
+                            }
+
+                            for (var i = 0, len = baseLayers.length; i < len; i++) {
+                                view.$("#baseLayersList").append("<li id='" + baseLayers[i].get("_id") + "-listItem'></li>");
+                                var savedLayerView = new SavedLayerView({
+                                    model: baseLayers[i],
+                                    numberTypes: private.numberTypes,
+                                    stringTypes: private.stringTypes,
+                                    spatialTypes: private.spatialTypes
+                                });
+                                //Set the el like so that if I close the view (delete the layer), I automagically remove the list item
+                                savedLayerView.$el = $("#" + baseLayers[i].get("_id") + "-listItem");
+
+                                $("#baseLayersList").append(savedLayerView.render().$el);
                                 view.addSubView(savedLayerView);
                             }
                                 

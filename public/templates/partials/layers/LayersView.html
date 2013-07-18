@@ -1,9 +1,14 @@
 <div id="savedLayersContainer">
-    <div class="padded clearfix">
-        <div class="pull-right">
-            <button id="addLayer" class="btn padded"> Add Layer </button>
+    <% if (window.user.access.multipleLayers) { %>
+        <div class="padded clearfix">
+            <div class="pull-right">
+                <button id="addLayer" class="btn padded"> Add Layer </button>
+            </div>
         </div>
-    </div>
+    <% } %>
+
     <ul id="layersList" class="sortable ui-sortable"></ul>
+    <hr />
+    <ul id="baseLayersList" class="sortable ui-sortable"></ul>
 
 </div>

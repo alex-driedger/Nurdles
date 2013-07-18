@@ -394,6 +394,9 @@ define([
                        horizonBaseLayer.set("mapType", "OSM");
                        horizonBaseLayer.set("active", true);
                        horizonBaseLayer.set("order", 0);
+                       horizonBaseLayer.set("isLocked", true);
+                       horizonBaseLayer.set("name", "Default Basemap");
+                       horizonBaseLayer.set("title", "Default Basemap");
                        horizonBaseLayer.set("url", null);
                        horizonBaseLayer.set("exactEarthOptions", { 
                            isBaseLayer: true, 
@@ -405,6 +408,7 @@ define([
                        horizonLayer.set("isExactEarth", true);
                        horizonLayer.set("mapType", "WMS");
                        horizonLayer.set("active", true);
+                       horizonLayer.set("isLocked", true);
                        horizonLayer.set("order", 0);
 
                        horizonLayer.set("url", "https://owsdemo.exactearth.com/wms?authKey=tokencoin");
@@ -491,6 +495,7 @@ define([
             this.model.render("map");
             this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
             this.model.zoomToMaxExtent();
+            Backbone.globalEvents.trigger("hideLoader");
 
             window.map = map; //BAD BAD BAD BAD but easy to manipulate the map through the console.
         }

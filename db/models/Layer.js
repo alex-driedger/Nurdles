@@ -12,6 +12,7 @@ var LayerSchema = new mongoose.Schema({
     isExactEarth: { type: Boolean, required: true, default: false },
     exactEarthParams: { type: mongoose.Schema.Types.Mixed, required: false },
     exactEarthOptions: { type: mongoose.Schema.Types.Mixed, required: false },
+    isLocked: {type: Boolean, required: true, default: false },
     active: { type: Boolean, required: true, default: false },
     order: { type: Number, required: true, default: -1 },
     mapType: { type: String, required: true, default: "WMS" },
