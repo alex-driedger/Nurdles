@@ -674,6 +674,10 @@ table.wms, td.wms
     border: 1px solid #888;
 }
 
+.baseLayer.collapsed-header {
+    background-color: #bbccdd;
+}
+
 .accordion {
     margin: 10px 0; 
     width: 100%;
@@ -682,6 +686,15 @@ table.wms, td.wms
 .collapsed-checkbox {
     padding-right: 5px;
     line-height: 1.9em;
+}
+
+.collapsed-radio {
+    padding-right: 5px;
+}
+
+#baseLayersList {
+    margin: 0;
+    padding: 0.2em 0.5em;
 }
 
 .inline-icon {

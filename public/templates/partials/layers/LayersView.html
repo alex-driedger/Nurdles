@@ -1,4 +1,7 @@
-<div id="savedLayersContainer">
+<div class="header clearfix">
+    <div class="pull-left">
+        Layers 
+    </div>
     <% if (window.user.access.multipleLayers) { %>
         <div class="padded clearfix">
             <div class="pull-right">
@@ -6,9 +9,11 @@
             </div>
         </div>
     <% } %>
+</div>
 
+<div id="savedLayersContainer">
     <ul id="layersList" class="sortable ui-sortable"></ul>
     <hr />
-    <ul id="baseLayersList" class="sortable ui-sortable"></ul>
+    <div id="baseLayersList"></div>
 
 </div>

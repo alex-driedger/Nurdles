@@ -4,8 +4,9 @@ define([
   'basecollection',
   '../../../models/Layer',
   './SavedLayerView',
+  './SavedBaseLayerView',
   'text!templates/partials/layers/LayersView.html'
-], function(Baseview, OpenLayersUtil, BaseCollection, Layer, SavedLayerView, layersTemplate){
+], function(Baseview, OpenLayersUtil, BaseCollection, Layer, SavedLayerView, SavedBaseLayerView, layersTemplate){
     var private = {
         numberTypes: [],
         stringTypes: [],
@@ -80,18 +81,12 @@ define([
                             }
 
                             for (var i = 0, len = baseLayers.length; i < len; i++) {
-                                view.$("#baseLayersList").append("<li id='" + baseLayers[i].get("_id") + "-listItem'></li>");
-                                var savedLayerView = new SavedLayerView({
+                                var savedBaseLayerView = new SavedBaseLayerView({
                                     model: baseLayers[i],
-                                    numberTypes: private.numberTypes,
-                                    stringTypes: private.stringTypes,
-                                    spatialTypes: private.spatialTypes
                                 });
-                                //Set the el like so that if I close the view (delete the layer), I automagically remove the list item
-                                savedLayerView.$el = $("#" + baseLayers[i].get("_id") + "-listItem");
 
-                                $("#baseLayersList").append(savedLayerView.render().$el);
-                                view.addSubView(savedLayerView);
+                                $("#baseLayersList").append(savedBaseLayerView.render().$el);
+                                view.addSubView(savedBaseLayerView);
                             }
                                 
                             view.eeLayers = eeLayers;
