@@ -5,8 +5,9 @@ define([
   '../../../models/Layer',
   './SavedLayerView',
   './SavedBaseLayerView',
+  './NewLayerModalView',
   'text!templates/partials/layers/LayersView.html'
-], function(Baseview, OpenLayersUtil, BaseCollection, Layer, SavedLayerView, SavedBaseLayerView, layersTemplate){
+], function(Baseview, OpenLayersUtil, BaseCollection, Layer, SavedLayerView, SavedBaseLayerView, NewLayerModalView, layersTemplate){
     var private = {
         numberTypes: [],
         stringTypes: [],
@@ -17,12 +18,23 @@ define([
         initialize: function(args) {
             this.initArgs(args);
             this.layers = new BaseCollection([], {model: Layer});
-
         },
 
         template: _.template(layersTemplate),
 
         events: {
+            "click #addLayer": "addNewLayer",
+        },
+        
+        addNewLayer: function(e) {
+            e.preventDefault();
+            var modal = new NewLayerModalView({
+                layers: this.nonBaseLayers
+            });
+            modal.attachToPopup($("#modalPopup"));
+            modal.render();
+
+            modal.show();
         },
 
         setupFeatureTypes: function(userLayers, setupSavedLayers) {
@@ -59,22 +71,22 @@ define([
                         var baseLayers = userLayers.filter(function(layer) {
                             return layer.get("isBaseLayer") == true;
                         });
-                        var nonBaseLayers = userLayers.filter(function(layer) {
+                        view.nonBaseLayers = userLayers.filter(function(layer) {
                             return layer.get("isBaseLayer") == false;
                         });
 
                         view.setupFeatureTypes(userLayers, function(userLayers) {
                             view.$el.html(view.template());
-                            for (var i = 0, len = nonBaseLayers.length; i < len; i++) {
-                                view.$("#layersList").append("<li id='" + nonBaseLayers[i].get("_id") + "-listItem'></li>");
+                            for (var i = 0, len = view.nonBaseLayers.length; i < len; i++) {
+                                view.$("#layersList").append("<li id='" + view.nonBaseLayers[i].get("_id") + "-listItem'></li>");
                                 var savedLayerView = new SavedLayerView({
-                                    model: nonBaseLayers[i],
+                                    model: view.nonBaseLayers[i],
                                     numberTypes: private.numberTypes,
                                     stringTypes: private.stringTypes,
                                     spatialTypes: private.spatialTypes
                                 });
                                 //Set the el like so that if I close the view (delete the layer), I automagically remove the list item
-                                savedLayerView.$el = $("#" + nonBaseLayers[i].get("_id") + "-listItem");
+                                savedLayerView.$el = $("#" + view.nonBaseLayers[i].get("_id") + "-listItem");
 
                                 $("#layersList").append(savedLayerView.render().$el);
                                 view.addSubView(savedLayerView);
@@ -114,6 +126,8 @@ define([
                     //view.handleLayerReorder();
                 }
             });
+
+            this.delegateEvents();
 
             return this;
         }
