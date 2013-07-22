@@ -29,7 +29,8 @@ define([
         addNewLayer: function(e) {
             e.preventDefault();
             var modal = new NewLayerModalView({
-                layers: this.nonBaseLayers
+                layers: this.nonBaseLayers,
+                eeLayers: this.eeLayers
             });
             modal.attachToPopup($("#modalPopup"));
             modal.render();

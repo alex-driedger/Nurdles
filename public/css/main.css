@@ -729,6 +729,13 @@ table.wms, td.wms
     border-radius: 4px 0 4px 0;
 }
 
+/*------------------------Modal---------------------------*/
+.modal-float-label {
+    float: left;
+    line-height: 2.1em;
+    padding-right: 15px;
+}
+
 /*------------------------Sortable---------------------------*/
 
 .sortable { 

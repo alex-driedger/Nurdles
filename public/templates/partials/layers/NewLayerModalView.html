@@ -3,8 +3,19 @@
     <h3 id="modalHeader"><%= prettyProperty %></h3>
 </div>
 <div class="modal-body">
+    <div>
+        <label class="modal-float-label"> Base new layer off of which exactEarth Layer? </label>
+        <select>
+            <% _.each(eeLayers, function(eeLayer) { %>
+            <option value="<%=eeLayer.Name %>"> <%=eeLayer.Name %></option>
+            <% }); %>
+        </select>
+    </div>
 
-    <p>One fine body…</p>
+    <div class="vtupadded10">
+        <input type="text" id="newLayerName" placeholder="Layer Name" />
+    </div>
+
 </div>
 <div class="modal-footer">
     <button id="closeModal" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

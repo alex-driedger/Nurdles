@@ -41,6 +41,8 @@ define([
             var view = this;
 
             this.$el.html(this.template({
+                layers: this.layers,
+                eeLayers: this.eeLayers,
                 property: this.property,
                 type: this.type,
                 prettyProperty: this.prettyProperty
