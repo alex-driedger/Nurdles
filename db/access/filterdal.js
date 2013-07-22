@@ -32,10 +32,23 @@ var self = {
     update: function(id, filter, callback) {
         var ObjectId = mongoose.Types.ObjectId;
 
+        
         delete filter._id; //Mongoose will not save it if it thinks it's updating the _id field
+        delete filter._id;
 
         console.log("About to save: ", filter);
-        Filter.update({_id: new ObjectId(id.toString())}, filter, function(err, filter) {
+        Filter.update({_id: new ObjectId(id.toString())}, filter, {safe: true}, function(err, num, raw) {
+            console.log("Error: ", err);
+            console.log("Number affected: ", num);
+            console.log("Raw: ", raw);
+            callback(err, num);
+        });
+    },
+
+    getById: function(id, callback) {
+        var ObjectId = mongoose.Types.ObjectId;
+
+        Filter.findOne({_id: new ObjectId(id.toString())}, function(err, filter) {
             callback(err, filter);
         });
     },
@@ -43,7 +56,7 @@ var self = {
     remove: function(filterId, callback) {
         var ObjectId = mongoose.Types.ObjectId;
 
-        Filter.remove({_id: new ObjectId(filterId.toString())}, function(err) {
+        Filter.remove(filterId, function(err) {
             callback(err);
         });
     },
