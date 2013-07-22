@@ -406,6 +406,7 @@ define([
                        });
 
                        horizonLayer.set("isExactEarth", true);
+                       horizonLayer.set("exactEarthLayersContainer", "exactAIS:LVI");
                        horizonLayer.set("mapType", "WMS");
                        horizonLayer.set("active", true);
                        horizonLayer.set("isLocked", true);

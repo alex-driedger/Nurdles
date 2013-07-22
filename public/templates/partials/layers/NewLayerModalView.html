@@ -3,13 +3,17 @@
     <h3 id="modalHeader"><%= prettyProperty %></h3>
 </div>
 <div class="modal-body">
-    <div>
+    <div class="clearfix">
         <label class="modal-float-label"> Base new layer off of which exactEarth Layer? </label>
-        <select>
+        <select id="newLayerEEName" class="pull-right">
             <% _.each(eeLayers, function(eeLayer) { %>
             <option value="<%=eeLayer.Name %>"> <%=eeLayer.Name %></option>
             <% }); %>
         </select>
+    </div>
+    <div class="clearfix vtupadded10">
+        <label class="modal-float-label"> Style for new layer? </label>
+        <select id="newLayerStyle" class="pull-right"> </select>
     </div>
 
     <div class="vtupadded10">

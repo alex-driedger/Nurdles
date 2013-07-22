@@ -15,7 +15,8 @@ define([
         template: _.template(newLayerModalTemplate),
 
         events: {
-            "click #saveModalInformation": "saveModalInformation"
+            "click #saveModalInformation": "saveModalInformation",
+            "change #newLayerEEName": "updateStyleSelect"
         },
 
         attachToPopup: function(modalDiv) {
@@ -30,6 +31,26 @@ define([
 
         show: function() {
             this.modalDiv.modal("show");
+        },
+
+        updateStyleSelect: function(e, eeLayerName) {
+            var eeLayer;
+            if (e) {
+                eeLayerName = $(e.target).val();
+            }
+
+            this.$("#newLayerStyle").html("");
+
+            eeLayer = _.findWhere(this.eeLayers, {Name: eeLayerName});
+            
+            if (eeLayer.Style instanceof Array) {
+                _.each(eeLayer.Style, function(style) {
+                    this.$("#newLayerStyle").append("<option value='" + style.Name + "'>" + style.Name + "</option>");
+                });
+            }
+
+            else 
+                this.$("#newLayerStyle").append("<option value='" + eeLayer.Style.Name + "'>" + eeLayer.Style.Name + "</option>");
         },
 
         saveModalInformation: function() {
@@ -50,6 +71,7 @@ define([
 
             this.$el.parent().on("hide", function(e) { view.closeModal.apply(view, e); });
 
+            this.delegateEvents();
             return this;
         }
     });

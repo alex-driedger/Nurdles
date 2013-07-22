@@ -34,6 +34,7 @@ define([
             });
             modal.attachToPopup($("#modalPopup"));
             modal.render();
+            modal.updateStyleSelect(null, this.eeLayers[0].Name);
 
             modal.show();
         },
@@ -59,8 +60,8 @@ define([
 
                 setupSavedLayers(userLayers);
             });
-
         },
+
 
         preRender: function(containingDiv, callback) {
             var view = this;
@@ -104,6 +105,7 @@ define([
                                 
                             view.eeLayers = eeLayers;
                             view.fadeInViewElements();
+
                             callback();
                         });
                     }
