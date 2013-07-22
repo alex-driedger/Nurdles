@@ -390,44 +390,14 @@ define([
                        var horizonBaseLayer = new Layer();
                        var horizonLayer = new Layer();
 
-                       horizonBaseLayer.set("isBaseLayer", true);
-                       horizonBaseLayer.set("mapType", "OSM");
-                       horizonBaseLayer.set("active", true);
-                       horizonBaseLayer.set("order", 0);
+                       horizonBaseLayer.initAsBaseLayer();
                        horizonBaseLayer.set("isLocked", true);
                        horizonBaseLayer.set("name", "Default Basemap");
                        horizonBaseLayer.set("title", "Default Basemap");
-                       horizonBaseLayer.set("url", null);
-                       horizonBaseLayer.set("exactEarthOptions", { 
-                           isBaseLayer: true, 
-                           wrapDateLine: true,
-                           transitionEffect: "resize",
-                           tileOptions: {crossOriginKeyword: null}
-                       });
 
-                       horizonLayer.set("isExactEarth", true);
+                       horizonLayer.initAsLVILayer();
                        horizonLayer.set("exactEarthLayersContainer", "exactAIS:LVI");
-                       horizonLayer.set("mapType", "WMS");
-                       horizonLayer.set("active", true);
                        horizonLayer.set("isLocked", true);
-                       horizonLayer.set("order", 0);
-
-                       horizonLayer.set("url", "https://owsdemo.exactearth.com/wms?authKey=tokencoin");
-                       horizonLayer.set("exactEarthParams", { 
-                           LAYERS : "exactAIS:LVI",
-                           STYLES : "VesselByType",
-                           FORMAT : "image/png",
-                           TRANSPARENT : true,
-                           SERVICE: "WMS",
-                           VERSION: "1.1.1",
-                           REQUEST: "GetMap"
-                       });
-                       horizonLayer.set("exactEarthOptions", { 
-                           singleTile: false,
-                           ratio: 1,
-                           yx: { 'EPSG:4326': true },
-                           wrapDateLine: true
-                       });
 
                        view.model.addLayer(defaultBaseLayer);
                        view.model.addLayer(defaultLayer);

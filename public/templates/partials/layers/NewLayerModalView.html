@@ -1,7 +1,9 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="modalHeader"><%= prettyProperty %></h3>
+    <h3 id="modalHeader"><%= isBaseLayer == true ? "New Basemap" : "New Layer"  %></h3>
 </div>
+
+<% if (!isBaseLayer) { %>
 <div class="modal-body">
     <div class="clearfix">
         <label class="modal-float-label"> Base new layer off of which exactEarth Layer? </label>
@@ -21,6 +23,18 @@
     </div>
 
 </div>
+<% }
+else { %>
+<div class="modal-body">
+    <div class="vtupadded10">
+        <input type="text" id="newBaseLayerName" placeholder="Basemap Name" />
+    </div>
+
+    <div class="vtupadded10">
+        <input type="text" id="newBaseLayerURL" placeholder="Basemap URL" />
+    </div>
+</div>
+<% } %>
 <div class="modal-footer">
     <button id="closeModal" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     <button id="saveModalInformation" class="btn btn-primary">Save changes</button>

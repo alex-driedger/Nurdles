@@ -9,7 +9,6 @@ define([
     var NewLayerModalView = Baseview.extend({
         initialize: function(args) {
             this.initArgs(args);
-
         },
 
         template: _.template(newLayerModalTemplate),
@@ -64,6 +63,7 @@ define([
             this.$el.html(this.template({
                 layers: this.layers,
                 eeLayers: this.eeLayers,
+                isBaseLayer: this.isBaseLayer,
                 property: this.property,
                 type: this.type,
                 prettyProperty: this.prettyProperty

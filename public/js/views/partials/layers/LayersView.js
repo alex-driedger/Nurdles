@@ -24,13 +24,37 @@ define([
 
         events: {
             "click #addLayer": "addNewLayer",
+            "click #addBaseLayer": "addNewBaseLayer"
         },
         
         addNewLayer: function(e) {
             e.preventDefault();
+            var layer = new Layer();
+            layer.initAsBaseLayer();
+
             var modal = new NewLayerModalView({
                 layers: this.nonBaseLayers,
-                eeLayers: this.eeLayers
+                eeLayers: this.eeLayers,
+                isBaseLayer: false,
+                model: layer
+            });
+            modal.attachToPopup($("#modalPopup"));
+            modal.render();
+            modal.updateStyleSelect(null, this.eeLayers[0].Name);
+
+            modal.show();
+        },
+
+        addNewBaseLayer: function(e) {
+            e.preventDefault();
+            var layer = new Layer();
+            layer.initAsBaseLayer();
+
+            var modal = new NewLayerModalView({
+                layers: this.nonBaseLayers,
+                eeLayers: this.eeLayers,
+                isBaseLayer: true,
+                model: layer
             });
             modal.attachToPopup($("#modalPopup"));
             modal.render();
