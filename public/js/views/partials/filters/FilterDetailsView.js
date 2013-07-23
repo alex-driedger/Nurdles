@@ -23,6 +23,8 @@ define([
             this.delegateEvents();
 
             this.events["click #" + this.model.get("_id") + "-filterLogicalOperatorCheckbox"] = "toggleTopLevelBinType";
+            this.events["add #" + this.model.get("_id") + "-topLevelBin"] = "addOperatorToTopLevel";
+            this.events["click #" + this.model.get("_id") + "-addLogicBin"] = "addBin";
         },
 
         template: _.template(filterDetailsTemplate),
@@ -36,9 +38,56 @@ define([
             "click .saveFilter": "saveFilter"
         },
 
+        stopPropagation: function(e) {
+            e.stopPropagation();
+        },
+
         preventDefault: function(e) {
             e.preventDefault();
-            e.stopPropagation();
+            this.stopPropagation();
+        },
+
+        addOperatorToTopLevel: function(e, itemInfo) {
+            this.stopPropagation(e);
+            var oldBin =  _.findWhere(this.model.getBins(), {id: parseInt(itemInfo.sender.prop("id").split("-")[0])});
+            var bin = this.model.get("topLevelBin");
+            var operator = _.findWhere(oldBin.operators, {id: parseInt(itemInfo.itemId.split("-")[0])}),
+                newOperatorList = _.reject(oldBin.operators, function(operator) {
+                    return operator.id == parseInt(itemInfo.itemId.split("-")[0]);
+                });
+            
+            console.log("SENDER: ", itemInfo.sender);
+            oldBin.operators = newOperatorList;
+            bin.operators.push(operator);
+
+            this.reRender();
+        },
+
+        addOperatorToInnerBin: function(e, itemInfo) {
+            this.stopPropagation(e);
+            var oldBin = itemInfo.sender.prop("id") === (this.model.get("_id") + "-topLevelBin") ? this.model.get("topLevelBin") : _.findWhere(this.model.getBins(), {id: parseInt(itemInfo.sender.prop("id").split("-")[0])});
+            var bin =  _.findWhere(this.model.getBins(), {id: parseInt($(e.target).prop("id").split("-")[0])});
+            var operator = _.findWhere(oldBin.operators, {id: parseInt(itemInfo.itemId.split("-")[0])}),
+                newOperatorList = _.reject(oldBin.operators, function(operator) {
+                    return operator.id == parseInt(itemInfo.itemId.split("-")[0]);
+                });
+            
+            oldBin.operators = newOperatorList;
+            bin.operators.push(operator);
+
+            this.reRender();
+        },
+
+        addBin: function() {
+            this.model.addBin();
+            this.reRender();
+        },
+
+        removeBin: function(e) {
+            var binId = $(e.target).prop("id").split("-")[0];
+            this.model.removeBin(binId);
+
+            this.reRender();
         },
 
         toggleTopLevelBinType: function(e) {
@@ -56,18 +105,18 @@ define([
         cacheOperators: function() {
             var view = this;
             _.each(this.model.getBins(), function(bin) {
-                if (!(operator.get && operator.get("isSubFilter"))) {
                     _.each(bin.operators, function(operator) {
-                        operator.property = $("#" + operator.id + "-" + bin.id + view.model.get("_id") + "-property").val();
-                        operator.type = $("#" + operator.id + "-" + bin.id + view.model.get("_id") + "-type").val();
-                        if (operator.upperBoundary) {
-                            operator.lowerBoundary = $("#" + operator.id + "-" + bin.id + view.model.get("_id") + "-lower").val();
-                            operator.upperBoundary = $("#" + operator.id + "-" + bin.id + view.model.get("_id") + "-upper").val();
+                        if (!(operator.get && operator.get("isSubFilter"))) {
+                            operator.property = $("#" + operator.id + "-" + bin.id + "-" + view.model.get("_id") + "-property").val();
+                            operator.type = $("#" + operator.id + "-" + bin.id + "-" + view.model.get("_id") + "-type").val();
+                            if (operator.upperBoundary) {
+                                operator.lowerBoundary = $("#" + operator.id + "-" + bin.id + "-" + view.model.get("_id") + "-lower").val();
+                                operator.upperBoundary = $("#" + operator.id + "-" + bin.id + "-" + view.model.get("_id") + "-upper").val();
+                            }
+                            else
+                                operator.value = $("#" + operator.id + "-" + bin.id + "-" + view.model.get("_id") + "-lower").val();
                         }
-                        else
-                            operator.value = $("#" + operator.id + "-" + bin.id + view.model.get("_id") + "-lower").val();
                     });
-                }
             });
 
             _.each(this.model.get("topLevelBin").operators, function(operator) {
@@ -242,34 +291,42 @@ define([
             this.reRender();
         },
 
-        updateAssociatedTypes: function(property, typeDropDown) {
-            var selectedVal = property.val(),
+        updateAssociatedTypes: function(target) {
+            var selectedVal = target.val(),
                 type = _.findWhere(this.features, {name:selectedVal}).type,
                 types = Utils.getTypeDropdownValues(type),
-                selectedProperty = typeDropDown.val();
+                selectedProperty = $(target.parent().next().children()[0]),
+                selectedValue = selectedProperty.val(),
+                textPrefix = selectedProperty.prop("id").substring(0, selectedProperty.prop("id").toLowerCase().indexOf("type")),
+                textFieldToUpdate = $("#" + textPrefix + (textPrefix == (this.subFilterLevel + "-new") ? "Upper" : "upper"));
                  
             this.types = types;
-            typeDropDown.html("");
+            selectedProperty.html("");
 
             _.each(types, function(type) {
-                $('<option/>').val(type).text(type).appendTo(typeDropDown);
+                $('<option/>').val(type).text(type).appendTo(selectedProperty);
             });
 
-            typeDropDown.val(selectedProperty);
+            selectedProperty.val(selectedValue);
+            this.updateValueTextFields(selectedProperty, textFieldToUpdate);
+        },
+
+        handleTextFieldsChange: function(e) {
+            var textPrefix = $(e.target).prop("id").substring(0, $(e.target).prop("id").toLowerCase().indexOf("type")),
+                textFieldToUpdate = $("#" + textPrefix + (textPrefix == (this.subFilterLevel + "-new") ? "Upper" : "upper"));
+
+            this.updateValueTextFields($(e.target), textFieldToUpdate);
         },
 
         updateValueTextFields: function(target, fieldToToggle) {
-            $("#editFilter .staged").toggleClass("wide-95");
             if (target.val() == "..") {
-                target.closest("td").next().prop("colspan", "1")
-                fieldToToggle.removeClass("hide");
                 fieldToToggle.parent().removeClass("hide");
+                fieldToToggle.parent().prev().addClass("wide-45i");
             }
             else {
-                fieldToToggle.addClass("hide");
-                fieldToToggle.parent().addClass("hide");
-                fieldToToggle.html("");
-                target.closest("td").next().prop("colspan", "2")
+                fieldToToggle.parent().addClass("hide")
+                    .prev().removeClass("wide-45i");
+                fieldToToggle.val("");
             }
         },
 
@@ -300,10 +357,14 @@ define([
             });
 
             _.each(this.model.getBins(), function(bin) {
+                view.events["click #" + bin.id + "-" + view.subFilterLevel + "-logicalOperatorCheckbox"] = "toggleInnerBinType";
+                view.events["add #" + bin.id + "-" + view.model.get("_id") + "-innerBin"] = "addOperatorToInnerBin";
+                view.events["click #" + bin.id + "-" + view.model.get("_id") + "-removeBin"] = "removeBin";
+
                 _.each(bin.operators, function(operator) {
                     if (!(operator.get && operator.get("isSubFilter"))) {
-                        view.updateAssociatedTypes($("#" + operator.id + "-" + bin.id + "-" + view.model.get("_id") + "-property"), $("#" + operator.id + "-" + view.model.get("_id") + "-type"));
-                        view.updateValueTextFields($("#" + operator.id + "-" + bin.id + "-" + view.model.get("_id") + "-type"), $("#" + operator.id + "-" + view.model.get("_id") + "-upper"));
+                        view.updateAssociatedTypes($("#" + operator.id + "-" + bin.id + "-" + view.model.get("_id") + "-property"), $("#" + operator.id + "-" + bin.id + "-" + view.model.get("_id") + "-type"));
+                        view.updateValueTextFields($("#" + operator.id + "-" + bin.id + "-" + view.model.get("_id") + "-type"), $("#" + operator.id + "-" + bin.id + "-" + view.model.get("_id") + "-upper"));
                     }
                 });
             });
@@ -314,12 +375,20 @@ define([
             if (!this.isExpanded)
                 $("#" + this.model.get("_id") + "-container").hide();
 
+            $( "#" + this.model.get("_id") + "-topLevelBinContainer ul").sortable({
+                placeholder: "ui-state-highlight",
+                items: "li:not(.ui-state-disabled)",
+                cancel: ".ui-state-disabled",
+                connectWith: "#" + this.model.get("_id") + "-topLevelBinContainer ul",
+                handle: "span",
+                receive: function(event, ui) {
+                    console.log($(this).prop("id") + " got a new operator");
+                    $(event.target).trigger('add', {itemId: ui.item.prop("id"), sender: ui.sender});
+                }
+            }).disableSelection();
+
             this.events["click .savedSubFilter-1"] = "showSubFilterUI";
             this.events["click .viewSavedSubFilter-1"] = "showSavedSubFilter";
-
-            _.each(this.model.getBins(), function(bin) {
-                view.events["click #" + bin.id + "-" + view.subFilterLevel + "-logicalOperatorCheckbox"] = "toggleInnerBinType";
-            });
 
             this.delegateEvents();
             return this;
