@@ -1,30 +1,39 @@
 /*global hello */
-define(['underscore', 'jquery', 'mocha', 'chai'], function(_, $, mocha, chai) {
+define(['../public/js/models/Layer'], function(Layer) {
+//define(['../public/js/views/MapView'], function(MapView) {
+//define(['../public/js/views/MapView'], function(MapView) {
 
     // Next Part working OK within the function
-  
+    (function () {
         window.hello = function () {
             return "Hello World";
         };
+        describe("Layer Tests", function () {
+            var layer = new Layer();
+
+            it("should have an update function'", function () {
+                expect(layer.update).to.be.ok;
+            });
+        });
 
         describe("Trying out the test libraries", function () {
-            describe("ChQi", function () {
+            describe("Chai", function () {
                 it("should be equal using 'expect'", function () {
                     expect(hello()).to.equal("Hello World");
                 });
             });
 
-            var x= 6;
-            describe("Test cached on", function () {
+            var x= 4;
+            describe("Test cached", function () {
                 it("should pass on assertion", function () {
-                    expect(x).to.equal(6);
+                    expect(x).to.equal(4);
                 });
             });
 
             describe("Test failures", function () {
                 it("should pass on assertion", function () {
                     expect("hi").to.equal("hi");
-                    expect(x).to.equal(6);
+                    expect(x).to.equal(4);
                 });
 
                 it("should fail on unexpected exception", function () {
@@ -68,12 +77,6 @@ define(['underscore', 'jquery', 'mocha', 'chai'], function(_, $, mocha, chai) {
                     });
                 });
             })();
-            describe("Views Tests", function () {
-            var view = new MapView();
-
-            it("should have an locateship function'", function () {
-                expect(view.initialize).to.be.ok;
-            });
         });
-        });
+    })();
 });

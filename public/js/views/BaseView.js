@@ -2,7 +2,7 @@ define([
    'jquery',
    'underscore',
    'backbone',
-   'text!templates/partials/loading.html',
+   /*'text!templates/partials/loading.html',*/
    'jqueryui',
    'bootstrap'
 ], function($, _, Backbone, loadingTemplate){

@@ -35,7 +35,7 @@ require.config({
         baseview: '../public/js/views/BaseView',
         basecollection: '../public/js/collections/BaseCollection',
         openlayersutil: "../public/js/utils/OpenLayersUtil",
-        templates: '../templates'
+        templates: '../public/templates'
     },
 
 });
@@ -51,7 +51,7 @@ require(['underscore', 'jquery', 'mocha', 'chai'], function(_, $, mocha, chai) {
 
   var specs = [];
 
-  specs.push('view_spec');
+  specs.push('Base_view_spec');
   
 
   require(specs, function(){

@@ -6,9 +6,16 @@ define([
     var Ship = Backbone.Model.extend({
         idAttribute: "_id",
 
+    defaults: function () {
+      return {
+        title: "",
+        text: "*Edit your note!*",
+        createdAt: new Date()
+      };
+
     });
 
     return Ship;
 
 });
-
+});
