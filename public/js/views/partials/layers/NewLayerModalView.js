@@ -10,7 +10,6 @@ define([
         initialize: function(args) {
             this.initArgs(args);
 
-            this.bindTo($("#modalPopup"), "hide", this.close());
         },
 
         template: _.template(newLayerModalTemplate),
@@ -25,8 +24,9 @@ define([
             this.$el.appendTo(modalDiv);
         },
 
-        closeModal: function(e) {
+        closeModal: function() {
             var view = this;
+            this.$el.parent().off("hide");
             setTimeout(function() {view.close();}, 200);
         },
 
@@ -55,6 +55,7 @@ define([
         },
 
         saveModalInformation: function() {
+            var view = this;
             if (this.isBaseLayer) {
                 this.model.set("title", this.$("#newBaseLayerName").val());
                 this.model.set("name", this.$("#newBaseLayerName").val());
@@ -66,7 +67,6 @@ define([
                 this.model.setLayerType(this.$("#newLayerEEName").val());
             }
 
-            /*
             this.model.save(null, {
                 url: "/api/layers/save",
                 success: function(res) {
@@ -76,10 +76,9 @@ define([
                     console.log(err);
                 }
             });
-            */
 
             Backbone.globalEvents.trigger("layerAdded", {layer: this.model, isBaseLayer: this.isBaseLayer});
-            $("modalPopup").trigger("hide");
+            this.$el.parent().modal("hide");
         },
 
         render: function () {

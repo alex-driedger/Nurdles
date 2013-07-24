@@ -48,6 +48,7 @@ define([
         },
 
         setLayerType: function(eeLayerType) {
+            this.set("exactEarthLayerType", eeLayerType);
             this.get("exactEarthParams").LAYERS = eeLayerType;
         },
 
