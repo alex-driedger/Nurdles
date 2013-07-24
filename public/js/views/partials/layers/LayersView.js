@@ -18,6 +18,9 @@ define([
         initialize: function(args) {
             this.initArgs(args);
             this.layers = new BaseCollection([], {model: Layer});
+
+            this.bindTo(Backbone.globalEvents, "layersAdded", this.addLayer);
+
         },
 
         template: _.template(layersTemplate),
@@ -30,7 +33,7 @@ define([
         addNewLayer: function(e) {
             e.preventDefault();
             var layer = new Layer();
-            layer.initAsBaseLayer();
+            layer.initAsLVILayer();
 
             var modal = new NewLayerModalView({
                 layers: this.nonBaseLayers,
@@ -43,6 +46,19 @@ define([
             modal.updateStyleSelect(null, this.eeLayers[0].Name);
 
             modal.show();
+        },
+
+        addLayer: function(layerInfo) {
+            var view = this;
+            if (layerInfo.isBaseLayer) 
+                this.baseLayers.push(layerInfo.layer);
+            else
+                this.nonBaseLayers.push(layerInfo.layer);
+
+            this.$("#layersContainer").html("");
+            this.reRender($("#layersContainer"), function() {
+                view.render();
+            });
         },
 
         addNewBaseLayer: function(e) {
@@ -85,7 +101,6 @@ define([
                 setupSavedLayers(userLayers);
             });
         },
-
 
         preRender: function(containingDiv, callback) {
             var view = this;

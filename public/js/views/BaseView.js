@@ -146,7 +146,7 @@ define([
 
         reRender: function(args) {
             if (this.preRender)
-                this.preRender(args);
+                this.preRender.apply(this, args);
             this.render(args);
         },
         
