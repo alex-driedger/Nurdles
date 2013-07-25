@@ -18,8 +18,11 @@ define([
         initialize: function(args) {
             this.initArgs(args);
             this.layers = new BaseCollection([], {model: Layer});
+            this.nonBaseLayers = new BaseCollection([], {model: Layer});
+            this.baseLayers = new BaseCollection([], {model: Layer});
 
-            this.bindTo(Backbone.globalEvents, "layersAdded", this.addLayer);
+            this.bindTo(Backbone.globalEvents, "layerAdded", this.addLayer);
+            this.bindTo(Backbone.globalEvents, "layerRemoved", this.removeLayer);
 
         },
 
@@ -39,7 +42,8 @@ define([
                 layers: this.nonBaseLayers,
                 eeLayers: this.eeLayers,
                 isBaseLayer: false,
-                model: layer
+                model: layer,
+                nextOrder: this.nonBaseLayers.length
             });
             modal.attachToPopup($("#modalPopup"));
             modal.render();
@@ -51,14 +55,22 @@ define([
         addLayer: function(layerInfo) {
             var view = this;
             if (layerInfo.isBaseLayer) 
-                this.baseLayers.push(layerInfo.layer);
+                this.baseLayers.add(layerInfo.layer);
             else
-                this.nonBaseLayers.push(layerInfo.layer);
+                this.nonBaseLayers.add(layerInfo.layer);
 
             this.$("#layersContainer").html("");
-            this.reRender($("#layersContainer"), function() {
+            this.reRender([$("#layersContainer"), function() {
                 view.render();
-            });
+            }]);
+        },
+
+        removeLayer: function() {
+            var view = this;
+            this.$("#layersContainer").html("");
+            this.reRender([$("#layersContainer"), function() {
+                view.render();
+            }]);
         },
 
         addNewBaseLayer: function(e) {
@@ -109,38 +121,44 @@ define([
                 view.layers.fetch({
                     url: "/api/layers/getAllForUser",
                     success: function(userLayers, res, opt) {
-                        var baseLayers = userLayers.filter(function(layer) {
-                            return layer.get("isBaseLayer") == true;
+                        userLayers.each(function(layer) {
+                            if (layer.get("isBaseLayer") == true) {
+                                layer.collection = view.baseLayers;
+                                view.baseLayers.add(layer);
+                            }
                         });
-                        view.nonBaseLayers = userLayers.filter(function(layer) {
-                            return layer.get("isBaseLayer") == false;
+                        userLayers.each(function(layer) {
+                            if (layer.get("isBaseLayer") == false) {
+                                layer.collection = view.nonBaseLayers;
+                                view.nonBaseLayers.add(layer);
+                            }
                         });
-
+                        userLayers.reset();
                         view.setupFeatureTypes(userLayers, function(userLayers) {
                             view.$el.html(view.template());
-                            for (var i = 0, len = view.nonBaseLayers.length; i < len; i++) {
-                                view.$("#layersList").append("<li id='" + view.nonBaseLayers[i].get("_id") + "-listItem'></li>");
+                            view.nonBaseLayers.each(function(layer) {
+                                view.$("#layersList").append("<li id='" + layer.get("_id") + "-listItem'></li>");
                                 var savedLayerView = new SavedLayerView({
-                                    model: view.nonBaseLayers[i],
+                                    model: layer,
                                     numberTypes: private.numberTypes,
                                     stringTypes: private.stringTypes,
                                     spatialTypes: private.spatialTypes
                                 });
                                 //Set the el like so that if I close the view (delete the layer), I automagically remove the list item
-                                savedLayerView.$el = $("#" + view.nonBaseLayers[i].get("_id") + "-listItem");
+                                savedLayerView.$el = $("#" + layer.get("_id") + "-listItem");
 
                                 $("#layersList").append(savedLayerView.render().$el);
                                 view.addSubView(savedLayerView);
-                            }
+                            });
 
-                            for (var i = 0, len = baseLayers.length; i < len; i++) {
+                            view.baseLayers.each(function(baseLayer) {
                                 var savedBaseLayerView = new SavedBaseLayerView({
-                                    model: baseLayers[i],
+                                    model: baseLayer,
                                 });
 
                                 $("#baseLayersList").append(savedBaseLayerView.render().$el);
                                 view.addSubView(savedBaseLayerView);
-                            }
+                            });
                                 
                             view.eeLayers = eeLayers;
                             view.fadeInViewElements();

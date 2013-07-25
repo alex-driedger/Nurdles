@@ -11,6 +11,7 @@ var LayerSchema = new mongoose.Schema({
     isBaseLayer: { type: Boolean, required: true, default: false },
     isExactEarth: { type: Boolean, required: true, default: false },
     exactEarthLayerType: { type: String, required: false }, //convenience attribute
+    exactEarthLayerStyle: { type: String, required: false }, //convenience attribute
     exactEarthParams: { type: mongoose.Schema.Types.Mixed, required: false },
     exactEarthOptions: { type: mongoose.Schema.Types.Mixed, required: false },
     isLocked: {type: Boolean, required: true, default: false },

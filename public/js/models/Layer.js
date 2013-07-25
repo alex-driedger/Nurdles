@@ -52,6 +52,11 @@ define([
             this.get("exactEarthParams").LAYERS = eeLayerType;
         },
 
+        setLayerStyle: function(eeLayerStyle) {
+            this.set("exactEarthLayerStyle", eeLayerStyle);
+            this.get("exactEarthParams").STYLES = eeLayerStyle;
+        },
+
         update: function(success, fail, context) {
             this.save(null, { 
                 url: "/api/layers/" + this.get("_id") + "/update",

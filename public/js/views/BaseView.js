@@ -147,7 +147,7 @@ define([
         reRender: function(args) {
             if (this.preRender)
                 this.preRender.apply(this, args);
-            this.render(args);
+            this.render.apply(this, args);
         },
         
         closeSubviews: function() {
