@@ -66,7 +66,7 @@ define([
                 this.model.set("name", this.$("#newLayerName").val());
                 this.model.setLayerType(this.$("#newLayerEEName").val());
                 this.model.setLayerType(this.$("#newLayerEEName").val());
-                this.model.setLayerStyle(this.$("#newLayerEEName").val());
+                this.model.setLayerStyle(this.$("#newLayerStyle").val());
                 this.model.set("order", this.nextOrder);
             }
 

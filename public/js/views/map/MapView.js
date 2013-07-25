@@ -369,15 +369,18 @@ define([
                success: function(fetchedLayers) {
                    if (fetchedLayers.models.length > 0) {
                        var baseLayers = fetchedLayers.models.filter(function(layer) {
-                           return layer.isBaseLayer == true;
+                           return layer.get("isBaseLayer") == true;
                        });
                        var userLayers = _.difference(fetchedLayers.models, baseLayers);
+                       var mapBaseLayer;
 
                        _.each(baseLayers, function(baseLayer) {
                            var olBaseLayer = Utils.convertLayerToOLLayer(baseLayer)
                            view.model.addLayer(olBaseLayer);
-                           if (baseLayer.active)
+                           if (baseLayer.get("active") == true) {
                                view.model.setBaseLayer(olBaseLayer);
+                               mapBaseLayer = olBaseLayer;
+                           }
                        });
                        _.each(userLayers, function(layer) {
                            var olLayer = Utils.convertLayerToOLLayer(layer)
@@ -385,6 +388,8 @@ define([
                            view.model.setLayerIndex(olLayer, layer.get("order"));
                            olLayer.setVisibility(layer.get("active"));
                        });
+
+                       view.model.setLayerIndex(mapBaseLayer, 0);
                    }
                    else {
                        var horizonBaseLayer = new Layer();
