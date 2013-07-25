@@ -237,24 +237,13 @@ define([
 
         updateLayerOrder: function(layerIds) {
             var map = this.model;
+            var orderCounter = 1;
 
-            var layers = _.reject(map.layers, function(layer) {
-                return layer.isBaseLayer || layer.markers || layer.getVisibility() == false;
-            });
-            var offset = map.layers.length - layers.length;
-
-            for (var i = 0, len = layers.length; i < len; i++) {
-                var layer = map.getLayersByName(layerIds[i])[0];
-
-                if (layerIds.indexOf(layer.name) == -1)
-                    layer.setVisibility(false);
-                else
-                    map.setLayerIndex(layer, map.layers.length - i - 1);
-            }
-
-            _.each(map.layers, function(olLayer) {
-                if (olLayer.markers)
-                    map.setLayerIndex(olLayer, map.layers.length - 1)
+            _.each(layerIds, function(id) {
+                var layer;
+                name = id.split("-")[1];
+                map.setLayerIndex(map.getLayersByName(name)[0], orderCounter);
+                orderCounter++;
             });
         },
 

@@ -43,7 +43,7 @@ define([
                 eeLayers: this.eeLayers,
                 isBaseLayer: false,
                 model: layer,
-                nextOrder: this.nonBaseLayers.length
+                nextOrder: this.nonBaseLayers.length + 1 //to accomodate base layer
             });
             modal.attachToPopup($("#modalPopup"));
             modal.render();
@@ -114,6 +114,23 @@ define([
             });
         },
 
+        handleLayerReorder: function(layerIds) {
+            var view = this;
+            var orderCounter = 1;
+            _.each(layerIds, function(id) {
+                var layer;
+                id = id.split("-")[0];
+                layer = view.nonBaseLayers.findWhere({_id: id });
+                layer.set("order", orderCounter);
+                layer.update();
+                orderCounter++;
+            });
+
+            Backbone.globalEvents.trigger("layersReordered", layerIds);
+
+            console.log(layerIds);
+        },
+
         preRender: function(containingDiv, callback) {
             var view = this;
             this.$el.appendTo(containingDiv);
@@ -137,7 +154,7 @@ define([
                         view.setupFeatureTypes(userLayers, function(userLayers) {
                             view.$el.html(view.template());
                             view.nonBaseLayers.each(function(layer) {
-                                view.$("#layersList").append("<li id='" + layer.get("_id") + "-listItem'></li>");
+                                view.$("#layersList").append("<li id='" + layer.get("_id") + "-" + layer.get("name") + "-listItem'></li>");
                                 var savedLayerView = new SavedLayerView({
                                     model: layer,
                                     numberTypes: private.numberTypes,
@@ -145,7 +162,7 @@ define([
                                     spatialTypes: private.spatialTypes
                                 });
                                 //Set the el like so that if I close the view (delete the layer), I automagically remove the list item
-                                savedLayerView.$el = $("#" + layer.get("_id") + "-listItem");
+                                savedLayerView.$el = $("#" + layer.get("_id") + "-" + layer.get("name") + "-listItem");
 
                                 $("#layersList").append(savedLayerView.render().$el);
                                 view.addSubView(savedLayerView);
@@ -183,7 +200,9 @@ define([
                 cancel: ".ui-state-disabled",
                 handle: "span",
                 stop: function(event, ui) {
-                    //view.handleLayerReorder();
+                    view.handleLayerReorder($(this).sortable("toArray").filter(function(item) { 
+                        return item != "";
+                    }).reverse());
                 }
             });
 

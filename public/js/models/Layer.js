@@ -27,7 +27,7 @@ define([
             this.set("isExactEarth", true);
             this.set("mapType", "WMS");
             this.set("active", true);
-            this.set("order", 0);
+            this.set("order", 1);
 
             this.set("url", "https://owsdemo.exactearth.com/wms?authKey=tokencoin");
             this.set("exactEarthParams", { 
