@@ -2,7 +2,7 @@
     <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
     <div class="pull-left">
         <div class="collapsed-checkbox">
-            <input id="<%= model.get('_id') %>-checkbox" class="activateCheckbox" type="checkbox"/>
+            <input id="<%= model.get('_id') %>-checkbox" class="activateCheckbox" type="checkbox" <% if (model.get("active") == true ) { %> checked <% } %>/>
         </div>
     </div>
     <div class="lpadding10 pull-left">

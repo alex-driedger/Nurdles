@@ -1,7 +1,7 @@
 <div id="<%= model.get('_id') %>-header" class="saved-filter clearfix collapsed notExpanded collapsed-header baseLayer">
     <div class="pull-left">
         <div class="collapsed-radio">
-            <input id="<%= model.get('_id') %>-radio" class="activateRadio" type="radio" name="baseLayers"/>
+            <input id="<%= model.get('_id') %>-radio" class="activateRadio" type="radio" name="baseLayers" <% if (model.get("active") == true ) { %> checked <% } %>/>
         </div>
     </div>
     <div class="lpadding10 pull-left">

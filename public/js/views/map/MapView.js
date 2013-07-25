@@ -72,7 +72,7 @@ define([
             */
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
             this.bindTo(Backbone.globalEvents, "initialFilterLoad", this.queueInitialFilters, this);
-            this.bindTo(Backbone.globalEvents, "layersChanged", this.updateLayers, this);
+            this.bindTo(Backbone.globalEvents, "toggleLayer", this.toggleLayer, this);
             this.bindTo(Backbone.globalEvents, "baseLayerSelected", this.changeBaseLayer, this);
             this.bindTo(Backbone.globalEvents, "layerStylesReordered", this.updateLayerStyles, this);
             this.bindTo(Backbone.globalEvents, "layersReordered", this.updateLayerOrder, this);
@@ -225,14 +225,10 @@ define([
             map.setBaseLayer(map.getLayersByName(layer.get("name"))[0]);
         },
 
-        updateLayers: function(layers) {
+        toggleLayer: function(layerInfo) {
             var map = this.model;
 
-            _.each(layers.models, function(layer) {
-                map.getLayersByName(layer.get("name"))[0].setVisibility(layer.get("active"));
-            });
-
-            console.log(layers.models);
+            map.getLayersByName(layerInfo.name)[0].setVisibility(layerInfo.active);
         },
 
         updateLayerOrder: function(layerIds) {

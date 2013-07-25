@@ -16,7 +16,8 @@ define([
 
         events: {
             "click .feature": "addNewFilter",
-            "click .editLayer": "expandDetails"
+            "click .editLayer": "expandDetails",
+            "click .activateCheckbox": "toggleLayer"
         },
 
         expandDetails: function(e) {
@@ -26,6 +27,15 @@ define([
                 arrowSrc = arrow.prop("src");
 
             $("#" + layerId + "-container").slideToggle();
+        },
+
+        toggleLayer: function(e) {
+            var name = this.model.get("name");
+            var active = $(e.target).prop("checked");
+
+            this.model.set("active", active);
+            this.model.update();
+            Backbone.globalEvents.trigger("toggleLayer", {name: name, active: active});
         },
 
         deleteLayer: function(e) {
