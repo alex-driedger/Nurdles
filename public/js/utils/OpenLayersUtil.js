@@ -8,6 +8,16 @@ define([
     var private = {};
 
     var OpenLayersUtil = {
+        setUpUtilFunctions: function() {
+            String.prototype.capitalize = function(){
+                return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+            };
+
+            String.prototype.capitalizeShipAttributes = function(){
+                return this.replace(/_/g, " ").replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+            };
+        },
+
         getProjection: function() {
             return {
                 projection: new OpenLayers.Projection("EPSG:900913"), 
@@ -267,113 +277,20 @@ define([
             map.addControl(graticuleControl);
         },
 
-        addActiveLayersToMap: function(eeLayers, userLayers, view) {
-            console.log(eeLayers);
-            var layersToAddToMap = [];
-                haveActiveBaseLayer = false, //Used to keep track if we've added a baselayer yet.
-                parsedLayers = this.parseLayerTypes(userLayers);
-            
+        convertLayerToOLLayer: function(horizonLayer) {
+            var layer;
 
-            //I made four collection because I figure this is easier than filtering on demand.
-            //Especially in the view designed to allow a user to choose styles. That page is divided
-            //into EE layers and custom layers -- this will make it easier
-            view.eeStoredLayers = parsedLayers.eeStoredLayers;
-            view.customLayers = parsedLayers.customLayers;
-            view.baseLayers = parsedLayers.baseLayers;
-
-            view.baseLayers.each(function(baseLayer) {
-                var eeBaseLayer;
-                switch (baseLayer.get("mapType")) {
-                    case "OSM":
-                        eeBaseLayer = new OpenLayers.Layer.OSM("OSMBaseMap", null,
-                            { 
-                                isBaseLayer: true, 
-                                wrapDateLine: true,
-                                transitionEffect: "resize",
-                                tileOptions: {crossOriginKeyword: null}
-                            });
-                        break;
-                    case "WMS":
-                        eeBaseLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
-                            {
-                                layers: "basic"
-                            }, 
-                            { 
-                                isBaseLayer: true, 
-                                wrapDateLine: true,
-                                transitionEffect: "resize",
-                                tileOptions: {crossOriginKeyword: null}
-                            });
-                        break;
-                }
-
-                view.model.addLayer(eeBaseLayer);
-
-                if (baseLayer.get("active")) {
-                    if (haveActiveBaseLayer) { //Dealing with duplicate base layer error
-                        baseLayer.set("active", false);
-                        baseLayer.update();
-                    }
-
-                    view.model.setBaseLayer(eeBaseLayer);
-                    haveActiveBaseLayer = true;
-                }
-            });
-
-            if (!haveActiveBaseLayer) {
-                var basicMapLayer = new OpenLayers.Layer.OSM("OSMBaseMap", null,
-                    { 
-                        isBaseLayer: true, 
-                        wrapDateLine: true,
-                        transitionEffect: "resize",
-                        tileOptions: {crossOriginKeyword: null}
-                    });
-                view.model.addLayer(basicMapLayer);
-
-                var basicMapLayer = new OpenLayers.Layer.WMS("WMSBaseMap", "http://vmap0.tiles.osgeo.org/wms/vmap0", 
-                    {layers: "basic"}, 
-                    { 
-                        isBaseLayer: true, 
-                        wrapDateLine: true,
-                        transitionEffect: "resize"
-                    });
+            switch (horizonLayer.get("mapType")) {
+                case "WMS":
+                    layer = new OpenLayers.Layer.WMS(horizonLayer.get("name"), horizonLayer.get("url"), horizonLayer.get("exactEarthParams"), horizonLayer.get("exactEarthOptions"));
+                    break;
+                case "OSM":
+                    layer = new OpenLayers.Layer.OSM(horizonLayer.get("name"), null, horizonLayer.get("exactEarthOptions"));
+                    break;
             }
+            layer.exactEarthLayerType = horizonLayer.get("exactEarthLayerType");
 
-            _.each(eeLayers, function(eeLayer) {
-                var layer,
-                    userLayer = userLayers.findWhere({name: eeLayer.Name}),
-                    params = {};
-
-                    if (userLayer)
-                        params = userLayer.get("exactEarthParams");
-
-                    layer = new OpenLayers.Layer.WMS(
-                        eeLayer.Name, "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
-                        params,
-                        {
-                            singleTile: false,
-                            ratio: 1,
-                            yx: { 'EPSG:4326': true },
-                            wrapDateLine: true
-                        }
-                    );
-
-                    view.model.addLayer(layer);
-                    view.model.setLayerIndex(layer, userLayer.get("order"));
-                    layer.setVisibility(userLayer && userLayer.get("active"));
-            });
-
-
-            //Combine ee and custom layers since they can intermingle when assigning order
-            userLayers = userLayers.reject(function(layer) {
-                return layer.get("isBaseLayer");
-            });
-
-            view.userLayers = new BaseCollection(userLayers, {model: Layer});
-
-            view.layersLoaded = true;
-            view.loadInitialFilters();
-
+            return layer;
         },
 
         getShipCount: function(bounds, currentFilter, callback) {

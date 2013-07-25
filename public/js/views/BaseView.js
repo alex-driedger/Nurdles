@@ -34,7 +34,9 @@ define([
 
         fadeInViewElements: function(template) {
             this.$el.css("display", "none");
-            this.$el.html(template);
+            if (template)
+                this.$el.html(template);
+
             this.$el.fadeIn();
         },
         
@@ -144,8 +146,8 @@ define([
 
         reRender: function(args) {
             if (this.preRender)
-                this.preRender(args);
-            this.render(args);
+                this.preRender.apply(this, args);
+            this.render.apply(this, args);
         },
         
         closeSubviews: function() {

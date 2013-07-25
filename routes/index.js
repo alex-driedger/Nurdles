@@ -11,7 +11,7 @@ function bind(app, passport) {
         res.send(req.user);
     });
     app.post("/api/user", user.create);
-    app.get('/api/user/checkAuth', ensureAuthenticated, function(req, res) { res.send(req.user._id); });
+    app.get('/api/user/checkAuth', ensureAuthenticated, function(req, res) { res.send({userId: req.user._id, access: req.user.accessRights}); });
     app.post("/api/user/login", passport.authenticate("local"), user.loginSuccess);
 
     app.get("/api/map/basic", ensureAuthenticated, map.getBasic);

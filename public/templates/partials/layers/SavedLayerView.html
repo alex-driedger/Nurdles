@@ -1,0 +1,135 @@
+<div id="<%= model.get('_id') %>-header" class="saved-filter clearfix collapsed notExpanded collapsed-header">
+    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+    <div class="pull-left">
+        <div class="collapsed-checkbox">
+            <input id="<%= model.get('_id') %>-checkbox" class="activateCheckbox" type="checkbox" <% if (model.get("active") == true ) { %> checked <% } %>/>
+        </div>
+    </div>
+    <div class="lpadding10 pull-left">
+        <%= model.get("title") %>
+    </div>
+    <div class="pull-right rpadding15">
+        <span class="ship-count-span"> Ship count </span>
+        <img id="<%= model.get('_id') %>-edit" src="../../img/cog.png" class="pointer icon-small editLayer hpadding10" />
+        <% if (!model.get("isLocked")) { %>
+            <img id="<%= model.get('_id') %>-delete" src="../../img/trash.png" class="pointer icon-small deleteLayer" />
+        <% } %>
+    </div>
+</div>
+<div id="<%= model.get("_id") %>-container" class="filter-operands-container clearfix">
+    <div class="btn-group">
+        <button class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            Add Filter
+            <span class="caret"></span>
+        </button>
+        <ul id="newSearchFeatureList" class="dropdown-menu"> 
+            <% _.each(spatialTypes, function(feature) { %>
+            <li>
+                <a id="<%=feature.name%>-spatial" href="#" class="feature"><%= feature.name.capitalizeShipAttributes() %></a>
+            </li>
+            <% }); %>
+                    <li class="divider"></li>
+            <% _.each(numberTypes, function(feature) { %>
+            <li>
+                <a  id="<%=feature.name %>-number"href="#" class="feature"><%= feature.name.capitalizeShipAttributes() %></a>
+            </li>
+            <% }); %>
+            <li class="divider"></li>
+            <% _.each(stringTypes, function(feature) { %>
+            <li>
+                <a  id="<%=feature.name%>-string" href="#" class="feature"><%= feature.name.capitalizeShipAttributes() %></a>
+            </li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <div id="newFiltersContainer" class="clearfix vtupadded10">
+        <div class="pull-left c25">
+            Filters: 
+        </div>
+        <div id="newFilterList" class="pull-left filter-list">
+            <div class="item-row clearfix">
+                <div class="pull-left c40">
+                    Country: 
+                </div>
+                <div class="pull-left c40">
+                    <div class="list-item">
+                        Canada
+                    </div>
+                    <div class="list-item">
+                        United States
+                    </div>
+                </div>
+                <div class="pull-left c20">
+                    <a href="#"> Edit </a>
+                    <img src="../../img/minus.png" class="lpadding10 icon-small pointer">
+                </div>
+            </div>
+            <div class="item-row clearfix">
+                <div class="pull-left c40">
+                    Vessel Type: 
+                </div>
+                <div class="pull-left c40">
+                    <div class="list-item">
+                        Blargh
+                    </div>
+                </div>
+                <div class="pull-left c20">
+                    <a href="#"> Edit </a>
+                    <img src="../../img/minus.png" class="lpadding10 icon-small pointer">
+                </div>
+            </div>
+        </div>
+        <div class="pull-right">
+            <a href="#"> Save Current Search </a>
+        </div>
+    </div>
+    <div id="newShipList" class="vtupadded10">
+        <div id="newShipListHeader" class="shiplist-header clearfix">
+            <div class="c33 pull-left" style="padding-left: 18px">
+                MMSI
+            </div>
+            <div class="c66 pull-left">
+                Name
+            </div>
+        </div>
+        <div id="newShipListList">
+            <div class="shiplist-row">
+                <div class="shiplist-row-header clearfix">
+                    <div class="inline pull-left c33 clearfix">
+                        <img src="../../img/arrow-right.png" class="icon-small" />
+                        <div class="inline">
+                            982375987345
+                        </div>
+                    </div>
+                    <div class="c66">
+                        <div class="inline pull-left">
+                            Chris' Ship
+                        </div>
+                        <div class="inline hpadding10 pull-right">
+                            <button class="btn btn-primary"> Locate </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="shiplist-row">
+                <div class="shiplist-row-header clearfix background-on">
+                    <div class="inline pull-left c33 clearfix">
+                        <img src="../../img/arrow-right.png" class="icon-small" />
+                        <div class="inline">
+                            NCC-1701
+                        </div>
+                    </div>
+                    <div class="c66">
+                        <div class="inline pull-left">
+                            USS Enterprise
+                        </div>
+                        <div class="inline hpadding10 pull-right">
+                            <button class="btn btn-primary"> Locate </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

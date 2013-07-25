@@ -8,7 +8,7 @@ define([
        '../partials/map/TopToolsRow',
        'text!templates/map/MapView.html',
        '../../components/DynamicMeasure'
-], function(BaseView, BaseCollection, OpenLayersUtil, Layer, FeaturePopup, MeasurePopup, TopToolsRow, mapTemplate){
+], function(BaseView, BaseCollection, Utils, Layer, FeaturePopup, MeasurePopup, TopToolsRow, mapTemplate){
     var private = {
         /*-----
         * These are methods taken from the demo site.
@@ -61,7 +61,7 @@ define([
                 maxResolution: 156543,
                 units: 'm'
             });
-            this.userLayers = new BaseCollection([], {model: Layer});
+            this.layers = new BaseCollection([], {model: Layer});
             this.initialFiltersToLoad = [];
             this.filter = [];
             this.cachedSearchedShips = null;
@@ -72,25 +72,14 @@ define([
             */
             this.bindTo(Backbone.globalEvents, "filtersChanged", this.updateFilters, this);
             this.bindTo(Backbone.globalEvents, "initialFilterLoad", this.queueInitialFilters, this);
-            this.bindTo(Backbone.globalEvents, "layersChanged", this.updateLayers, this);
+            this.bindTo(Backbone.globalEvents, "toggleLayer", this.toggleLayer, this);
             this.bindTo(Backbone.globalEvents, "baseLayerSelected", this.changeBaseLayer, this);
             this.bindTo(Backbone.globalEvents, "layerStylesReordered", this.updateLayerStyles, this);
             this.bindTo(Backbone.globalEvents, "layersReordered", this.updateLayerOrder, this);
             this.bindTo(Backbone.globalEvents, "toggleGraticule", this.toggleGraticule, this);
             this.bindTo(Backbone.globalEvents, "toggleMeasure", this.toggleMeasure, this);
             this.bindTo(Backbone.globalEvents, "search", this.handleSearch, this);
-            this.bindTo(Backbone.globalEvents, "getShipList", this.getShipList, this);
-            this.bindTo(Backbone.globalEvents, "showShiplistView", function() {
-                if (view.cachedSearchedShips)
-                    setTimeout(function() {
-                        Backbone.globalEvents.trigger("cachedSearchedShipsExist", view.cachedSearchedShips);
-                    }, 5); //We want this to happen after other event handlers have been initiated so we make it start a bit later.
-                    //This allows us to make sure the view that handles the event is the view that was loaded from clicking on shiplist on the side bar.
-            }, this);
-            this.bindTo(Backbone.globalEvents, "cacheSearchedShips", function(ships) {view.cachedSearchedShips = ships;}, this);
             this.bindTo(Backbone.globalEvents, "locateShip", this.locateShip, this);
-
-            this.getExactEarthLayers(this.getUserLayers);
         },
 
         events: {
@@ -113,7 +102,7 @@ define([
                 size = new OpenLayers.Size(30,30),
                 icon = new OpenLayers.Icon('../../img/target.png',size),
                 markerLayer = map.getLayersByName("shipMarkers")[0],
-                projection = OpenLayersUtil.getProjection();
+                projection = Utils.getProjection();
 
             //We need to transform the points to properly place the popup
             
@@ -127,42 +116,6 @@ define([
             }
 
             markerLayer.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(ship.get("longitude"), ship.get("latitude")).transform(projection.displayProjection, projection.projection),icon));
-        },
-
-        getShipList: function() {
-            var filter,
-                map = this.model,
-                mapFilter = map.getLayersByName("exactAIS:LVI")[0].params.FILTER;
-
-            if (this.shipCount >= 500) {
-                Backbone.globalEvents.trigger("tooManyShipsToFetch");
-            }
-            else {
-                filter = new OpenLayers.Filter.Spatial({ 
-                    type: OpenLayers.Filter.Spatial.BBOX, 
-                    property: "position", 
-                    value: map.getExtent().transform(map.projection, map.displayProjection)
-                });
-
-                filter = OpenLayersUtil.mergeActiveFilters(filter, mapFilter);
-
-                var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
-                    url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
-                    featurePrefix: "", 
-                    featureType: "exactAIS:LVI",
-                }); 
-
-                Backbone.globalEvents.trigger("showLoader");
-
-                wfsProtocol.read ({ 
-                    filter: filter, 
-                    callback: function(response) {
-                        Backbone.globalEvents.trigger("hideLoader");
-                        Backbone.globalEvents.trigger("fetchedShipsList", response.features);
-                    },
-                    scope: new OpenLayers.Strategy.Fixed
-                }); 
-            }
         },
 
         handleSearch: function(searchTerm) {
@@ -192,7 +145,7 @@ define([
                     filters: [filter]
                 });
 
-            filter = OpenLayersUtil.mergeActiveFilters(filter, map.getLayersByName("exactAIS:LVI")[0].params.FILTER);
+            filter = Utils.mergeActiveFilters(filter, map.getLayersByName("exactAIS:LVI")[0].params.FILTER);
 
             var  wfsProtocol = new OpenLayers.Protocol.WFS.v1_1_0({ 
                 url: "/proxy/getWFSFeatures?url=https://owsdemo.exactearth.com/ows?service=wfs&version=1.1.0&request=GetFeature&typeName=exactAIS:LVI&authKey=tokencoin", 
@@ -209,35 +162,10 @@ define([
             }); 
         },
 
-        processQuery: function(response) {
-            Backbone.globalEvents.trigger("hideLoader");
-            Backbone.globalEvents.trigger("fetchedSearchedShips", response.features);
-        },
-
-        getExactEarthLayers: function(callback) {
-            var view = this;
-            OpenLayersUtil.getLayers(null, function(err, layers) {
-                if (err)
-                    console.log("ERROR GETTING LAYERS: ", err);
-                else
-                    callback(layers, view);
-            });
-        },
-
-        getUserLayers: function(eeLayers, view) {
-            view.userLayers.fetch({
-                url: "/api/layers/getAllForUser",
-                success: function(userLayers, res, opt) {
-                    OpenLayersUtil.addActiveLayersToMap(eeLayers, userLayers, view);
-                    view.mapLoaded(view);
-                }
-            });
-        },
-
         onFeatureSelect: function(evt, map, view) {
             var featureInfo = evt.features[0],
                 bounds = null,
-                projection = OpenLayersUtil.getProjection();
+                projection = Utils.getProjection();
 
             //We need to transform the points to properly place the popup
             featureInfo.geometry.transform(projection.displayProjection, projection.projection)
@@ -297,36 +225,21 @@ define([
             map.setBaseLayer(map.getLayersByName(layer.get("name"))[0]);
         },
 
-        updateLayers: function(layers) {
+        toggleLayer: function(layerInfo) {
             var map = this.model;
 
-            _.each(layers.models, function(layer) {
-                map.getLayersByName(layer.get("name"))[0].setVisibility(layer.get("active"));
-            });
-
-            console.log(layers.models);
+            map.getLayersByName(layerInfo.name)[0].setVisibility(layerInfo.active);
         },
 
         updateLayerOrder: function(layerIds) {
             var map = this.model;
+            var orderCounter = 1;
 
-            var layers = _.reject(map.layers, function(layer) {
-                return layer.isBaseLayer || layer.markers || layer.getVisibility() == false;
-            });
-            var offset = map.layers.length - layers.length;
-
-            for (var i = 0, len = layers.length; i < len; i++) {
-                var layer = map.getLayersByName(layerIds[i])[0];
-
-                if (layerIds.indexOf(layer.name) == -1)
-                    layer.setVisibility(false);
-                else
-                    map.setLayerIndex(layer, map.layers.length - i - 1);
-            }
-
-            _.each(map.layers, function(olLayer) {
-                if (olLayer.markers)
-                    map.setLayerIndex(olLayer, map.layers.length - 1)
+            _.each(layerIds, function(id) {
+                var layer;
+                name = id.split("-")[1];
+                map.setLayerIndex(map.getLayersByName(name)[0], orderCounter);
+                orderCounter++;
             });
         },
 
@@ -367,60 +280,6 @@ define([
 
             eeLayer.mergeNewParams(params);
         },
-
-        queueInitialFilters: function(filters) {
-            this.initialFiltersToLoad = filters;
-            this.loadInitialFilters();
-        },
-
-        //This function exists because need a common landing point when loading
-        //filters and the map at the same time. We call this when were done loading
-        //filters from the db AND when we're done loading the layers on the map.
-        //Only once both are done can we apply the filters to the map.
-        loadInitialFilters: function() {
-            var currentFilter;
-            if (this.layersLoaded && this.initialFiltersToLoad.length > 0) {
-                currentFilter = this.model.getLayersByName("exactAIS:LVI")[0].params.FILTER;
-                this.updateFilters(this.initialFiltersToLoad);
-                OpenLayersUtil.addControlsToMap(this, this.initialFiltersToLoad);
-
-                delete this.initialFiltersToLoad;
-            }
-           
-            //All controls and layers are lodead -- ready to render the map
-            this.model.render("map");
-            this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
-            this.model.zoomToMaxExtent();
-
-            OpenLayersUtil.getShipCount(this.model.getExtent(), this.initialFiltersToLoad, function(count) {
-                this.shipCount = count;
-            });
-        },
-
-        updateFilters: function(filters) {
-            var map = this.model,
-                filtersForParam = [];
-
-            var exactAISLayer = map.getLayersByName("exactAIS:LVI")[0],
-                styles = exactAISLayer.params.STYLES.split(","),
-                filterParam = OpenLayersUtil.createOpenLayersFilters(filters);
-
-            this.filter = filterParam;
-
-            if (styles.length > 1) {
-                filterParam = "(" + filterParam + ")";
-                for (var i = 0, len = styles.length; i < len; i++) {
-                    filterParam += filterParam ; //Needed if we have applied multiple styles on a filtered layer 
-                }
-            }
-
-            if (filters.length > 0) {
-                exactAISLayer.mergeNewParams({"FILTER": filterParam});
-            }
-            else 
-                exactAISLayer.mergeNewParams({"FILTER": ""});
-        },
-
 
         toggleGraticule: function(activate) {
             _.each(this.model.controls, function(control) {
@@ -466,17 +325,99 @@ define([
 
         },
 
-        mapLoaded: function(view) {
-            view.render();
+       setUpMap: function(renderWhenDone) {
+           var defaultLayer = new OpenLayers.Layer.WMS("default", "https://owsdemo.exactearth.com/wms?authKey=tokencoin",
+                {
+                    transparent : "true",
+                    format : "image/png",
+                    STYLES : "VesselByType",
+                    LAYERS : "exactAIS:LVI"
+                },
+                {
+                    singleTile: false,
+                    ratio: 1,
+                    yx: { 'EPSG:4326': true },
+                    wrapDateLine: true
+                }),
 
-            Backbone.globalEvents.trigger("layersFetched", view.userLayers, view.baseLayers);
-            Backbone.globalEvents.trigger("eeStoredLayersFetched", view.eeStoredLayers);
-            Backbone.globalEvents.trigger("customLayersFetched", view.customLayers);
-            Backbone.globalEvents.trigger("baseLayersFetched", view.baseLayers);
+                defaultBaseLayer = new OpenLayers.Layer.OSM("OSMBaseMap", null,
+                    { 
+                        isBaseLayer: true, 
+                        wrapDateLine: true,
+                        transitionEffect: "resize",
+                        tileOptions: {crossOriginKeyword: null}
+                    }),
+                view = this;
 
-            //Optional event 
-            Backbone.globalEvents.trigger("mapLoaded", view.model);
-        },
+           this.layers.fetch({
+               url: "/api/layers/getAllForUser",
+               success: function(fetchedLayers) {
+                   if (fetchedLayers.models.length > 0) {
+                       var baseLayers = fetchedLayers.models.filter(function(layer) {
+                           return layer.get("isBaseLayer") == true;
+                       });
+                       var userLayers = _.difference(fetchedLayers.models, baseLayers);
+                       var mapBaseLayer;
+
+                       _.each(baseLayers, function(baseLayer) {
+                           var olBaseLayer = Utils.convertLayerToOLLayer(baseLayer)
+                           view.model.addLayer(olBaseLayer);
+                           if (baseLayer.get("active") == true) {
+                               view.model.setBaseLayer(olBaseLayer);
+                               mapBaseLayer = olBaseLayer;
+                           }
+                       });
+                       _.each(userLayers, function(layer) {
+                           var olLayer = Utils.convertLayerToOLLayer(layer)
+                           view.model.addLayer(olLayer);
+                           view.model.setLayerIndex(olLayer, layer.get("order"));
+                           olLayer.setVisibility(layer.get("active"));
+                       });
+
+                       view.model.setLayerIndex(mapBaseLayer, 0);
+                   }
+                   else {
+                       var horizonBaseLayer = new Layer();
+                       var horizonLayer = new Layer();
+
+                       horizonBaseLayer.initAsBaseLayer();
+                       horizonBaseLayer.set("isLocked", true);
+                       horizonBaseLayer.set("name", "Default Basemap");
+                       horizonBaseLayer.set("title", "Default Basemap");
+
+                       horizonLayer.initAsLVILayer();
+                       horizonLayer.set("exactEarthLayersContainer", "exactAIS:LVI");
+                       horizonLayer.set("isLocked", true);
+
+                       view.model.addLayer(defaultBaseLayer);
+                       view.model.addLayer(defaultLayer);
+                       view.model.setBaseLayer(defaultBaseLayer);
+
+                       horizonBaseLayer.save(null, {
+                           url: "/api/layers/save",
+                           success: function(res) {
+                               console.log("Successfully saved default base layer");
+                           },
+                           error: function(res) {
+                               console.log("ERROR when saving default base layer");
+                           }
+                       });
+
+                       horizonLayer.save(null, {
+                           url: "/api/layers/save",
+                           success: function(res) {
+                               console.log("Successfully saved default layer");
+                           },
+                           error: function(res) {
+                               console.log("ERROR when saving default layer");
+                           }
+                       });
+                   }
+                   if (renderWhenDone)
+                       view.render();
+               }
+           });
+       },
 
         render: function () {
 
@@ -495,8 +436,6 @@ define([
 
             OpenLayers.Util.onImageLoadError = function () { }
 
-
-
             map.events.register("mousemove", map, function(e) { 
                 var latlon = map.getLonLatFromViewPortPx(e.xy) ;
                 latlon.transform( map.projection, map.displayProjection);
@@ -504,14 +443,20 @@ define([
             });
             map.events.register("moveend", map, function(e) {
                 var view = this;
-                OpenLayersUtil.getShipCount(map.getExtent(), map.getLayersByName("exactAIS:LVI")[0].params.FILTER, function(count) {
+                /*
+                Utils.getShipCount(map.getExtent(), map.getLayersByName("exactAIS:LVI")[0].params.FILTER, function(count) {
                     view.shipCount = count;
                     if (count < 500)
                         Backbone.globalEvents.trigger("refreshShipList", count);
                     else
                         Backbone.globalEvents.trigger("tooManyShipsToFetch", count);
                 });
+                */
             });
+            this.model.render("map");
+            this.model.setCenter(new OpenLayers.LonLat(private.Lon2Merc(0), private.Lat2Merc(25)), 3);
+            this.model.zoomToMaxExtent();
+            Backbone.globalEvents.trigger("hideLoader");
 
             window.map = map; //BAD BAD BAD BAD but easy to manipulate the map through the console.
         }

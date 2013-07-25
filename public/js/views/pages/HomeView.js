@@ -28,14 +28,12 @@ define([
                 //renders an animation in the wrong direction. Here, I can set the width and then
                 //disappear the sidebar after the animation for the width change is done.
                 //TODO: Make this not suck as much.
-                $(".map-tools-row").css("left", "0");
                 $("#separator").removeClass("extended");
                 $("#collapseImage").attr("src", "../../img/arrow-right.png");
                 this.sidebarActive = false;
             }
             else {
                 $("#separator").addClass("extended");
-                $(".map-tools-row").css("left", "40%");
                 $("#collapseImage").attr("src", "../../img/arrow-left.png");
                 this.sidebarActive = true;
             }
@@ -68,6 +66,7 @@ define([
             sidebarView = new SideBarView();
 
       sidebarView.render();
+      mapView.setUpMap(true);
       this.subviews.push(mapView);
       this.subviews.push(sidebarView);
     }

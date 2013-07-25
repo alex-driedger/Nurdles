@@ -1,0 +1,20 @@
+<div id="<%= model.get('_id') %>-header" class="saved-filter clearfix collapsed notExpanded collapsed-header baseLayer">
+    <div class="pull-left">
+        <div class="collapsed-radio">
+            <input id="<%= model.get('_id') %>-radio" class="activateRadio" type="radio" name="baseLayers" <% if (model.get("active") == true ) { %> checked <% } %>/>
+        </div>
+    </div>
+    <div class="lpadding10 pull-left">
+        <%= model.get("title") %>
+    </div>
+    <div class="pull-right rpadding15">
+        <img id="<%= model.get('_id') %>-edit" src="../../img/cog.png" class="pointer icon-small editLayer hpadding10" />
+        <% if (!model.get("isLocked")) { %>
+            <img id="<%= model.get('_id') %>-delete" src="../../img/trash.png" class="pointer icon-small deleteLayer" />
+        <% } %>
+    </div>
+</div>
+<div id="<%= model.get("_id") %>-container" class="filter-operands-container clearfix">
+    Inside of Base Layer
+</div>
+

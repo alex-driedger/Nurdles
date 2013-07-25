@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="modalHeader"><%= isBaseLayer == true ? "New Basemap" : "New Layer"  %></h3>
+</div>
+
+<% if (!isBaseLayer) { %>
+<div class="modal-body">
+    <div class="clearfix">
+        <label class="modal-float-label"> Base new layer off of which exactEarth Layer? </label>
+        <select id="newLayerEEName" class="pull-right">
+            <% _.each(eeLayers, function(eeLayer) { %>
+            <option value="<%=eeLayer.Name %>"> <%=eeLayer.Name %></option>
+            <% }); %>
+        </select>
+    </div>
+    <div class="clearfix vtupadded10">
+        <label class="modal-float-label"> Style for new layer? </label>
+        <select id="newLayerStyle" class="pull-right"> </select>
+    </div>
+
+    <div class="vtupadded10">
+        <input type="text" id="newLayerName" placeholder="Layer Name" />
+    </div>
+
+</div>
+<% }
+else { %>
+<div class="modal-body">
+    <div class="vtupadded10">
+        <input type="text" id="newBaseLayerName" placeholder="Basemap Name" />
+    </div>
+
+    <div class="vtupadded10">
+        <input type="text" id="newBaseLayerURL" placeholder="Basemap URL" />
+    </div>
+</div>
+<% } %>
+<div class="modal-footer">
+    <button id="closeModal" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button id="saveModalInformation" class="btn btn-primary">Save changes</button>
+</div>
+
