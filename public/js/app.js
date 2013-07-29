@@ -4,11 +4,9 @@ define([
   'underscore', 
   'backbone',
   'router',
-  'openlayersutil'
-], function($, _, Backbone, Router, Util){
+], function($, _, Backbone, Router){
   var initialize = function(){
     Backbone.globalEvents = _.extend({}, Backbone.Events);
-    Util.setUpUtilFunctions();
     Router.initialize();
   };
 

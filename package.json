@@ -1,8 +1,8 @@
 {
   "name": "tag-this",
   "version": "0.0.1",
-  "description": "Check into a space, and show your face!",
-  "homepage": "http://github.com/tinyhippos/tag-this",
+  "description": "Administration tool for Horizon",
+  "homepage": "http://github.com/appsfactory/Skyline",
   "files": [],
   "dependencies": {
     "express": "3.0.3",

@@ -14,7 +14,7 @@ define([
             }
         },
 
-        //We we receive collection data, it's ALWAYS going to be an array of model attributes
+        //We we receive collection data from mongodb, it's ALWAYS going to be an array of model attributes
         //So we need to override the parsing function to accomodate this. It's weird that backbone
         //doesn't do this on it's own...
         parse: function(data) {

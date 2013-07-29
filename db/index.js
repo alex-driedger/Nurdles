@@ -5,7 +5,6 @@ var jWorkflow = require('jWorkflow'),
     passport,
     LocalStrategy = require('passport-local').Strategy,
     User,
-    Setting,
     isMappedAlready;
 
 function createDb(initialValue, baton) {
@@ -20,9 +19,7 @@ function createDb(initialValue, baton) {
 
 function createModels (previous, baton) {
     baton.take();
-    Setting = require("./models/Setting").Setting;
     User = require("./models/User").User;
-    Filter = require("./models/Filter").Filter;
     baton.pass();
 }
 

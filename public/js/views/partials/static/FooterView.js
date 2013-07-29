@@ -2,15 +2,10 @@ define([
   'baseview',
   'text!templates/partials/static/FooterView.html'
 ], function(Baseview, footerTemplate){
-    var HeaderView = Baseview.extend({
+    var FooterView = Baseview.extend({
         el: $("#footer"),
 
         initialize: function(args) {
-            this.bindTo(Backbone.globalEvents, "fetchedShipCount", this.updateShipCount, this);
-        },
-
-        updateShipCount: function(count) {
-            $("#shipCount").html("Visible Ships: " + count);
         },
 
         render: function () {
@@ -20,6 +15,5 @@ define([
         }
     });
 
-    return HeaderView;
+    return FooterView;
 });
-

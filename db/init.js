@@ -30,4 +30,3 @@ module.exports = {
     createDb: createDb,
     getMongoose: getMongoose
 };
-

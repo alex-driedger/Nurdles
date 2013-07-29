@@ -12,7 +12,6 @@ require.config({
     backbone: 'libs/backbone/backbone-min',
     baseview: 'views/BaseView',
     basecollection: 'collections/BaseCollection',
-    openlayersutil: "utils/OpenLayersUtil",
     templates: '../templates'
   },
 

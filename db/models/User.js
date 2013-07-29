@@ -17,4 +17,3 @@ module.exports = {
     User: User,
     UserSchema: UserSchema
 };
-
