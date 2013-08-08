@@ -1,0 +1,475 @@
+h4 {
+    padding-left: 5px;
+}
+
+select {
+    padding: 0;
+    margin-bottom: 0;
+    width: auto;
+}
+
+label {
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+}
+input[type="checkbox"], input[type="radio"] {
+    width: 13px;
+    height: 13px;
+    padding: 0;
+    margin:0;
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+    *overflow: hidden;
+}
+
+input[type="radio"] {
+    vertical-align: middle;
+}
+
+.no-padding {
+    padding: 0px
+}
+
+.no-margin {
+    margin: 0px
+}
+
+.margin-centered {
+    margin: 0 auto;
+}
+
+.centered {
+    text-align: center;
+}
+
+.centered-to-control {
+    line-height: 2em;
+}
+
+.header .centered-to-button {
+    padding: 5px 0;
+}
+
+.faded {
+    background-color: #eee;
+    opacity: 0.5;
+}
+
+.not-faded {
+    background-color: #fff;
+    opacity: 1;
+}
+
+.pointer {
+    cursor:pointer;
+}
+
+/*-------------------------Step Styles---------------------------*/
+.wide-20 {
+    width: 20%;
+}
+
+.wide-30 {
+    width: 30%;
+}
+
+.wide-50 {
+    width: 50%;
+}
+
+.wide-45 {
+    width: 45%;
+}
+
+.wide-45i {
+    width: 45% !important;
+}
+
+.wide-80 {
+    width: 80%;
+}
+
+.wide-90 {
+    width: 90%;
+}
+
+.wide-95 {
+    width: 95%;
+}
+
+.wide-100 {
+    width: 100%;
+}
+
+.padded5 {
+    padding: 5px;
+}
+
+.vpadded2 {
+    padding: 2px 0;
+}
+
+.vpadded5 {
+    padding: 5px 0;
+}
+
+.vpadded10 {
+    padding: 10px 0;
+}
+
+.vbpadded10 {
+    padding-bottom: 10px;
+}
+
+.vtupadded10 {
+    padding-top: 10px;
+}
+
+.lpadding10 {
+    padding-left: 10px;
+}
+
+.lpadding20 {
+    padding-left: 20px;
+}
+
+.rpadding15 {
+    padding-right: 15px;
+}
+
+.rpadding20 {
+    padding-right: 20px;
+}
+
+.hpadding10 {
+    padding: 0 10px;
+}
+
+.vmargin5 {
+    margin-top: 5px;
+}
+
+
+/*-------------------------Loader--------------------------------*/
+.loading {
+    height: 100%;
+}
+
+.loading img {
+    position: relative;
+    top: 45%;
+    left: 45%;
+}
+
+
+/*--------------------------General-------------------------------*/
+
+.inline-label {
+    display: inline;
+    width: auto;
+}
+
+.plus-minus-container {
+    min-width: 15px;
+    cursor: pointer;
+}
+
+.bar {
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 10;
+    height: 55px;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: #000;
+    color: #bbb;
+}
+
+.content {
+    overflow: auto;
+    top: 55px;
+    position: fixed;
+    right: 0;
+    bottom: 50px;
+    left: 0;
+    z-index: 15;
+    background: #fff;
+    -webkit-transition-property: top, bottom;
+    transition-property: top, bottom;
+    -webkit-transition-duration: .2s, .2s;
+    transition-duration: .2s, .2s;
+    -webkit-transition-timing-function: linear, linear;
+    transition-timing-function: linear, linear;
+    -webkit-overflow-scrolling: touch;
+}
+
+.search-form {
+    position: absolute;
+    left: 40%;
+}
+
+.search-help {
+    font-size: xx-small;
+}
+
+.map { 
+    width: 100%; 
+    height: 100%;
+}
+
+.max-everything {
+    width: 100%;
+    height: 100%;
+}
+
+.map img {
+    max-width:none; 
+}
+
+.header-image {
+    width: 80px;
+}
+
+.header-title {
+    top: 0;
+    display: -webkit-box;
+    display: box;
+    color: #bbb;
+    padding-left: 20px;
+    -webkit-box-orient: horizontal;
+    box-orient: horizontal;
+}
+
+.controls-container {
+    padding: 5px;
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    z-index: 999;
+}
+
+.map-tools-row {
+    position: relative;
+    -webkit-transition: left 0.2s; /* Safari and Chrome */
+}
+
+.side-controls-container{
+    position: relative;
+    top: 10px;
+    z-index: -1;
+    right: 0px;
+}
+
+.mobile-container {
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;
+    height: 100%;
+}
+
+.bottom-stick {
+    position: absolute;
+    bottom: 10px;
+}
+
+.vertical-spacer-below-title {
+    padding-top: 44px;
+}
+
+.top-spacer20 {
+    margin-top: 20px;
+}
+
+.bottom-spacer20 {
+    margin-bottom: 20px;
+}
+
+.center-nav-title {
+    position: absolute;
+    left: 45%;
+    margin-left: -12px;
+}
+
+.footer {
+    bottom: 0;
+    height: 50px;
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: 15;
+}
+
+.onTop {
+    position: absolute;
+    left: 300px;
+    top: 400px;
+    z-index: 1010;
+    height: 400px;
+    width: 300px;
+}
+
+.icon {
+    width: auto;
+    height: auto;
+}
+
+.icon-small {
+    width: 15px;
+    height: 15px;
+}
+
+.btn-toolbar {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.header {
+    font-size: 1.3em;
+    padding: 10px 5px;
+}
+
+.bordered {
+    border: 1px solid #ddd;
+}
+
+
+/***************** Searches ******************/
+
+.new-search-container {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.vertical-5 {
+    padding-top: 5px;
+}
+
+.padded {
+    padding: 5px;
+}
+
+.unpadded {
+    padding: 0;
+}
+
+/**
+ * Leaflet Popup layout
+ */
+
+.leaflet-popup, .olTipFrame {
+    position: absolute;
+    text-align: center;
+    opacity: 0.8 !important;
+}
+.leaflet-popup-content-wrapper, .olTipFrameContentWrapper {
+    padding: 1px;
+    text-align: left;
+}
+.leaflet-popup-content, .olTipFrameContent {
+    margin: 14px 20px;
+}
+.leaflet-popup-tip-container, .olTipFrameTipContainerH {
+    margin: 0 auto;
+    width: 40px;
+    height: 16px;
+    position: relative;
+    overflow: hidden;
+}
+.leaflet-popup-tip-container, .olTipFrameTipContainerV {
+    margin: 0 auto;
+    width: 16px;
+    height: 40px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+}
+.leaflet-popup-tip,
+.olTipFrameTipTop, .olTipFrameTipBottom,
+.olTipFrameTipLeft, .olTipFrameTipRight {
+    width: 15px;
+    height: 15px;
+    padding: 1px;
+
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.olTipFrameTipTop {
+    margin: -8px auto 0;
+}
+.olTipFrameTipBottom {
+    margin: 8px auto 0;
+    z-index: 1;
+}
+.olTipFrameTipLeft {
+    display: inline-block;
+    vertical-align: middle;
+    margin: auto 8px 0 8px;
+    z-index: 1;
+}
+.olTipFrameTipRight {
+    display: inline-block;
+    vertical-align: middle;
+    margin: auto -8px 0 -8px;
+}
+
+.leaflet-popup-close-button, .olTipFrameCloseButton {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+
+    width: 10px;
+    height: 10px;
+
+    overflow: hidden;
+}
+.leaflet-popup-content p, .olTipFrameContent p {
+    margin: 18px 0;
+}
+.leaflet-popup-scrolled, .olTipFrameScrolled {
+    overflow: auto;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+}
+
+
+/* Visual appearance */
+
+.leaflet-container {
+    background: #ddd;
+}
+.leaflet-container a {
+    color: #0078A8;
+}
+.leaflet-zoom-box {
+    border: 2px dotted #05f;
+    background: white;
+    opacity: 0.5;
+}
+.leaflet-popup-content-wrapper, .leaflet-popup-tip,
+.olTipFrameContentWrapper,
+.olTipFrameTipTop, .olTipFrameTipBottom,
+.olTipFrameTipLeft, .olTipFrameTipRight {
+    background: white;
+
+    box-shadow: 0 3px 10px #888;
+    -moz-box-shadow: 0 3px 10px #888;
+    -webkit-box-shadow: 0 3px 14px #999;
+}
+.leaflet-popup-content-wrapper, .olTipFrameContentWrapper {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.leaflet-popup-content, .olTipFrameContent {
+    font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+.leaflet-popup-close-button, .olTipFrameCloseButton {
+    background: white url(images/popup-close.png);
+}
