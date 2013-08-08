@@ -1,8 +1,8 @@
 {
-  "name": "tag-this",
+  "name": "af-pattern",
   "version": "0.0.1",
-  "description": "Administration tool for Horizon",
-  "homepage": "http://github.com/appsfactory/Skyline",
+  "description": "Apps Factory Project Template",
+  "homepage": "http://github.com/appsfactory/Pattern",
   "files": [],
   "dependencies": {
     "express": "3.0.3",
