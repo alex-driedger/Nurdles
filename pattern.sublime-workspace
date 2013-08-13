@@ -1,0 +1,537 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Object",
+				"ObjectDoesNotExist"
+			],
+			[
+				"selectedI",
+				"selectedIpmAgent"
+			],
+			[
+				"ipm",
+				"ipmAgentId"
+			],
+			[
+				"Po",
+				"POST"
+			],
+			[
+				"f",
+				"font-weight"
+			],
+			[
+				"cre",
+				"created_at"
+			],
+			[
+				"GET",
+				"get"
+			],
+			[
+				"location",
+				"locationIndex"
+			],
+			[
+				"selecte",
+				"selectedLocations"
+			],
+			[
+				"auto",
+				"autoescape"
+			],
+			[
+				"sele",
+				"selectedLocations"
+			],
+			[
+				"unit",
+				"unitsFeet"
+			],
+			[
+				"scouts",
+				"scouts_factor_pests"
+			],
+			[
+				"scou",
+				"scouts_action_taken"
+			],
+			[
+				"scouts_",
+				"scouts_action_taken"
+			],
+			[
+				"scouts_rea",
+				"scouts_reason_pests"
+			],
+			[
+				"ac",
+				"action_taken_id"
+			],
+			[
+				"sco",
+				"scouts_factor_pests"
+			],
+			[
+				"typea",
+				"typeaheadFromData"
+			],
+			[
+				"qb",
+				"qbVix"
+			],
+			[
+				"curren",
+				"currentTarget"
+			],
+			[
+				"current",
+				"currentQuestion"
+			],
+			[
+				"load",
+				"loadMurdulesFiles"
+			],
+			[
+				"mu",
+				"murdules"
+			],
+			[
+				"mur",
+				"murdulesFiles"
+			],
+			[
+				"she",
+				"sheetsIdx"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/JSHint/JSHint.sublime-build",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/robdrimmie/Factory/Pattern/db/README.md",
+		"/Users/robdrimmie/Factory/Pattern/training/README.md",
+		"/Users/robdrimmie/Factory/Pattern/app.js",
+		"/Users/robdrimmie/Factory/Pattern/bin/README.md",
+		"/Users/robdrimmie/Factory/Pattern/bin/start",
+		"/Users/robdrimmie/Factory/Pattern/pattern.sublime-project",
+		"/Users/robdrimmie/Factory/Pattern/README.md",
+		"/Users/robdrimmie/Factory/Pattern/package.json",
+		"/Users/robdrimmie/Invention/dndymntr/package.json",
+		"/Users/robdrimmie/Invention/dndymntr/models/log.js",
+		"/Users/robdrimmie/Invention/dndymntr/dndymntr.js",
+		"/Users/robdrimmie/Invention/doris/README.md",
+		"/Users/robdrimmie/Old System/Invention/1142/ccranium_bookstore.sql",
+		"/Users/robdrimmie/Old System/Invention/1142/ccranium_org1142.sql",
+		"/Users/robdrimmie/Old System/Invention/1142/miscellanean.sql",
+		"/Users/robdrimmie/Old System/Invention/1142/drimmie.sql",
+		"/Users/robdrimmie/Library/Application Support/minecraft/versions/modded-forge/1.6.2.json",
+		"/Users/robdrimmie/Invention/dndymntr/packages.json",
+		"/Users/robdrimmie/Factory/Horizon/test/user_test.js",
+		"/Users/robdrimmie/Factory/Horizon/build.xml",
+		"/Users/robdrimmie/Factory/Horizon/Makefile",
+		"/Users/robdrimmie/Invention/Presentations/SYDEJuly2013/index.html",
+		"/Users/robdrimmie/Factory/AppsFactory/Brokering/partners.md",
+		"/Users/robdrimmie/Factory/Puttrolling/samplebaddata.xml",
+		"/Users/robdrimmie/Factory/Green-Tee/requests/views.py",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/models.py",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/views.py",
+		"/Users/robdrimmie/Factory/Green-Tee/requests/models.py",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/forms.py",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/urls.py",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/templates/scouts/treatments.html",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/templates/courses/index.html",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/static/css/courses.css",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/templates/scouts/graphs.html",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/templates/scouts/calibrations.html",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/static/css/calibration.css",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/views.py",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/urls.py",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/models.py",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/templates/scouts/newCalibration.html",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/templates/scouts/new.html",
+		"/Users/robdrimmie/Factory/Green-Tee/requests/urls.py",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/templates/courses/edit.html",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/templates/scouts/actions.html",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/static/js/calibration.js",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/static/js/scouters.js",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/static/css/scout.css",
+		"/Users/robdrimmie/Factory/Green-Tee/users/static/css/application.css",
+		"/Users/robdrimmie/Factory/Green-Tee/users/models.py",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/templates/scouts/index.html",
+		"/Users/robdrimmie/Factory/Green-Tee/requests/templates/requests/signin.xml",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/templates/courses/holes.html",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/templates/courses/new.html",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/templates/scouts/results.html",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/templates/scouts/treatment_records.html",
+		"/Users/robdrimmie/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/robdrimmie/Factory/Green-Tee/requests/templates/requests/categories.xml",
+		"/Users/robdrimmie/Factory/Puttrolling/categories.xml",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/missingproducts.txt",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/07.scouts_product.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/02.scouts_pest.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/missingpests.txt",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/management/commands/productsql.py",
+		"/Users/robdrimmie/Factory/Green-Tee/greenTee/settings.py",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/management/commands/createProductSQL.py",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/management/createProductSQL.py",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/createsproductssql.py",
+		"/Users/robdrimmie/src/bootstrap/css/bootstrap.css",
+		"/Users/robdrimmie/Factory/Green-Tee/forms/views.py",
+		"/Users/robdrimmie/Factory/Green-Tee/users/static/css/bootstrap.css",
+		"/Users/robdrimmie/Factory/Green-Tee/users/templates/base.html",
+		"/Users/robdrimmie/Factory/Green-Tee/users/static/css/bootstrap-responsive.css",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/forms.py",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/templates/courses/holesNew.html",
+		"/Users/robdrimmie/Factory/Green-Tee/courses/tests.py",
+		"/Users/robdrimmie/Factory/Green-Tee/users/views.py",
+		"/Users/robdrimmie/Factory/AppsFactory/CAGs/2013/06 June/Current Month CAG Minutes.md",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/templates/scouts/newscout.html",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/fill_pests_d_o.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/datacleaning.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/diseasesandothers.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/08.FixDiseaseStructure.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/greenTeeDev.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/00.removesystemdata.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/05.scouts_reason.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/06.restoreconstraints.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/migrations/0081_auto__del_field_action_taken_category__chg_field_pest_category__del_fi.py",
+		"/Users/robdrimmie/Invention/fillmeup/client/views/create.js",
+		"/Users/robdrimmie/Invention/fillmeup/client/views/create.html",
+		"/Users/robdrimmie/Invention/fillmeup/client/subscriptions.js",
+		"/Users/robdrimmie/Invention/Voter/voter.js",
+		"/Users/robdrimmie/Invention/Voter/voter.html",
+		"/Users/robdrimmie/Invention/fillmeup/public/js/router.js",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/06.scouts_product.sql",
+		"/Users/robdrimmie/Invention/nodeplay/package.json",
+		"/Users/robdrimmie/Invention/nodeplay/apps.js",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/01.scouts_category.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/21052013.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/09.restoreconstraints.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/03.scouts_action_taken.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/04.scouts_factor.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/datacleaning",
+		"/Users/robdrimmie/Factory/Green-Tee/scouts/templates/scouts/managepests.html",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/12.scouts_reason.new.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/10.scouts_action_taken.new.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/11.scouts_factor.new.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/13.scouts_actions_factors_reasons_pests_join.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/14.insects.tmp.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/04.scouts_pest.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/tmp.txt",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/02.scouts_action_taken.sql",
+		"/Users/robdrimmie/Invention/voter/voter.js",
+		"/Users/robdrimmie/Invention/centers/index.html",
+		"/Users/robdrimmie/Invention/centers/index.hml",
+		"/Users/robdrimmie/Invention/voter/voter.html",
+		"/Users/robdrimmie/Invention/voter/voter.css",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/06.scouts_reason.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/03.scouts_factor.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/05.scouts_product.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_product.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_reason.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_action_taken.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_factor.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_pest.sql",
+		"/Users/robdrimmie/Invention/leaderboard/leaderboard.js",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/0.removesystemdata.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_category.sql",
+		"/Users/robdrimmie/Factory/Green-Tee/system tables/scouts_category.sql"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"urlto",
+			"media",
+			"\"",
+			"</data>",
+			"getData",
+			"parseInc",
+			"spra",
+			"def getDa",
+			"print '%s",
+			"except:",
+			"def ParseIncomin",
+			"class Cali",
+			"element",
+			"def newC",
+			"print",
+			"units",
+			"unit",
+			"units",
+			"#units",
+			" = ",
+			"def report",
+			"new_treatment.product",
+			"'newCalibration'",
+			"calculate",
+			"report_tre",
+			"container",
+			"homepage",
+			"def cali",
+			"console.log",
+			"#create_sprayer",
+			"#calibrationForm ",
+			"color",
+			"h3",
+			"class Cali",
+			"class Employee",
+			"add_cali",
+			"calibr",
+			"print",
+			"getData",
+			"radio",
+			"def ac",
+			"report_treatment",
+			"def Hole",
+			"console.lo",
+			"id_pro",
+			"def tre",
+			"def ca",
+			"print",
+			"class product",
+			"onetomany",
+			"def Product",
+			"annual",
+			"ragweed",
+			"curled",
+			"black m",
+			"stem rust",
+			"growth re",
+			"cutworm",
+			"spring",
+			"flea",
+			"earwig",
+			"climbing",
+			"cutwo",
+			"cinch",
+			"dry spot",
+			"root",
+			"damping",
+			"nuts",
+			"pythium",
+			"melting",
+			"Fusarium",
+			"Chafer",
+			"Chafers",
+			"broadleaf",
+			"smooth",
+			"hairy",
+			"barn",
+			"ZeroTol",
+			"Wilson",
+			"Weedaway",
+			"Viterra",
+			"Veridian",
+			"UAP",
+			"Revolution",
+			"Trillion",
+			"Trillion-P",
+			"SUCCESS",
+			"Sevin",
+			"SENATOR",
+			"Scimtar",
+			"Rovral",
+			"Round-up",
+			"RHAPSODY",
+			"Respond",
+			"Quali-Pro",
+			"PRIMO",
+			"herb",
+			"Primer",
+			"PREMIS",
+			"organic",
+			"OARS",
+			"Nufarm",
+			"Merit",
+			"VITERRA",
+			"'ipco",
+			"ipco",
+			"INT-101",
+			"INSTRATA",
+			"heritage",
+			"killex",
+			"Gramoxone",
+			"Glyphos",
+			"Glyphos ",
+			"Glyphos",
+			"Entrust",
+			"EcoClear",
+			"EAGLE",
+			"Dursban",
+			"dupont",
+			"Acelepryn",
+			"dow",
+			"Dimension",
+			"DACONIL",
+			"Conserve",
+			"Concert",
+			"Civitas",
+			"chipco",
+			"cascade"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"except Exception as e:\n                    print '%s (%s)' % (e.message, type(e))",
+			"=",
+			"",
+			"#009de0",
+			"scouts_factor",
+			"-- SELECT COUNT(*)",
+			"DELETE",
+			"-- SELECT COUNT(*)",
+			"SELECT COUNT(*)",
+			"-- =======================================================================================",
+			"n ( n",
+			" VALUES ",
+			"",
+			"_path",
+			"_file",
+			"this.file"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"boots",
+				"users/static/css/bootstrap.css"
+			],
+			[
+				"application",
+				"users/static/css/application.css"
+			],
+			[
+				"index.htm",
+				"app/views/users/index.html.erb"
+			],
+			[
+				"user.rb",
+				"app/models/user.rb"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 237.0,
+	"status_bar_visible": true
+}

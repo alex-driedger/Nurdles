@@ -9,5 +9,18 @@ I'm a big fan of letting every developer using the tools she prefers. For the sa
 
 * you are using a stock OS X system, as prepped by me for working at the Apps Factory and configured by you following the welcome.md file
 * you are using Sublime Text 2 for your editor
-* you have cloned this repository and are accessing the content from your local system
+* you have cloned this repository to `~/Factory/Pattern` already, and are accessing the content from your local system
+
+Begin:
+
+Launch iTerm2, type `cd ~/F[tab]/P[tab]`. By default, OS X uses BASH and has it configured for autocompletion, which is triggered with the tab key and super helpful. Type `open pat[tab]p[tab]`, this should be filled in as `open pattern.sublime-project`. This should open Sublime with the Sidebar open to the "Pattern" folder. It will automatically open the `pattern.sublime-project` file, which you can close using Command-W.
+
+The project structure in the sidebar is the most obvious thing at this point, and without getting into it too deeply yet, here's what's stored where:
+
+* bin: scripts related to application execution
+* build: output from the Continuous Integration process
+* db: scripts for configuring, initializing and interacting with the database
+
+
+Each folder contains additional `README.md` files, which provide a bit more information. If there's information you feel is important and worth sharing, please edit the files directly and issue a pull request. This is a fundamental Apps Factory trait: **make the change you want to see**. It may change before being fully incorporated, but if you identify something as wrong, help us make it right. Please!
 
