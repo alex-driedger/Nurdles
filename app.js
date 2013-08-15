@@ -26,17 +26,6 @@ function run(opts) {
     app.listen(port);
 
     console.log("INFO: Running server on:", port);
-
-/* used for debugging so we'll turn it off
-    setTimeout(function(){
-        repl.start(
-            {
-                prompt:">>", 
-                input: process.stdin, 
-                output: process.stdout
-            }).context.utils = utils;
-    }, 1000);
-*/
 }
 
 module.exports = {
