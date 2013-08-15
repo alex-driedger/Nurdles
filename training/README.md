@@ -17,10 +17,19 @@ Launch iTerm2, type `cd ~/F[tab]/P[tab]`. By default, OS X uses BASH and has it 
 
 The project structure in the sidebar is the most obvious thing at this point, and without getting into it too deeply yet, here's what's stored where:
 
+* api: scripts that manage interactions with the server application go here
 * bin: scripts related to application execution
 * build: output from the Continuous Integration process
+* client: scripts for various client applications
 * db: scripts for configuring, initializing and interacting with the database
-
+* node_modules: third party libraries, typically managed by node install
+* spec: tests for this application
+* test: tests for third party libraries and, somewhat confusingly, this application.
+* training: this document and associated resources
 
 Each folder contains additional `README.md` files, which provide a bit more information. If there's information you feel is important and worth sharing, please edit the files directly and issue a pull request. This is a fundamental Apps Factory trait: **make the change you want to see**. It may change before being fully incorporated, but if you identify something as wrong, help us make it right. Please!
+
+One thing you may note about the application is that there's a bunch of server stuff right in the root and a separate area for the client stuff. It may make more sense to have a `server` folder much in the same way there is a `client` folder. And you'd be right! But because we host our applications on Heroku, all server logic must be in the project root. So it's a little messier than I'd prefer, but with reasonable justification.
+
+This could be mitigated with two (or more!) git repositories, one for the server and one for all the clients but for the purposes of the Pattern I'm keeping it all together. When we begin a new project for an Apps Factory client, we may create that more logical system for them.
 

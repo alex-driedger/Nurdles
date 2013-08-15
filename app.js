@@ -1,5 +1,5 @@
 var express = require('express'),
-    routes = require('./routes'),
+    routes = require('./api'),
     conf = require('./conf'),
     db = require('./db'),
     repl = require('repl'),
