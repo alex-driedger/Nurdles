@@ -2,7 +2,6 @@ var express = require('express'),
     routes = require('./api'),
     conf = require('./conf'),
     db = require('./db'),
-    repl = require('repl'),
     passport = require('passport'),
     utils = require('connect').utils, 
     parser = require('xml2js');
@@ -15,7 +14,7 @@ function run(opts) {
         app.use(express.bodyParser()),
         app.use(express.static(conf.dirs.client));
         app.use(express.methodOverride());
-        app.use(express.cookieParser("clubsandwichofpain"));
+        app.use(express.cookieParser("appsfactorypatternsecret"));
         app.use(express.session());
         app.use(passport.initialize());
         app.use(passport.session());
