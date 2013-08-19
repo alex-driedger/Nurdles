@@ -22,3 +22,9 @@ Notes for the Apps Factory Pattern project
 
 ### Begin
 - [ ] `pattern.sublime-project` opens the folder `/Users/robdrimmie/Factory/Pattern`
+
+### app.js
+- [ ] last line (part of module.exports assignment) has a double semi-colon
+
+### Routes
+- [ ] reference to api/routes.js -> has been renamed to api/index.js?
