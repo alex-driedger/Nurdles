@@ -11,7 +11,10 @@ I'm a big fan of letting every developer using the tools she prefers. For the sa
 
 * you are using a stock OS X system, as prepped by me for working at the Apps Factory and configured by you following the welcome.md file
 * you are using Sublime Text 2 for your editor
+* you are using Chrome as your web browser
 * you have cloned this repository to `~/Factory/Pattern` already, and are accessing the content from your local system
+
+In the long term, the editor and browser you use is your choice, but for now use these, please.
 
 Begin:
 
@@ -71,13 +74,13 @@ There are architectural benefits as well, but I'm of the opnion that the pretty 
 
 Routes (finally, back to the application!) are how we associate these pretty URLs with the functionality we're coding. 
 
-Since the server application is a pure API, the routes are contained in the `api/routes.js` file. This file's primary function `bindRoutes` connects the functionality defined by the other files (mostly, there's a couple of anonymous callbacks with short functionality explicitly bound) in the `api` directory (by default, `user.js` and `statemanager.js`) and binds it to specific URLs and HTTP methods using ExpressJS' routing system.
+Since the server application is a pure API, the routes are contained in the `api/index.js` file. This file's primary function `bindRoutes` connects the functionality defined by the other files (mostly, there's a couple of anonymous callbacks with short functionality explicitly bound) in the `api` directory (by default, `user.js` and `statemanager.js`) and binds it to specific URLs and HTTP methods using ExpressJS' routing system.
 
 In many ways, this is the point in the application where we start adding real functionality to it. All the previous stuff was setup and configuration. Now we can make the application actually do something.
 
-Out of the box the application has a concept of user accounts and very simple access control, but that's about it.
+Out of the box the application has a concept of user accounts and very simple access control, but that's about it. We should start by taking a look. Use command-tab to switch back to iTerm, then press command-t to create a new tab. Change to the Pattern folder and type `mongod`. This will start the mongo database server, more of which will come later. Use command-shift-[ to switch to the previous tab and type `node bin/start` to begin the application.
 
-
+Open Chrome, press command-l to jump to the address bar and type `http://localhost:4010`. Username and password are both `appsfactory`. Press login, and revel in the beautiful empty screen. Okay, don't do that, but you've now just explored the complete functionality of the application.
 
 
 

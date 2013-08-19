@@ -144,13 +144,19 @@
 	},
 	"file_history":
 	[
-		"/Users/robdrimmie/Factory/Pattern/db/README.md",
-		"/Users/robdrimmie/Factory/Pattern/training/README.md",
 		"/Users/robdrimmie/Factory/Pattern/app.js",
-		"/Users/robdrimmie/Factory/Pattern/bin/README.md",
+		"/Users/robdrimmie/Factory/Pattern/api/routes.js",
+		"/Users/robdrimmie/Factory/Pattern/api/user.js",
+		"/Users/robdrimmie/Factory/Pattern/api/index.js",
+		"/Users/robdrimmie/Factory/Pattern/training/README.md",
 		"/Users/robdrimmie/Factory/Pattern/bin/start",
-		"/Users/robdrimmie/Factory/Pattern/pattern.sublime-project",
 		"/Users/robdrimmie/Factory/Pattern/README.md",
+		"/Users/robdrimmie/Factory/Pattern/conf.js",
+		"/Users/robdrimmie/Factory/Pattern/client/web/index.html",
+		"/Users/robdrimmie/Factory/Pattern/client/web/js/app.js",
+		"/Users/robdrimmie/Factory/Pattern/db/README.md",
+		"/Users/robdrimmie/Factory/Pattern/bin/README.md",
+		"/Users/robdrimmie/Factory/Pattern/pattern.sublime-project",
 		"/Users/robdrimmie/Factory/Pattern/package.json",
 		"/Users/robdrimmie/Invention/dndymntr/package.json",
 		"/Users/robdrimmie/Invention/dndymntr/models/log.js",
@@ -265,13 +271,7 @@
 		"/Users/robdrimmie/Factory/Green-Tee/systemtables/05.scouts_product.sql",
 		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_product.sql",
 		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_reason.sql",
-		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_action_taken.sql",
-		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_factor.sql",
-		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_pest.sql",
-		"/Users/robdrimmie/Invention/leaderboard/leaderboard.js",
-		"/Users/robdrimmie/Factory/Green-Tee/systemtables/0.removesystemdata.sql",
-		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_category.sql",
-		"/Users/robdrimmie/Factory/Green-Tee/system tables/scouts_category.sql"
+		"/Users/robdrimmie/Factory/Green-Tee/systemtables/scouts_action_taken.sql"
 	],
 	"find":
 	{
@@ -290,6 +290,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"routecallback",
+			"repl",
+			"xmlBodyParser",
 			"urlto",
 			"media",
 			"\"",
@@ -414,10 +417,7 @@
 			"Dimension",
 			"DACONIL",
 			"Conserve",
-			"Concert",
-			"Civitas",
-			"chipco",
-			"cascade"
+			"Concert"
 		],
 		"highlight": true,
 		"in_selection": false,
