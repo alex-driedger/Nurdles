@@ -10,11 +10,10 @@ Assumptions:
 I'm a big fan of letting every developer using the tools she prefers. For the sake of this document though, there are some assumptions I'm going to make.
 
 * you are using a stock OS X system, as prepped by me for working at the Apps Factory and configured by you following the welcome.md file
-* you are using Sublime Text 2 for your editor
-* you are using Chrome as your web browser
+* you are using Sublime Text 2 for your editor, Chrome as your web browser, and iTerm 2 as your terminal
 * you have cloned this repository to `~/Factory/Pattern` already, and are accessing the content from your local system
 
-In the long term, the editor and browser you use is your choice, but for now use these, please.
+In the long term, the tools you use is your choice, but for now use these, please.
 
 Begin:
 
