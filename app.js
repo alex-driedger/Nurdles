@@ -1,5 +1,5 @@
 var express = require('express'),
-    routes = require('./api'),
+    api = require('./api'),
     conf = require('./conf'),
     db = require('./db'),
     passport = require('passport'),
@@ -20,7 +20,7 @@ function run(opts) {
         app.use(passport.session());
 
         db.init(passport);
-        routes.bind(app, passport);
+        api.bindRoutes(app, passport);
     });
     app.listen(port);
 
