@@ -1,10 +1,23 @@
 /*
     CSS for the application
+
+		Primary Colors:
+    Communitech Blue:				#06c;
+		White:									#fff;
+		Black:									#000;
+
+		Secondary Colors:;
+		Communitech Light Grey: #bfbfbf;
+		Communitech Dark Grey: 	#818181;
+		Communitech Light Blue: #bcd5e4;
+		Communitech Dark Blue:	#7aaacb;
 */
 
 html, body {
-	background-color: #eee;
-	font-family: frutiger, helvetica, arial, sans-serif;
+	height: 100%;
+
+	background-color: #bfbfbf;
+	font-family: "frutiger", helvetica, arial, sans-serif;
 }
 
 h1 {
@@ -12,19 +25,37 @@ h1 {
 }
 
 #header {
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	height: 82px;
+
 	background-color: #06c;
 	color: #fff;
-
-	height: 82px;
-	vertical-align: middle;
-
-
 }
 
 #header	img {
 	vertical-align: middle;
 }
 
-#footer {
+#content {
+	position: fixed;
+	top: 82px;
+	bottom: 82px;
+}
 
+#footer {
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	height: 16px;
+
+	padding: 2px;
+
+	background-color: #bcd5e4;
+	color: #000;
+
+	text-align: right;
 }
