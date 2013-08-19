@@ -1,17 +1,13 @@
-<div class="login-form">
-    <form action="">
-        <fieldset>
-            <div>
-                <input id="username" type="text" placeholder="Username">
-            </div>
-            <div>
-                <input id="password" type="password" placeholder="Password">
-            </div>
-            <div>
-                <span class="help-inline">Authorization failed</span>
-            </div>
+<form id="signin">
+    <div>
+        <input id="signin__username" class="topcoat-text-input--large" type="text" placeholder="Username">
+    </div>
+    <div>
+        <input id="signin__password" class="topcoat-text-input--large" type="password" placeholder="Password">
+    </div>
+    <div id="signin__help" class="hide">
+        <span class="help-inline">Authorization failed</span>
+    </div>
 
-            <button id="loginButton" data-loading-text="authorizing..." class="btn primary span6 offset4">log in</button>
-        </fieldset>
-    </form>
-</div>
+    <button id="signin__login" data-loading-text="authorizing..." class="topcoat-button">log in</button>
+</form>

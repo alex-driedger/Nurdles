@@ -6,7 +6,6 @@
 require.config({
   paths: {
     jquery: 'libs/jquery/jquery-min',
-    bootstrap: 'libs/bootstrap/bootstrap.min',
     jqueryui: 'libs/jquery/jquery-ui.min',
     underscore: 'libs/underscore/underscore-min',
     backbone: 'libs/backbone/backbone-min',
@@ -16,10 +15,6 @@ require.config({
   },
 
   shim: {
-      bootstrap: {
-          deps: ['jquery', 'jqueryui']
-      },
-
       underscore: { 
           deps: ['jquery'],
           exports: "_"

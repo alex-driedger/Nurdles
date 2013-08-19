@@ -2,9 +2,7 @@ define([
    'jquery',
    'underscore',
    'backbone',
-   /*'text!templates/partials/loading.html',*/
    'jqueryui',
-   'bootstrap'
 ], function($, _, Backbone, loadingTemplate){
     var BaseView = Backbone.View.extend({
 

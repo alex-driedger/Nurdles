@@ -103,5 +103,3 @@ Open Chrome, press command-l to jump to the address bar and type `http://localho
 
 
 
-
-

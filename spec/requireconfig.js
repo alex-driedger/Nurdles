@@ -1,8 +1,5 @@
 require.config({
     shim: {
-        bootstrap: {
-            deps: ['jquery', 'jqueryui']
-        },
         underscore: {
             exports: '_'
         },
@@ -28,7 +25,6 @@ require.config({
         mocha: '../test/mocha',
         chai: '../test/chai',
         jquery: '../public/js/libs/jquery/jquery-min',
-        bootstrap: '../public/js/libs/bootstrap/bootstrap.min',
         jqueryui: '../public/js/libs/jquery/jquery-ui.min',
         underscore: '../public/js/libs/underscore/underscore-min',
         backbone: '../public/js/libs/backbone/backbone-min',

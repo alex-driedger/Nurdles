@@ -1,7 +1,6 @@
 define([
   'baseview',
   'text!templates/pages/SignInView.html',
-  'bootstrap'
 ], function(Baseview, signInTemplate){
 
     var SignInView = Baseview.extend({
@@ -17,12 +16,7 @@ define([
         },
 
         events: {
-            'click #registerLinkDiv': 'registerClick',
-            "click #loginButton": "loginUser"
-        },
-
-        registerClick: function () {
-            console.log("Onclick");
+            'click #signin__login': 'loginUser'
         },
 
         loginUser: function(e) {
@@ -31,14 +25,14 @@ define([
             $.ajax( {
                 type: "POST",
                 url: "/api/user/login",
-                data: {"username": $("#username").val(), "password": $("#password").val()},
+                data: {"username": $("#signin__username").val(), "password": $("#signin__password").val()},
                 success: function(data, status, xhr) {
                     view.loginSuccessful(data, view);
                 },
                 error: this.loginFail,
             });
 
-            $("#loginButton").button("loading");
+            $("#signin__login").button("loading");
             $(".controls-group").addClass("hide");
         },
 
@@ -49,9 +43,9 @@ define([
         },
 
         loginFail: function(xhr, errorType, error) {
-            $("#loginButton").button("reset");
-            $("#email").val("");
-            $("#password").val("");
+            $("#signin__login").button("reset");
+            $("#signin__username").val("");
+            $("#signin__password").val("");
             $(".controls-group").removeClass("hide");
         }
     });
