@@ -1,13 +1,14 @@
 <form id="signin">
+    <div id="signin__help" class="hide">
+        Authorization failed
+    </div>
+
     <div>
         <input id="signin__username" class="topcoat-text-input--large" type="text" placeholder="Username">
     </div>
     <div>
         <input id="signin__password" class="topcoat-text-input--large" type="password" placeholder="Password">
     </div>
-    <div id="signin__help" class="hide">
-        <span class="help-inline">Authorization failed</span>
-    </div>
 
-    <button id="signin__login" data-loading-text="authorizing..." class="topcoat-button">log in</button>
+    <button id="signin__login" class="topcoat-button">log in</button>
 </form>

@@ -32,21 +32,19 @@ define([
                 error: this.loginFail,
             });
 
-            $("#signin__login").button("loading");
-            $(".controls-group").addClass("hide");
+            $("#signin__login").html('authenticating...');
         },
 
         loginSuccessful: function(data, context) {
             window.user = data;
             context.router.navigate("home", true);
-
         },
 
         loginFail: function(xhr, errorType, error) {
-            $("#signin__login").button("reset");
+            $("#signin__login").html('log in');
             $("#signin__username").val("");
             $("#signin__password").val("");
-            $(".controls-group").removeClass("hide");
+            $("#signin__help").removeClass("hide");
         }
     });
 
