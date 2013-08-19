@@ -17,10 +17,11 @@ define([
         },
 
         initialize: function() {
-            this.mainEl = $("#main-content");
+            this.mainEl = $("#content");
             var headerView = new HeaderView({el: $("#header")});
-            headerView.render();
             var footerView = new FooterView();
+
+            headerView.render();
             footerView.render();
         },
 

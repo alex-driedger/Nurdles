@@ -47,7 +47,7 @@ define([
             this.unbindFromAllControls();
             this.undelegateEvents();
             this.off();
-            if (this.$el.prop("id") == "main-content")
+            if (this.$el.prop("id") == "content")
                 this.$el.empty();
             else
                 this.$el.remove();

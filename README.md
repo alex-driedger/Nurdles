@@ -44,7 +44,6 @@ As a general rule, few of our customers are comfortable with a pure Scrum method
 - Javascript style enforced with JSHint
 - CSS written following BEM Architecture
 
-
 ### Git Workflow
 - master, next, feature/bug branch. 
 - remote branch created for any branch that lives for more than a few hours
@@ -59,7 +58,7 @@ As a general rule, few of our customers are comfortable with a pure Scrum method
 ### Deployment
 - Deployment is manual, and occurs at a minimum every Thursday by 12pm
 - Web applications hosted Heroku, unless project constraints make it impractical
-- two Heroku apps: caf-[projectName] ("production") and caf-[projectName]-next ("staging")
+- two Heroku apps: caf-[projectName]  ("production") and caf-[projectName]-next ("staging")
 - caf-[projectName] must always be stable. Clients must be able to predict behaviours and share with interested third parties at the client's discretion
 - caf-[projectName]-next is "staging" server. After pull request into next is accepted, project is deployed to the -next app and reviewed. Any known issues are identified and where practical resolved.
 - changelog is created, ideally from commit messages.
