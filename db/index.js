@@ -4,7 +4,9 @@ var jWorkflow = require('jWorkflow'),
 	initDB = require("./init"),
 	passport,
 	LocalStrategy = require('passport-local').Strategy,
-	BearerStrategy = require('passport-http-bearer').Strategy,
+  	BasicStrategy = require('passport-http').BasicStrategy,
+  	ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy,
+    BearerStrategy = require('passport-http-bearer').Strategy,
 	User,
 	Client,
 	AccessToken,
@@ -57,7 +59,52 @@ function initSettings (previous, baton) {
 
 function initPassport (previous, baton) {
 	baton.take();
+	
 	passport.use(new LocalStrategy(User.authenticate()));
+	
+	passport.use(new BasicStrategy(
+	  function(clientID, clientSecret, done) {
+	    var clientDAL = require("./access/clientdal.js");
+	    clientDAL.findClientByClientId(clientId, function(err, client) {
+	      if (err) { return done(err); }
+	      if (!client) { return done(null, false); }
+	      if (client.clientSecret != clientSecret) { return done(null, false); }
+	      return done(null, client);
+	    });
+	  }
+	));
+	
+	passport.use(new ClientPasswordStrategy(
+	  function(clientId, clientSecret, done) {
+	    var clientDAL = require("./access/clientdal.js");
+	    clientDAL.findClientByClientId(clientId, function(err, client) {
+	      if (err) { return done(err); }
+	      if (!client) { return done(null, false); }
+	      if (client.clientSecret != clientSecret) { return done(null, false); }
+	      return done(null, client);
+	    });
+	  }
+	));
+
+	passport.use(new BearerStrategy(
+	  function(accessToken, done) {
+	    var accessTokenDAL = require("./access/accesstokendal.js");
+	    accessTokenDAL.findAccessTokenByToken(accessToken, function(err, token) {
+	      if (err) { return done(err); }
+	      if (!token) { return done(null, false); }
+	      
+	      var userDAL = require("./access/userdal.js");
+	      userDAL.find({ 'id': token.userId }, function(err, user) {
+	        if (err) { return done(err); }
+	        if (!user) { return done(null, false); }
+	        // to keep this example simple, restricted scopes are not implemented,
+	        // and this is just for illustrative purposes
+	        var info = { scope: '*' }
+	        done(null, user, info);
+	      });
+	    });
+	  }
+	));
 
 	passport.serializeUser(User.serializeUser());
 	passport.deserializeUser(User.deserializeUser());

@@ -16,10 +16,10 @@
 
 + (void)initialize
 {
-    [[NXOAuth2AccountStore sharedStore] setClientID:@"abc123"
-                                             secret:@"ssh-secret"
-                                   authorizationURL:[NSURL URLWithString:@"http://localhost:3000/dialog/authorize"]
-                                           tokenURL:[NSURL URLWithString:@"http://localhost:3000/oauth/token"]
+    [[NXOAuth2AccountStore sharedStore] setClientID:@"pattern"
+                                             secret:@"secret"
+                                   authorizationURL:[NSURL URLWithString:@"http://localhost:4010/oauth/authorize"]
+                                           tokenURL:[NSURL URLWithString:@"http://localhost:4010/oauth/authorize/token"]
                                         redirectURL:[NSURL URLWithString:@"pattern://authenticate"]
                                      forAccountType:AFPatternAccountType];
 }
@@ -38,20 +38,6 @@
     [[NXOAuth2AccountStore sharedStore] requestAccessToAccountWithType:AFPatternAccountType
                                                               username:username
                                                               password:password];
-}
-
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation
-{
-    NSDictionary *query = [[url query] parsedQueryString];
-    NSString *code = [query valueForKey:@"code"];
-    NSString *error = [query valueForKey:@"error"];
-    
-    NSLog(@"Received response with code: %@, error: %@", code, error);
-    
-    return YES;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

@@ -24,8 +24,9 @@ static NSString *AFOAuthAccessTokenKey = @"AFOAuthAccessTokenKey";
 {
     [super viewDidLoad];
     
-    self.usernameTextField.text = @"bob";
-    self.passwordTextField.text = @"secret";
+    self.errorLabel.text = @"";
+    self.usernameTextField.text = @"appsfactory";
+    self.passwordTextField.text = @"appsfactory";
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserverForName:NXOAuth2AccountStoreAccountsDidChangeNotification
@@ -33,7 +34,7 @@ static NSString *AFOAuthAccessTokenKey = @"AFOAuthAccessTokenKey";
                      queue:nil
                 usingBlock:^(NSNotification *notif) {
                     
-                    // NSLog(@"NXOAuth2AccountStoreAccountsDidChangeNotification: %@", notif);
+                    NSLog(@"NXOAuth2AccountStoreAccountsDidChangeNotification: %@", notif);
                     
                     // Obtain the access token from the notification.
                     NXOAuth2Account *account = [[[NXOAuth2AccountStore sharedStore] accountsWithAccountType:AFPatternAccountType] firstObject];
@@ -51,7 +52,7 @@ static NSString *AFOAuthAccessTokenKey = @"AFOAuthAccessTokenKey";
                      queue:nil
                 usingBlock:^(NSNotification *notif) {
                     
-                    // NSLog(@"NXOAuth2AccountDidFailToGetAccessTokenNotification: %@", notif);
+                    NSLog(@"NXOAuth2AccountDidFailToGetAccessTokenNotification: %@", notif);
                     
                     // Remove the previous token from the user defaults.
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:AFOAuthAccessTokenKey];

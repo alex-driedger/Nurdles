@@ -8,6 +8,7 @@ var oauth2orize = require('oauth2orize')
   , userDAL = require('./db/access/userdal.js')
   , clientDAL = require('./db/access/clientdal.js')
   , accessTokenDAL = require('./db/access/accesstokendal.js')
+  , utils = require('connect').utils
   ;
 
 // Create the server.
@@ -18,7 +19,7 @@ server.serializeClient(function(client, callback) {
 	return callback(null, client.id);
 });
 server.deserializeClient(function(id, callback) {
-	clientDAL.findClientByClientID(id, function(err, client) {
+  clientDAL.findClientById(id, function(err, client) {
 		if (err)
 			return callback(err);
 		else
@@ -31,12 +32,16 @@ server.exchange(oauth2orize.exchange.password(function(client, username, passwor
   userDAL.findUserByUsername(username, function(err, user) {
     if (err) { return done(err); }
     if (username !== user.username) { return done(null, false); }
-    if (password !== user.password) { return done(null, false); }
-    
-    var token = utils.uid(256)
-    accessTokenDAL.create(token, user.id, client.id, function(err) {
-      if (err) { return done(err); }
-      done(null, token);
+
+    // Authenticate the user.
+    user.authenticate(password, function(err, user, options) {
+      if (!user) { return done(null, false); }
+
+      var token = utils.uid(256);
+      accessTokenDAL.create(token, user.id, client.id, function(err, accessToken) {
+        if (err) { return done(err); }
+        done(null, token);
+      });
     });
   });
 }));
@@ -63,9 +68,8 @@ server.exchange(oauth2orize.exchange.password(function(client, username, passwor
 // first, and rendering the `dialog` view. 
 
 exports.authorization = [
-  api.ensureAuthenticated(),
   server.authorization(function(clientID, redirectURI, done) {
-    clientDAL.findClientByClientId(clientID, function(err, client) {
+    clientDAL.findClientByClientId(clientId, function(err, client) {
       if (err) { return done(err); }
       // WARNING: For security purposes, it is highly advisable to check that
       //          redirectURI provided by the client matches one registered with
@@ -77,18 +81,6 @@ exports.authorization = [
   function(req, res){
     res.render('dialog', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
   }
-]
-
-// user decision endpoint
-//
-// `decision` middleware processes a user's decision to allow or deny access
-// requested by a client application.  Based on the grant type requested by the
-// client, the above grant middleware configured above will be invoked to send
-// a response.
-
-exports.decision = [
-  api.ensureAuthenticated(),
-  server.decision()
 ]
 
 // token endpoint

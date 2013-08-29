@@ -10,6 +10,7 @@
 
 @interface AFViewController : UIViewController
 
+@property (nonatomic, weak) IBOutlet UILabel *errorLabel;
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
 

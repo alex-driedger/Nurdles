@@ -1,8 +1,8 @@
 var mongoose = require('../init').getMongoose();
 
 var ClientSchema = new mongoose.Schema({
-    clientID: { type: String, required: true, index: { unique: true } },
-    clientSecret: { type: String }
+    clientId: { type: String, required: true },
+    clientSecret: { type: String, required: false }
 });
 
 var Client = mongoose.model("Client", ClientSchema);
