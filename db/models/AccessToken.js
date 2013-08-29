@@ -6,7 +6,7 @@ var AccessTokenSchema = new mongoose.Schema({
     clientID: { type: String, required: true }
 });
 
-var User = mongoose.model("AccessToken", AccessTokenSchema);
+var AccessToken = mongoose.model("AccessToken", AccessTokenSchema);
 
 module.exports = {
     AccessToken: AccessToken,
