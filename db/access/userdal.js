@@ -13,7 +13,18 @@ var self = {
     },
 
     findUserByUsername: function(username, callback) {
+        // findByUsername is provided by the passport-local-mongoose plugin module. 
+        // The User schema was defined using th
         User.findByUsername(username, function(err, user) {
+            if (err)
+                callback(err);
+            else
+                callback(null, user);
+        });
+    },
+
+    findUserByToken: function(token, callback) {
+        User.find({ 'exactEarthAuthKey': token }, function(err, user) {
             if (err)
                 callback(err);
             else

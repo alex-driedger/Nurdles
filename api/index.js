@@ -27,4 +27,5 @@ function ensureAuthenticated( req, res, next ) {
 
 module.exports = {
     bindRoutes: bindRoutes,
+    ensureAuthenticated: ensureAuthenticated
 };

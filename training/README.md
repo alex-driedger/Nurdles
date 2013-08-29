@@ -69,7 +69,7 @@ Well, maybe not exactly. The classic model for web servers is to have a specific
 
 The Front Controller Pattern dictates that all processing for a web application has a single entry point. Cosmetic benefits of this allow us to disassociate the web application itself from the file structure, so we get less ugly URLs like http://example.com/login or http://example.com/user/1 instead of exposing the architecture of the system to users through more traditional URLs that may use of a QueryString (which I'm also not getting into) such as http://example.com/user.php?id=1.
 
-There are architectural benefits as well, but I'm of the opnion that the pretty URLs are how it took hold. 
+There are architectural benefits as well, but I'm of the opinion that the pretty URLs are how it took hold. 
 
 Routes (finally, back to the application!) are how we associate these pretty URLs with the functionality we're coding. 
 
