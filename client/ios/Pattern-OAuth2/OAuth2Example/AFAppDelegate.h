@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+
 static NSString *AFPatternAccountType = @"Pattern";
+
 
 @interface AFAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-- (void)authenticate;
 - (void)authenticateWithUsername:(NSString *)username password:(NSString *)password;
 
 @end

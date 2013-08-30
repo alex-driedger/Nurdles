@@ -12,6 +12,7 @@
 
 #import "NSString+AFURLAdditions.h"
 
+
 @implementation AFAppDelegate
 
 + (void)initialize
@@ -24,15 +25,6 @@
                                      forAccountType:AFPatternAccountType];
 }
 
-// Authentication here is done through an external application (i.e. Safari).
-// Upon completion, the server redirects, including either an access code or an error.
-// Per OAuth2, the authorization code should then be exchanged for an access token.
-- (void)authenticate
-{
-    [[NXOAuth2AccountStore sharedStore] requestAccessToAccountWithType:AFPatternAccountType];
-}
-
-// Authentication here is done using the password grant type. The server response contains the access token.
 - (void)authenticateWithUsername:(NSString *)username password:(NSString *)password
 {
     [[NXOAuth2AccountStore sharedStore] requestAccessToAccountWithType:AFPatternAccountType

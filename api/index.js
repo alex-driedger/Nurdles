@@ -18,8 +18,15 @@ function bindRoutes( app, passport ) {
 
     // Setup OAuth routes
     app.get('/oauth/authorize', oauth2.authorization);
+    app.post('/oauth/authorize/decision', oauth2.decision);
     app.post('/oauth/authorize/token', oauth2.token);
 
+    app.get("/oauth/user", [
+        passport.authenticate("bearer", { session: false }),
+        function(req, res) {
+            res.write("test");
+        }
+    ]);
 }
 
 function ensureAuthenticated( req, res, next ) {

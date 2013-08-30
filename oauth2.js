@@ -31,7 +31,7 @@ server.deserializeClient(function(id, callback) {
 server.exchange(oauth2orize.exchange.password(function(client, username, password, scope, done) {
   userDAL.findUserByUsername(username, function(err, user) {
     if (err) { return done(err); }
-    if (username !== user.username) { return done(null, false); }
+    if (!user) { return done(null, false); }
 
     // Authenticate the user.
     user.authenticate(password, function(err, user, options) {
@@ -68,6 +68,9 @@ server.exchange(oauth2orize.exchange.password(function(client, username, passwor
 // first, and rendering the `dialog` view. 
 
 exports.authorization = [
+  function() {
+    console.log("authorization");
+  },
   server.authorization(function(clientID, redirectURI, done) {
     clientDAL.findClientByClientId(clientId, function(err, client) {
       if (err) { return done(err); }
@@ -81,6 +84,17 @@ exports.authorization = [
   function(req, res){
     res.render('dialog', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
   }
+]
+
+// user decision endpoint
+//
+// `decision` middleware processes a user's decision to allow or deny access
+// requested by a client application.  Based on the grant type requested by the
+// client, the above grant middleware configured above will be invoked to send
+// a response.
+
+exports.decision = [
+  server.decision()
 ]
 
 // token endpoint

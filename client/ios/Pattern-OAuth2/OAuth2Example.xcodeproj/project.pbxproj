@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A0116E3917CFE51B00766512 /* AFConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A0116E3717CFE51B00766512 /* AFConnectionManager.m */; };
+		A0116E3E17CFE74400766512 /* AFWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0116E3D17CFE74400766512 /* AFWelcomeViewController.m */; };
 		A0223FDA17CD035E001523E3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0223FD917CD035E001523E3 /* Foundation.framework */; };
 		A0223FDC17CD035E001523E3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0223FDB17CD035E001523E3 /* CoreGraphics.framework */; };
 		A0223FDE17CD035E001523E3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0223FDD17CD035E001523E3 /* UIKit.framework */; };
@@ -59,6 +61,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A0116E3717CFE51B00766512 /* AFConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFConnectionManager.m; sourceTree = "<group>"; };
+		A0116E3817CFE51B00766512 /* AFConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFConnectionManager.h; sourceTree = "<group>"; };
+		A0116E3C17CFE74400766512 /* AFWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFWelcomeViewController.h; sourceTree = "<group>"; };
+		A0116E3D17CFE74400766512 /* AFWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFWelcomeViewController.m; sourceTree = "<group>"; };
 		A0223FD617CD035E001523E3 /* OAuth2Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OAuth2Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0223FD917CD035E001523E3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A0223FDB17CD035E001523E3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -111,6 +117,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A0116E3B17CFE6F700766512 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				A022402B17CD2675001523E3 /* NSString+AFURLAdditions.h */,
+				A022402C17CD2675001523E3 /* NSString+AFURLAdditions.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		A0223FCD17CD035E001523E3 = {
 			isa = PBXGroup;
 			children = (
@@ -146,14 +161,17 @@
 		A0223FDF17CD035E001523E3 /* OAuth2Example */ = {
 			isa = PBXGroup;
 			children = (
+				A0116E3B17CFE6F700766512 /* Categories */,
 				A0223FE817CD035E001523E3 /* AFAppDelegate.h */,
 				A0223FE917CD035E001523E3 /* AFAppDelegate.m */,
 				A0223FF117CD035E001523E3 /* AFViewController.h */,
 				A0223FF217CD035E001523E3 /* AFViewController.m */,
+				A0116E3C17CFE74400766512 /* AFWelcomeViewController.h */,
+				A0116E3D17CFE74400766512 /* AFWelcomeViewController.m */,
+				A0116E3817CFE51B00766512 /* AFConnectionManager.h */,
+				A0116E3717CFE51B00766512 /* AFConnectionManager.m */,
 				A022402017CD040C001523E3 /* Interface */,
 				A0223FE017CD035E001523E3 /* Supporting Files */,
-				A022402B17CD2675001523E3 /* NSString+AFURLAdditions.h */,
-				A022402C17CD2675001523E3 /* NSString+AFURLAdditions.m */,
 			);
 			path = OAuth2Example;
 			sourceTree = "<group>";
@@ -329,6 +347,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0116E3E17CFE74400766512 /* AFWelcomeViewController.m in Sources */,
+				A0116E3917CFE51B00766512 /* AFConnectionManager.m in Sources */,
 				A022402D17CD2675001523E3 /* NSString+AFURLAdditions.m in Sources */,
 				A0223FE617CD035E001523E3 /* main.m in Sources */,
 				A0223FF317CD035E001523E3 /* AFViewController.m in Sources */,

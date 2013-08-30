@@ -12,11 +12,14 @@
 
 #import "AFAppDelegate.h"
 
+
 static NSString *AFOAuthAccessTokenKey = @"AFOAuthAccessTokenKey";
+
 
 @interface AFViewController ()
 
 @end
+
 
 @implementation AFViewController
 
@@ -34,29 +37,25 @@ static NSString *AFOAuthAccessTokenKey = @"AFOAuthAccessTokenKey";
                      queue:nil
                 usingBlock:^(NSNotification *notif) {
                     
-                    NSLog(@"NXOAuth2AccountStoreAccountsDidChangeNotification: %@", notif);
-                    
-                    // Obtain the access token from the notification.
+                    // Obtain the token from the notification.
                     NXOAuth2Account *account = [[[NXOAuth2AccountStore sharedStore] accountsWithAccountType:AFPatternAccountType] firstObject];
                     NSString *token = account.accessToken.accessToken;
                     
                     // Store the token in the user defaults.
                     [[NSUserDefaults standardUserDefaults] setObject:token forKey:AFOAuthAccessTokenKey];
                     
-                    // Show the welcome view.
+                    // Perform the login segue.
                     [self performSegueWithIdentifier:@"login" sender:self];
 
                 }];
-    [nc addObserverForName:NXOAuth2AccountDidFailToGetAccessTokenNotification
-                    object:[NXOAuth2AccountStore sharedStore]
-                     queue:nil
-                usingBlock:^(NSNotification *notif) {
-                    
-                    NSLog(@"NXOAuth2AccountDidFailToGetAccessTokenNotification: %@", notif);
-                    
-                    // Remove the previous token from the user defaults.
-                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:AFOAuthAccessTokenKey];
     
+    [nc addObserverForName:NXOAuth2AccountStoreDidFailToRequestAccessNotification
+                    object:nil
+                     queue:0
+                usingBlock:^(NSNotification *note) {
+                    
+                    self.errorLabel.text = @"Error logging in.";
+                    
                 }];
 }
 
@@ -68,16 +67,11 @@ static NSString *AFOAuthAccessTokenKey = @"AFOAuthAccessTokenKey";
 
 - (IBAction)authenticateWithCredentialsAction:(id)sender
 {
+    self.errorLabel.text = @"";
+    
     AFAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     
     [delegate authenticateWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
-}
-
-- (IBAction)authenticateAction:(id)sender
-{
-    AFAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    
-    [delegate authenticate];
 }
 
 @end

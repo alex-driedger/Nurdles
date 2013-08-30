@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface AFViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet UILabel *errorLabel;
@@ -15,6 +16,5 @@
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
 
 - (IBAction)authenticateWithCredentialsAction:(id)sender;
-- (IBAction)authenticateAction:(id)sender;
 
 @end

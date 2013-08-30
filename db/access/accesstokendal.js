@@ -4,6 +4,7 @@ var self = {
 	create: function(token, userId, clientId, callback) {
 		var accessToken = new AccessToken({ token: token, userId: userId, clientId: clientId });
 		accessToken.save(function(err, accesToken, numberAffected) {
+			console.log
 			if (err)
 				return callback(err);
 			else
