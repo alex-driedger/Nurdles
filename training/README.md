@@ -91,4 +91,62 @@ This is a pain in the ass and you should not do it.
 
 Merge resolution is the process that takes place when two or more developers change one or more of the same files at the same time. You and Developer B both edit `index.js`, now you have different copies, which one is the correct one? Well, a third copy that takes into consideration both changes is. 
 
+We're not going to worry about merge resolution right now, but we are going to worry about version control because the second we make changes to any file in the application, we've made a new version of it. Even if it's removing a blank line, or adding a space, something that doesn't have any impact on actual functionality, that is a new version of the file.
+
+Rather than continuing to yammer on about git (seriously, I just deleted another 4 paragraphs that weren't writing software) I'm going to jump ahead and just get you to type these things into iTerm. You should probably open a new tab and switch to the project folder so that mongo and node keep running in the others. Now, type these things:
+
+`git status`
+`git branch next`
+`git checkout next`
+`git branch training`
+`git checkout training`
+
+So. Branches are kind of like copies. First we had git report on the current condition of the repository. Mostly because this is just how I always start interacting with git, I want to make sure everything is in a good state. We then created a copy and gave it a name called `next`, then we told git that we wanted to work in the branch named `next`, then we created a copy of `next` called `training` and told git to work in the branch named `training`. Here is some horrible ASCII art:
+
+    master
+    |			\
+    |				next
+    |				|		\
+	|				|			training
+	
+Git versions are a graph, in the Graph Theory sense. I'm going to leave it at this for now so that the back of your brain can ruminate on it while we move on to other things. 
+
+Now, yes, now you can write some code! Back in sublime open `client/web/templates/partials/static/HeaderView.html` and change the  "Communitech Apps Factory" part of the header to your name, so in my case line 3 would read:
+
+`  Rob Drimmie Factory Pattern Application`
+
+Save the file, reload the page in Chrome.
+
+Okay, so I probably couldn't have found a more trivial task. But I have to start somewhere!
+
+Back in iTerm where you did those git commands, do a few more:
+
+`git add .`
+`git commit -m 'Rob is making me do trivial things'`
+
+Okay, now lets do something slightly more interesting, we're going to create functionality for users to sign out. Back in sublime, add a newline before `</h1>` on line 4. If you do it from the end of line 3, it will automatically indent to the right point. Do this. Then, make line 4 this:
+
+`  <a href="/#signout">sign out</a>`
+
+Save the file and reload in Chrome. Yuck, super ugly but we'll get to the CSS later. Click the link, and... nothing happens. It looks like the home page. It is the home page. Open `web/client/js/views/router.js`.
+
+This is where routing for the client application is setup. This is different than routing for the server application. When you have a Single Page Application, which we do, then you use javascript to change what is displayed on the page in response to user actions, rather than going to the server. 
+
+We use a library called Backbone.js for a number of purposes, one of them is routing for the web client, and it is in this file that we set it up. The same basic principle as routing for the server applies: We map specific URL paths to specific functionality, though in this case we don't use verbs for anything. In a way, it's all GET requets, though really it's not any kind of request at all.
+
+Technically, what we are doing for client side routing is taking advantage of HTML's A (for Anchor) tag functionality. Anchors have been a part of HTML for ages, possibly since the beginning. They're a navigation tool originally designed to let users jump between different sections of a long document and developers quickly figured out that default behaviour in a browser of changing the location without forcing a trip to the server could be extended.
+
+Anyway, when the user clicks the link causing the location bar to change, an event is triggered and Backbone's Router handles it. If an explicit mapping exists that functionality will be loaded. If no mapping exists, our application is setup to show the very basic HTML page, which contains nothing.
+
+So lets map. Starting on line 13 a javascript object named routes is declared, add a newline after the signin mapping for the signout, I'm sure you can guess the syntax. Later in the file, create a function to handle it. I did so after the signin function declaration and started with:
+
+    signout: function() {
+    	console.log( 'signing out' );
+    },
+
+In Chrome, refresh the page and hit command-option-j. This opens the developer tools, with the Javascript Console selected. Click the ugly signout link again and the function will execute, logging `signing out` to the console, though not actually signing anything out.
+
+User authentication in this application is managed by Node.js middleware called Passport. It offers several types of authentication, and as a starting point this application uses very typical username & password authentication, managed by a web browser's session. That will change later on, as this mechanism is not readily supported by user agents that are not a web browser but none of that is important right this minute.
+
+Because the authentication is controlled by the server, we need to send a request to the server. Similar functionality exists in the `checkAuth` function in this file, which is called by every BackBone route that requires users be authenticated - for now that's only the `home` function.
 
