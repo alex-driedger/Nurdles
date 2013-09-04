@@ -67,7 +67,9 @@ Well, maybe not exactly. The classic model for web servers is to have a specific
 
 The Front Controller Pattern dictates that all processing for a web application has a single entry point. Cosmetic benefits of this allow us to disassociate the web application itself from the file structure, so we get less ugly URLs like http://example.com/login or http://example.com/user/1 instead of exposing the architecture of the system to users through more traditional URLs that may use of a QueryString (which I'm also not getting into) such as http://example.com/user.php?id=1.
 
-There are architectural benefits as well, but I'm of the opnion that the pretty URLs are how it took hold. Routes are how we associate these pretty URLs with the functionality we build into an application.
+There are architectural benefits as well, but I'm of the opinion that the pretty URLs are how it took hold. 
+
+Routes (finally, back to the application!) are how we associate these pretty URLs with the functionality we're coding. 
 
 Since the server application is a pure API, the routes are contained in the `api` folder's `index.js` file. This file's primary function `bindRoutes` connects the functionality defined by the other files in the `api` directory and binds it to specific URLs and HTTP methods using ExpressJS' routing system. There are a couple of routes with very simple behaviours that are defined inline as anonymous callbacks, but as the application increases in scope the vast majority of routes will point to functionality stored in other files, not defined inline.
 

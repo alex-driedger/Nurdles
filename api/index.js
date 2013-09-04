@@ -1,7 +1,9 @@
 function bindRoutes( app, passport ) {
     // Load in API functionality
     var user = require('./user'),
-        stateManager = require('./statemanager');
+        stateManager = require('./statemanager'),
+        oauth2 = require('../oauth2')
+        ;
 
     // Setup routes
     app.get('/', ensureAuthenticated, function(res, req) {
@@ -13,6 +15,18 @@ function bindRoutes( app, passport ) {
         res.send({userId: req.user._id, access: req.user.accessRights}); 
     });
     app.post("/api/user/login", passport.authenticate("local"), user.loginSuccess);
+
+    // Setup OAuth routes
+    app.get('/oauth/authorize', oauth2.authorization);
+    app.post('/oauth/authorize/decision', oauth2.decision);
+    app.post('/oauth/authorize/token', oauth2.token);
+
+    app.get("/oauth/user", [
+        passport.authenticate("bearer", { session: false }),
+        function(req, res) {
+            res.write("test");
+        }
+    ]);
 }
 
 function ensureAuthenticated( req, res, next ) {
@@ -26,5 +40,5 @@ function ensureAuthenticated( req, res, next ) {
 }
 
 module.exports = {
-    bindRoutes: bindRoutes,
+    bindRoutes: bindRoutes
 };
