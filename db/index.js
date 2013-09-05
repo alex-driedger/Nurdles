@@ -73,45 +73,32 @@ function initPassport (previous, baton) {
 
 	var clientDAL = require("./access/clientdal.js");
 
-	// Configure header-based strategy for token exchange.
-	passport.use(new BasicStrategy(
-		function(clientID, clientSecret, done) {
-			clientDAL.findClientByClientId(clientId, function(err, client) {
-				if (err) { return done(err); }
-				if (!client) { return done(null, false); }
-				if (client.clientSecret != clientSecret) { return done(null, false); }
-				return done(null, client);
-			});
-		}
-	));
+  // Basic and client password strategies must verify the client id and secret.
+  // This function is shared between strategies.
+  var verifyClientInfo = function(clientId, clientSecret, done) {
+		clientDAL.findClientByClientId(clientId, function(err, client) {
+			if (err) { return done(err); }
+			if (!client) { return done(null, false); }
+			if (client.clientSecret != clientSecret) { return done(null, false); }
+			return done(null, client);
+		});
+  };
+
+	// Configure the strategy that uses the headers.
+	passport.use(new BasicStrategy(verifyClientInfo));
 	
-	// Configure body-based strategy for token exchange.
-	passport.use(new ClientPasswordStrategy(
-		function(clientId, clientSecret, done) {
-			clientDAL.findClientByClientId(clientId, function(err, client) {
-				if (err) { return done(err); }
-				if (!client) { return done(null, false); }
-				if (client.clientSecret != clientSecret) { return done(null, false); }
-				return done(null, client);
-			});
-		}
-	));
+	// Configure the strategy that uses the body.
+	passport.use(new ClientPasswordStrategy(verifyClientInfo));
 
 	passport.use(new BearerStrategy(
 		function(token, done) {
 			if (!token) { return done(null, false); }
-			// console.log("checking access token with token " + token);
-
 			var accessTokenDAL = require("./access/accesstokendal.js");
 			accessTokenDAL.findAccessTokenByToken(token, function(err, accessToken) {
-				// console.log("found access token " + accessToken);
-
 				if (err) { return done(err); }
 				if (!accessToken) { return done (null, false); }
 
 				User.find(accessToken.userId, function(err, user) {
-					// console.log("found user " + user);
-
 					if (err) { return done(err); }
 					if (!user) { return done(null, false); }
 

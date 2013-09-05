@@ -24,9 +24,8 @@
 {
     [super viewDidLoad];
     
-    // @todo: accounts array should be cleaned when new accounts are added.
+//    @todo: accounts array should be cleaned when new accounts are added.
     NSArray *accounts = [[NXOAuth2AccountStore sharedStore] accounts];
-    NXOAuth2Account *account = accounts[0];
     
     [NXOAuth2Request performMethod:@"GET"
                         onResource:[NSURL URLWithString:@"http://localhost:4010/oauth/user"]

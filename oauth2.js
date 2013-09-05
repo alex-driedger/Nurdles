@@ -37,6 +37,7 @@ server.exchange(oauth2orize.exchange.password(function(client, username, passwor
     user.authenticate(password, function(err, user, options) {
       if (!user) { return done(null, false); }
 
+      // Create the token and exchange it.
       var token = utils.uid(256);
       accessTokenDAL.create(token, user.id, client.id, function(err, accessToken) {
         if (err) { return done(err); }
@@ -68,10 +69,10 @@ server.exchange(oauth2orize.exchange.password(function(client, username, passwor
 // first, and rendering the `dialog` view. 
 
 exports.authorization = [
-  function() {
-    console.log("authorization");
+  function(req, res) {
+    console.log("requesting access token");
   },
-  server.authorization(function(clientID, redirectURI, done) {
+  server.authorization(function(clientId, redirectURI, done) {
     clientDAL.findClientByClientId(clientId, function(err, client) {
       if (err) { return done(err); }
       // WARNING: For security purposes, it is highly advisable to check that

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:OAuth2Example.xcodeproj">
+      location = "self:PatternOAuth2.xcodeproj">
    </FileRef>
 </Workspace>
