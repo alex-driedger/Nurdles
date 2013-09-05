@@ -22,7 +22,7 @@ function bindRoutes( app, passport ) {
 
     app.get("/oauth/user", [
         passport.authenticate("bearer", { session: false })
-    ]);
+    ], user.loginSuccess);
 }
 
 function ensureAuthenticated( req, res, next ) {
