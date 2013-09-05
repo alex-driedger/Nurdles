@@ -8,5 +8,7 @@
     <string name="authenticate_button">Authenticate</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
+    <string name="authenticate_success">Authentication successful</string>
+    <string name="authenticate_failure">Authentication failed</string>
 
 </resources>

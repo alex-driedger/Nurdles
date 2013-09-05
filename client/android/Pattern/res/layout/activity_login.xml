@@ -42,4 +42,11 @@
         android:layout_height="wrap_content"
         android:text="@string/authenticate_button" />
 
+    <TextView
+        android:id="@+id/textStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center" />
+
 </LinearLayout>

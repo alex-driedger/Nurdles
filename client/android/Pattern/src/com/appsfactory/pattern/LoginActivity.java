@@ -22,19 +22,23 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
-public class LoginActivity extends Activity implements OnClickListener {
-	private static final String TAG = "LoginActivity";
-	
-	// Declare the views
+interface AuthenticateTaskListener {
+	public void onAuthenticateSuccess(String access_token);
+	public void onAuthenticateFailure(String error_description);
+}
+
+public class LoginActivity extends Activity implements OnClickListener, AuthenticateTaskListener {
+	// Declare the instance variables.
 	private EditText usernameEditText;
 	private EditText passwordEditText;
 	private Button authenticateButton;
+	private TextView statusTextView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		usernameEditText = (EditText) findViewById(R.id.editTextUsername);
 		passwordEditText = (EditText) findViewById(R.id.editTextPassword);
 		authenticateButton = (Button) findViewById(R.id.buttonAuthenticate);
+		statusTextView = (TextView) findViewById(R.id.textStatus);
 		
 		// Hook up the authenticate button
 		authenticateButton.setOnClickListener(this);
@@ -54,36 +59,83 @@ public class LoginActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		String username = usernameEditText.getText().toString();
 		String password = passwordEditText.getText().toString();
-		new AuthenticateTask().execute(username, password);
+		new AuthenticateTask(this).execute(username, password);
+		
+		// Clear the status from the previous authentication.
+		statusTextView.setText("");
 	}
 	
-	class AuthenticateTask extends AsyncTask <String, Integer, String> {
-		private static final String BASE_URL = "http://10.172.69.52:4010"; 
+	@Override
+	public void onAuthenticateSuccess(String access_token) {
+		statusTextView.setText(R.string.authenticate_success);
+	}
+	
+	@Override
+	public void onAuthenticateFailure(String error_description) {
+		statusTextView.setText(R.string.authenticate_failure);
+	}
+	
+	// Define the types used for the task.
+	// Params: the type used for the doInBackground() variable arguments
+	// Progress: the type used for the onProgressUpdate() argument
+	// Result: the type used for the onPostExecute() argument
+	class AuthenticateTask extends AsyncTask<String, Void, Void> {
+		private static final String BASE_URL = "http://10.172.69.51:4010";
+		private static final String ACCESS_TOKEN_URL = "/oauth/authorize/token";
+		
+		// Declare the instance variables.
+		private String access_token;
+		private AuthenticateTaskListener callback;
+		private String error_description;
+		
+		// Constructor
+		public AuthenticateTask(AuthenticateTaskListener callback) {
+			this.callback = callback;
+		}
+		
+		// AsyncTask implementation
 		
 		@Override
-		protected String doInBackground(String... values) {
+		protected Void doInBackground(String... params) {
+			String username = null;
+			String password = null;
 			
-			String username = values[0];
-			String password = values[1];
+			// Get the username and password from the arguments array.
+			if (params.length >= 2) {
+				username = params[0];
+				password = params[1];
+			} else {
+				return null;
+			}
 			
+			// Authenticate the user.
 			try {
 				authenticate(username, password);
-				return "";
 			} catch (Exception e) {
-				return "";
+				// TODO Auto-generated catch block
+			}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			if (this.access_token != null) {
+				this.callback.onAuthenticateSuccess(this.access_token);
+			} else {
+				this.callback.onAuthenticateFailure(this.error_description);
 			}
 		}
 		
-		protected void authenticate(String username, String password) {
-			
-			// Create the client.
+		// Authentication
+		
+		protected Void authenticate(String username, String password) {
+			// Create the client and the request.
 			HttpClient client = new DefaultHttpClient();
-			
-			// Create the request.
-			HttpPost post = new HttpPost(BASE_URL + "/oauth/authorize/token");
+			HttpPost post = new HttpPost(BASE_URL + ACCESS_TOKEN_URL);
 			
 			// Create the parameters list.
-			List <NameValuePair> params = new ArrayList <NameValuePair> ();
+			List<NameValuePair> params = new ArrayList <NameValuePair> ();
 			params.add(new BasicNameValuePair("grant_type", "password"));
 			params.add(new BasicNameValuePair("client_id", "pattern"));
 			params.add(new BasicNameValuePair("client_secret", "secret"));
@@ -119,14 +171,24 @@ public class LoginActivity extends Activity implements OnClickListener {
 			
 			// Get the content from the input stream.
 			BufferedReader reader = new BufferedReader(new InputStreamReader(instream));
-			String content = null;
+			String content = new String();
 			try {
-				content = reader.readLine();
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					content += line;
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 			}
 			
-			// Parse the JSON.
+			// Close the input stream.
+			try {
+				instream.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+			}
+			
+			// Create the JSON object.
 			JSONObject object = null;
 			try {
 				object = new JSONObject(content);
@@ -134,22 +196,21 @@ public class LoginActivity extends Activity implements OnClickListener {
 				// TODO Auto-generated catch block
 			}
 			
-			// Check for errors.
+			// Get the access_token.
 			try {
-				String error = object.getString("error");
-				String error_description = object.getString("error_description");
-				Log.i(TAG, "Received response with error_description: " + error_description);
+				this.access_token = object.getString("access_token");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 			}
 			
-			// Get the access_token.
+			// Get the error_description.
 			try {
-				String access_token = object.getString("access_token");
-				Log.i(TAG, "Received response with access_token: " + access_token);
+				this.error_description = object.getString("error_description");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 			}
+			
+			return null;
 
 		}
 		
