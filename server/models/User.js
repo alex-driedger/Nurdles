@@ -1,4 +1,17 @@
-var User = require('../models/User').User;
+var mongoose = require('../init').getMongoose(),
+    passportLocalMongoose = require('passport-local-mongoose');
+
+var UserSchema = new mongoose.Schema({
+    username: { type: String, required: true, index: { unique: true } },
+    password: {type: String, require: true },
+    exactEarthAuthKey: { type: String, required: true },
+    activeFilters: { type: [mongoose.Schema.ObjectId], required: false},
+    accessRights: { type: mongoose.Schema.Types.Mixed, required: true, default: {multipleLayers: false} }
+});
+
+UserSchema.plugin(passportLocalMongoose);
+
+var User = mongoose.model("User", UserSchema);
 
 var self = {
     create: function(username, password, authKey, callback) {

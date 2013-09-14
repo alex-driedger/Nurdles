@@ -6,7 +6,7 @@ var express = require('express'),
     utils = require('connect').utils, 
     parser = require('xml2js');
 
-function run(opts) {
+function run(opts, processArgs) {
     var app = express(),
         port = opts.port || conf.ports.server;
        

@@ -1,2 +1,2 @@
-#!usr/bin/env node
-require('../app').run({port: process.env.PORT});
+#!usr/bin/env node 
+require('../app').run({port: process.env.PORT}, process.argv);
