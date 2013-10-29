@@ -1,38 +1,25 @@
 {
-  "name": "af-pattern",
+  "name": "fillmeup",
   "version": "0.0.1",
-  "description": "Apps Factory Project Template",
-  "homepage": "http://github.com/appsfactory/Pattern",
-  "files": [],
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
-    "express": "3.0.3",
-    "mongoose": "3.5.x",
-    "jWorkflow": "0.7.x",
-    "oauth2orize": ">=0.0.0",
-    "passport": ">=0.0.0",
-    "passport-local-mongoose": ">=0.2.0",
-    "passport-local": "0.1.x",
-    "passport-http": "0.2.x",
-    "passport-http-bearer": "0.2.x",
-    "passport-oauth2-client-password": "0.1.x",
-    "needle": ">=0.5",
-    "ent": ">=0.0.0",
-    "xml2json": ">=0.3.2",
-    "xml2js": ">=0.2.7",
-    "follow-redirects": ">=0.0.3",
-    "request": ">=2.21.0",
-    "connect": ">=2.7.11"
-  },
-  "devDependencies": {
-    "chai": "*",
-    "sinon": "1.5.0",
-    "sinon-chai": "2.2.0",
-    "mocha": "*",
-    "jshint": "0.9.1",
-    "connect": "2.7.0"
-  },
-  "engines": {
-      "node": "0.8.x",
-      "npm": "1.1.x"
+    "express": "3.3.5",
+    "express-resource": "*",
+    "ejs": "*",
+    "stylus": "*",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "passport-local-mongoose": "*",
+    "passport-http": "*",
+    "passport-http-bearer": "*",
+    "passport-oauth2-client-password": "*",
+    "oauth2orize": "*",
+    "connect": "*",
+    "uid2": "*",
+    "less": "*"
   }
 }

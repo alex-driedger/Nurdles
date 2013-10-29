@@ -1,1 +1,0 @@
-Non-class-specific functionality.
