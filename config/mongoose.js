@@ -4,7 +4,7 @@ module.exports = function (app) {
   
     var uri = process.env.MONGOLAB_URI || 
                   process.env.MONGOHQ_URL  || 
-                      'mongodb://localhost/fillmeup';
+                      'mongodb://localhost/pattern';
     var options = { db: { safe: true }};
 
     mongoose.connect(uri,  options);

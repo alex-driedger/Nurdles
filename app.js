@@ -26,7 +26,7 @@ function run (opts, processArgs) {
     var path = __dirname + '/models';
     fs.readdirSync(path).forEach(function (filename) {
         if (filename.indexOf('.js') != -1)
-            require(path + '/' + filename);
+            require(path + '/' + filename)(app);
     });
 
     // Seed the database
