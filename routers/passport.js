@@ -5,7 +5,7 @@ module.exports = function (app) {
     app.post('/authenticate', [
         passport.authenticate('local'),
         function (req, res, next) {
-            return res.send({ user: req.user._id, group: req.user.group });
+            return res.send({ user: req.user._id });
         }
     ]);
     

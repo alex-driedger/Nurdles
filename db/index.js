@@ -4,7 +4,8 @@ module.exports = function (app) {
     
     // Seed users
     var User = mongoose.model('User');
-    User.createWithAttributes("appsfactory", "appsfactory", "admin", function (err, user) {
+    
+    User.createWithUsernameAndPassword("appsfactory", "appsfactory", function (err, user) {
         if (err) return console.log("error, " + err);
     });
     

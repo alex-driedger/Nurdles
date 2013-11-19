@@ -5,9 +5,7 @@ module.exports = function (app) {
     var passportLocalMongoose = require('passport-local-mongoose');
 
     var UserSchema = new mongoose.Schema({
-        username      : { type: String, required: true, index: { unique: true } },
-        password      : { type: String, required: true },
-        group         : { type: String, required: false }
+        username : { type: String, required: true, index: { unique: true } }
     });
 
     // Register the passport-local-mongoose plugin
@@ -16,8 +14,8 @@ module.exports = function (app) {
 
     // Convenience method for creating
 
-    UserSchema.statics.createWithAttributes = function (username, password, group, callback) {
-        User.register(new User({ username: username, group: group }), password, function (err, user) {
+    UserSchema.statics.createWithUsernameAndPassword = function (username, password, callback) {
+        User.register(new User({ username: username }), password, function (err, user) {
             return callback(err, user);
         });
     };
