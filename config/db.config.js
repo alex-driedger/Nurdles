@@ -1,0 +1,41 @@
+var mongooseInstance;
+
+var _self = {
+    createDb: function () {
+        mongooseInstance = require("mongoose");
+
+        //Heroku sets the process.env.PORT variable. If it's undefined, it means we're running locally
+        //so connect to the local mongo instance.
+        var connectionString = 
+            process.env.MONGOLAB_URI || 
+                process.env.MONGOHQ_URL || 
+                    'mongodb://localhost/frontier';
+
+        var mongoOptions = { db: { safe: true }};
+        mongooseInstance.connect(connectionString,  mongoOptions);
+
+        return mongooseInstance;
+    },
+
+    configureMongooseModels: function(dir, db) {
+        var fs = require('fs');
+        var files = fs.readdirSync(dir);
+
+        files.forEach(function (file) {
+            require(dir + "/" + file)(db);
+        });
+    },
+
+    seed: function(db) {
+        var User = mongooseInstance.model("User");
+        User.register({username: "test", exactEarthAuthKey: "tokencoin"}, "test", function(err, user) { });
+        User.register({username: "appsfactory", exactEarthAuthKey: "tokencoin"}, "test", function(err, user) { });
+        User.register({username: "chris", exactEarthAuthKey: "tokencoin"}, "password", function(err, user) { });
+    },
+
+    getMongoose: function() {
+        return mongooseInstance || require("mongoose");
+    }
+};
+
+module.exports = _self;

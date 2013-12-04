@@ -20,6 +20,8 @@
     "oauth2orize": "*",
     "connect": "*",
     "uid2": "*",
-    "less": "*"
+    "less": "*",
+    "underscore": "~1.5.2",
+    "lactate": "~0.13.12"
   }
 }

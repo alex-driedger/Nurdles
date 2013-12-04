@@ -7,7 +7,7 @@ define([
     'authentication',
 ], function ($, _, Backbone, loginTemplate, jQueryCookie, Authentication) {
     
-    var EditView = Backbone.View.extend({
+    var LoginView = Backbone.View.extend({
 
         tagName   : 'div',
         className : '',
@@ -54,6 +54,6 @@ define([
         
     });
     
-    return EditView;
+    return LoginView;
     
 });
