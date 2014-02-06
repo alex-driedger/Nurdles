@@ -1,11 +1,13 @@
 var path = require("path");
 var user = require(path.join(__dirname, "..", "models", "user"));
-
+var mongoose = require("mongoose")
 var self = {
     create: function(req, res) {
-        user.createWithUsernameAndPassword(req.body.username, req.body.password, function(err, user) {
+        var User = mongoose.model('User')
+        User.createWithUsernameAndPassword(req.body.username, req.body.password, function(err, user) {
             res.send(err, user);
         });
+        console.log(req)
     },
 
     loginSuccess: function(req, res) {

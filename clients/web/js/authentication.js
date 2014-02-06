@@ -9,23 +9,25 @@ define([
         
         authorize: function (callback) {
             if (!window.user) {
-                return Backbone.history.navigate('login', { trigger: true });
+                console.log ("Unauthorized User");
+                return Backbone.history.navigate('rate', { trigger: true });
             }
             return callback();
         },
         
-        login: function (user) {
+        rate: function (user) {
+            console.log("RATE")
             window.user = user;
             $.cookie('user', user);
-            window.app.fetchCollections(function () {
-                Backbone.history.navigate('', { trigger: true });
-            });
+            Backbone.history.navigate('authenticated', { trigger: true });
         },
         
         logout: function () {
+            console.log( "logging out");
             window.user = null;
             $.removeCookie('user');
-            Backbone.history.navigate('login', { trigger: true });
+            // Nav to login if logout is called
+            Backbone.history.navigate('rate', { trigger: true });
         },
         
     };

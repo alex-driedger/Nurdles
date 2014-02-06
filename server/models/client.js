@@ -53,7 +53,7 @@ module.exports = function (mongoose) {
             });
         };
     };
-
+    
     var Client = mongoose.model("Client", ClientSchema);
 
     return Client;

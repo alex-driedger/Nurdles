@@ -86,12 +86,14 @@ var _self = {
 
         files.forEach(function (file) {
             var key = file.substring(0, file.indexOf(".js"));
-            router[key] = require(routeDir + "/" + file);
+            if (file != ".DS_Store")
+            {
+                router[key] = require(routeDir + "/" + file);
+            }
         });
 
 
 //Default API endpoints---------------------------/
-
         app.get('/', function(req, res) {
             lactate.serve('clients/web/index.html', req, res)
         })
@@ -105,7 +107,18 @@ var _self = {
         });
         app.post("/api/user/login", passport.authenticate("local"), router.user.loginSuccess);
         app.get("/api/user/logout", router.user.logout);
-
+        app.post("/beach", router.beach.createBeach);
+        app.post("/fn", router.beach.findByName);
+        app.post("/fa", router.beach.findByAddress);
+        app.post("/fg", router.beach.findByGeolocation);
+        app.post("/beaches", router.beach.displayBeaches);
+        app.post("/clear", router.beach.clearDatabase);
+        app.post("/r", router.report.createReport);
+        app.post("/c", router.report.clearReports);
+        app.post("/f", router.report.getReports);
+        app.post("/fid", router.report.findByBeachId);
+        app.post("/u", router.report.updateReport);
+        
 //End of default endpoints-------------------------/
     }
 };

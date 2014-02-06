@@ -22,7 +22,10 @@ var _self = {
         var files = fs.readdirSync(dir);
 
         files.forEach(function (file) {
-            require(dir + "/" + file)(db);
+            if (file != ".DS_Store")
+            {
+                require(dir + "/" + file)(db);
+            }
         });
     },
 
@@ -31,7 +34,7 @@ var _self = {
         User.register({username: "test", exactEarthAuthKey: "tokencoin"}, "test", function(err, user) { });
         User.register({username: "appsfactory", exactEarthAuthKey: "tokencoin"}, "test", function(err, user) { });
         User.register({username: "chris", exactEarthAuthKey: "tokencoin"}, "password", function(err, user) { });
-    },
+        },
 
     getMongoose: function() {
         return mongooseInstance || require("mongoose");

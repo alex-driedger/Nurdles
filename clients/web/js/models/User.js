@@ -6,7 +6,7 @@ define([
     
     var User = Backbone.Model.extend({
         idAttribute: "_id",
-        urlRoot: 'users',
+        urlRoot: '/api/user',
         defaults: function () {
             return {
                 username : '',
@@ -16,9 +16,11 @@ define([
     });
 
     var UserCollection = Backbone.Collection.extend({
-        url: 'users',
+        url: '/api/user',
+        
         // Define the model used when creating instances from objects and arrays.
         model: User,
+        
         // Define the sort order used when returning collections.
         comparator: 'username'
     });

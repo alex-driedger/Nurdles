@@ -3,10 +3,11 @@ define([
     'underscore',
     'backbone',
     'models/User',
-    'routers/LoginRouter',
-    'routers/UsersRouter',
+    'routers/HomepageRouter',    
+    'routers/RateRouter',
+    'routers/ReportRouter',
     'jquerycookie',
-], function ($, _, Backbone, User, LoginRouter, UsersRouter, jQueryCookie) {
+], function ($, _, Backbone, User, HomepageRouter, RateRouter, ReportRouter, jQueryCookie) {
     
     var app = {
         
@@ -17,48 +18,14 @@ define([
             // Create the collections.
             app.users = new User.Collection();
 
-            // Start fetching the collections.
-            app.fetchCollections(function () {
-                app.createRouters();
-            });
-            
-        },
-        
-        fetchCollections: function (callback) {
-            
-            // Hold onto the callback so it can be executed once the fetching count reaches 0.
-            app.callback = callback;
-            
-            // Reset the fetching count.
-            app.fetching = 0;
-            
-            // Fetch the collections.
-            app.fetching++;
-            app.users.fetch({
-                success : app.finishedFetchingCollections,
-                error   : app.finishedFetchingCollections,
-            });
-            
-        },
-        
-        finishedFetchingCollections: function (collection, response, options) {
-            
-            // Decrement the fetching count.
-            app.fetching--;
-            
-            // Execute the callback once the count reaches 0.
-            if (app.fetching == 0) {
-                app.callback();
-            }
-            
+            app.createRouters();
         },
         
         createRouters: function () {
-            
-            new LoginRouter();
-                        
-            new UsersRouter();
-            
+            // Core Homepage routers:
+            new HomepageRouter();
+            new RateRouter();         
+            new ReportRouter();
             Backbone.history.start();
 
         },
