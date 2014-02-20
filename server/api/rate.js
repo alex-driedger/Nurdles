@@ -1,7 +1,7 @@
 var path = require( 'path' ),
     mongoose = require( 'mongoose' ),
-    report = require( path.join( __dirname, '..', 'models', 'report' ) ),
-    Report = mongoose.model( 'Report' ),
+    rate = require( path.join( __dirname, '..', 'models', 'rate' ) ),
+    Rate = mongoose.model( 'Rate' ),
     _ = require( 'underscore' );
 
 var self = {
@@ -27,24 +27,21 @@ var self = {
         // would, for example, validate that a field is an email address.
         // In most cases, we would also reject the creation if invalid 
         // data is included, here we just ignore it.
-        if( _.has( req.body, 'items') && _.isArray( req.body.items ) ) {
-            properties.items = req.body.items;
+        if( _.has( req.body, 'beachID') && _.isString( req.body.beachID ) ) {
+            properties.beachID = req.body.beachID;
         }
-        if( _.has( req.body, 'description') && _.isString( req.body.description ) ) {
-            properties.description = req.body.description;
-        }
-        if( _.has( req.body, 'comments') && _.isString( req.body.comments ) ) {
-            properties.comments = req.body.comments;
+        if( _.has( req.body, 'rating') && _.isNumber( req.body.rating ) ) {
+            properties.rating = req.body.rating;
         }
         if( _.has( req.body, 'created') && _.isString( req.body.created ) ) {
             properties.created = req.body.created;
         }
 
-        report = new Report( properties );
+        rate = new Rate( properties );
 
-        report.save( function ( err, report, numberAffected ) {
+        rate.save( function ( err, rate, numberAffected ) {
             if( null === err ) {
-                res.send( report );
+                res.send( rate );
             } else {
                 res.send( 500, err );
             }
@@ -52,9 +49,9 @@ var self = {
     },
 
     retrieveAll: function( req, res ) {
-        Report.find( function ( err, reportCollection ) {
+        Rate.find( function ( err, rateCollection ) {
             if( null === err ) {
-                res.send( reportCollection );
+                res.send( rateCollection );
 
             } else {
                 res.send( 500, err );
@@ -63,9 +60,9 @@ var self = {
     },
 
     retrieveOne: function( req, res ) {
-        Report.findOne( { _id:req.params.id }, function( err, report ) {
+        Rate.findOne( { _id:req.params.id }, function( err, rate ) {
             if( null === err ) {
-                res.send( report );
+                res.send( rate );
             } else {
                 res.send( 500, err );
             }
@@ -74,23 +71,22 @@ var self = {
 
     update: function( req, res ) {
         // First find the existing document.
-        Report.findOne( { _id:req.params.id }, function( err, report ) {
+        Rate.findOne( { _id:req.params.id }, function( err, rate ) {
             if( null === err ) {
                 // Test that the document was found.
-                if( null === report ) {
+                if( null === rate ) {
                     // Document was not found, send 404 - Not Found
                     res.send( 404 );
                 } else {
                     // Update existing document with properties from the request,
                     // or with the existing value if the property is not in the request.
-                    report.items = req.body.items|| report.items;
-                    report.description = req.body.description || report.description;
-                    report.comments = req.body.comments || report.comments;
-                    report.created = req.body.created || report.created;
+                    rate.beachID = req.body.beachID|| rate.beachID;
+                    rate.rating = req.body.rating || rate.rating;
+                    rate.created = req.body.created || rate.created;
 
-                    report.save( function ( err, updatedReport ) {
+                    rate.save( function ( err, updatedRate ) {
                         if( null === err ) {
-                            res.send( updatedReport );
+                            res.send( updatedRate );
                         } else {
                             res.send( 500, err );
                         }                
@@ -104,7 +100,7 @@ var self = {
     },    
 
     delete: function( req, res ) {
-         Report.remove( { _id:req.params.id }, function( err) {
+         Rate.remove( { _id:req.params.id }, function( err) {
             if( null === err ) {
                 res.send( 200 );
             } else {

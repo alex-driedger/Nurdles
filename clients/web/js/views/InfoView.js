@@ -2,11 +2,11 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'text!templates/homepage.html',
+    'text!templates/infoTemplate.html',
     'jquerycookie'
-], function ($, _, Backbone, homepage, jQueryCookie) {
+], function ($, _, Backbone, infoTemplate, jQueryCookie) {
     
-    var HomepageView = Backbone.View.extend({
+    var InfoView = Backbone.View.extend({
 
         tagName   : 'div',
         className : '',
@@ -17,12 +17,12 @@ define([
         },
         
         render: function () {
-            this.$el.html(homepage);
+            this.$el.html(infoTemplate);
             return this;
         },
         
     });
     
-    return HomepageView;
+    return InfoView;
     
 });

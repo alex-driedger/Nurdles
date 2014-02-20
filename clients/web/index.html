@@ -6,12 +6,24 @@
     <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="libs/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    
     <!-- Load the app using main.js -->
     <script data-main="js/main" src="libs/require/require.js"></script>
 </head>
 
 <body>
         <div id="content"></div>
+
+
+		<script src="libs/jquery/jquery-2.0.3.js"></script>
+        <script src="libs/jquery-color/jquery-color.js"></script>
+        <script src="libs/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="libs/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+        <script>
+        $(window).resize(function() {
+            console.log("RESIZED")
+            });
+        </script>
 </body>
 
 </html>

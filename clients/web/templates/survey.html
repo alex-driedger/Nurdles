@@ -1,0 +1,142 @@
+<script>
+// FUNCTION TO CHECK IF THE INPUT IS A NUMBER
+// Receives an onkeypress event
+function validate(event) {
+// This is this keycode of the key that was pressed
+  var key = event.keyCode;
+  // 48-57 is the keycode for 0-9 (for this keyboard atleast)
+  if (!(key >= 48 && key <= 57))
+  {
+    // If the key is not between 48-57 prevent the default action (Default action is inputting the character)
+    event.preventDefault()
+  }
+}
+</script>
+<a type="button" class="btn back" style="border-width: 5px; margin-bottom: -5px; border-style: solid;" href=""><span class="glyphicon glyphicon-chevron-left"></span><span>Cleanup Helper</span></a>
+<a type="button" class="btn btn-surveyButtons top_button" id="a">Site Location (Required)</a>
+<div class="block" id="block_a" style="display: none">
+	<div class="form-group">
+        <input type="checkbox" id="ucl" >  Use my current location</input>
+        <input type="text" id="name" class="form-control FT" placeholder="Beach Name"/>
+        <input type="text" id="city" class="form-control FT" placeholder="City"/>
+        <input type="text" id="state" class="form-control FT" placeholder="State"/>
+        <input type="text" id="country" class="form-control FT" placeholder="Country"/>
+        <input type="text" id="landmark" class="form-control FT" placeholder="Nearest Landmark"/>
+    </div>
+ </div>
+<a type="button" class="btn btn-surveyButtons mid_button" id="b">Site Description (Required)</a>
+<div class="block" id="block_b" style="display: none">
+	<div class="form-group">
+        <input type="text" id="environment" class="form-control FT" placeholder="Environment Type (Pick one)"/>
+        <input type="text" id="beachtype" class="form-control FT" placeholder="Sand Beach/ Rock Beach"/>
+        <input type="text" id="info1" class="form-control FT" placeholder="Other info 1"/>
+        <input type="text" id="info2" class="form-control FT" placeholder="Other info 2"/>
+    </div>
+</div>
+
+<a type="button" class="btn btn-surveyButtons mid_button" id="c">Cleanup Summary (Optional)</a>
+<div class="block" id="block_c" style="display: none">
+    <form role="form">
+        <fieldset>
+            <label  style="font-size: 20px; margin-left: 4vw; display: inline;">Date</label>
+            <div class="form-group"style="display: inline">
+                <div class="input-group date form_datetime" style="margin-left: 5vw; height: 30px; display: inline;"  data-date-format="dd/mm/yyyy">
+                    <input id="date" class="form-control" style=" display: inline; width: 100px; height:30px"type="text"/>
+                    <span class="input-group-addon"style="display: inline;"><span class="glyphicon glyphicon-th"></span></span>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+        <p class="form-control surveyText">Total Weight of Trash Collected</p>
+        <div style="float:right">
+        <input onkeypress='validate(event)' id="weightval" class="form-control surveyText2" value="0"/>
+        <div class="input-group-btn">
+        <button type="button" id="weightbtn" class="form-control unround-left" data-toggle="dropdown">kg</button>
+        <ul class="dropdown-menu pull-right">
+          <li class="weight"><a>lb</a></li>
+        </ul>
+      </div><!-- /btn-group -->
+  </div>
+        <p class="form-control surveyText">Estimated Area Cleaned</p>
+        <div style="float:right">
+                <input onkeypress='validate(event)' id="areaval" class="form-control surveyText2" value="0"/>
+              <div class="input-group-btn">
+        <button type="button" id="areabtn" class="form-control unround-left" data-toggle="dropdown">m<sup>2</sup></button>
+        <ul class="dropdown-menu pull-right">
+          <li class="area"><a>yd<sup>2</sup></a></li>
+        </ul>
+    </div>
+      </div><!-- /btn-group -->
+        <p class="form-control surveyText">Number of Volunteers</p>
+            <input onkeypress='validate(event)' id="volunteersval" class="form-control surveyText3" value="0"/>
+        <p class="form-control surveyText">Total Number of Trash Bags Filled</p>
+            <input onkeypress='validate(event)' id="bagsval" class="form-control surveyText3" value="0"/>
+        <textarea id="notes" class="form-control FT" placeholder="Other Notes"/>
+</div>
+</div>
+<a type="button" class="btn btn-surveyButtons mid_button" id="d">Cleanup Tracker</a>
+<div class="block" style="padding: 0; display: none;" id="block_d">
+        <div style="margin-left: -2px; margin-right: -2px;">
+            <p class="dropdown-header">MOST LIKELY TO FIND ITEMS</p>
+            <%
+                _.each( items, function( item ) { %>
+                <div style="border-width: 2px; border-style: solid; margin-bottom:-2px;">
+                    <a type="button" style="float:left; margin-left: 10px; line-height: 44px;font-size: 44px"class="btn btn-ticker">X</a>
+                    <p id="item_name<%= item.id %>"class="items"><%= item.name %></p>
+                    <a id="<%= item.id %>" type="button" class="btn btn-ticker pos"><span style="line-height:33px" class="glyphicon glyphicon-plus"></span></a>
+                    <input onkeypress='validate(event)' style="margin-top: 20px; display:inline; width: 70px; height: 44px; float: right; border-style: none; text-align: center; font-size: 2em;" id="text<%= item.id %>" type="text" value="0"/>
+                    <a id="<%= item.id %>" type="button" class="btn btn-ticker neg"><span style="line-height:33px;" class="glyphicon glyphicon-minus"></span></a>
+                </div>
+                <% });
+            %>            
+            <p class="dropdown-header">PACKAGING MATERIALS</p>
+            <%
+                _.each( items2, function( item ) { %>
+                  <div style="border-width: 2px; border-style: solid; margin-bottom:-2px;">
+                    <a type="button" style="float:left; margin-left: 10px; line-height: 44px;font-size: 44px"class="btn btn-ticker">X</a>
+                    <p id="item_name<%= item.id %>"class="items"><%= item.name %></p>
+                    <a id="<%= item.id %>" type="button" class="btn btn-ticker pos"><span style="line-height:33px" class="glyphicon glyphicon-plus"></span></a>
+                    <input onkeypress='validate(event)' style="margin-top: 20px; display:inline; width: 70px; height: 44px; float: right; border-style: none; text-align: center; font-size: 2em;" id="text<%= item.id %>" type="text" value="0"/>
+                    <a id="<%= item.id %>" type="button" class="btn btn-ticker neg"><span style="line-height:33px;" class="glyphicon glyphicon-minus"></span></a>
+                </div>
+                <% });
+            %>   
+        </div>
+</div>
+<a type="button" class="btn btn-surveyButtons mid_button" id="e">Items of Local Concern</a>
+<div class="block" id="block_e" style="display: none">
+    <textarea rows="3" maxlength="500" type="text" id="localConcern" class="form-control FT2" />
+</div>
+
+<a type="button" class="btn btn-surveyButtons mid_button" id="f">Peculiar Item(s)</a>
+<div class="block" id="block_f" style="display: none">
+    <textarea rows="3" maxlength="500" type="text" id="peculiarItems" class="form-control FT2" />
+</div>
+
+<a type="button" class="btn btn-surveyButtons mid_button" id="g">Dead/Injured Animal</a>
+<div class="block" id="block_g" style="display: none">
+    <textarea rows="3" maxlength="500" type="text" id="injuredAnimals" class="form-control FT2" />
+</div>
+<a type="button" class="btn btn-surveyButtons mid_button" id="h">Hazardous Debris</a>
+<div class="block" id="block_h" style="display: none;">
+    <textarea rows="3" maxlength="500" type="text" id="hazardousDebris" class="form-control FT2" />
+</div>
+<div style="margin-bottom: 3vh; border-top-style:solid; border-top-width: 5px; border-color: black;"/>
+<button class="btn btn-submit">SUBMIT</button>
+
+<% 
+    surveys.each( function(rate) { %>
+        <li id="<%= rate.get("_id") %>"><%= JSON.stringify(rate) %></li>
+    <% });
+%>
+
+

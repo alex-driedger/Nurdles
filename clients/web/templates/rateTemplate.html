@@ -1,0 +1,18 @@
+<div class="border">
+<a type="button" class="btn back" id="RateCleanliness" href=""><span class="glyphicon glyphicon-chevron-left"></span><span>  Rate Cleanliness</span></a>
+    <div class="form-group">
+            <input type="text" id="beachname" name="beachname" class="form-control" placeholder="Beachname"/>
+            <input type="checkbox" id="ucl" >  Use my current location</input>
+    </div>
+    <img id="IMG_RSRV" src="./images/BEACH_CLEAN.jpg">
+    <input type="range" id="slider" name="cleanliness" class="form-control" value="0" min="0" max="2" />
+    <div id="rating">Clean</div>
+    <div class="text-center">
+        <button class="btn-submit">SUBMIT</button>
+    </div>
+</div> 
+<% 
+    rates.each( function(rate) { %>
+        <li id="<%= rate.get("_id") %>"><%= JSON.stringify(rate) %></li>
+    <% });
+%>

@@ -107,20 +107,75 @@ var _self = {
         });
         app.post("/api/user/login", passport.authenticate("local"), router.user.loginSuccess);
         app.get("/api/user/logout", router.user.logout);
-        app.post("/beach", router.beach.createBeach);
-        app.post("/fn", router.beach.findByName);
+        app.post("/api/rate", router.rate.create);
+        app.get("/api/rate", router.rate.retrieveAll);
+        app.put( "/api/rate/:id", router.rate.update );
+        app.delete( "/api/rate/:id", router.rate.delete );
+
+        app.post("/api/survey", router.survey.create);
+        app.get("/api/survey", router.survey.retrieveAll);
+        app.put( "/api/survey/:id", router.survey.update );
+        app.delete( "/api/survey/:id", router.survey.delete );
+
+        app.post("/api/report", router.report.create);
+        app.get("/api/report", router.report.retrieveAll);
+        app.put( "/api/report/:id", router.report.update );
+        app.delete( "/api/report/:id", router.report.delete );
+        /*app.post("/fn", router.beach.findByName);
         app.post("/fa", router.beach.findByAddress);
         app.post("/fg", router.beach.findByGeolocation);
-        app.post("/beaches", router.beach.displayBeaches);
         app.post("/clear", router.beach.clearDatabase);
         app.post("/r", router.report.createReport);
         app.post("/c", router.report.clearReports);
         app.post("/f", router.report.getReports);
         app.post("/fid", router.report.findByBeachId);
-        app.post("/u", router.report.updateReport);
+        app.post("/u", router.report.updateReport);*/
         
 //End of default endpoints-------------------------/
     }
+    //*************************************************************************************************************************
+    // REPORT RAW DATA
+    //*************************************************************************************************************************
+  /*  {
+            "beachID": "45",
+            "siteLocation": "The site is located here",
+            "siteDescription": "The site is nice",
+            "cleanUpSummary": "We cleaned up all the cigarette butts from this beach",
+            "cleanUpItems": "cigarettes",
+            "itemsOfLocalConcern": "Toxic waste",
+            "peculiarItems": "More Toxic waste",
+            "animalInjuries": "Dead Dog",
+            "hazardousDebris": "Toxic waste again",
+            "cigaretteButts": 423423,
+            "foodWrappers": 3,
+            "plasticTakeOut": 0,
+            "foamTakeOut": 0,
+            "lids": 0,
+            "plasticCupsAndPlates": 0,
+            "foamCupsAndPlates": 0,
+            "paperCupsAndPlates": 0,
+            "cutlery": 0,
+            "motorOilBottles": 0,
+            "plasticBottles": 0,
+            "plasticWrap": 0,
+            "plastingStraps": 0,
+            "rubberStraps": 0,
+            "tobaccoWrap": 3
+}*/
+    //*************************************************************************************************************************
+    // BEACH RAW DATA
+    //*************************************************************************************************************************
+/*{
+        "beachname": "2asd543DD",
+        "lat": 23,
+        "lon": 43,
+        "city": "Kitchener",
+        "state": "Ontario",
+        "country": "Canada",
+        "updated": "2014-01-31T14:19:36.000Z"
+}*/
+
+
 };
 
 module.exports = _self;

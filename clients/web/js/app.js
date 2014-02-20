@@ -2,22 +2,19 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'models/User',
     'routers/HomepageRouter',    
     'routers/RateRouter',
     'routers/ReportRouter',
-    'jquerycookie',
-], function ($, _, Backbone, User, HomepageRouter, RateRouter, ReportRouter, jQueryCookie) {
+    'routers/MultipleReportRouter',
+    'routers/SurveyRouter',
+    'routers/InfoRouter',
+    'jquerycookie'
+], function ($, _, Backbone, HomepageRouter, RateRouter, ReportRouter, MultipleReportRouter, SurveyRouter, InfoRouter, jQueryCookie) {
     
     var app = {
         
         start: function () {
             
-            window.user = $.cookie('user');
-            
-            // Create the collections.
-            app.users = new User.Collection();
-
             app.createRouters();
         },
         
@@ -26,6 +23,9 @@ define([
             new HomepageRouter();
             new RateRouter();         
             new ReportRouter();
+            new MultipleReportRouter();
+            new SurveyRouter();
+            new InfoRouter();
             Backbone.history.start();
 
         },

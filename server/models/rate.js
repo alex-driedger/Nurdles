@@ -11,16 +11,15 @@ module.exports = function (mongoose) {
     
     var ObjectId = mongoose.Schema.ObjectId;
 
-    var ReportSchema = new mongoose.Schema({
-        items: Array,
-        description: String,
-        comments: String,
+    var RateSchema = new mongoose.Schema({
+        beachID: String,
         rating: Number,
-        created: Date
+        created: String
+
         // , mixed : Mixed // Not implemented because mixed types should be used sparingly, if at all.
     });
 
-    var Report = mongoose.model( 'Report', ReportSchema);
+    var Rate = mongoose.model( 'Rate', RateSchema);
 
-    return Report;
+    return Rate;
 };

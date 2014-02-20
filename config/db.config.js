@@ -9,7 +9,7 @@ var _self = {
         var connectionString = 
             process.env.MONGOLAB_URI || 
                 process.env.MONGOHQ_URL || 
-                    'mongodb://localhost/frontier';
+                    'mongodb://localhost/pattern';
 
         var mongoOptions = { db: { safe: true }};
         mongooseInstance.connect(connectionString,  mongoOptions);
@@ -31,10 +31,9 @@ var _self = {
 
     seed: function(db) {
         var User = mongooseInstance.model("User");
-        User.register({username: "test", exactEarthAuthKey: "tokencoin"}, "test", function(err, user) { });
-        User.register({username: "appsfactory", exactEarthAuthKey: "tokencoin"}, "test", function(err, user) { });
-        User.register({username: "chris", exactEarthAuthKey: "tokencoin"}, "password", function(err, user) { });
-        },
+        User.register({username: "test" }, "test", function(err, user) { });
+        User.register({username: "appsfactory" }, "appsfactory", function(err, user) { });
+    },
 
     getMongoose: function() {
         return mongooseInstance || require("mongoose");

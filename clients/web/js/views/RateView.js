@@ -1,85 +1,74 @@
 define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'text!templates/ratecleanliness.html',
-    'jquerycookie',
-    'authentication',
-], function ($, _, Backbone, ratecleanliness, jQueryCookie, Authentication) {
+  'jquery',
+  'underscore',
+  'backbone',
+  'text!templates/rateTemplate.html',
+  'models/Rate',
+  'jquerycookie',
+], function ($, _, Backbone, rateTemplate, RateModel, jQueryCookie) {
     
-    var RateView = Backbone.View.extend({
+  var RateView = Backbone.View.extend({
 
-        tagName   : 'div',
-        className : '',
-        
-        // redirect is used on successful create or update.
-        initialize: function (options) {
-            this.render();
-        },
-        
-        // Define the events used when binding.
-        events: {
-            // IF THE LOGIN BUTTON IS PRESSED, FIRE LOGIN FUNCTION
-            'click .login-button' : 'rate',
-            'change .form-control' : 'updateRating'
-        },
-        updateRating: function(event)
-        {
-            var c = $('#slider').val()
-            if (c == 1)
-            {
-                $('#rating').html("Clean")
-            }
-            if (c == 2)
-            {
-                $('#rating').html("Dirty")
-            }
-            if (c == 3)
-            {
-                $('#rating').html("Really Dirty")
-            }
-            if (c == 4)
-            {
-                $('#rating').html("Garbage Dump")
-            }
-        },
-          // This is where you change what happens when the button is pressed 
-        rate: function (event) {
-            event.preventDefault();
-            // THIS IS WHERE U CAN SEND THE LOCATION BACK TO THE SERVER :O
-            navigator.geolocation.getCurrentPosition(function(position)
-            {
-                console.log(position.coords.longitude)
-            })
-            /*var beachname = $('input[name=beachname]').val();
-            var cleanliness = $('input[name=cleanliness]').val();
-            console.log(beachname)
-            console.log(cleanliness)
-            $.ajax({
-                type: 'POST',
-                url: '/api/user/rate',
-                data: {
-                    username: beachname,
-                    passwords: cleanliness
-                },
-                success: function (data, status, xhr) {
-                    Authentication.rate( data.userId );
-                },
-                error: function (xhr, status, error) {
-                    console.log(error)
-                    // On error, change the input whatever to ''
-                    //$('input[name=password]').val('');
-                },
-            });*/
-        },
-        
-        render: function () {
-            this.$el.html(ratecleanliness);
-            return this;
-        },
-        
-    });
+    tagName   : 'div',
+    className : 'rate',
     
-    return RateView;
+    // redirect is used on successful create or update.
+    events: {
+            // IF THE LOGIN BUTTON IS PRESSED, FIRE LOGIN FUNCTION
+            'change #slider' : 'slider',
+            'click .btn-submit' : 'submit'
+        },
+
+    submit: function()
+    {
+      rateModel = new RateModel.Model();
+      var d = new Date();
+      var input = {
+          beachID:$("#beachname").val(),
+          rating: parseInt($("#slider").val()),
+          created: d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate()
+            }
+      rateModel.save(input,{
+                success: function (res) {
+                  //Backbone.history.navigate('', { trigger: true });
+                    console.log(res.toJSON());
+                },
+                error: function (err) {
+                    console.log("err")
+                }
+            });
+    },
+    slider: function()
+    {
+      val = $("#slider").val()
+      if (val == 0)
+      {
+        document.getElementById("IMG_RSRV").src="./images/BEACH_CLEAN.jpg"
+        $("#rating").html("Clean")
+      }
+      else if (val == 1)
+      {
+        document.getElementById("IMG_RSRV").src="./images/BEACH_DIRTY.jpg"
+        $("#rating").html("Dirty")
+      }
+      else
+      {
+        document.getElementById("IMG_RSRV").src="./images/BEACH_GG.jpg"
+        $("#rating").html("Really Dirty")
+      }
+    },
+    initialize: function (options) {
+        this.collection = options.collection;
+        this.render();
+    },
+    
+    render: function () {
+        this.$el.html( _.template( rateTemplate, { rates:this.collection } ) );
+        return this;
+    },
+      
+  });
+  
+  return RateView;
     
 });

@@ -3,21 +3,21 @@ define([
         'underscore',
         'backbone',
         'models/Report',
-        'views/ReportView',
-], function ( $, _, Backbone, ReportModel, ReportView ) {
+        'views/MultipleReportView',
+], function ( $, _, Backbone, ReportModel, MultipleReportView ) {
 
-    var ReportRouter = Backbone.Router.extend({
+    var MultipleReportRouter = Backbone.Router.extend({
         
         routes: {
-            'report'  : 'index'
+            'multipleReport'  : 'index'
         },
         
         index: function () {
             reports = new ReportModel.Collection();
             reports.fetch( {
                 success: function( collection, response, options) {              
-                    var reportView = new ReportView({ collection: collection });
-                    $('#content').html(reportView.el);                
+                    var multipleReportView = new MultipleReportView({ collection: collection });
+                    $('#content').html(multipleReportView.el);                
                 },
                 failure: function( collection, response, options) {
                     $('#content').html("An error has occured.");                    
@@ -27,6 +27,6 @@ define([
                 
     });
     
-    return ReportRouter;
+    return MultipleReportRouter;
     
 });

@@ -12,13 +12,12 @@ require.config({
         backbone:       '../libs/backbone/backbone',
         datetimepicker: '../libs/bootstrap-datetimepicker/js/bootstrap-datetimepicker',
         moment:         '../libs/moment/moment.min',
-        
-        authentication: 'authentication',
         helpers:        'helpers',
         models:         'models',
         routers:        'routers',
         templates:      '../templates',
         views:          'views',
+        api:            '../server/api'
     },
 
     // Configure loader for modules that do not support AMD.

@@ -1,0 +1,19 @@
+<div class="border">
+<a type="button" class="btn back" id="ReportDebris" href=""><span class="glyphicon glyphicon-chevron-left"></span><span>  Report Debris</span></a>
+<h4>Photo</h4>
+<div id="IMG_RSRV"></div>
+<h4>Item</h4>
+<input type="text" id="item" class="form-control FT2" />
+<input type="checkbox" id="cl" >  The debris is at my current location</input>
+<h4>Describe Location (optional)</h4>
+<input type="text" id="description" class="form-control FT2" />
+<h4>Additional Comments (optional)</h4>
+<textarea rows="3" maxlength="500" id="comments" class="form-control FT2" />
+<button type="button" style="margin-left: 20px;" class="btn btn-submit">Report</button>
+<a class="pull-right" style="margin-right: 20px; margin-top: 32px;" href="#multipleReport">Report Multiple Debris</a>
+</div>
+<% 
+    reports.each( function(rate) { %>
+        <li id="<%= rate.get("_id") %>"><%= JSON.stringify(rate) %></li>
+    <% });
+%>

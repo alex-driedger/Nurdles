@@ -2,22 +2,22 @@ define([
         'jquery',
         'underscore',
         'backbone',
-        'models/Report',
-        'views/ReportView',
-], function ( $, _, Backbone, ReportModel, ReportView ) {
+        'models/Survey',
+        'views/SurveyView',
+], function ( $, _, Backbone, SurveyModel, SurveyView ) {
 
-    var ReportRouter = Backbone.Router.extend({
+    var SurveyRouter = Backbone.Router.extend({
         
         routes: {
-            'report'  : 'index'
+            'survey'  : 'index'
         },
         
         index: function () {
-            reports = new ReportModel.Collection();
-            reports.fetch( {
+            surveys = new SurveyModel.Collection();
+            surveys.fetch( {
                 success: function( collection, response, options) {              
-                    var reportView = new ReportView({ collection: collection });
-                    $('#content').html(reportView.el);                
+                    var surveyView = new SurveyView({ collection: collection });
+                    $('#content').html(surveyView.el);                
                 },
                 failure: function( collection, response, options) {
                     $('#content').html("An error has occured.");                    
@@ -27,6 +27,6 @@ define([
                 
     });
     
-    return ReportRouter;
+    return SurveyRouter;
     
 });

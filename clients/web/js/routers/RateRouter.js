@@ -2,27 +2,29 @@ define([
         'jquery',
         'underscore',
         'backbone',
+        'models/Rate',
         'views/RateView',
-        'authentication',
-], function ($, _, Backbone, RateView, Authentication) {
-    
+], function ( $, _, Backbone, RateModel, RateView ) {
+
     var RateRouter = Backbone.Router.extend({
         
         routes: {
-            // if the route is rate fire Rate
-            'rate'  : 'rate',
-            'logout' : 'logout'
+            'rate'  : 'index'
         },
         
-        rate: function () {
-            var rateView = new RateView();
-            $('#content').html(rateView.el);
-        },
-        
-        logout: function () {
-            // This is what happens when you press the Rate button 
-            Authentication.logout();
-        },
+        index: function () {
+            //GET data
+            rates = new RateModel.Collection();
+            rates.fetch( {
+                success: function( collection, response, options) {              
+                    var rateView = new RateView({ collection: collection });
+                    $('#content').html(rateView.el);                
+                },
+                failure: function( collection, response, options) {
+                    $('#content').html("An error has occured.");                    
+                }
+            });
+       },
                 
     });
     

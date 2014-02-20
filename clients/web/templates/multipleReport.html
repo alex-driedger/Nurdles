@@ -1,0 +1,59 @@
+<div id="header"style="position: fixed; width: 100%; border-style: solid; background-color: white; border-width: 5px; border-color:black; z-index: 1000; top: 0px;">
+    <a type="button" class="btn back" id="RateCleanliness" href="#report"><span class="glyphicon glyphicon-chevron-left"></span><span>  Report Multiple Debris</span></a>
+<div class="form-group">
+    <input type="text" id="beachname" name="beachname" class="form-control" placeholder="Beachname"></input>
+    <input type="checkbox" id="ucl"> Use my current location</input>
+</div>
+    <textarea style="visibility:hidden" rows="2" maxlength="500" type="text" id="comments" class="form-control FT2"></textarea>
+    <a id="showComments" style="margin-left: 20px;  display: block;">+ Add a Comment</a>
+    <button style="margin-right: 20px; float: right; margin-bottom: 10px;" class="btn btn-submit">Report</button>
+    <input style="margin-left: 20px; margin-top: 32px;" type="checkbox" id="itemsCleaned"><span>  Items have been cleaned up<span></input>
+</div>
+<script>
+// FUNCTION TO CHECK IF THE INPUT IS A NUMBER
+// Receives an onkeypress event
+function validate(event) {
+// This is this keycode of the key that was pressed
+  var key = event.keyCode;
+  // 48-57 is the keycode for 0-9 (for this keyboard atleast)
+  if (!(key >= 48 && key <= 57))
+  {
+    // If the key is not between 48-57 prevent the default action (Default action is inputting the character)
+    event.preventDefault()
+  }
+}
+    document.getElementById("scroll").style.marginTop = $("#header").height()+10;
+</script>
+<div id="scroll">
+        <ul style="padding: 0 0 0 0; margin-bottom: 0px;">
+            <li style="border-width: 5px; border-left-style: solid; border-right-style: solid; margin-bottom:-5px;" role="presentation" class="dropdown-header">MOST LIKELY TO FIND ITEMS</li>
+            <%
+                _.each( items, function( item ) { %>
+                <div style="border-width: 5px; border-style: solid; margin-bottom:-5px; border-color:black;">
+                    <a type="button" style="float:left; margin-left: 10px; line-height: 44px;font-size: 44px"class="btn btn-ticker">X</a>
+                    <p id="item_name<%= item.id %>"class="items" role="presentation"><%= item.name %></p>
+                    <a id="<%= item.id %>" type="button" class="btn btn-ticker pos"><span style="line-height:33px" class="glyphicon glyphicon-plus"></span></a>
+                    <input onkeypress='validate(event)' maxlength="4" style="margin-top: 20px; display:inline; width: 70px; height: 44px; float: right; border-style: none; text-align: center; font-size: 2em;" id="text<%= item.id %>" type="text" value="0"/>
+                    <a id="<%= item.id %>" type="button" class="btn btn-ticker neg"><span style="line-height:33px;" class="glyphicon glyphicon-minus"></span></a>
+                </div>
+                <% });
+            %>            
+            <li style="border-width: 5px; border-left-style: solid; border-right-style: solid; margin-bottom:-5px;" role="presentation" class="dropdown-header">PACKAGING MATERIALS</li>
+            <%
+                _.each( items2, function( item ) { %>
+                  <div style="border-width: 5px; border-style: solid; margin-bottom:-5px; border-color:black;">
+                    <a type="button" style="float:left; margin-left: 10px; line-height: 44px;font-size: 44px"class="btn btn-ticker">X</a>
+                    <p id="item_name<%= item.id %>" class="items" role="presentation"><%= item.name %></p>
+                    <a id="<%= item.id %>" type="button" class="btn btn-ticker pos"><span style="line-height:33px" class="glyphicon glyphicon-plus"></span></a>
+                    <input onkeypress='validate(event)' maxlength="4" style="margin-top: 20px; display:inline; width: 70px; height: 44px; float: right; border-style: none; text-align: center; font-size: 2em;" id="text<%= item.id %>" type="text" value="0"/>
+                    <a id="<%= item.id %>" type="button" class="btn btn-ticker neg"><span style="line-height:33px;" class="glyphicon glyphicon-minus"></span></a>
+                </div>
+                <% });
+            %>   
+        </ul>
+</div>
+<% 
+    reports.each( function(rate) { %>
+        <li id="<%= rate.get("_id") %>"><%= JSON.stringify(rate) %></li>
+    <% });
+%>
