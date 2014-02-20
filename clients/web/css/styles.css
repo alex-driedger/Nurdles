@@ -164,7 +164,7 @@ Survey Beach
 ************************************************************
 */
 .btn-surveyButtons {
-  height:10vh;
+  height:10%;
   border-radius: 0%;
   font-size: 4vh;
   width: 100%;
@@ -194,7 +194,6 @@ Survey Beach
   display:inline-block; 
   width: 60%;
   height: 44px;
-  line-height: 44px;
   font-size: 1.25em;
   min-width: 300px;
   margin-bottom: 0px;
@@ -262,7 +261,7 @@ Survey Beach
 .form-control {
   height: 44px;
   font-size: 1.25em;
-  padding: 0;
+  padding-left: 10px;
 }
 .unround-left {
   border-top-left-radius: 0;
