@@ -134,8 +134,8 @@ function validate(event) {
 <button class="btn btn-submit">SUBMIT</button>
 
 <% 
-    surveys.each( function(rate) { %>
-        <li id="<%= rate.get("_id") %>"><%= JSON.stringify(rate) %></li>
+    surveys.each( function(survey) { %>
+        <li id="<%= survey.get("_id") %>"><%= JSON.stringify(survey) %></li>
     <% });
 %>
 

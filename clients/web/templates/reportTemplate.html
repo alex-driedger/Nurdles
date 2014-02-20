@@ -13,7 +13,7 @@
 <a class="pull-right" style="margin-right: 20px; margin-top: 32px;" href="#multipleReport">Report Multiple Debris</a>
 </div>
 <% 
-    reports.each( function(rate) { %>
-        <li id="<%= rate.get("_id") %>"><%= JSON.stringify(rate) %></li>
+    reports.each( function(report) { %>
+        <li id="<%= report.get("_id") %>"><%= JSON.stringify(report) %></li>
     <% });
 %>

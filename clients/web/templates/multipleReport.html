@@ -53,7 +53,7 @@ function validate(event) {
         </ul>
 </div>
 <% 
-    reports.each( function(rate) { %>
-        <li id="<%= rate.get("_id") %>"><%= JSON.stringify(rate) %></li>
+    reports.each( function(report) { %>
+        <li id="<%= report.get("_id") %>"><%= JSON.stringify(report) %></li>
     <% });
 %>
