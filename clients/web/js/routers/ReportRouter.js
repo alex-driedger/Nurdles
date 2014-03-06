@@ -4,12 +4,14 @@ define([
         'backbone',
         'models/Report',
         'views/ReportView',
-], function ( $, _, Backbone, ReportModel, ReportView ) {
+        'views/IDReportView'
+], function ( $, _, Backbone, ReportModel, ReportView, IDReportView ) {
 
     var ReportRouter = Backbone.Router.extend({
         
         routes: {
-            'report'  : 'index'
+            'report'  : 'index',
+            'report/:id' : 'retrieveOne'
         },
         
         index: function () {
@@ -24,6 +26,20 @@ define([
                 }
             });
         },
+
+        retrieveOne: function(id) {
+            reports = new ReportModel.Collection( [], { reportID: id } );
+            reports.fetch( {
+                success: function( collection, response, options) {              
+                    var IDreportView = new IDReportView({ collection: collection, id: id });
+                    $('#content').html(IDreportView.el);             
+                },
+                failure: function( collection, response, options) {
+                    $('#content').html("An error has occured.");                    
+                }
+            });
+
+        }
                 
     });
     

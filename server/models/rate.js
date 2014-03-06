@@ -14,7 +14,7 @@ module.exports = function (mongoose) {
     var RateSchema = new mongoose.Schema({
         beachID: String,
         rating: Number,
-        created: String
+        created: Date
 
         // , mixed : Mixed // Not implemented because mixed types should be used sparingly, if at all.
     });

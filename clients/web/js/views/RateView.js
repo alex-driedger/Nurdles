@@ -21,12 +21,16 @@ define([
 
     submit: function()
     {
+      if ($("#beachname").val() == "")
+      {
+        alert("You must enter a location")
+      } else
+      {
       rateModel = new RateModel.Model();
-      var d = new Date();
       var input = {
           beachID:$("#beachname").val(),
           rating: parseInt($("#slider").val()),
-          created: d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate()
+          created: new Date()
             }
       rateModel.save(input,{
                 success: function (res) {
@@ -37,6 +41,7 @@ define([
                     console.log("err")
                 }
             });
+      }
     },
     slider: function()
     {
@@ -58,12 +63,11 @@ define([
       }
     },
     initialize: function (options) {
-        this.collection = options.collection;
         this.render();
     },
     
     render: function () {
-        this.$el.html( _.template( rateTemplate, { rates:this.collection } ) );
+        this.$el.html( _.template( rateTemplate) );
         return this;
     },
       

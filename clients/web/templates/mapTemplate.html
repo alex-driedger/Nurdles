@@ -1,0 +1,19 @@
+<div id="header"style="position: fixed; width: 100%; border-style: solid; background-color: white; border-width: 5px; border-color:black; z-index: 1000; top: 0px;">
+    <a type="button" class="btn back" id="Name" href="#"><span class="glyphicon glyphicon-chevron-left"></span><span> Beaches </span></a>
+    <a type="button" class="btn btn-view">List</a><a type="button" class="btn btn-view disabled" style="background-color: gray;">Map</a>
+</div>
+<div id='map'></div>
+<script>
+var map = L.mapbox.map('map', 'examples.map-9ijuk24y', {
+	 		minZoom: 2,
+	       maxBounds: [[-180,-180],[180,180]]
+}).setView([0,0],2).addControl(L.mapbox.geocoderControl('examples.map-9ijuk24y'));
+// Features is some example data,  do it with beach lat and long instead
+
+
+map.tileLayer.options.noWrap = true
+
+
+
+
+</script>

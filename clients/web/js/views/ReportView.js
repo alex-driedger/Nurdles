@@ -20,34 +20,38 @@ define([
 
     submit: function()
     {
-      console.log($("#item").val());
-      console.log($("#description").val());
-      console.log($("#comments").val());
-      reportModel = new ReportModel.Model();
-      var d = new Date();
-      var input = {
-          items:[$("#item").val()],
-          description:$("#description").val(),
-          comments: $("#comments").val(),
-          created: d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate()
-            }
-      reportModel.save(input,{
-                success: function (res) {
-                  //Backbone.history.navigate('', { trigger: true });
-                    console.log(res.toJSON());
-                },
-                error: function (err) {
-                    console.log("err")
-                }
-            });
+      if ($("#item").val() == "")
+      {
+        alert("You must enter an item name")
+      } else if ($("#beachname").val() == "")
+      {
+        alert("You must enter a location")
+      } else 
+      {
+        reportModel = new ReportModel.Model();
+        var input = {
+            items:[{name: $("#item").val(), value: 1}],
+            beachID:$("#beachname").val(),
+            comments: $("#comments").val(),
+            created: new Date()
+              }
+        reportModel.save(input,{
+                  success: function (res) {
+                    //Backbone.history.navigate('', { trigger: true });
+                      console.log(res.toJSON());
+                  },
+                  error: function (err) {
+                      console.log("err")
+                  }
+              });
+      }
     },
     initialize: function (options) {
-        this.collection = options.collection;
         this.render();
     },
     
     render: function () {
-        this.$el.html( _.template( reportTemplate, { reports:this.collection } ) );
+        this.$el.html( _.template(reportTemplate) );
         return this;
     },
       

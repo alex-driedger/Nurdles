@@ -41,9 +41,12 @@ var self = {
         if( _.has( req.body, 'info2') && _.isString( req.body.info2 ) ) {
             properties.info2 = req.body.info2;
         }
-        if( _.has( req.body, 'date') && _.isString( req.body.date ) ) {
-            properties.date = req.body.date;
-        }
+        if( _.has( req.body, 'date') ) {
+            tmpDate = new Date( req.body.date );
+            if( _.isDate( tmpDate ) ) {
+                properties.date = tmpDate;
+            }
+        }        
         if( _.has( req.body, 'notes') && _.isString( req.body.notes ) ) {
             properties.notes = req.body.notes;
         }
@@ -71,8 +74,11 @@ var self = {
         if( _.has( req.body, 'bags') && _.isNumber( req.body.bags ) ) {
             properties.bags = req.body.bags;
         }
-        if( _.has( req.body, 'created') && _.isString( req.body.created ) ) {
-            properties.created = req.body.created;
+        if( _.has( req.body, 'created') ) {
+            tmpDate = new Date( req.body.created );
+            if( _.isDate( tmpDate ) ) {
+                properties.created = tmpDate;
+            }
         }
         if( _.has( req.body, 'items') && _.isArray( req.body.items ) ) {
             properties.items = req.body.items;
@@ -94,11 +100,13 @@ var self = {
         Survey.find( function ( err, surveyCollection ) {
             if( null === err ) {
                 res.send( surveyCollection );
+                //Survey.remove(function(err,res){console.log(res)})
 
             } else {
                 res.send( 500, err );
             }
         });
+        console.log("RETRIEVE ALL SURVEYS (This needs to go as retrieve all might pose memory problems for a phone)")
     },
 
     retrieveOne: function( req, res ) {
@@ -109,6 +117,7 @@ var self = {
                 res.send( 500, err );
             }
         });
+        console.log("A SINGLE SURVEY WAS ACQUIRED")
     },
 
     update: function( req, res ) {
@@ -136,6 +145,7 @@ var self = {
                     survey.injuredAnimals = req.body.injuredAnimals || survey.injuredAnimals;
                     survey.hazardousDebris = req.body.hazardousDebris || survey.hazardousDebris; 
                     survey.items = req.body.items || survey.items; 
+                    survey.created = req.body.created || survey.created;
                     survey.save( function ( err, updatedSurvey ) {
                         if( null === err ) {
                             res.send( updatedSurvey );
@@ -159,6 +169,7 @@ var self = {
                 res.send( 500, err );
             }
          });
+         console.log("DELETED")
     },
 };
 

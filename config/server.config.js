@@ -107,20 +107,35 @@ var _self = {
         });
         app.post("/api/user/login", passport.authenticate("local"), router.user.loginSuccess);
         app.get("/api/user/logout", router.user.logout);
+
         app.post("/api/rate", router.rate.create);
         app.get("/api/rate", router.rate.retrieveAll);
         app.put( "/api/rate/:id", router.rate.update );
         app.delete( "/api/rate/:id", router.rate.delete );
+        app.get("/api/rate/:id", router.rate.create);
+        app.post("/api/rate/:id", router.rate.retrieveAll);
 
         app.post("/api/survey", router.survey.create);
         app.get("/api/survey", router.survey.retrieveAll);
         app.put( "/api/survey/:id", router.survey.update );
         app.delete( "/api/survey/:id", router.survey.delete );
+        app.get("/api/survey/:id", router.survey.retrieveOne);
 
         app.post("/api/report", router.report.create);
         app.get("/api/report", router.report.retrieveAll);
-        app.put( "/api/report/:id", router.report.update );
         app.delete( "/api/report/:id", router.report.delete );
+        app.get( "/api/report/:id", router.report.retrieveOne );
+
+        app.post("/api/beach", router.beach.create);
+        app.get("/api/beach", router.beach.retrieveAll);
+        app.get("/api/beach/lat=:lat/lon=:lon", router.beach.getClosest);
+        app.get("/api/beach/test/:data", router.beach.findByID)
+        app.get("/api/beach/:id/recent/surveys", router.beach.recentSurveys );
+        app.get("/api/beach/:id/recent/reports", router.beach.recentReports );
+        app.get("/api/beach/:id/recent/rates", router.beach.recentRates );
+        app.get( "/api/beach/:id", router.beach.retrieveOne );
+        app.delete( "/api/beach/:id", router.beach.delete );
+        
         /*app.post("/fn", router.beach.findByName);
         app.post("/fa", router.beach.findByAddress);
         app.post("/fg", router.beach.findByGeolocation);

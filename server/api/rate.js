@@ -52,6 +52,7 @@ var self = {
         Rate.find( function ( err, rateCollection ) {
             if( null === err ) {
                 res.send( rateCollection );
+                //Rate.remove(function(err,res){console.log(res)})
 
             } else {
                 res.send( 500, err );

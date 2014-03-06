@@ -13,12 +13,11 @@ module.exports = function (mongoose) {
 
     var SurveySchema = new mongoose.Schema({
         beachID: String,
-        beachID: String,
 	    environment: String,
 	   	beachtype: String,
 	    info1: String, 
 	    info2: String,
-		date: String, 
+		date: Date, 
 	    weight: String,
 	    area: String,
 	    volunteers: Number,
@@ -29,7 +28,7 @@ module.exports = function (mongoose) {
 	    injuredAnimals: String,
 	    hazardousDebris: String,
 	    items: Array,
-        created: String
+        created: Date
         // , mixed : Mixed // Not implemented because mixed types should be used sparingly, if at all.
     });
 

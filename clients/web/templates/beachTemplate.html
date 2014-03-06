@@ -1,0 +1,38 @@
+<div id="header"style="position: fixed; width: 100%; border-style: solid; background-color: white; border-width: 5px; border-color:black; z-index: 1000; top: 0px;">
+    <a type="button" class="btn back" id="Name" href="#"><span class="glyphicon glyphicon-chevron-left"></span><span> Beaches </span></a>
+    <a type="button" class="btn btn-view disabled" style="background-color: gray;"href="#status" >List</a><a type="button" class="btn btn-view">Map</a>
+</div>
+<script>
+var h = $("#header").height()+10;
+    document.getElementById("scroll1").style.marginTop = h
+</script>
+<div id="scroll1" >
+<%
+_.each(attributes, function( attribute ) {
+%>
+<a type="button" class="btn btn-infoButtons" href="#info/<%= attribute._id %>">
+    <%= attribute.beachName %>
+    <span style="color: black; font-size: 50%; display: block;"><%= attribute.city %>, <%= attribute.state %>, <%= attribute.country %>, <%=attribute.lat%></span>
+    <span style="color: black; font-size: 50%; display: block; margin-top: 20px;"> Status - <%= attribute.created %> </span>
+</a>
+<%
+});
+%>
+        <button class="btn-submit">SUBMIT</button>
+        <div style="margin-bottom: 300px;"class="ui-widget">
+  <label for="tags">Tags: </label>
+  <input id="tags">
+</div>
+</div>
+<div id="scroll2" style="width: 100%;margin-left: 100px;display: none;">
+    <div id='map'></div>
+    <script>
+    var map = L.mapbox.map('map', 'examples.map-9ijuk24y', {
+                minZoom: 2,
+               maxBounds: [[-180,-180],[180,180]]
+    }).setView([0,0],2).addControl(L.mapbox.geocoderControl('examples.map-9ijuk24y'));
+    // Features is some example data,  do it with beach lat and long instead
+    map.tileLayer.options.noWrap = true
+    </script>
+
+</div>

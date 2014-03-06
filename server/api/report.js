@@ -30,14 +30,17 @@ var self = {
         if( _.has( req.body, 'items') && _.isArray( req.body.items ) ) {
             properties.items = req.body.items;
         }
-        if( _.has( req.body, 'description') && _.isString( req.body.description ) ) {
-            properties.description = req.body.description;
+        if( _.has( req.body, 'beachID') && _.isString( req.body.beachID ) ) {
+            properties.beachID = req.body.beachID;
         }
         if( _.has( req.body, 'comments') && _.isString( req.body.comments ) ) {
             properties.comments = req.body.comments;
         }
-        if( _.has( req.body, 'created') && _.isString( req.body.created ) ) {
-            properties.created = req.body.created;
+        if( _.has( req.body, 'created') ) {
+            tmpDate = new Date( req.body.created );
+            if( _.isDate( tmpDate ) ) {
+                properties.created = tmpDate;
+            }
         }
 
         report = new Report( properties );
@@ -55,11 +58,13 @@ var self = {
         Report.find( function ( err, reportCollection ) {
             if( null === err ) {
                 res.send( reportCollection );
+                //Report.remove(function(err,res){console.log(res)})
 
             } else {
                 res.send( 500, err );
             }
         });
+        console.log("RETRIEVEALL")
     },
 
     retrieveOne: function( req, res ) {
@@ -70,6 +75,7 @@ var self = {
                 res.send( 500, err );
             }
         });
+        console.log("RETRIEVED REPORT")
     },
 
     update: function( req, res ) {
@@ -84,7 +90,7 @@ var self = {
                     // Update existing document with properties from the request,
                     // or with the existing value if the property is not in the request.
                     report.items = req.body.items|| report.items;
-                    report.description = req.body.description || report.description;
+                    report.beachID = req.body.beachID || report.beachID;
                     report.comments = req.body.comments || report.comments;
                     report.created = req.body.created || report.created;
 

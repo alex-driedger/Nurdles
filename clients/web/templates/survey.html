@@ -72,7 +72,9 @@ function validate(event) {
               <div class="input-group-btn">
         <button type="button" id="areabtn" class="form-control unround-left" data-toggle="dropdown">m<sup>2</sup></button>
         <ul class="dropdown-menu pull-right">
-          <li class="area"><a>yd<sup>2</sup></a></li>
+          <li class="area">mi<sup>2</sup></li>
+          <li class="area">km<sup>2</sup></li>
+          <li class="area">ft<sup>2</sup></li>
         </ul>
     </div>
       </div><!-- /btn-group -->
@@ -85,32 +87,26 @@ function validate(event) {
 </div>
 <a type="button" class="btn btn-surveyButtons mid_button" id="d">Cleanup Tracker</a>
 <div class="block" style="padding: 0; display: none;" id="block_d">
-        <div style="margin-left: -2px; margin-right: -2px;">
-            <p class="dropdown-header">MOST LIKELY TO FIND ITEMS</p>
+        <ul style="padding: 0 0 0 0; margin-bottom: 0px;">
             <%
-                _.each( items, function( item ) { %>
-                <div style="border-width: 2px; border-style: solid; margin-bottom:-2px;">
-                    <a type="button" style="float:left; margin-left: 10px; line-height: 44px;font-size: 44px"class="btn btn-ticker">X</a>
-                    <p id="item_name<%= item.id %>"class="items"><%= item.name %></p>
-                    <a id="<%= item.id %>" type="button" class="btn btn-ticker pos"><span style="line-height:33px" class="glyphicon glyphicon-plus"></span></a>
-                    <input onkeypress='validate(event)' style="margin-top: 20px; display:inline; width: 70px; height: 44px; float: right; border-style: none; text-align: center; font-size: 2em;" id="text<%= item.id %>" type="text" value="0"/>
-                    <a id="<%= item.id %>" type="button" class="btn btn-ticker neg"><span style="line-height:33px;" class="glyphicon glyphicon-minus"></span></a>
+                _.each( items, function( itemList ) { %>
+                    <a type="button" class="btn btn-surveyButtons top_button" style="border-right: none; border-left: none; border-color: gray; font-size: 1.25em; color: gray;"id="<%=itemList.id%>"><%=itemList.header%></a>
+                    <div class="block" id="block_<%=itemList.id%>" style="padding: 0px; padding-bottom: 20px; border-left: none; border-right: none;">
+                    <%
+                    _.each( itemList.data, function( item ) { %>
+                        <div style="border-width: 5px; border-style: solid; margin-bottom: 10px; border-color: rgb(200,200,200); border-right: none; border-left: none;">
+                            <a type="button" style="float:left; margin-left: 10px; line-height: 44px;font-size: 44px"class="btn btn-ticker">X</a>
+                            <p id="item_name<%= item.id %>"class="items" role="presentation"><%= item.name %></p>
+                            <a id="<%= item.id %>" type="button" class="btn btn-ticker pos"><span style="line-height:33px" class="glyphicon glyphicon-plus"></span></a>
+                            <input onkeypress='validate(event)' maxlength="4" style="margin-top: 20px; display:inline; width: 70px; height: 44px; float: right; border-style: none; text-align: center; font-size: 2em;" id="text<%= item.id %>" type="text" value="0"/>
+                            <a id="<%= item.id %>" type="button" class="btn btn-ticker neg"><span style="line-height:33px;" class="glyphicon glyphicon-minus"></span></a>
+                        </div>
+                    <% })
+                    %>
                 </div>
                 <% });
             %>            
-            <p class="dropdown-header">PACKAGING MATERIALS</p>
-            <%
-                _.each( items2, function( item ) { %>
-                  <div style="border-width: 2px; border-style: solid; margin-bottom:-2px;">
-                    <a type="button" style="float:left; margin-left: 10px; line-height: 44px;font-size: 44px"class="btn btn-ticker">X</a>
-                    <p id="item_name<%= item.id %>"class="items"><%= item.name %></p>
-                    <a id="<%= item.id %>" type="button" class="btn btn-ticker pos"><span style="line-height:33px" class="glyphicon glyphicon-plus"></span></a>
-                    <input onkeypress='validate(event)' style="margin-top: 20px; display:inline; width: 70px; height: 44px; float: right; border-style: none; text-align: center; font-size: 2em;" id="text<%= item.id %>" type="text" value="0"/>
-                    <a id="<%= item.id %>" type="button" class="btn btn-ticker neg"><span style="line-height:33px;" class="glyphicon glyphicon-minus"></span></a>
-                </div>
-                <% });
-            %>   
-        </div>
+        </ul>
 </div>
 <a type="button" class="btn btn-surveyButtons mid_button" id="e">Items of Local Concern</a>
 <div class="block" id="block_e" style="display: none">

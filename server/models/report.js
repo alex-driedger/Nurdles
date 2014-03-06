@@ -13,7 +13,7 @@ module.exports = function (mongoose) {
 
     var ReportSchema = new mongoose.Schema({
         items: Array,
-        description: String,
+        beachID: String,
         comments: String,
         rating: Number,
         created: Date
