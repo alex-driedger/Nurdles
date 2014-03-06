@@ -27,23 +27,17 @@ var self = {
       "array": [1,2,3]
     }
     */
-        findByID: function (req, res) {
-        var data = new RegExp(req.params.data)
+    findByID: function (req, res) {
+        var data = new RegExp(req.params.data.toUpperCase())
         Beach
         .find ({beachName: data})
         .exec (function ( err, beachCollection ) {
             if( null === err ) {
-                res.send(beachCollection.sort(function (a, b) 
-                {
-                    if (a > b) return 1;
-                    if (b > a) return -1;
-                    return 0;
-                }).slice(0, 5));
+                res.send((beachCollection).slice(0, 5));
             } else {
                 res.send( 500, err );
             }
         });
-
     },
     create: function( req, res ) {
            properties = {};
@@ -120,8 +114,9 @@ var self = {
         distances = []
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
-            var lat1 = parseInt(req.params.lat);
-            var lon1 = parseInt(req.params.lon);
+            var lat1 = parseFloat(req.params.lat);
+            var lon1 = parseFloat(req.params.lon);
+            console.log(req.params.lat + "  " + req.params.lon)
             var collections = [];
             var R = 6371; // RADIUS OF EARTH IN KM
                     for (i in beachCollection)
@@ -136,6 +131,7 @@ var self = {
                                 Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
                         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
                         distances.push(R * c);
+                        console.log(distances[i] + "------" + beachCollection[i].beachName)
                     }
                     for( i = 0; i < 5; i ++)
                     {
@@ -149,7 +145,7 @@ var self = {
                         beachCollection.splice(index,1)
                         distances.splice(index,1)
                     }
-                res.send( collections);
+                res.send(collections);
 
             } else {
                 res.send( 500, err );

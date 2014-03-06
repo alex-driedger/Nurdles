@@ -6,11 +6,8 @@ HOMEPAGE
 
 #map {
 position:absolute; 
-top:0; 
 bottom:0;
-width:500px;
-height:500px;
-background-color: black;
+width: 100%;
 }
 
 .home {
