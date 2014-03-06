@@ -127,11 +127,11 @@ var self = {
                         var dLon = (lon2-lon1).toRad();
                         var lat1 = lat1.toRad();
                         var lat2 = lat2.toRad();
-                        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                                Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
-                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                        var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
                         distances.push(R * c);
-                        console.log(distances[i] + "------" + beachCollection[i].beachName)
+                        console.log(distances[i] +"------" + dLat + "-----" + dLon + "------" + beachCollection[i].beachName)
+                        console.log(beachCollection[i])
                     }
                     for( i = 0; i < 5; i ++)
                     {

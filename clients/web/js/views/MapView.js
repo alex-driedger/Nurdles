@@ -36,6 +36,7 @@ define([
                         },
                         properties: {
                             'marker-color': '#3AF',
+                            'marker-symbol': 'embassy',
                             'marker-size': 'small',
                             title: "You Are Here"
                         }
