@@ -119,20 +119,20 @@ var self = {
             console.log(req.params.lat + "  " + req.params.lon)
             var collections = [];
             var R = 6371; // RADIUS OF EARTH IN KM
-            var d = []
-                for (i in beachCollection)
-                {
-                    var lat2 = beachCollection[i].lat
-                    var lon2 = beachCollection[i].lon
-                    var dLat = (lat2-lat1).toRad();
-                    var dLon = (lon2-lon1).toRad();
-                    var lat1 = lat1.toRad();
-                    var lat2 = lat2.toRad();
-                    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
-                    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-                    d.push(R*c)
-                    console.log(d[i])
-                }
+                    for (i in beachCollection)
+                    {
+                        var lat2 = beachCollection[i].lat;
+                        var lon2 = beachCollection[i].lon;
+                        var dLat = (lat2-lat1).toRad();
+                        var dLon = (lon2-lon1).toRad();
+                        var lat1 = lat1.toRad();
+                        var lat2 = lat2.toRad();
+                        var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        distances.push(R * c);
+                        console.log(distances[i] +"------" + dLat + "-----" + dLon + "------" + beachCollection[i].beachName)
+                        console.log(beachCollection[i])
+                    }
                     for( i = 0; i < 5; i ++)
                     {
 
