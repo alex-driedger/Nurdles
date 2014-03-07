@@ -3,8 +3,9 @@ define([
         'underscore',
         'backbone',
         'models/Rate',
+        'models/Beach',
         'views/RateView',
-], function ( $, _, Backbone, RateModel, RateView ) {
+], function ( $, _, Backbone, RateModel, BeachModel, RateView ) {
 
     var RateRouter = Backbone.Router.extend({
         
@@ -18,7 +19,8 @@ define([
             rates.fetch( {
                 success: function( collection, response, options) {              
                     var rateView = new RateView({ collection: collection });
-                    $('#content').html(rateView.el);                
+                    $('#content').html(rateView.el);
+                    initializeAutocomplete(BeachModel)
                 },
                 failure: function( collection, response, options) {
                     $('#content').html("An error has occured.");                    

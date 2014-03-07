@@ -40,7 +40,8 @@ for (i in array)
       city: array[parseInt(i)+1].toUpperCase(),
       state: array[parseInt(i)+2].toUpperCase(),
       lat: parseFloat(array[parseInt(i)+3]),
-      lon: parseFloat(array[parseInt(i)+4])
+      lon: parseFloat(array[parseInt(i)+4]),
+      created: new Date()
     })
   }
 }
@@ -79,35 +80,6 @@ for (i in input)
     initialize: function (options) {
       this.collection = options.collection
       this.render();
-    },
-    initializeAutocomplete: function () {
-          $( "#tags" ).autocomplete({
-          focus: function (event, ui) {
-            $("#tags").val(ui.item.label)
-            return false;
-          },
-          source: function(request, callback) {
-            beaches = new BeachModel.Collection([],{data: $("#tags").val()});
-            beaches.fetch( {
-                success: function( collection, response, options) {
-                var availableTags = [];
-                for (i in collection.models)
-                {
-                    availableTags.push({label: collection.models[i].attributes.beachName, desc: "City: "+collection.models[i].attributes.city})
-                }
-                callback(availableTags)
-                },
-                failure: function( collection, response, options) {
-                    $('#content').html("An error has occured.");                    
-                }
-            });
-          } 
-        })
-        // Now change the ui-autocomplete data by calling renderItem on it. If you return none
-        .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-          // I have no idea how appendTo(ul) works. (I'm assuming every item in dropdown is a ul)
-          return $( "<li>" ).append( "<a><span style='color: #3AF; text-transform: capitalize;'>" + item.label + "</span><br><span style='font-size: 0.75em'>" + item.desc + "</span></a>" ).appendTo( ul );
-          };
     },
     render: function () {
       var attributes = []

@@ -32,7 +32,7 @@ define([
             $("#areabtn")[0].innerText = temp;
         },
         submit: function(events) {
-            if ($("#name").val() == "")
+            if ($("#beachname").val() == "")
             {
                 alert("DO NOT LEAVE FIELDS EMPTY")
             } else
@@ -50,7 +50,7 @@ define([
             var area = ($("#areaval").val()+""+$("#areabtn")[0].innerText )
             surveyModel = new SurveyModel.Model();
             var input = {
-                beachID:$("#name").val(),
+                beachID:$("#beachname").val(),
                 environment: $("#environment").val(),
                 beachtype:$("#beachtype").val(),
                 info1:$("#info1").val(), 

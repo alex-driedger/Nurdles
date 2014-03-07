@@ -21,7 +21,7 @@ define([
                 success: function( collection, response, options) {              
                     var beachView = new BeachView({ collection: collection });
                     $('#content').html(beachView.el);                
-                    beachView.initializeAutocomplete()
+                    initializeAutocomplete(BeachModel)
                 },
                 failure: function( collection, response, options) {
                     $('#content').html("An error has occured.");                    
