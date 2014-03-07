@@ -4,8 +4,9 @@ define([
   'backbone',
   'text!templates/rateTemplate.html',
   'models/Rate',
+  'models/Beach',
   'jquerycookie',
-], function ($, _, Backbone, rateTemplate, RateModel, jQueryCookie) {
+], function ($, _, Backbone, rateTemplate, RateModel, BeachModel, jQueryCookie) {
     
   var RateView = Backbone.View.extend({
 
@@ -21,14 +22,14 @@ define([
 
     submit: function()
     {
-      if ($("#beachname").val() == "")
+      if ($("#beachname")[0].beachID == undefined || $("#beachname")[0].beachName != $("#beachname").val().toUpperCase())
       {
-        alert("You must enter a location")
+        alert("You must select a location from the dropdown list")
       } else
       {
       rateModel = new RateModel.Model();
       var input = {
-          beachID:$("#beachname").val(),
+          beachID:$("#beachname")[0].beachID,
           rating: parseInt($("#slider").val()),
           created: new Date()
             }

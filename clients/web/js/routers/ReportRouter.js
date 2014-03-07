@@ -3,9 +3,10 @@ define([
         'underscore',
         'backbone',
         'models/Report',
+        'models/Beach',
         'views/ReportView',
         'views/IDReportView'
-], function ( $, _, Backbone, ReportModel, ReportView, IDReportView ) {
+], function ( $, _, Backbone, ReportModel, BeachModel, ReportView, IDReportView ) {
 
     var ReportRouter = Backbone.Router.extend({
         
@@ -19,7 +20,8 @@ define([
             reports.fetch( {
                 success: function( collection, response, options) {              
                     var reportView = new ReportView({ collection: collection });
-                    $('#content').html(reportView.el);                
+                    $('#content').html(reportView.el);
+                    initializeAutocomplete(BeachModel)              
                 },
                 failure: function( collection, response, options) {
                     $('#content').html("An error has occured.");                    
@@ -28,6 +30,7 @@ define([
         },
 
         retrieveOne: function(id) {
+            console.log("HI")
             reports = new ReportModel.Collection( [], { reportID: id } );
             reports.fetch( {
                 success: function( collection, response, options) {              

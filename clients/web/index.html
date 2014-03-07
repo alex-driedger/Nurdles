@@ -20,6 +20,8 @@
           $( "#beachname" ).autocomplete({
           focus: function (event, ui) {
             $("#beachname").val(ui.item.label)
+            $("#beachname")[0].beachName = ui.item.label
+            $("#beachname")[0].beachID = ui.item.id
             return false;
           },
           source: function(request, callback) {
@@ -29,7 +31,7 @@
                 var availableTags = [];
                 for (i in collection.models)
                 {
-                    availableTags.push({label: collection.models[i].attributes.beachName, desc: "City: "+collection.models[i].attributes.city})
+                    availableTags.push({label: collection.models[i].attributes.beachName, desc: "City: "+collection.models[i].attributes.city, id: collection.models[i].attributes._id})
                 }
                 callback(availableTags)
                 },

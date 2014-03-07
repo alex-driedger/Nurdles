@@ -129,10 +129,4 @@ function validate(event) {
 <div style="margin-bottom: 3vh; border-top-style:solid; border-top-width: 5px; border-color: black;"/>
 <button type="button" style="margin-left: 20px;" class="btn btn-submit">Report</button>
 
-<% 
-    surveys.each( function(survey) { %>
-        <li id="<%= survey.get("_id") %>"><%= JSON.stringify(survey) %></li>
-    <% });
-%>
-
 

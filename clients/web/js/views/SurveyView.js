@@ -32,9 +32,9 @@ define([
             $("#areabtn")[0].innerText = temp;
         },
         submit: function(events) {
-            if ($("#beachname").val() == "")
+            if ($("#beachname")[0].beachID == undefined || $("#beachname")[0].beachName != $("#beachname").val().toUpperCase())
             {
-                alert("DO NOT LEAVE FIELDS EMPTY")
+                alert("You must select a location from the dropdown list")
             } else
             {
             var items = []
@@ -50,7 +50,7 @@ define([
             var area = ($("#areaval").val()+""+$("#areabtn")[0].innerText )
             surveyModel = new SurveyModel.Model();
             var input = {
-                beachID:$("#beachname").val(),
+                beachID:$("#beachname")[0].beachID,
                 environment: $("#environment").val(),
                 beachtype:$("#beachtype").val(),
                 info1:$("#info1").val(), 
@@ -68,8 +68,7 @@ define([
                 hazardousDebris:$("#hazardousDebris").val(),
                 created: new Date()
             }
-            }
-          surveyModel.save(input,{
+            surveyModel.save(input,{
                     success: function (res) {
                       //Backbone.history.navigate('', { trigger: true });
                         console.log(res.toJSON());
@@ -78,6 +77,7 @@ define([
                         console.log("err")
                     }
                 });
+            }
 
         },
         expand: function(events) {

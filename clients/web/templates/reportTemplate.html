@@ -5,15 +5,10 @@
 <h4>Item</h4>
 <input type="text" id="item" class="form-control FT2" />
 <input type="checkbox" id="cl" >  The debris is at my current location</input>
-<h4>Describe Location (optional)</h4>
+<h4>Beach Name</h4>
 <input type="text" id="beachname" class="form-control FT2" />
 <h4>Additional Comments (optional)</h4>
 <textarea rows="3" maxlength="500" id="comments" class="form-control FT2" />
 <button type="button" style="margin-left: 20px;" class="btn btn-submit">Report</button>
 <a class="pull-right" style="margin-right: 20px; margin-top: 32px;" href="#multipleReport">Report Multiple Debris</a>
 </div>
-<% 
-    reports.each( function(beach) { %>
-        <li><%= JSON.stringify(beach) %></li>
-    <% });
-%>
