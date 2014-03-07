@@ -114,13 +114,12 @@ var self = {
         distances = []
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
-            var lat1 = parseFloat(req.params.lat);
-            var lon1 = parseFloat(req.params.lon);
-            console.log(req.params.lat + "  " + req.params.lon)
             var collections = [];
             var R = 6371; // RADIUS OF EARTH IN KM
                     for (i in beachCollection)
                     {
+                        var lat1 = parseFloat(req.params.lat);
+                        var lon1 = parseFloat(req.params.lon);
                         var lat2 = beachCollection[i].lat;
                         var lon2 = beachCollection[i].lon;
                         var dLat = (lat2-lat1).toRad();
@@ -130,8 +129,6 @@ var self = {
                         var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
                         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
                         distances.push(R * c);
-                        console.log(distances[i] +"------" + dLat + "-----" + dLon + "------" + beachCollection[i].beachName)
-                        console.log(beachCollection[i])
                     }
                     for( i = 0; i < 5; i ++)
                     {
@@ -145,8 +142,7 @@ var self = {
                         beachCollection.splice(index,1)
                         distances.splice(index,1)
                     }
-                res.send(collections);
-
+                    res.send(collections)
             } else {
                 res.send( 500, err );
             }
