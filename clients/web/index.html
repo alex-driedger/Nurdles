@@ -18,7 +18,7 @@
         <script>
         function initializeAutocomplete (BeachModel) {
           $( "#beachname" ).autocomplete({
-          focus: function (event, ui) {
+          select: function (event, ui) {
             $("#beachname").val(ui.item.label)
             $("#beachname")[0].beachName = ui.item.label
             $("#beachname")[0].beachID = ui.item.id
