@@ -38,7 +38,7 @@ define([
 	  			this.url = '/api/beach/'+options.beachID
 	  		} else if (options.lat != undefined)
 	  		{
-		  		this.url = '/api/beach/lat='+options.lat+'/lon='+options.lon
+		  		this.url = '/api/beach/lat='+options.lat+'/lon='+options.lon +'/amount=' + options.amount
 		  	} else 
 	  		{
 	  			this.url = "/api/beach/test/" + options.data

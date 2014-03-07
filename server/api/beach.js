@@ -115,6 +115,7 @@ var self = {
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
             var collections = [];
+            console.log(req.params.amount)
             var R = 6371; // RADIUS OF EARTH IN KM
                     for (i in beachCollection)
                     {
@@ -130,7 +131,7 @@ var self = {
                         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
                         distances.push(R * c);
                     }
-                    for( i = 0; i < 5; i ++)
+                    for( i = 0; i < req.params.amount; i ++)
                     {
 
                         var index = distances.indexOf(Math.min.apply(Math, distances))

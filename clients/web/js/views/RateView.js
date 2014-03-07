@@ -22,7 +22,8 @@ define([
 
     submit: function()
     {
-      if ($("#beachname")[0].beachID == undefined || $("#beachname")[0].beachName != $("#beachname").val().toUpperCase())
+      var checkBox = document.getElementById("ucl").checked
+      if ($("#beachname")[0].beachName != $("#beachname").val().toUpperCase() && !checkBox)
       {
         alert("You must select a location from the dropdown list")
       } else
@@ -33,15 +34,41 @@ define([
           rating: parseInt($("#slider").val()),
           created: new Date()
             }
-      rateModel.save(input,{
-                success: function (res) {
-                  //Backbone.history.navigate('', { trigger: true });
-                    console.log(res.toJSON());
+            if (checkBox)
+            {
+            navigator.geolocation.getCurrentPosition(function (position)
+            {
+            beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
+            beaches.fetch( {
+                success: function( collection, response, options) {
+                    input.beachID = collection.models[0].attributes._id       
+                    rateModel.save(input,{
+                    success: function (res) {
+                      //Backbone.history.navigate('', { trigger: true });
+                        console.log(res.toJSON());
+                    },
+                    error: function (err) {
+                        console.log("err")
+                    }
+                });
                 },
-                error: function (err) {
-                    console.log("err")
+                failure: function( collection, response, options) {
+                    $('#content').html("An error has occured.");                    
                 }
             });
+          })
+            } else
+            {
+            rateModel.save(input,{
+                    success: function (res) {
+                      //Backbone.history.navigate('', { trigger: true });
+                        console.log(res.toJSON());
+                    },
+                    error: function (err) {
+                        console.log("err")
+                    }
+                });
+            }
       }
     },
     slider: function()

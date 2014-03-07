@@ -4,8 +4,9 @@ define([
     'backbone',
     'text!templates/survey.html',
     'models/Survey',
+    'models/Beach',
     'jquerycookie'
-], function ($, _, Backbone, survey, SurveyModel, jQueryCookie) {
+], function ($, _, Backbone, survey, SurveyModel, BeachModel, jQueryCookie) {
     
     var SurveyView = Backbone.View.extend({
 
@@ -32,9 +33,10 @@ define([
             $("#areabtn")[0].innerText = temp;
         },
         submit: function(events) {
-            if ($("#beachname")[0].beachID == undefined || $("#beachname")[0].beachName != $("#beachname").val().toUpperCase())
+            var checkBox = document.getElementById("ucl").checked
+            if (($("#beachname")[0].beachName != $("#beachname").val().toUpperCase()) && !checkBox)
             {
-                alert("You must select a location from the dropdown list")
+                alert("Please select a beach from the dropdown list")
             } else
             {
             var items = []
@@ -68,6 +70,31 @@ define([
                 hazardousDebris:$("#hazardousDebris").val(),
                 created: new Date()
             }
+            if (checkBox)
+            {
+            navigator.geolocation.getCurrentPosition(function (position)
+            {
+            beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
+            beaches.fetch( {
+                success: function( collection, response, options) {
+                    input.beachID = collection.models[0].attributes._id       
+                    surveyModel.save(input,{
+                    success: function (res) {
+                      //Backbone.history.navigate('', { trigger: true });
+                        console.log(res.toJSON());
+                    },
+                    error: function (err) {
+                        console.log("err")
+                    }
+                });
+                },
+                failure: function( collection, response, options) {
+                    $('#content').html("An error has occured.");                    
+                }
+            });
+          })
+            } else
+            {
             surveyModel.save(input,{
                     success: function (res) {
                       //Backbone.history.navigate('', { trigger: true });
@@ -78,6 +105,7 @@ define([
                     }
                 });
             }
+        }
 
         },
         expand: function(events) {
@@ -98,7 +126,6 @@ define([
                 $('body').animate({
                     scrollTop: $("#"+id).offset().top
                 },750)
-                console.log(id)
                     $("#"+id).animate({color: "#3AF"}, 750)
                     $("#block_"+id).slideDown(750 )
             }

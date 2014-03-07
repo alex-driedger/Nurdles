@@ -4,8 +4,9 @@ define([
     'backbone',
     'text!templates/multipleReport.html',
     'models/Report',
+    'models/Beach',
     'jquerycookie'
-], function ($, _, Backbone, multipleReport, ReportModel,  jQueryCookie) {
+], function ($, _, Backbone, multipleReport, ReportModel, BeachModel,  jQueryCookie) {
     
     var MultipleReportView = Backbone.View.extend({
 
@@ -38,7 +39,8 @@ define([
         },
         submit: function()
         {
-            if ($("#beachname").val() == "")
+            var checkBox = document.getElementById("ucl").checked
+            if ($("#beachname")[0].beachName != $("#beachname").val().toUpperCase() && !checkBox)
             {
                 alert("You must enter a location")
             } else
@@ -61,7 +63,32 @@ define([
             comments: $("#comments").val(),
             created: new Date()
             }
-          reportModel.save(input,{
+            if (checkBox)
+            {
+            navigator.geolocation.getCurrentPosition(function (position)
+            {
+            beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
+            beaches.fetch( {
+                success: function( collection, response, options) {
+                    input.beachID = collection.models[0].attributes._id       
+                    reportModel.save(input,{
+                        success: function (res) {
+                          //Backbone.history.navigate('', { trigger: true });
+                            console.log(res.toJSON());
+                        },
+                        error: function (err) {
+                            console.log("err")
+                        }
+                    });
+                    },
+                        failure: function( collection, response, options) {
+                            $('#content').html("An error has occured.");                    
+                    }
+                });
+            })
+            } else
+            {
+            reportModel.save(input,{
                     success: function (res) {
                       //Backbone.history.navigate('', { trigger: true });
                         console.log(res.toJSON());
@@ -70,6 +97,7 @@ define([
                         console.log("err")
                     }
                 });
+            }
          }
         },
         tickerpos: function(events) {

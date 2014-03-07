@@ -16,7 +16,7 @@ define([
             $('#content').html("LOADING");   
             navigator.geolocation.getCurrentPosition(function (position)
             {
-            beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude});
+            beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 5});
             beaches.fetch( {
                 success: function( collection, response, options) {              
                     var beachView = new BeachView({ collection: collection });
