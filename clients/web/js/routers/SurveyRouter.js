@@ -17,6 +17,7 @@ define([
         },
         
         index: function () {
+            console.log("ALL")
             surveys = new SurveyModel.Collection();
             surveys.fetch( {
                 success: function( collection, response, options) {              
@@ -31,6 +32,7 @@ define([
         },
 
         retrieveOne: function(id) {
+            console.log("NOT ALL")
             surveys = new SurveyModel.Collection( [], { surveyID: id } );
             surveys.fetch( {
                 success: function( collection, response, options) {              
