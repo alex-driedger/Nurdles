@@ -126,14 +126,14 @@ var _self = {
         app.delete( "/api/report/:id", router.report.delete );
         app.get( "/api/report/:id", router.report.retrieveOne );
 
-        app.post("/api/beach", router.beach.prepareDatabase);
-        app.get("/api/beach", router.beach.retrieveAll);
-        app.get("/api/beach/lat=:lat/lon=:lon/amount=:amount", router.beach.getClosest);
-        app.get("/api/beach/id/:data", router.beach.findByID)
-        app.get("/api/beach/:id/recent/surveys", router.beach.recentSurveys );
-        app.get("/api/beach/:id/recent/reports", router.beach.recentReports );
-        app.get("/api/beach/:id/recent/rates", router.beach.recentRates );
+        app.post( "/api/beach", router.beach.prepareDatabase );
+        app.get( "/api/beach", router.beach.retrieveAll );
+        app.get( "/api/beach/lat=:lat/lon=:lon/amount=:amount", router.beach.getClosest );
+        app.get( "/api/beach/:id/recent/surveys", router.beach.recentSurveys );
+        app.get( "/api/beach/:id/recent/reports", router.beach.recentReports );
+        app.get( "/api/beach/:id/recent/rates", router.beach.recentRates );
         app.get( "/api/beach/:id", router.beach.retrieveOne );
+        app.get( "/api/beach/id/:data", router.beach.findByID );
         app.delete( "/api/beach/:id", router.beach.delete );
         /*app.post("/fn", router.beach.findByName);
         app.post("/fa", router.beach.findByAddress);

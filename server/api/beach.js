@@ -77,6 +77,7 @@ var self = {
 
     },
     findByID: function (req, res) {
+        console.log("Find by ID was called")
         var data = new RegExp(req.params.data.toUpperCase())
         Beach
         .find ({beachName: data})
@@ -199,7 +200,7 @@ var self = {
 },
 
     retrieveOne: function( req, res ) {
-        console.log("RETRIEVE ONE")
+        console.log("Retrieve one was called")
         console.log(req.params)
         Beach.findOne( { _id:req.params.id }, function( err, beach ) {
             if( null === err ) {
