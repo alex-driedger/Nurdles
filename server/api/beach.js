@@ -76,19 +76,38 @@ var self = {
         });
 
     },
-    findByID: function (req, res) {
-        console.log("Find by ID was called")
+    find: function (req, res) {
+        var limit = req.params.limit
         var data = new RegExp(req.params.data.toUpperCase())
+        var temp = {}
+        temp[req.params.attribute] = data
+        console.log(temp)
         Beach
-        .find ({beachName: data})
+        .find (temp)
         .exec (function ( err, beachCollection ) {
             if( null === err ) {
-                res.send((beachCollection).slice(0, 5));
+                var possibleBeaches = []
+                for (i in beachCollection)
+                {
+                    var path = eval("beachCollection[i]." + req.params.attribute);
+                    if (path.slice(0,req.params.data.toUpperCase().length) == req.params.data.toUpperCase())
+                    {
+                        possibleBeaches.push(beachCollection[i])
+                    }
+                }
+                if (limit == undefined)
+                {
+                    res.send((possibleBeaches).slice(0, 5));
+                } else 
+                {
+                    res.send((possibleBeaches).slice(0,limit));
+                }
             } else {
                 res.send( 500, err );
             }
         });
     },
+
     create: function( req, res ) {
            properties = {};
 
@@ -145,7 +164,8 @@ var self = {
     retrieveAll: function( req, res ) {
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
-                Beach.remove(function(err,res){console.log(res)})
+                res.send(beachCollection)
+                //Beach.remove(function(err,res){console.log(res)})
 
             } else {
                 res.send( 500, err );
@@ -187,7 +207,13 @@ var self = {
                         {
                             break;
                         }
+                        temp = {}
+                        temp = beachCollection[index]
+                        temp.distance = distances[index]
+                        temp.beachID = "ID"
+                        console.log(temp.distance)
                         collections.push(beachCollection[index])
+                        collections[i].distance = distances[index]
                         beachCollection.splice(index,1)
                         distances.splice(index,1)
                     }
@@ -200,8 +226,6 @@ var self = {
 },
 
     retrieveOne: function( req, res ) {
-        console.log("Retrieve one was called")
-        console.log(req.params)
         Beach.findOne( { _id:req.params.id }, function( err, beach ) {
             if( null === err ) {
                 res.send( beach );

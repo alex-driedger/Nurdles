@@ -20,7 +20,7 @@ define([
                 success: function( collection, response, options) {              
                     var rateView = new RateView({ collection: collection });
                     $('#content').html(rateView.el);
-                    initializeAutocomplete(BeachModel)
+                    initializeAutocomplete(BeachModel, "beachname", "beachName")
                 },
                 failure: function( collection, response, options) {
                     $('#content').html("An error has occured.");                    

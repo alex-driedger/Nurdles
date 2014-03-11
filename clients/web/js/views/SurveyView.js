@@ -77,7 +77,8 @@ define([
             beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
             beaches.fetch( {
                 success: function( collection, response, options) {
-                    input.beachID = collection.models[0].attributes._id       
+                    input.beachID = collection.models[0].attributes._id
+                    console.log(input.beachID)   
                     surveyModel.save(input,{
                     success: function (res) {
                       //Backbone.history.navigate('', { trigger: true });

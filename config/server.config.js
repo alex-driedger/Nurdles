@@ -133,7 +133,8 @@ var _self = {
         app.get( "/api/beach/:id/recent/reports", router.beach.recentReports );
         app.get( "/api/beach/:id/recent/rates", router.beach.recentRates );
         app.get( "/api/beach/:id", router.beach.retrieveOne );
-        app.get( "/api/beach/id/:data", router.beach.findByID );
+        app.get( "/api/beach/id/:attribute/:data", router.beach.find );
+        app.get( "/api/beach/id/:attribute/:data/:limit", router.beach.find );
         app.delete( "/api/beach/:id", router.beach.delete );
         /*app.post("/fn", router.beach.findByName);
         app.post("/fa", router.beach.findByAddress);

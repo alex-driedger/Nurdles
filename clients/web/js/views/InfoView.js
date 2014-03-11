@@ -56,7 +56,7 @@ define([
             {
                 if (totals[i] > 0)
                 {
-                    returnStatement.push({day: days[i], rating: Math.floor(ratings[i]/totals[i]*50) + "/100 based on " + totals[i] + " ratings"})
+                    returnStatement.push({day: days[i], rating: Math.floor(ratings[i]/totals[i]*50) + "/100 based on " + totals[i] + " rating(s)"})
                 } else
                 {
                     returnStatement.push({day: days[i], rating: "No data"})

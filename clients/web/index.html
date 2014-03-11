@@ -17,22 +17,23 @@
         <div id="content"></div>
 
         <script>
-        function initializeAutocomplete (BeachModel) {
-          $( "#beachname" ).autocomplete({
+        function initializeAutocomplete (BeachModel, inputId, attribute, limit) {
+          $( "#" + inputId ).autocomplete({
           select: function (event, ui) {
-            $("#beachname").val(ui.item.label)
-            $("#beachname")[0].beachName = ui.item.label
-            $("#beachname")[0].beachID = ui.item.id
+            $( "#" + inputId ).val(ui.item.label)
+            $( "#" + inputId )[0].beachName = ui.item.label
+            $( "#" + inputId )[0].beachID = ui.item.id
+            window.location.href = "#info/" + ui.item.id;
             return false;
           },
           source: function(request, callback) {
-            beaches = new BeachModel.Collection([],{data: $("#beachname").val()});
+            beaches = new BeachModel.Collection([],{ attribute: attribute, data: $( "#" + inputId ).val(), limit: limit});
             beaches.fetch( {
                 success: function( collection, response, options) {
                 var availableTags = [];
                 for (i in collection.models)
                 {
-                    availableTags.push({label: collection.models[i].attributes.beachName, desc: "City: "+collection.models[i].attributes.city, id: collection.models[i].attributes._id})
+                    availableTags.push({label: collection.models[i].attributes.beachName, desc: "City: "+collection.models[i].attributes.city + " | State: "+collection.models[i].attributes.state, id: collection.models[i].attributes._id})
                 }
                 callback(availableTags)
                 },

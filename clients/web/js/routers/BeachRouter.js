@@ -18,7 +18,8 @@ define([
             {
             beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 5});
             beaches.fetch( {
-                success: function( collection, response, options) {              
+                success: function( collection, response, options) {
+                console.log(collection)     
                     var beachView = new BeachView({ collection: collection });
                     $('#content').html(beachView.el);                
                 },

@@ -23,7 +23,7 @@ define([
                 success: function( collection, response, options) {              
                     var surveyView = new SurveyView({ collection: collection });
                     $('#content').html(surveyView.el);
-                    initializeAutocomplete(BeachModel)           
+                    initializeAutocomplete(BeachModel, "beachname", "beachName")         
                 },
                 failure: function( collection, response, options) {
                     $('#content').html("An error has occured.");                    

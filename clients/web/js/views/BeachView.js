@@ -50,6 +50,7 @@ define([
       {
         attributes.push(this.collection.models[i].attributes)
       }
+      console.log(this.collection.models)
         this.$el.html( _.template( beachTemplate, {attributes: attributes}) );
         return this;
     },

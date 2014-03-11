@@ -26,10 +26,13 @@ define([
 		  		} else if (options.lat != undefined)
 		  		{
 			  		this.url = '/api/beach/lat='+options.lat+'/lon='+options.lon +'/amount=' + options.amount
-			  	} else 
+			  	} else if (options.limit == undefined)
 		  		{
-		  			this.url = "/api/beach/id/" + options.data
-		  		} 
+		  			this.url = "/api/beach/id/" + options.attribute + "/" + options.data
+		  		}  else
+		  		{
+		  			this.url = "/api/beach/id/" + options.attribute + "/" + options.data + "/" + options.limit
+		  		}
 		  	}
 		}
 	});

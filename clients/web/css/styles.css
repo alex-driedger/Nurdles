@@ -89,23 +89,22 @@ input[type="checkbox"] {
 
 #IMG_RSRV {
   display: block;
-  width: 50%;
-  height: 25%;
+  width: 400px;
+  height: 200px;
   margin-left: auto;
   margin-right: auto;
   background-color: black;
 }
 
 #rating{
-  margin: 5vh auto 0 auto;
-  font-size: 5vh;
-  height: 10vh;
+  margin: 20px auto 0 auto;
+  font-size: 2em;
   text-align: center;
   width: 80%;
 }
 #slider{
   width: 90%;
-  margin: 10vh auto 0 auto ;
+  margin: 50px auto 0 auto ;
   background-color: rgba(100,100,100,0.5);
   height: 44px;
 }

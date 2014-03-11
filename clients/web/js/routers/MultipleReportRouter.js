@@ -3,8 +3,9 @@ define([
         'underscore',
         'backbone',
         'models/Report',
+        'models/Beach',
         'views/MultipleReportView',
-], function ( $, _, Backbone, ReportModel, MultipleReportView ) {
+], function ( $, _, Backbone, ReportModel, BeachModel, MultipleReportView ) {
 
     var MultipleReportRouter = Backbone.Router.extend({
         
@@ -17,7 +18,8 @@ define([
             reports.fetch( {
                 success: function( collection, response, options) {              
                     var multipleReportView = new MultipleReportView({ collection: collection });
-                    $('#content').html(multipleReportView.el);                
+                    $('#content').html(multipleReportView.el); 
+                    initializeAutocomplete(BeachModel, "beachname", "beachName")            
                 },
                 failure: function( collection, response, options) {
                     $('#content').html("An error has occured.");                    
