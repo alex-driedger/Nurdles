@@ -7,19 +7,6 @@ define([
 	var Beach = Backbone.Model.extend({
 		idAttribute: "_id",
 	  urlRoot: '/api/beach',
-	  defaults: function () {
-	  	var d = new Date()
-	    return {
-        beachName: "Beach whatever",
-        city: "Kitchener",
-        state: "Ontario",
-        country: "Canada",
-        lat: 0,
-        lon: 0,
-        address: "123 address dr",
-        groomed: "UNKNOWN"
-	    };
-	  },
 	});
 	var BeachCollection = Backbone.Collection.extend({
 	  url: '/api/beach',
@@ -35,14 +22,15 @@ define([
 	  	{
 	  		if (options.beachID != undefined)
 	  		{
-	  			this.url = '/api/beach/'+options.beachID
+	  			this.url = '/api/beach/'+ options.beachID
 	  		} else if (options.lat != undefined)
 	  		{
 		  		this.url = '/api/beach/lat='+options.lat+'/lon='+options.lon +'/amount=' + options.amount
 		  	} else 
 	  		{
-	  			this.url = "/api/beach/test/" + options.data
-	  		}
+	  			console.log("hi")
+	  			this.url = "/api/beach/id" + options.data
+	  		} 
 	  	}
 	  }
 	});

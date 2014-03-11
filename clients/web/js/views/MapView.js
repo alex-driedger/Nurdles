@@ -37,7 +37,7 @@ define([
                         properties: {
                             'marker-color': '#3AF',
                             'marker-symbol': 'embassy',
-                            'marker-size': 'small',
+                            'marker-size': 'large',
                             title: "You Are Here"
                         }
                     });
@@ -50,16 +50,18 @@ define([
                         },
                         properties: {
                             'marker-color': '#000',
-                            'marker-size': 'small',
                             title: [this.collection.models[i].attributes.beachName]
                         }
                     });
             }
-             // Set the feature layers data so that it knows what featuers are on it
+              // Set the feature layers data so that it knows what featuers are on it
             map.featureLayer.setGeoJSON({
                 type: 'FeatureCollection',
                 features: features
             });
+            console.log(map.featureLayer)
+            // Zoom/move the map to fit the markers
+            map.fitBounds(map.featureLayer.getBounds())
              // On click, pan to the point
             map.featureLayer.on('click', function (e) {
                 map.panTo(e.layer.getLatLng());

@@ -34,6 +34,7 @@ define([
                                     beaches.fetch({
                                         success: function (collection, response, options) {
                                             collections.push(collection)
+                                            console.log(collection)
                                             var infoView = new InfoView({collection: collections, id: id});
                                             $('#content').html(infoView.el);
                                         },

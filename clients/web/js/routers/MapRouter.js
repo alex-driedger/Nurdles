@@ -16,10 +16,10 @@ define([
             $('#content').html("LOADING");   
             navigator.geolocation.getCurrentPosition(function (position)
             {
-            beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude});
+            beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 5});
             beaches.fetch( {
                 success: function( collection, response, options) {              
-                    var mapView = new MapView({ collection: collection, lat: position.coords.latitude,lon: position.coords.longitude });
+                    var mapView = new MapView({ collection: collection, lat: position.coords.latitude,lon: position.coords.longitude});
                     $('#content').html(mapView.el);
                     mapView.renderMap(); 
                 },

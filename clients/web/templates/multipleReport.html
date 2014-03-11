@@ -22,13 +22,13 @@ function validate(event) {
     event.preventDefault()
   }
 }
-    document.getElementById("scroll").style.marginTop = $("#header").height()+10;
+    document.getElementById("scroll").style.marginTop = $("#header").height();
 </script>
 <div id="scroll">
         <ul style="padding: 0 0 0 0; margin-bottom: 0px; border-bottom: solid 5px black;">
             <%
                 _.each( items, function( itemList ) { %>
-                    <a type="button" class="btn btn-surveyButtons top_button" style="margin-top: -10px;" id="<%=itemList.id%>"><%=itemList.header%></a>
+                    <a type="button" class="btn btn-surveyButtons top_button" style="" id="<%=itemList.id%>"><%=itemList.header%></a>
                     <div class="block" id="block_<%=itemList.id%>" style="padding: 0px; padding-bottom: 20px;">
                     <%
                     _.each( itemList.data, function( item ) { %>

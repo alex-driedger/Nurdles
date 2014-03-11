@@ -76,7 +76,6 @@ define([
             return returnStatement
         },
         render: function () {
-            var beachInfo = []
             var attributes = this.collection[3].models[0].attributes
             this.$el.html(_.template(infoTemplate, {beachInfo: attributes, reportsHTML: this.getReports(), ratesHTML: this.getRates(), surveysHTML: this.getSurveys()}));
             return this;

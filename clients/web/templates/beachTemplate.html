@@ -11,16 +11,11 @@ _.each(attributes, function( attribute ) {
 %>
 <a type="button" class="btn btn-infoButtons" href="#info/<%= attribute._id %>">
     <%= attribute.beachName %>
-    <span style="color: black; font-size: 50%; display: block;"><%= attribute.city %>, <%= attribute.state %>, <%= attribute.country %></span>
-    <span style="color: black; font-size: 50%; display: block; margin-top: 20px;"> Status - <%= attribute.created %> </span>
+    <span style="color: black; font-size: 75%; display: block;"><%= attribute.city %>, <%= attribute.state %>, <%= attribute.country %></span>
+    <span style="color: black; font-size: 75%; display: block; margin-top: 20px;"> Status - <%= attribute.created %> </span>
 </a>
 <%
 });
 %>
         <button class="btn-submit">SUBMIT</button>
-<div style="margin-bottom: 300px;"class="ui-widget">
-  <label for="beachname">Tags: </label>
-  <input id="beachname">
-</div>
-
 </div>

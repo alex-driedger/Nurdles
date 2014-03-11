@@ -6,27 +6,76 @@ var path = require( 'path' ),
     Survey = mongoose.model( 'Survey' ),
     report = require( path.join( __dirname, '..', 'models', 'report' ) ),
     Report = mongoose.model( 'Report' ),
-    _ = require( 'underscore' );
     rate = require( path.join( __dirname, '..', 'models', 'rate' ) ),
     Rate = mongoose.model( 'Rate' ),
+    parseXlsx = require('excel'),
+    beachDataPath = path.join(__dirname, '..', 'beachData', 'Ontario_Beaches_Sample_List.xlsx'),
     _ = require( 'underscore' );
 
 var self = {
+    prepareDatabase: function (req, res)
+    {
+        // Retrieve the beach data file
+        parseXlsx(beachDataPath, function(err, data) {
+            if(err)
+            {
+                console.log("ERROR");
+            } else
+            {
+            function callback (updates)
+                {
+                    // If updates[i] is null, then it means it doesn't exist so create it
+                    for (i in updates)
+                    {
+                        if (updates[i] == null)
+                        {
+                            // var properties is defined after this function sooo it might be safer to pass it in as a variable
+                            beach = new Beach( properties[i] );
+                            beach.save( function ( err, beach, numberAffected ) {
+                                if( null === err ) {
+                                    console.log(beach.beachName + " was created.")
+                                    res.send( beach );
+                                } else {
+                                    res.send( 500, err );
+                                }
+                            });
+                        }
+                    }
+                }
+                var properties = []
+                var updates = []
+                // i = 0 would be the headers, we don't want the headers
+                for (i = 1; i < data.length; i++)
+                {
+                    properties.push(
+                    {
+                        beachID:data[i][0],
+                        beachName:data[i][1].toUpperCase(),
+                        city:data[i][2].toUpperCase(),
+                        state:data[i][3].toUpperCase(),
+                        lat:data[i][4],
+                        lon:data[i][5],
+                        created: new Date()
+                    })
+                    Beach.findOne({beachID: data[i][0]}, function ( err, beachCollection ) {
+                        if( null === err ) {
+                            // Push the result of the search to updates (If it is not found, it's null)
+                            updates.push(beachCollection)
+                            // At the end of the loop, callback
+                            if (updates.length == data.length-1)
+                            {
+                                callback(updates)
+                            }
+                        } else {
+                            res.send( 500, err );
+                        }
+                    });
+                    // Check if this beach already exists 
+                }
+            }
+        });
 
-    
-    /*
-    Sample data:
-
-    { 
-      "string": "This is a sample string.",
-      "number": 1,
-      "date": "Tue Feb 11 2014 13:59:04 GMT-0500 (EST)",
-      "buffer": "ASDF3R234SDF3432DSR324R23WEFD234RSDF23WE",
-      "bool": true,
-      "objectId": "507f1f77bcf86cd799439011",
-      "array": [1,2,3]
-    }
-    */
+    },
     findByID: function (req, res) {
         var data = new RegExp(req.params.data.toUpperCase())
         Beach
@@ -47,7 +96,7 @@ var self = {
         // would, for example, validate that a field is an email address.
         // In most cases, we would also reject the creation if invalid 
         // data is included, here we just ignore it.
-        if( _.has( req.body, 'beachID') && _.isString( req.body.beachID ) ) {
+        if( _.has( req.body, 'beachID') && _.isNumber( req.body.beachID ) ) {
             properties.beachID = req.body.beachID;
         }
         if( _.has( req.body, 'beachName') && _.isString( req.body.beachName ) ) {
@@ -115,7 +164,6 @@ var self = {
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
             var collections = [];
-            console.log(req.params.amount)
             var R = 6371; // RADIUS OF EARTH IN KM
                     for (i in beachCollection)
                     {
@@ -133,7 +181,6 @@ var self = {
                     }
                     for( i = 0; i < req.params.amount; i ++)
                     {
-
                         var index = distances.indexOf(Math.min.apply(Math, distances))
                         if (beachCollection[index] == undefined)
                         {
@@ -152,6 +199,8 @@ var self = {
 },
 
     retrieveOne: function( req, res ) {
+        console.log("RETRIEVE ONE")
+        console.log(req.params)
         Beach.findOne( { _id:req.params.id }, function( err, beach ) {
             if( null === err ) {
                 res.send( beach );

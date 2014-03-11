@@ -12,16 +12,13 @@ module.exports = function (mongoose) {
     var ObjectId = mongoose.Schema.ObjectId;
 
     var BeachSchema = new mongoose.Schema({
-        beachID: String,
+        beachID: Number,
         beachName: String,
         city: String,
         state: String,
         country: String,
         lat: Number,
         lon: Number,
-        lastUpdated: Date,
-        address: String,
-        groomed: String,
         created: Date
 
         // , mixed : Mixed // Not implemented because mixed types should be used sparingly, if at all.
