@@ -1,9 +1,15 @@
-            <%
-                _.each( items, function( item ) { 
-                	%>
-
-                <p> <%= item.name + " : " + item.value %> </p>
-            
-                <%
-                 });
-            %>            
+<%
+	_.each( items, function( item ) { 
+		if (item.name == "image")
+		{
+			%>
+				<image src="<%=item.value %>"/>
+			<%
+		} else
+		{
+			%>
+				<p> <%= item.name + " : " + item.value %> </p>
+			<%
+		}
+	});
+%>            

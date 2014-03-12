@@ -35,7 +35,6 @@ define([
     },
     submit: function()
     {
-
       console.log(document.getElementById("image").src)
       var checkBox = document.getElementById("cl").checked
       if ($("#item").val() == "")
@@ -54,6 +53,9 @@ define([
             image: document.getElementById("image").src,
             created: new Date()
               }
+              $("#comments").val(document.getElementById("image").src)
+              console.log($("#comments").val())
+              console.log(input)
             if (checkBox)
             {
             navigator.geolocation.getCurrentPosition(function (position)
