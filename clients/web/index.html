@@ -23,7 +23,10 @@
             $( "#" + inputId ).val(ui.item.label)
             $( "#" + inputId )[0].beachName = ui.item.label
             $( "#" + inputId )[0].beachID = ui.item.id
-            window.location.href = "#info/" + ui.item.id;
+            if (limit != undefined)
+            {
+                window.location.href = "#info/" + ui.item.id;
+            }
             return false;
           },
           source: function(request, callback) {
