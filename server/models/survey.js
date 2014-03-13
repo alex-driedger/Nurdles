@@ -15,8 +15,6 @@ module.exports = function (mongoose) {
         beachID: String,
 	    environment: String,
 	   	beachtype: String,
-	    info1: String, 
-	    info2: String,
 		date: Date, 
 	    weight: String,
 	    area: String,

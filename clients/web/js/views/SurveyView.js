@@ -20,27 +20,73 @@ define([
             'click .neg' : 'tickerneg',
             'click .weight' : 'updateWeight',
             'click .area' : 'updateArea',
-            'click .btn-submit' : 'submit'
+            'click .btn-submit' : 'submit',
+            'click #ucl' : 'getNearestBeach'
+        },
+        getNearestBeach: function (events) {
+            var items = [document.getElementById('country'),document.getElementById('city'),document.getElementById('state'),document.getElementById('beachname')]
+            var checkbox = document.getElementById("ucl")
+            if (checkbox.checked)
+            {
+                for (i in items)
+                {
+                    items[i].readOnly = true;
+                    items[i].value = "Please wait"
+                }
+                checkbox.disabled = true;
+                navigator.geolocation.getCurrentPosition(function (position)
+                {
+                beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
+                beaches.fetch( {
+                    success: function( collection, response, options) {
+                        checkbox.disabled = false;
+                        item = collection.models[0].attributes
+                        console.log(item)
+                        $( "#beachname")[0].beachName = item.beachName
+                        $( "#beachname")[0].beachID = item._id
+                        $( "#beachname").val(item.beachName);
+                        $( "#city").val(item.city);
+                        $( "#state").val(item.state);
+                        $("#country").val(item.country);
+                    },
+                    failure: function( collection, response, options) {
+                        $('#content').html("An error has occured.");                    
+                    }
+                });
+              })
+            } else
+            {
+                for ( i in items)
+                {
+                    items[i].readOnly = false;
+                    items[i].value = ""
+                }
+            }
         },
         updateWeight: function(events) {
-            var temp = events.target.innerText
-            events.target.innerText = $("#weightbtn")[0].innerText
-            $("#weightbtn")[0].innerText = temp;
+            var temp = events.target.innerHTML
+            events.target.innerHTML = $("#weightbtn")[0].innerHTML
+            $("#weightbtn")[0].innerHTML = temp;
         },
         updateArea: function(events) {
-            var temp = events.target.innerText
-            events.target.innerText = $("#areabtn")[0].innerText
-            $("#areabtn")[0].innerText = temp;
+            var temp = events.target.innerHTML
+            events.target.innerHTML = $("#areabtn")[0].innerHTML
+            $("#areabtn")[0].innerHTML = temp;
         },
         submit: function(events) {
-            var checkBox = document.getElementById("ucl").checked
-            if (($("#beachname")[0].beachName != $("#beachname").val().toUpperCase()) && !checkBox)
+            var checkbox = document.getElementById("ucl")
+            if (checkbox.disabled == true)
+            {
+                alert("Please wait")
+            } else
+            {
+            if ((($("#beachname")[0].beachName != $("#beachname").val().toUpperCase()) && !checkbox.checked))
             {
                 alert("Please select a beach from the dropdown list")
             } else
             {
             var items = []
-            for (i = 1; i <= 15; i++)
+            for (i = 1; i < 40; i++)
             {
                 val = $("#text"+i).val();
                 if (val != 0)
@@ -50,13 +96,21 @@ define([
             }
             var weight = $("#weightval").val()+""+$("#weightbtn")[0].innerText;
             var area = ($("#areaval").val()+""+$("#areabtn")[0].innerText )
+            var a = $('input[name=a]:checked')
+            var b = $('input[name=b]:checked')
+            if (a[0] != undefined)
+            {
+                var env = a[0].attributes.name.value
+            }
+            if (b[0] != undefined)
+            {
+                var method = b[0].attributes.name.value
+            }
             surveyModel = new SurveyModel.Model();
             var input = {
                 beachID:$("#beachname")[0].beachID,
-                environment: $("#environment").val(),
-                beachtype:$("#beachtype").val(),
-                info1:$("#info1").val(), 
-                info2:$("#info2").val(),
+                environment: env,
+                beachtype: method,
                 date:$("#date").val(), 
                 weight:weight,
                 area:area,
@@ -70,32 +124,7 @@ define([
                 hazardousDebris:$("#hazardousDebris").val(),
                 created: new Date()
             }
-            if (checkBox)
-            {
-            navigator.geolocation.getCurrentPosition(function (position)
-            {
-            beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
-            beaches.fetch( {
-                success: function( collection, response, options) {
-                    input.beachID = collection.models[0].attributes._id
-                    console.log(input.beachID)   
-                    surveyModel.save(input,{
-                    success: function (res) {
-                      //Backbone.history.navigate('', { trigger: true });
-                        console.log(res.toJSON());
-                    },
-                    error: function (err) {
-                        console.log("err")
-                    }
-                });
-                },
-                failure: function( collection, response, options) {
-                    $('#content').html("An error has occured.");                    
-                }
-            });
-          })
-            } else
-            {
+
             surveyModel.save(input,{
                     success: function (res) {
                       //Backbone.history.navigate('', { trigger: true });
@@ -105,7 +134,7 @@ define([
                         console.log("err")
                     }
                 });
-            }
+        }
         }
 
         },
@@ -234,6 +263,7 @@ define([
                         id++;
                     }
                 }
+                console.log(id)
             this.$el.html( _.template( survey, {items:items} ) );
             return this;
         },

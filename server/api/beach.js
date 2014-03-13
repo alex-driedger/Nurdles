@@ -53,6 +53,7 @@ var self = {
                         beachName:data[i][1].toUpperCase(),
                         city:data[i][2].toUpperCase(),
                         state:data[i][3].toUpperCase(),
+                        country:"THERE IS NO COUNTRY DATA YET",
                         lat:data[i][4],
                         lon:data[i][5],
                         created: new Date()
@@ -164,8 +165,9 @@ var self = {
     retrieveAll: function( req, res ) {
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
-                res.send(beachCollection)
-                //Beach.remove(function(err,res){console.log(res)})
+                console.log('hi')
+                //res.send(beachCollection)
+                Beach.remove(function(err,res){console.log(res)})
 
             } else {
                 res.send( 500, err );

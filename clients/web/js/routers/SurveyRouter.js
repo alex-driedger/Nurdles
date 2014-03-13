@@ -17,13 +17,15 @@ define([
         },
         
         index: function () {
-            console.log("ALL")
             surveys = new SurveyModel.Collection();
             surveys.fetch( {
                 success: function( collection, response, options) {              
                     var surveyView = new SurveyView({ collection: collection });
                     $('#content').html(surveyView.el);
-                    initializeAutocomplete(BeachModel, "beachname", "beachName")         
+                    initializeAutocomplete(BeachModel, "beachname", "beachName", Infinity, false, "city", "state", "country") 
+                    initializeAutocomplete(BeachModel, "city", "city", Infinity, "city", "state", "country")     
+                    initializeAutocomplete(BeachModel, "state", "state", Infinity, "city", "state", "country")    
+                    initializeAutocomplete(BeachModel, "country", "country", Infinity, "city", "state", "country")   
                 },
                 failure: function( collection, response, options) {
                     $('#content').html("An error has occured.");                    
@@ -32,7 +34,6 @@ define([
         },
 
         retrieveOne: function(id) {
-            console.log("NOT ALL")
             surveys = new SurveyModel.Collection( [], { surveyID: id } );
             surveys.fetch( {
                 success: function( collection, response, options) {              

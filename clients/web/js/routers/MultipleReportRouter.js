@@ -19,7 +19,7 @@ define([
                 success: function( collection, response, options) {              
                     var multipleReportView = new MultipleReportView({ collection: collection });
                     $('#content').html(multipleReportView.el); 
-                    initializeAutocomplete(BeachModel, "beachname", "beachName")            
+                    initializeAutocomplete(BeachModel, "beachname", "beachName")          
                 },
                 failure: function( collection, response, options) {
                     $('#content').html("An error has occured.");                    

@@ -17,13 +17,19 @@
         <div id="content"></div>
 
         <script>
-        function initializeAutocomplete (BeachModel, inputId, attribute, limit) {
+        function initializeAutocomplete (BeachModel, inputId, attribute, limit, redirect, city,state,country) {
           $( "#" + inputId ).autocomplete({
           select: function (event, ui) {
-            $( "#" + inputId ).val(ui.item.label)
-            $( "#" + inputId )[0].beachName = ui.item.label
-            $( "#" + inputId )[0].beachID = ui.item.id
-            if (limit != undefined)
+            $( "#beachname")[0].beachName = ui.item.beachName
+            $( "#beachname")[0].beachID = ui.item.id
+            if (city != undefined)
+            {
+                $( "#beachname").val(ui.item.beachName);
+                $( "#city").val(ui.item.city);
+                $( "#state").val(ui.item.state);
+                $("#country").val(ui.item.country);
+            }
+            if (redirect == true)
             {
                 window.location.href = "#info/" + ui.item.id;
             }
@@ -36,7 +42,7 @@
                 var availableTags = [];
                 for (i in collection.models)
                 {
-                    availableTags.push({label: collection.models[i].attributes.beachName, desc: "City: "+collection.models[i].attributes.city + " | State: "+collection.models[i].attributes.state, id: collection.models[i].attributes._id})
+                    availableTags.push({beachName: collection.models[i].attributes.beachName, city: collection.models[i].attributes.city, state: collection.models[i].attributes.state, country: collection.models[i].attributes.country, id: collection.models[i].attributes._id})
                 }
                 callback(availableTags)
                 },
@@ -49,7 +55,7 @@
         // Now change the ui-autocomplete data by calling renderItem on it. If you return none
         .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
           // I have no idea how appendTo(ul) works. (I'm assuming every item in dropdown is a ul)
-          return $( "<li>" ).append( "<a><span style='color: #3AF; text-transform: capitalize;'>" + item.label + "</span><br><span style='font-size: 0.75em'>" + item.desc + "</span></a>" ).appendTo( ul );
+          return $( "<li>" ).append( "<a><span style='color: #3AF; text-transform: capitalize;'>" + item.beachName + "</span><br><span style='font-size: 0.75em'>City:  " + item.city + " | State: " + item.state + "</span></a>" ).appendTo( ul );
           };
     }
         </script>

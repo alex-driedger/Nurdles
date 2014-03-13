@@ -15,7 +15,7 @@ define([
         index: function () {
             var searchView = new SearchView();
             $('#content').html(searchView.el);
-            initializeAutocomplete(BeachModel, "beachname", "beachName", 100)  
+            initializeAutocomplete(BeachModel, "beachname", "beachName", 100, true)  
         },
                 
     });

@@ -15,8 +15,6 @@ define([
 		    beachID: "",
 	        environment: "",
 	        beachtype: "",
-	        info1: "", 
-	        info2: "",
 	        date: "", 
 	        weight: "0",
 	        area: "0",

@@ -26,8 +26,7 @@ define([
                 maxBounds: [[-180, -180], [180, 180]]
             }).addControl(L.mapbox.geocoderControl('examples.map-9ijuk24y'));
             var features = [];
-            console.log(this.collection)
-             // Create a bunch of points
+             // Create current location point
                 features.push({
                         type: 'Feature',
                         geometry: {
@@ -41,6 +40,7 @@ define([
                             title: "You Are Here"
                         }
                     });
+                // create nearest 5 beaches
             for (i in this.collection.models) {
                     features.push({
                         type: 'Feature',
@@ -50,16 +50,35 @@ define([
                         },
                         properties: {
                             'marker-color': '#000',
-                            title: [this.collection.models[i].attributes.beachName]
+                            title:[this.collection.models[i].attributes.beachName],
+                            url: "#info/" + [this.collection.models[i].attributes._id]
                         }
                     });
             }
+            
+            // custom popup
+            map.featureLayer.on('layeradd', function(e) {
+    var marker = e.layer,
+        feature = marker.feature;
+
+    // Create custom popup content
+    if (feature.properties.url != undefined)
+    {
+        var popupContent =  '<a style="text-align: center; display: block;" href="' + feature.properties.url + '">'+feature.properties.title+'</a>';
+    } else
+    {
+        var popupContent = '<p>'+feature.properties.title+'</p>'
+    }
+    // http://leafletjs.com/reference.html#popup
+    marker.bindPopup(popupContent,{
+        closeButton: false
+    });
+});
               // Set the feature layers data so that it knows what featuers are on it
             map.featureLayer.setGeoJSON({
                 type: 'FeatureCollection',
                 features: features
             });
-            console.log(map.featureLayer)
             // Zoom/move the map to fit the markers
             map.fitBounds(map.featureLayer.getBounds())
              // On click, pan to the point

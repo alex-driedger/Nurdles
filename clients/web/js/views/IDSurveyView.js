@@ -20,6 +20,7 @@ define([
         render: function () {
             var temp = this.collection.models[0].attributes
             var items = []
+            console.log(temp)
             for (i in temp)
             {
                 if (i != "items")

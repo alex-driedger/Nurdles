@@ -127,6 +127,7 @@ input[type="range"]::-webkit-slider-thumb {
 .FT {
   width: calc(100% - 20px);
   margin-bottom: 10px;
+  margin-left: 10px;
 }
 .FT2 {
   margin-left: 20px;
@@ -159,6 +160,15 @@ a:hover {
 Survey Beach
 ************************************************************
 */
+.area,.weight {
+  display: block;
+  height: 44px;
+  font-size: 1.5em;
+  line-height: 44px;
+}
+.area:hover,.weight:hover {
+  background-color: #bbb;
+}
 .btn-surveyButtons {
   height: 75px;
   border-radius: 0%;
@@ -196,6 +206,7 @@ Survey Beach
   min-width: 300px;
   margin-bottom: 0px;
   margin-top: 10px;
+  margin-left: 10px;
 }
 .surveyText2 {
   display:inline-block;
