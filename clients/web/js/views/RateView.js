@@ -17,13 +17,53 @@ define([
     events: {
             // IF THE LOGIN BUTTON IS PRESSED, FIRE LOGIN FUNCTION
             'change #slider' : 'slider',
-            'click .btn-submit' : 'submit'
+            'click .btn-submit' : 'submit',
+            'click #checkbox' : 'getNearestBeach'
         },
-
+    getNearestBeach: function(events)
+    {
+            var beachname = document.getElementById('beachname')
+            var checkbox = document.getElementById("checkbox")
+            var submit = document.getElementById("submit")
+            if (checkbox.checked)
+            {
+                beachname.readOnly = true;
+                checkbox.disabled = true;
+                submit.disabled = true;
+                submit.innerText = "Please Wait"
+                navigator.geolocation.getCurrentPosition(function (position)
+                {
+                beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
+                beaches.fetch( {
+                    success: function( collection, response, options) {
+                        beachname.readOnly = false;
+                        checkbox.disabled = false;
+                        submit.disabled = false;
+                        submit.innerText = "Submit"
+                        item = collection.models[0].attributes
+                        $( "#beachname")[0].beachName = item.beachName
+                        $( "#beachname")[0].beachID = item._id
+                        $( "#beachname").val(item.beachName);
+                        $( "#city").val(item.city);
+                        $( "#state").val(item.state);
+                        $("#country").val(item.country);
+                    },
+                    failure: function( collection, response, options) {
+                        $('#content').html("An error has occured.");                    
+                    }
+                });
+              })
+            } else
+            {
+                    beachname.readOnly = false;
+                    beachname.value = ""
+            }
+    },
+    
     submit: function()
     {
-      var checkBox = document.getElementById("ucl").checked
-      if ($("#beachname")[0].beachName != $("#beachname").val().toUpperCase() && !checkBox)
+      var checkbox = document.getElementById("checkbox").checked
+      if ($("#beachname")[0].beachName != $("#beachname").val().toUpperCase() && !checkbox)
       {
         alert("You must select a location from the dropdown list")
       } else
@@ -34,14 +74,14 @@ define([
           rating: parseInt($("#slider").val()),
           created: new Date()
             }
-            if (checkBox)
+            if (checkbox)
             {
             navigator.geolocation.getCurrentPosition(function (position)
             {
             beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
             beaches.fetch( {
                 success: function( collection, response, options) {
-                    input.beachID = collection.models[0].attributes._id       
+                    input.beachID = collection.models[0].attributes._id
                     rateModel.save(input,{
                     success: function (res) {
                       //Backbone.history.navigate('', { trigger: true });

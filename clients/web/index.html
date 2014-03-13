@@ -20,11 +20,11 @@
         function initializeAutocomplete (BeachModel, inputId, attribute, limit, redirect, city,state,country) {
           $( "#" + inputId ).autocomplete({
           select: function (event, ui) {
+            $( "#beachname").val(ui.item.beachName);
             $( "#beachname")[0].beachName = ui.item.beachName
             $( "#beachname")[0].beachID = ui.item.id
             if (city != undefined)
             {
-                $( "#beachname").val(ui.item.beachName);
                 $( "#city").val(ui.item.city);
                 $( "#state").val(ui.item.state);
                 $("#country").val(ui.item.country);

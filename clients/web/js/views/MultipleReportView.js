@@ -18,8 +18,45 @@ define([
             'click .btn-surveyButtons' : 'expand',
             'click .pos' : 'tickerpos',
             'click .neg' : 'tickerneg',
-            'click .btn-submit' : 'submit'
+            'click .btn-submit' : 'submit',
+            'click #checkbox' : 'getNearestBeach'
         },
+    getNearestBeach: function(events)
+    {
+            var beachname = document.getElementById('beachname')
+            var checkbox = document.getElementById("checkbox")
+            var submit = document.getElementById("submit")
+            if (checkbox.checked)
+            {
+                beachname.readOnly = true;
+                checkbox.disabled = true;
+                submit.disabled = true;
+                submit.innerText = "Please Wait"
+                navigator.geolocation.getCurrentPosition(function (position)
+                {
+                beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
+                beaches.fetch( {
+                    success: function( collection, response, options) {
+                        beachname.readOnly = false;
+                        checkbox.disabled = false;
+                        submit.disabled = false;
+                        submit.innerText = "Submit"
+                        item = collection.models[0].attributes
+                        $( "#beachname")[0].beachName = item.beachName
+                        $( "#beachname")[0].beachID = item._id
+                        $( "#beachname").val(item.beachName);
+                    },
+                    failure: function( collection, response, options) {
+                        $('#content').html("An error has occured.");                    
+                    }
+                });
+              })
+            } else
+            {
+                    beachname.readOnly = false;
+                    beachname.value = ""
+            }
+    },
         // The difference between multiple report and normal report is that multiple report sends an array of objects while report sends an array with a string
         expand: function(events) {
             id = events.currentTarget.id
@@ -39,8 +76,7 @@ define([
         },
         submit: function()
         {
-            var checkBox = document.getElementById("ucl").checked
-            if ($("#beachname")[0].beachName != $("#beachname").val().toUpperCase() && !checkBox)
+            if ($("#beachname")[0].beachName != $("#beachname").val().toUpperCase())
             {
                 alert("You must enter a location")
             } else
@@ -63,31 +99,6 @@ define([
             comments: $("#comments").val(),
             created: new Date()
             }
-            if (checkBox)
-            {
-            navigator.geolocation.getCurrentPosition(function (position)
-            {
-            beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
-            beaches.fetch( {
-                success: function( collection, response, options) {
-                    input.beachID = collection.models[0].attributes._id       
-                    reportModel.save(input,{
-                        success: function (res) {
-                          //Backbone.history.navigate('', { trigger: true });
-                            console.log(res.toJSON());
-                        },
-                        error: function (err) {
-                            console.log("err")
-                        }
-                    });
-                    },
-                        failure: function( collection, response, options) {
-                            $('#content').html("An error has occured.");                    
-                    }
-                });
-            })
-            } else
-            {
             reportModel.save(input,{
                     success: function (res) {
                       //Backbone.history.navigate('', { trigger: true });
@@ -97,7 +108,6 @@ define([
                         console.log("err")
                     }
                 });
-            }
          }
         },
         tickerpos: function(events) {

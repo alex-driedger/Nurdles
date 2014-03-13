@@ -14,18 +14,12 @@ define([
         },
         
         index: function () {
-            //GET data
-            rates = new RateModel.Collection();
-            rates.fetch( {
-                success: function( collection, response, options) {              
-                    var rateView = new RateView({ collection: collection });
+          
+                    var rateView = new RateView();
                     $('#content').html(rateView.el);
                     initializeAutocomplete(BeachModel, "beachname", "beachName")
-                },
-                failure: function( collection, response, options) {
-                    $('#content').html("An error has occured.");                    
-                }
-            });
+
+
        },
                 
     });

@@ -20,26 +20,31 @@ define([
             'click .neg' : 'tickerneg',
             'click .weight' : 'updateWeight',
             'click .area' : 'updateArea',
-            'click .btn-submit' : 'submit',
-            'click #ucl' : 'getNearestBeach'
+            'click #submit' : 'submit',
+            'click #checkbox' : 'getNearestBeach'
         },
         getNearestBeach: function (events) {
             var items = [document.getElementById('country'),document.getElementById('city'),document.getElementById('state'),document.getElementById('beachname')]
-            var checkbox = document.getElementById("ucl")
+            var checkbox = document.getElementById("checkbox")
+            var submit = document.getElementById("submit")
             if (checkbox.checked)
             {
                 for (i in items)
                 {
                     items[i].readOnly = true;
-                    items[i].value = "Please wait"
+                    items[i].value = ""
                 }
                 checkbox.disabled = true;
+                submit.disabled = true;
+                submit.innerText = "Please Wait"
                 navigator.geolocation.getCurrentPosition(function (position)
                 {
                 beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
                 beaches.fetch( {
                     success: function( collection, response, options) {
                         checkbox.disabled = false;
+                        submit.disabled = false;
+                        submit.innerText = "Submit"
                         item = collection.models[0].attributes
                         console.log(item)
                         $( "#beachname")[0].beachName = item.beachName
@@ -74,13 +79,8 @@ define([
             $("#areabtn")[0].innerHTML = temp;
         },
         submit: function(events) {
-            var checkbox = document.getElementById("ucl")
-            if (checkbox.disabled == true)
             {
-                alert("Please wait")
-            } else
-            {
-            if ((($("#beachname")[0].beachName != $("#beachname").val().toUpperCase()) && !checkbox.checked))
+            if ($("#beachname")[0].beachName != $("#beachname").val().toUpperCase())
             {
                 alert("Please select a beach from the dropdown list")
             } else
