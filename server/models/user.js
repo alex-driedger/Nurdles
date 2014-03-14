@@ -18,6 +18,13 @@ module.exports = function (mongoose) {
             return callback(err, user);
         });
     };
+    UserSchema.statics.getAll = function ()
+    {
+        User.find(function(err, data)
+        {
+            console.log(data)
+        })
+    }
 
     var User = mongoose.model("User", UserSchema);
     

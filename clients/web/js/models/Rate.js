@@ -7,13 +7,6 @@ define([
 	var Rate = Backbone.Model.extend({
 		idAttribute: "_id",
 	  urlRoot: '/api/rate',
-	  /*defaults: function () {
-	  	var d = new Date()
-	    return {
-		    beachID: "",
-	        rating: 0,
-	    };
-	  },*/
 	});
 	var RateCollection = Backbone.Collection.extend({
 	  url: '/api/rate',
