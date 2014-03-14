@@ -13,7 +13,7 @@ define([
         },
         
         index: function () {
-            $('#content').html("LOADING");   
+            $('#content').html("<p style='display: block; font-size: 3em; text-align: center; line-height: 100vh;'>LOADING</p>");   
             navigator.geolocation.getCurrentPosition(function (position)
             {
             beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 5});
