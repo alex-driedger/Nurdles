@@ -33,7 +33,6 @@ var _self = {
         var User = mongooseInstance.model("User");
         User.register({username: "test" }, "test", function(err, user) { });
         User.register({username: "appsfactory" }, "appsfactory", function(err, user) { });
-                console.log(User.register.toString())
     },
 
     getMongoose: function() {

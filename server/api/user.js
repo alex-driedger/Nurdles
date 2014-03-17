@@ -4,24 +4,24 @@ var mongoose = require("mongoose")
 var self = {
     create: function(req, res) {
         var User = mongoose.model('User')
-        console.log("Hi")
-        console.log(req.body)
         User.createWithUsernameAndPassword(req.body.username, req.body.password, function(err, user) {
             res.send(err, user);
         });
         console.log(req)
     },
-    find: function(req, res) {
-        var User = mongoose.model('User')
-        console.log(User.getAll())
-    },
+
     loginSuccess: function(req, res) {
         var returnedUser = {};
         var user = req.user;
+
+        returnedUser.access = user.access;
+        returnedUser.bookmarks = user.bookmarks;
+        returnedUser.preferences = user.preferences;
+        returnedUser.settings = user.settings;
+        returnedUser.state = user.state;
         returnedUser.userId = user._id;
 
         res.statusCode = 200;
-        console.log(user)
         res.send(returnedUser);
     },
 

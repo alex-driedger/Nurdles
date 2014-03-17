@@ -32,7 +32,7 @@ define([
                 type: 'POST',
                 url: '/api/user/login',
                 data: {
-                    username: username,
+                    username: username.toLowerCase(),
                     password: password
                 },
                 success: function (data, status, xhr) {
