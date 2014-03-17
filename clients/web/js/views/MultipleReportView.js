@@ -81,27 +81,27 @@ define([
                 alert("You must enter a location")
             } else
             {
-          reportModel = new ReportModel.Model();
             var items = []
-            for (i = 0; i <= 15; i++)
+            for (i = 1; i < 40; i++)
             {
                 val = $("#text"+i).val();
-                name = $("#item_name"+i)[0].innerHTML
                 if (val != 0)
                 {
-                    items.push({name:name,value:val});
+                    items.push({name:$("#item_name"+i)[0].innerHTML,value:val});
                 }
             }
           var d = new Date();
           var input = {
             items:items,
-            beachID:$("#beachname").val(),
+            beachID: $("#beachname")[0].beachID, 
+            cleaned: document.getElementById("cleaned").checked,
             comments: $("#comments").val(),
             created: new Date()
             }
+            reportModel = new ReportModel.Model();
             reportModel.save(input,{
                     success: function (res) {
-                      //Backbone.history.navigate('', { trigger: true });
+                      Backbone.history.navigate('#', { trigger: true });
                         console.log(res.toJSON());
                     },
                     error: function (err) {

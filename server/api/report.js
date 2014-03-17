@@ -36,6 +36,9 @@ var self = {
         if( _.has( req.body, 'comments') && _.isString( req.body.comments ) ) {
             properties.comments = req.body.comments;
         }
+        if( _.has( req.body, 'cleaned') && _.isBoolean( req.body.cleaned ) ) {
+            properties.cleaned = req.body.cleaned;
+        }
         if( _.has( req.body, 'image') && _.isString( req.body.image ) ) {
             properties.image = req.body.image;
         }

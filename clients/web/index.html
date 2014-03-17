@@ -14,16 +14,17 @@
 </head>
 
 <body>
+    <p>Best approach to validate email is to send an validation link in an email to the user and have them select it before letting them in. </p>
         <div id="content"></div>
 
         <script>
-        function initializeAutocomplete (BeachModel, inputId, attribute, limit, redirect, city,state,country) {
+        function initializeAutocomplete (BeachModel, inputId, attribute, limit, redirect, returnLocation) {
           $( "#" + inputId ).autocomplete({
           select: function (event, ui) {
             $( "#beachname").val(ui.item.beachName);
             $( "#beachname")[0].beachName = ui.item.beachName
             $( "#beachname")[0].beachID = ui.item.id
-            if (city != undefined)
+            if (returnLocation == true)
             {
                 $( "#city").val(ui.item.city);
                 $( "#state").val(ui.item.state);
@@ -60,7 +61,7 @@
     }
         </script>
         
-		<script src="libs/jquery/jquery-2.0.3.js"></script>
+        <script src="libs/jquery/jquery-2.0.3.js"></script>
         <script src="libs/jquery-color/jquery-color.js"></script>
         <script src="libs/bootstrap/dist/js/bootstrap.js"></script>
         <script src="libs/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>

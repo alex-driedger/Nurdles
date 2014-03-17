@@ -3,14 +3,20 @@ define([
     'underscore',
     'backbone',
     'text!templates/homepage.html',
-    'jquerycookie'
-], function ($, _, Backbone, homepage, jQueryCookie) {
+    'jquerycookie',
+    'authentication'
+], function ($, _, Backbone, homepage, jQueryCookie, authentication) {
     
     var HomepageView = Backbone.View.extend({
 
         tagName   : 'div',
         className : '',
-        
+        events: {
+            'click .logout' : 'logout'
+        },
+        logout: function () {
+            authentication.logout()
+        },
         // redirect is used on successful create or update.
         initialize: function (options) {
             this.render();
