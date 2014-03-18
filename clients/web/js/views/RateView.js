@@ -86,6 +86,8 @@ define([
                     success: function (res) {
                       //Backbone.history.navigate('', { trigger: true });
                         console.log(res.toJSON());
+                        alert("Your rating has been submitted")
+                        Backbone.history.navigate('#', { trigger: true });
                     },
                     error: function (err) {
                         console.log("err")

@@ -5,7 +5,8 @@ define([
         'models/Rate',
         'models/Beach',
         'views/RateView',
-], function ( $, _, Backbone, RateModel, BeachModel, RateView ) {
+        'authentication'
+], function ( $, _, Backbone, RateModel, BeachModel, RateView, Authentication ) {
 
     var RateRouter = Backbone.Router.extend({
         
@@ -14,14 +15,12 @@ define([
         },
         
         index: function () {
-          
-                    var rateView = new RateView();
-                    $('#content').html(rateView.el);
-                    initializeAutocomplete(BeachModel, "beachname", "beachName")
-
-
-       },
-                
+            Authentication.authorize(function () {
+                var rateView = new RateView();
+                $('#content').html(rateView.el);
+                initializeAutocomplete(BeachModel, "beachname", "beachName")
+            })
+        },     
     });
     
     return RateRouter;

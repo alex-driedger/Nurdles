@@ -2,6 +2,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'routers/SignUpRouter',
+    'routers/LoginRouter',
     'routers/HomepageRouter',    
     'routers/RateRouter',
     'routers/ReportRouter',
@@ -11,8 +13,9 @@ define([
     'routers/BeachRouter',
     'routers/MapRouter',
     'routers/SearchRouter',
+    'routers/AdminRouter',
     'jquerycookie'
-], function ($, _, Backbone, HomepageRouter, RateRouter, ReportRouter, MultipleReportRouter, SurveyRouter, InfoRouter, BeachRouter, MapRouter, SearchRouter, jQueryCookie) {
+], function ($, _, Backbone, SignUpRouter, LoginRouter, HomepageRouter, RateRouter, ReportRouter, MultipleReportRouter, SurveyRouter, InfoRouter, BeachRouter, MapRouter, SearchRouter, AdminRouter, jQueryCookie) {
     
     var app = {
         
@@ -23,6 +26,7 @@ define([
         
         createRouters: function () {
             // Core Homepage routers:
+            new SignUpRouter();
             new HomepageRouter();
             new MapRouter();
             new RateRouter();         
@@ -32,6 +36,8 @@ define([
             new InfoRouter();
             new BeachRouter();
             new SearchRouter();
+            new AdminRouter()
+            new LoginRouter();
             Backbone.history.start();
 
         },

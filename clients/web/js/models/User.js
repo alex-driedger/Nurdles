@@ -17,12 +17,14 @@ define([
 
     var UserCollection = Backbone.Collection.extend({
         url: '/api/user',
-        
-        // Define the model used when creating instances from objects and arrays.
         model: User,
-        
-        // Define the sort order used when returning collections.
-        comparator: 'username'
+        comparator: 'username',
+        initialize: function( models, options ) {
+            if (options != undefined)
+            {
+                this.url = "api/user/" + options.username
+            }
+        }
     });
     
     return {

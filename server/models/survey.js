@@ -14,7 +14,7 @@ module.exports = function (mongoose) {
     var SurveySchema = new mongoose.Schema({
         beachID: String,
 	    environment: String,
-	   	beachtype: String,
+	   	collectionMethod: String,
 		date: Date, 
 	    weight: String,
 	    area: String,

@@ -44,6 +44,11 @@ define([
                     success: function( collection, response, options) {
                         checkbox.disabled = false;
                         submit.disabled = false;
+                for (i in items)
+                {
+                    items[i].readOnly = false;
+                    items[i].value = ""
+                }
                         submit.innerText = "Submit"
                         item = collection.models[0].attributes
                         console.log(item)
@@ -96,21 +101,23 @@ define([
             }
             var weight = $("#weightval").val()+""+$("#weightbtn")[0].innerText;
             var area = ($("#areaval").val()+""+$("#areabtn")[0].innerText )
-            var a = $('input[name=a]:checked')
-            var b = $('input[name=b]:checked')
-            if (a[0] != undefined)
+            a = $('input[name=a]:checked')[0]
+            b = $('input[name=b]:checked')[0]
+            env = ""
+            method = ""
+            if (a != undefined)
             {
-                var env = a[0].attributes.name.value
+                env = ($('#L_' + a.id)[0].innerText);
             }
-            if (b[0] != undefined)
+            if (b != undefined)
             {
-                var method = b[0].attributes.name.value
+                method = ($('#L_' + $('input[name=b]:checked')[0].id)[0].innerText);
             }
             surveyModel = new SurveyModel.Model();
             var input = {
                 beachID:$("#beachname")[0].beachID,
                 environment: env,
-                beachtype: method,
+                collectionMethod: method,
                 date:$("#date").val(), 
                 weight:weight,
                 area:area,
@@ -127,8 +134,10 @@ define([
 
             surveyModel.save(input,{
                     success: function (res) {
-                      //Backbone.history.navigate('', { trigger: true });
+                        //Backbone.history.navigate('', { trigger: true });
+                        alert("Your survey has been submitted")
                         console.log(res.toJSON());
+                        Backbone.history.navigate('#', { trigger: true });
                     },
                     error: function (err) {
                         console.log("err")

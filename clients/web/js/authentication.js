@@ -7,19 +7,35 @@ define([
     
     var Authentication = {
         
-        authorize: function (callback) {
+        authorize: function (callback, admin) {
             if (!window.user) {
-                console.log ("Unauthorized User");
-
+                console.log("Unauthorized - Please sign in")
                 return Backbone.history.navigate('login', { trigger: true });
+            }
+            if (admin == true)
+            {
+                if (window.user.admin == false)
+                {
+                    console.log("Unauthorized - You are not an admin")
+                    return Backbone.history.navigate('login',{trigger: true});
+                }
             }
             return callback();
         },
         
         login: function (user) {
+            console.log(user)
             window.user = user;
             $.cookie('user', user);
-            Backbone.history.navigate('', { trigger: true });
+            if (user.admin == false)
+            {
+                console.log("NOT AN ADMIN")
+                Backbone.history.navigate('', { trigger: true });
+            } else
+            {
+                console.log("ADMIN")
+                Backbone.history.navigate('admin', {trigger: true});
+            }
         },
         
         logout: function () {

@@ -6,16 +6,7 @@ define([
 
 	var Report = Backbone.Model.extend({
 		idAttribute: "_id",
-	  urlRoot: '/api/report',
-	  /*defaults: function () {
-	  	var d = new Date()
-	    return {
-
-		    items: "",
-          	beachID: "",
-          	comments: "",
-	    };
-	  },*/
+		urlRoot: '/api/report',
 	});
 	var ReportCollection = Backbone.Collection.extend({
 	  url: '/api/report/',

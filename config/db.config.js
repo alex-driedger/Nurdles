@@ -31,7 +31,7 @@ var _self = {
 
     seed: function(db) {
         var User = mongooseInstance.model("User");
-        User.register({username: "test" }, "test", function(err, user) { });
+        User.register({username: "admin", admin: true}, "admin", function(err, user) { });
         User.register({username: "appsfactory" }, "appsfactory", function(err, user) { });
     },
 

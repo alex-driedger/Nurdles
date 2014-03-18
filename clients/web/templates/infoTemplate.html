@@ -1,5 +1,5 @@
 <div class="border">
-    <a type="button" class="btn back" id="Name" href="#status"><span class="glyphicon glyphicon-chevron-left"></span><span><%=beachInfo.beachName%></span></a>
+    <a type="button" class="btn back" id="Name" onClick="history.go(-1);return true;"><span class="glyphicon glyphicon-chevron-left"></span><span><%=beachInfo.beachName%></span></a>
 	    <h4 >Address: <%=beachInfo.address%>, <%=beachInfo.city%>, <%=beachInfo.state%>, <%=beachInfo.country%></h4>
       <h4 >Rating : <%=ratesHTML[0].rating%></h4> 
       <h4 >Last-Updated : <%=beachInfo.created%></h4>

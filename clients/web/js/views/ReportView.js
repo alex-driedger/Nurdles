@@ -81,7 +81,7 @@ define([
         alert("You must select a location from the dropdown list")
       } else 
       {
-        reportModel = new ReportModel.Model();
+        reportModel = new ReportModel.Model([],{stuff: "stuff"});
         var input = {
             items:[{name: $("#item").val(), value: 1}],
             beachID:$("#beachname")[0].beachID,
@@ -95,6 +95,8 @@ define([
                     success: function (res) {
                       //Backbone.history.navigate('', { trigger: true });
                         console.log(res.toJSON());
+                        alert("Your report has been submitted")
+                        Backbone.history.navigate('#', { trigger: true });
                     },
                     error: function (err) {
                         console.log("err")

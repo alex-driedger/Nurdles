@@ -6,8 +6,8 @@ var strategies = {
 
 function useLocalStrategy(app) {
     var User = app.db.model("User");
-    app.passport.use(new LocalStrategy(User.authenticate()));
 
+    app.passport.use(new LocalStrategy(User.authenticate()));
     app.passport.serializeUser(User.serializeUser());
     app.passport.deserializeUser(User.deserializeUser());
 }

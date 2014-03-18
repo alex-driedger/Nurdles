@@ -1,27 +1,85 @@
 var path = require("path");
 var user = require(path.join(__dirname, "..", "models", "user"));
 var mongoose = require("mongoose")
+var nodemailer = require("nodemailer");
 var self = {
     create: function(req, res) {
         var User = mongoose.model('User')
-        User.createWithUsernameAndPassword(req.body.username, req.body.password, function(err, user) {
-            res.send(err, user);
-        });
-        console.log(req)
+        var username = req.body.username.toLowerCase()
+        var atpos=username.indexOf("@");
+        var dotpos=username.lastIndexOf(".");
+        if (atpos<1 || dotpos<atpos+2 || dotpos+2>=username.length)
+        {
+            res.send({ObjectId: "", message:"Invalid Email"})
+        } else
+        {
+            // The reason I am doing it this way rather than admin = req.body.admin is because its probably more secure than sending a 
+            // admin=false on the client side for normal users
+            admin = false;
+            if (req.body.admin != undefined)
+            {
+                admin = true
+            }
+            User.register(new User({ username: username, admin: admin }), req.body.password, function (err, user) {
+                if (err)
+                {
+                    console.log(err)
+                    res.send(err)
+                } else
+                {
+                    // This method will send an email to nurdlestestmail@gmail.com
+                    /*var smtpTransport = nodemailer.createTransport("SMTP",{
+                        service: "Gmail",
+                        auth: {
+                            user: "nurdlestestmail@gmail.com",
+                            pass: "Nurdles1"
+                        }
+                    });
+                    var mailOptions = {
+                        from: "Nurdles <nurdlestestmail@gmail.com>", // sender address
+                        //  Send it to "username" 
+                        to: "nurdlestestmail@gmail.com, nurdlestestmail@gmail.com", // list of receivers
+                        subject: "USER CREATED - " + username, // Subject line
+                        text: "User created under username " + username, // plaintext body
+                        html: "<b>User created under username "+ username + "</b>" // html body
+                    }
+                    smtpTransport.sendMail(mailOptions, function(error, response){
+                        if(error){
+                            console.log(error);
+                        }else{
+                            console.log("Message sent: " + response.message);
+                        }
+                    })*/
+                    res.send(user)
+                }
+            });
+        }
     },
 
+    find: function(req, res) {
+        var User = mongoose.model('User')
+    User.find(function(err, data)
+        {
+            res.send(data)
+        })
+    },
+    upgrade: function(req, res) {
+        var User = mongoose.model('User')
+
+                User.update({username: req.params.username}, {admin: true}, function (err, num, data)
+                {
+                    res.send(data)
+                })
+
+    },
     loginSuccess: function(req, res) {
         var returnedUser = {};
         var user = req.user;
-
-        returnedUser.access = user.access;
-        returnedUser.bookmarks = user.bookmarks;
-        returnedUser.preferences = user.preferences;
-        returnedUser.settings = user.settings;
-        returnedUser.state = user.state;
         returnedUser.userId = user._id;
+        returnedUser.admin = user.admin
 
         res.statusCode = 200;
+        console.log(user)
         res.send(returnedUser);
     },
 

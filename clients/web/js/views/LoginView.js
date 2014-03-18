@@ -27,7 +27,6 @@ define([
             
             var username = $('input[name=username]').val();
             var password = $('input[name=password]').val();
-            
             $.ajax({
                 type: 'POST',
                 url: '/api/user/login',
@@ -36,8 +35,7 @@ define([
                     password: password
                 },
                 success: function (data, status, xhr) {
-                    console.log(data)
-                    Authentication.login( data.userId );
+                    Authentication.login(data);
                 },
                 error: function (xhr, status, error) {
                     var $message = $('#login-message');

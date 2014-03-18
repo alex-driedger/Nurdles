@@ -32,8 +32,8 @@ var self = {
         if( _.has( req.body, 'environment') && _.isString( req.body.environment ) ) {
             properties.environment = req.body.environment;
         }
-        if( _.has( req.body, 'beachtype') && _.isString( req.body.beachtype ) ) {
-            properties.beachtype = req.body.beachtype;
+        if( _.has( req.body, 'collectionMethod') && _.isString( req.body.collectionMethod ) ) {
+            properties.collectionMethod = req.body.collectionMethod;
         }
         if( _.has( req.body, 'date') ) {
             tmpDate = new Date( req.body.date );
@@ -125,7 +125,7 @@ var self = {
                 } else {
                     // Update existing document with properties from the request,
                     // or with the existing value if the property is not in the request.
-                    survey.beachtype = req.body.beachtype || survey.beachtype; 
+                    survey.collectionMethod = req.body.collectionMethod || survey.collectionMethod; 
                     survey.date = req.body.date || survey.date;
                     survey.weight = req.body.weight || survey.weight;
                     survey.area = req.body.area || survey.area;

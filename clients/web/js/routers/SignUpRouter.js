@@ -3,8 +3,7 @@ define([
         'underscore',
         'backbone',
         'views/SignUpView',
-        'authentication'
-], function ( $, _, Backbone, SignUpView, Authentication) {
+], function ( $, _, Backbone, SignUpView) {
 
     var SignUpRouter = Backbone.Router.extend({
         
