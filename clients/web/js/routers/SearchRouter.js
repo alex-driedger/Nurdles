@@ -4,8 +4,7 @@ define([
         'backbone',
         'models/Beach',
         'views/SearchView',
-        'authentication'
-], function ( $, _, Backbone, BeachModel, SearchView, Authentication ) {
+], function ( $, _, Backbone, BeachModel, SearchView ) {
 
     var SearchRouter = Backbone.Router.extend({
         
@@ -14,11 +13,9 @@ define([
         },
         
         index: function () {
-            Authentication.authorize(function () {
-                var searchView = new SearchView();
-                $('#content').html(searchView.el);
-                initializeAutocomplete(BeachModel, "beachname", "beachName", 100, true)  
-            })
+            var searchView = new SearchView();
+            $('#content').html(searchView.el);
+            initializeAutocomplete(BeachModel, "beachname", "beachName", 100, true)  
         },
                 
     });

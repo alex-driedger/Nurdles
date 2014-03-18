@@ -17,13 +17,13 @@
         <div id="content"></div>
 
         <script>
-        function initializeAutocomplete (BeachModel, inputId, attribute, limit, redirect, returnLocation) {
+        function initializeAutocomplete (BeachModel, inputId, attribute, limit, redirect, city,state,country) {
           $( "#" + inputId ).autocomplete({
           select: function (event, ui) {
             $( "#beachname").val(ui.item.beachName);
             $( "#beachname")[0].beachName = ui.item.beachName
             $( "#beachname")[0].beachID = ui.item.id
-            if (returnLocation == true)
+            if (city != undefined)
             {
                 $( "#city").val(ui.item.city);
                 $( "#state").val(ui.item.state);
@@ -60,7 +60,7 @@
     }
         </script>
         
-        <script src="libs/jquery/jquery-2.0.3.js"></script>
+		<script src="libs/jquery/jquery-2.0.3.js"></script>
         <script src="libs/jquery-color/jquery-color.js"></script>
         <script src="libs/bootstrap/dist/js/bootstrap.js"></script>
         <script src="libs/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>

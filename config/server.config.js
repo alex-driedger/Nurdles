@@ -97,7 +97,7 @@ var _self = {
         app.get('/', function(req, res) {
             lactate.serve('clients/web/index.html', req, res)
         })
-        app.get("/api/user", router.user.find)
+
         app.post("/api/user", router.user.create);
         app.get('/api/user/checkAuth', ensureAuthenticated, function(req, res) { 
             res.send({

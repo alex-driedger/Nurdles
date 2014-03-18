@@ -44,11 +44,6 @@ define([
                     success: function( collection, response, options) {
                         checkbox.disabled = false;
                         submit.disabled = false;
-                                        for (i in items)
-                {
-                    items[i].readOnly = false;
-                    items[i].value = ""
-                }
                         submit.innerText = "Submit"
                         item = collection.models[0].attributes
                         console.log(item)

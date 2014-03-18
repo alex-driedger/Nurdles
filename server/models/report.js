@@ -14,7 +14,6 @@ module.exports = function (mongoose) {
     var ReportSchema = new mongoose.Schema({
         items: Array,
         beachID: String,
-        cleaned: Boolean,
         comments: String,
         rating: Number,
         image: String,

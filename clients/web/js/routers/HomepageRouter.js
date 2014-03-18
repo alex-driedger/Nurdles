@@ -3,8 +3,7 @@ define([
         'underscore',
         'backbone',
         'views/HomepageView',
-        'authentication'
-], function ( $, _, Backbone, HomepageView, Authentication) {
+], function ( $, _, Backbone, HomepageView ) {
 
     var HomepageRouter = Backbone.Router.extend({
         
@@ -13,10 +12,8 @@ define([
         },
         
         index: function () {
-            Authentication.authorize(function () {
             var homepageView = new HomepageView();
             $('#content').html(homepageView.el);
-            });
         },
                 
     });

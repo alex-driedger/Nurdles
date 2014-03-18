@@ -81,7 +81,7 @@ define([
         alert("You must select a location from the dropdown list")
       } else 
       {
-        reportModel = new ReportModel.Model([],{stuff: "stuff"});
+        reportModel = new ReportModel.Model();
         var input = {
             items:[{name: $("#item").val(), value: 1}],
             beachID:$("#beachname")[0].beachID,

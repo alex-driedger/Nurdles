@@ -21,7 +21,7 @@
     "connect": "*",
     "uid2": "*",
     "less": "*",
-    "nodemailer": "*",
+    "xlsx": "*",
     "excel": "*",
     "underscore": "~1.5.2",
     "lactate": "~0.13.12",
