@@ -18,6 +18,7 @@ define([
   		return 0; // equal
 	  }, 
 	  	 initialize: function( models, options ) {
+	  	 	console.log(options)
 		  	if (options != undefined)
 		  	{
 		  		if (options.beachID != undefined)

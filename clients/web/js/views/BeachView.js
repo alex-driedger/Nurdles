@@ -16,7 +16,6 @@ define([
     // redirect is used on successful create or update.
     events: {
             // IF THE LOGIN BUTTON IS PRESSED, FIRE LOGIN FUNCTION
-            'click .btn-submit' : 'submit',
             'click .btn-view' : 'switchView'
         },
 
@@ -24,20 +23,6 @@ define([
     {
       $("#scroll1").toggle()
       $("#scroll2").toggle()
-    },
-    submit: function()
-    {
-                                         //************
-      beachModel = new BeachModel.Model();
-      beachModel.save({
-                success: function (res) {
-                  //Backbone.history.navigate('', { trigger: true });
-                    console.log(res.toJSON());
-                },
-                error: function (err, err2, err3) {
-                    console.log(err)
-                }
-            });
     },
     initialize: function (options) {
       this.collection = options.collection

@@ -6,9 +6,24 @@
         <input type="text" id="password" class="form-control FT" placeholder="Password"/>
         <button id="createAdmin" class="btn btn-primary FT">Create Administrator</button>
  </div>
-<a type="button" class="btn btn-surveyButtons top_button" id="b">Upgrade to Admin</a>
+<a type="button" class="btn btn-surveyButtons top_button" id="b">Change Administrator Privelages</a>
 <div class="block" id="block_b" >
         <input type="text" id="username2" class="form-control FT" placeholder="Email"/>
-        <button id="upgradeToAdmin" class="btn btn-primary FT">Upgrade to Administrator</button>
+        <button id="upgradeToAdmin" class="btn btn-primary changeAdmin">Add Administrator Privelages</button>
+        <button id="removeAdmin" class="btn btn-primary changeAdmin" >Remove Administrator Privelages</button>
  </div>
+ <a type="button" class="btn btn-surveyButtons top_button" id="c">Add Beaches</a>
+<div class="block" id="block_c" >
+</div>
+ <a type="button" class="btn btn-surveyButtons top_button" id="d">Remove Beaches</a>
+<div class="block" id="block_d" >
+</div>
+ <a type="button" class="btn btn-surveyButtons top_button" id="e">Edit Beaches</a>
+<div class="block" id="block_e" >
+</div>
+ <a type="button" class="btn btn-surveyButtons top_button" id="f">Import Beaches</a>
+<div class="block" id="block_f" >
+	<p style="width: 90%; text-align: center; margin-left: 5%;">Importing beaches imports data from the excel. If a beach exists in the excel file that is not in the database, it will create a beach. If a beach exists in the file and the database, it will do nothing. If a beach exists in the database but not the excel file, it will also do nothing. This prevents beaches that are present in the database but not the file from being deleted</p>
+	<button id="import" class="btn btn-primary FT">Import Beaches</button>
+</div>
  <div style="border-top: 5px solid black;"/>

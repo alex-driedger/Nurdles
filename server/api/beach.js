@@ -61,6 +61,7 @@ var self = {
                     Beach.findOne({beachID: data[i][0]}, function ( err, beachCollection ) {
                         if( null === err ) {
                             // Push the result of the search to updates (If it is not found, it's null)
+                            console.log(beachCollection)
                             updates.push(beachCollection)
                             // At the end of the loop, callback
                             if (updates.length == data.length-1)

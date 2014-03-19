@@ -4,9 +4,10 @@ define([
     'backbone',
     'text!templates/adminTemplate.html',
     'jquerycookie',
+    'authentication',
     'models/User',
-    'authentication'
-], function ($, _, Backbone, adminTemplate, jQueryCookie, UserModel, authentication) {
+    'models/Beach',
+], function ($, _, Backbone, adminTemplate, jQueryCookie, authentication, UserModel, BeachModel) {
     
     var AdminTemplateView = Backbone.View.extend({
 
@@ -15,28 +16,50 @@ define([
         events: {
             'click .btn-surveyButtons' : 'expand',
             'click #createAdmin' : 'createAdmin',
-            'click #upgradeToAdmin' : 'upgradeToAdmin',
+            'click .changeAdmin' : 'changeAdmin',
+            'click #import' : 'import',
             'click #logout' : 'logout'
         },
-
+        import: function()
+        {
+          beachModel = new BeachModel.Model();
+          beachModel.save({
+                    success: function (res) {
+                        console.log(res.toJSON());
+                    },
+                    error: function (err, err2, err3) {
+                        console.log(err)
+                    }
+                });
+        },
         logout: function () {
             authentication.logout()
         },
-        upgradeToAdmin: function() {
+        changeAdmin: function(event) {
             username = document.getElementById("username2").value
             if (username != "")
             {
-                users = new UserModel.Collection([], {username: username});
+                admin = false
+                if (event.target.attributes.id.value == "upgradeToAdmin")
+                {
+                    admin = true
+                }
+                users = new UserModel.Collection([], {username: username,  admin: admin});
                 users.fetch( {
                     success: function( collection, response, options) {
                     attributes = collection.models[0].attributes
-                    console.log(attributes)
-                    if (attributes.updatedExisting)
-                    {
-                        alert("User was upgraded")
-                    } else
+                    if (attributes.updatedExisting == false)
                     {
                         alert("User not found")
+                    } else
+                    {
+                        if (attributes.admin == true)
+                        {
+                            alert("User " + attributes.username + " is now an admin")
+                        } else
+                        {
+                            alert("User " + attributes.username + " is no longer an admin")
+                        }
                     }
                     },
                     failure: function( collection, response, options) {

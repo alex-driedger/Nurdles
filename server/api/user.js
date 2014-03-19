@@ -63,12 +63,18 @@ var self = {
             res.send(data)
         })
     },
-    upgrade: function(req, res) {
+    changePrivelages: function(req, res) {
         var User = mongoose.model('User')
-
-                User.update({username: req.params.username}, {admin: true}, function (err, num, data)
-                {
-                    res.send(data)
+                User.findOne({username: req.params.username}, function (err, data) {
+                    if (data == null)
+                    {
+                        res.send({updatedExisting: false})
+                    } else
+                    {
+                        data.admin = req.params.admin
+                        data.save()
+                        res.send(data)
+                    }
                 })
 
     },

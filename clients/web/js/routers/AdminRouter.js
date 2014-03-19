@@ -13,10 +13,10 @@ define([
         },
         
         index: function () {
-            Authentication.authorize(function () {
+            //Authentication.authorize(function () {
             var adminView = new AdminView();
             $('#content').html(adminView.el);
-            }, true);
+            //}, true);
         },
                 
     });
