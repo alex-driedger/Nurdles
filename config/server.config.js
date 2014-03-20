@@ -127,7 +127,7 @@ var _self = {
         app.get( "/api/report/:id", router.report.retrieveOne );
 
         app.post( "/api/beach", router.beach.prepareDatabase );
-        app.get( "/api/beach", router.beach.deleteAll );
+        app.get( "/api/beach", router.beach.retrieveAll );
         app.post( "/api/beach/create", router.beach.create)
         app.get( "/api/beach/lat=:lat/lon=:lon/amount=:amount", router.beach.getClosest );
         app.get( "/api/beach/:id/recent/surveys", router.beach.recentSurveys );
