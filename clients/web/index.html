@@ -17,6 +17,19 @@
         <div id="content"></div>
 
         <script>
+        // FUNCTION TO CHECK IF THE INPUT IS A NUMBER
+// Receives an onkeypress event
+function validate(event) {
+// This is this keycode of the key that was pressed
+  var key = event.keyCode;
+  // 48-57 is the keycode for 0-9 (for this keyboard atleast)
+
+  if (!(key >= 48 && key <= 57))
+  {
+    // If the key is not between 48-57 prevent the default action (Default action is inputting the character)
+    event.preventDefault()
+  }
+}
         function initializeAutocomplete (BeachModel, inputId, attribute, limit, redirect, returnLocation) {
           $( "#" + inputId ).autocomplete({
           select: function (event, ui) {

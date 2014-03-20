@@ -22,14 +22,40 @@ var self = {
                 console.log("ERROR");
             } else
             {
-            function callback (updates)
+                // CREATE A LIST OF EVERY BEACH IN THE FILE
+                var properties = []
+                var updates = []
+                // i = 0 would be the headers, we don't want the headers
+                for (i = 1; i < data.length; i++)
                 {
-                    // If updates[i] is null, then it means it doesn't exist so create it
-                    for (i in updates)
+                    properties.push(
                     {
-                        if (updates[i] == null)
+                        beachID:data[i][0].trim(),
+                        beachName:data[i][1].toUpperCase(),
+                        city:data[i][2].toUpperCase(),
+                        state:data[i][3].toUpperCase(),
+                        country:"N/A",
+                        lat:data[i][4],
+                        lon:data[i][5],
+                        created: new Date()
+                    })
+                }
+                // OBTAIN THE LIST OF EVERY BEACH
+                Beach.find(function(err, data)
+                {
+                    var id1 = []
+                    // We want to compare ID so extract the ID and store it in a var
+                    for ( i in data)
+                    {
+                        id1.push(data[i].beachID)
+                    }
+                    // For every beachID in the excel file
+                    for (i in properties)
+                    {
+                        // If the beachID does not exist in the database
+                        if (id1.indexOf(parseInt(properties[i].beachID)) == -1)
                         {
-                            // var properties is defined after this function sooo it might be safer to pass it in as a variable
+                            // save it
                             beach = new Beach( properties[i] );
                             beach.save( function ( err, beach, numberAffected ) {
                                 if( null === err ) {
@@ -41,39 +67,7 @@ var self = {
                             });
                         }
                     }
-                }
-                var properties = []
-                var updates = []
-                // i = 0 would be the headers, we don't want the headers
-                for (i = 1; i < data.length; i++)
-                {
-                    properties.push(
-                    {
-                        beachID:data[i][0],
-                        beachName:data[i][1].toUpperCase(),
-                        city:data[i][2].toUpperCase(),
-                        state:data[i][3].toUpperCase(),
-                        country:"N/A",
-                        lat:data[i][4],
-                        lon:data[i][5],
-                        created: new Date()
-                    })
-                    Beach.findOne({beachID: data[i][0]}, function ( err, beachCollection ) {
-                        if( null === err ) {
-                            // Push the result of the search to updates (If it is not found, it's null)
-                            console.log(beachCollection)
-                            updates.push(beachCollection)
-                            // At the end of the loop, callback
-                            if (updates.length == data.length-1)
-                            {
-                                callback(updates)
-                            }
-                        } else {
-                            res.send( 500, err );
-                        }
-                    });
-                    // Check if this beach already exists 
-                }
+                })
             }
         });
 
@@ -112,15 +106,27 @@ var self = {
 
     create: function( req, res ) {
            properties = {};
-
+           Beach.find(function(err, beachCollection)
+           {
+            var ID = []
+            for(i in beachCollection)
+            {
+                ID.push(beachCollection[i].beachID)
+            }
+            if (ID != [])
+            {
+                ID = (Math.max.apply(Math,ID))+1
+            } else
+            {
+                ID = 1;
+            }
+            console.log(ID)
         // Simple validation example, checks that a property 
         // exists and is of the right type. Deeper validation 
         // would, for example, validate that a field is an email address.
         // In most cases, we would also reject the creation if invalid 
         // data is included, here we just ignore it.
-        if( _.has( req.body, 'beachID') && _.isNumber( req.body.beachID ) ) {
-            properties.beachID = req.body.beachID;
-        }
+        properties.beachID = ID;
         if( _.has( req.body, 'beachName') && _.isString( req.body.beachName ) ) {
             properties.beachName = req.body.beachName;
         }
@@ -145,15 +151,8 @@ var self = {
         if( _.has( req.body, 'country') && _.isString( req.body.country ) ) {
             properties.country = req.body.country;
         }
-        if( _.has( req.body, 'lastUpdated') && _.isString( req.body.lastUpdated ) ) {
-            properties.lastUpdated = req.body.lastUpdated;
-        }
-        if( _.has( req.body, 'address') && _.isString( req.body.address) ) {
-            properties.address = req.body.address;
-        }
 
         beach = new Beach( properties );
-
         beach.save( function ( err, beach, numberAffected ) {
             if( null === err ) {
                 res.send( beach );
@@ -161,21 +160,31 @@ var self = {
                 res.send( 500, err );
             }
         });
+    })
     },
 
     retrieveAll: function( req, res ) {
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
-                console.log('hi')
-                //res.send(beachCollection)
-                Beach.remove(function(err,res){console.log(res)})
+                console.log(beachCollection)
+                res.send(beachCollection)
+                //Beach.remove(function(err,res){console.log(res)})
 
             } else {
                 res.send( 500, err );
             }
         });
     },
-    getClosest: function (req, res) {
+        deleteAll: function( req, res ) {
+        Beach.find( function ( err, beachCollection ) {
+            if( null === err ) {
+                Beach.remove(function(err,res){console.log(res)})
+
+            } else {
+                res.send( 500, err );
+            }
+        });
+    },    getClosest: function (req, res) {
         // THIS IS OFF http://www.movable-type.co.uk/scripts/latlong.html 
         // THIS IS THE HAVERSINE FORMULA USED TO CALCULATE THE DISTANCE BETWEEN 2 POINTS ON A MAP
         /** Converts numeric degrees to radians */
@@ -214,7 +223,6 @@ var self = {
                         temp = beachCollection[index]
                         temp.distance = distances[index]
                         temp.beachID = "ID"
-                        console.log(temp.distance)
                         collections.push(beachCollection[index])
                         collections[i].distance = distances[index]
                         beachCollection.splice(index,1)
@@ -240,44 +248,50 @@ var self = {
 
     update: function( req, res ) {
         // First find the existing document.
-        Beach.findOne( { _id:req.params.id }, function( err, beach ) {
-            if( null === err ) {
-                // Test that the document was found.
-                if( null === beach ) {
-                    // Document was not found, send 404 - Not Found
-                    res.send( 404 );
-                } else {
-                    // Update existing document with properties from the request,
-                    // or with the existing value if the property is not in the request.
-                    beach.beachID = req.body.beachID|| beach.beachID;
-                    beach.beachName = req.body.beachName || beach.beachName;
-                    beach.created = req.body.created || beach.created;
-                    beach.lat = req.body.lat || beach.lat;
-                    beach.lastUpdated = req.body.lastUpdated || beach.lastUpdated;
-                    beach.lon = req.body.lon || beach.lon;
-                    beach.city = req.body.city || beach.city;
-                    beach.state = req.body.state || beach.state;
-                    beach.country = req.body.country || beach.country;
-
-                    beach.save( function ( err, updatedBeach ) {
-                        if( null === err ) {
-                            res.send( updatedBeach );
-                        } else {
-                            res.send( 500, err );
-                        }                
-                    });                    
-                }
-            } else {
-                // An error occured retrieving the document.
-                res.send( 500, err );
+        properties = {}
+            if (req.body.beachName != '')
+            {
+                properties.beachName = req.body.beachName
             }
-        });
+             if (req.body.city != '')
+            {
+                properties.city = req.body.city
+            }
+             if (req.body.state != '')
+            {
+                properties.state = req.body.state
+            }
+             if (req.body.country != '')
+            {
+                properties.country = req.body.country
+            }
+             if (req.body.lat != null)
+            {
+                properties.lat = req.body.lat
+            }
+            if (req.body.lon != null)
+            {
+                properties.lon = req.body.lon
+            }
+        Beach.update({_id: req.params.id}, properties,  function ( err, numAffected, updatedBeach ) {
+            if( null === err ) {
+                Beach.findOne({_id: req.params.id}, function (err, newBeach)
+                {
+                    console.log(newBeach)
+                    res.send(newBeach)
+                })
+            } else {
+                console.log(err)
+                res.send( 500, err );
+            }                
+        });       
     },    
 
-    delete: function( req, res ) {
+    destroy: function( req, res ) {
+        console.log('hi')
          Beach.remove( { _id:req.params.id }, function( err) {
             if( null === err ) {
-                res.send( 200 );
+                res.send({message: "Success"});
             } else {
                 res.send( 500, err );
             }

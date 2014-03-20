@@ -3,12 +3,23 @@
 ADMIN
 ************************************************************
 */
-.changeAdmin {
+.twoButtons {
   width: calc(50% - 15px);
   margin-top: 10px;
   margin-left: 10px;
+  margin-bottom: 10px;
   padding: 0;
 }
+.btn-admin-beach {
+  border-radius: 0%;
+  border: none;
+  font-size: 1.75em;
+  width: 100%;
+  border-bottom-width: 5px;
+  border-bottom-color: black;
+  border-bottom-style: solid;
+}
+
 /*
 ************************************************************
 LOGIN

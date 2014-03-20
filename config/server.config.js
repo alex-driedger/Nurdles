@@ -128,6 +128,7 @@ var _self = {
 
         app.post( "/api/beach", router.beach.prepareDatabase );
         app.get( "/api/beach", router.beach.retrieveAll );
+        app.post( "/api/beach/create", router.beach.create)
         app.get( "/api/beach/lat=:lat/lon=:lon/amount=:amount", router.beach.getClosest );
         app.get( "/api/beach/:id/recent/surveys", router.beach.recentSurveys );
         app.get( "/api/beach/:id/recent/reports", router.beach.recentReports );
@@ -135,7 +136,8 @@ var _self = {
         app.get( "/api/beach/:id", router.beach.retrieveOne );
         app.get( "/api/beach/id/:attribute/:data", router.beach.find );
         app.get( "/api/beach/id/:attribute/:data/:limit", router.beach.find );
-        app.delete( "/api/beach/:id", router.beach.delete );
+        app.get( "/api/beach/destroy/:id", router.beach.destroy );
+        app.post("/api/beach/update/:id", router.beach.update)
         /*app.post("/fn", router.beach.findByName);
         app.post("/fa", router.beach.findByAddress);
         app.post("/fg", router.beach.findByGeolocation);

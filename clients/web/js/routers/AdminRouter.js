@@ -3,8 +3,9 @@ define([
         'underscore',
         'backbone',
         'views/AdminView',
-        'authentication'
-], function ( $, _, Backbone, AdminView, Authentication) {
+        'authentication',
+        'models/Beach'
+], function ( $, _, Backbone, AdminView, Authentication, BeachModel) {
 
     var AdminRouter = Backbone.Router.extend({
         
@@ -13,10 +14,18 @@ define([
         },
         
         index: function () {
-            //Authentication.authorize(function () {
-            var adminView = new AdminView();
-            $('#content').html(adminView.el);
-            //}, true);
+            Authentication.authorize(function () {
+                beaches = new BeachModel.Collection();
+                beaches.fetch( {
+                    success: function( collection, response, options) {
+                        var adminView = new AdminView({ collection: collection });
+                        $('#content').html(adminView.el);                
+                    },
+                    failure: function( collection, response, options) {
+                        $('#content').html("An error has occured.");                    
+                    }
+                });
+            }, true);
         },
                 
     });
