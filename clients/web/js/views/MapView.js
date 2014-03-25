@@ -42,6 +42,19 @@ define([
                     });
                 // create nearest 5 beaches
             for (i in this.collection.models) {
+                var color = "#000000"
+                var status = this.collection.models[i].attributes.lastRating
+                console.log(status)
+                if (status == 0)
+                {
+                    color = "#347C17"
+                } else if (status == 1)
+                {
+                    color = "#FBB917"
+                } else if (status == 2)
+                {
+                    color = "#E42217"
+                }
                     features.push({
                         type: 'Feature',
                         geometry: {
@@ -49,13 +62,12 @@ define([
                             coordinates: [this.collection.models[i].attributes.lon, this.collection.models[i].attributes.lat]
                         },
                         properties: {
-                            'marker-color': '#000',
-                            title:[this.collection.models[i].attributes.beachName],
+                            'marker-color': color,
+                            title:this.collection.models[i].attributes.beachName,
                             url: "#info/" + [this.collection.models[i].attributes._id]
                         }
                     });
             }
-            
             // custom popup
             map.featureLayer.on('layeradd', function(e) {
     var marker = e.layer,
@@ -90,6 +102,22 @@ define([
             L.mapbox.featureLayer().on('ready', function() {
                 map.fitBounds(L.mapbox.featureLayer().getBounds());
             });
+            $('#search').keyup(search);
+            function search() {
+    // get the value of the search input field
+    var searchString = $('#search').val().toLowerCase();
+
+    map.featureLayer.setFilter(showState);
+
+    // here we're simply comparing the 'state' property of each marker
+    // to the search string, seeing whether the former contains the latter.
+    function showState(feature) {
+        console.log(feature.properties)
+        return feature.properties.title
+            .toLowerCase()
+            .indexOf(searchString) !== -1;
+    }
+}
         },
 
         render: function () {

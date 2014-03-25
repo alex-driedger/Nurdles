@@ -137,11 +137,12 @@ define([
         },
         import: function()
         {
+            that = this
           beachModel = new BeachModel.Model();
           beachModel.save(null, {
                     success: function (res) {
-                        console.log("Hi")
-                        location.reload()
+                        console.log(res)
+                        console.log(that.collection)
                     },
                     error: function (err, err2, err3) {
                         console.log(err)

@@ -316,6 +316,7 @@ Survey Beach
 .unround-left {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  padding: 0;
 }
 .dropdown-menu > li > a {
   height: 44px;
@@ -337,6 +338,9 @@ Beach Info
   border-top: none;
   color: #3AF;
   text-align: left;
+}
+.btn-infoButtons:hover {
+  color: #0971BC;
 }
 .surveyLink {
   border-radius: 0%;

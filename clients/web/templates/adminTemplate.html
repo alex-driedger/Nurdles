@@ -3,7 +3,7 @@
 <a type="button" class="btn btn-surveyButtons top_button" style="border-top: none;" id="a">Create Admin</a>
 <div class="block" id="block_a" >
         <input type="text" id="username" class="form-control FT" placeholder="Email"/>
-        <input type="text" id="password" class="form-control FT" placeholder="Password"/>
+        <input type="password" id="password" class="form-control FT" placeholder="Password"/>
         <button id="createAdmin" class="btn btn-primary FT">Create Administrator</button>
  </div>
 <a type="button" class="btn btn-surveyButtons top_button" id="b">Change Administrator Privelages</a>
@@ -34,7 +34,7 @@ _.each(data, function( model ) {
         <span style="color: black; font-size: 75%; display: inline-block;"><span id="city_<%= model.attributes._id %>"><%= model.attributes.city %></span>, </span>
         <span style="color: black; font-size: 75%; display: inline-block;"><span id="state_<%= model.attributes._id %>"><%= model.attributes.state %></span>, </span>
         <span style="color: black; font-size: 75%; display: inline-block;"><span id="country_<%= model.attributes._id %>"><%= model.attributes.country %></span></span>
-        <span style="color: black; font-size: 75%; display: block; ">Coordinates: (<span id="lat_<%= model.attributes._id %>"><%= model.attributes.lat %></span>, <span id="lon_<%= model.attributes._id %>"><%= model.attributes.lon %></span>)</span>
+        <span style="color: black; font-size: 75%; display: block; ">(<span id="lat_<%= model.attributes._id %>"><%= model.attributes.lat %></span>, <span id="lon_<%= model.attributes._id %>"><%= model.attributes.lon %></span>)</span>
     </div>
     <div style="display: inline-block;float: right; width: 200px">
         <button id="delete_<%= model.attributes._id %>"class="btn btn-primary changeBeach" style="display: block; margin: 10px; width: 180px;"  >Delete Beach</button>

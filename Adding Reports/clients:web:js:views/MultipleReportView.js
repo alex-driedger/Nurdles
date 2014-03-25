@@ -2,38 +2,33 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'text!templates/survey.html',
-    'models/Survey',
+    'text!templates/multipleReport.html',
+    'models/Report',
     'models/Beach',
     'jquerycookie'
-], function ($, _, Backbone, survey, SurveyModel, BeachModel, jQueryCookie) {
+], function ($, _, Backbone, multipleReport, ReportModel, BeachModel,  jQueryCookie) {
     
-    var SurveyView = Backbone.View.extend({
+    var MultipleReportView = Backbone.View.extend({
 
         tagName   : 'div',
-        className : 'survey',
-
+        className : 'report',
+        
         events: {
             // IF THE LOGIN BUTTON IS PRESSED, FIRE LOGIN FUNCTION
             'click .btn-surveyButtons' : 'expand',
             'click .pos' : 'tickerpos',
             'click .neg' : 'tickerneg',
-            'click .weight' : 'updateWeight',
-            'click .area' : 'updateArea',
-            'click #submit' : 'submit',
+            'click .btn-submit' : 'submit',
             'click #checkbox' : 'getNearestBeach'
         },
-        getNearestBeach: function (events) {
-            var items = [document.getElementById('country'),document.getElementById('city'),document.getElementById('state'),document.getElementById('beachname')]
+    getNearestBeach: function(events)
+    {
+            var beachname = document.getElementById('beachname')
             var checkbox = document.getElementById("checkbox")
             var submit = document.getElementById("submit")
             if (checkbox.checked)
             {
-                for (i in items)
-                {
-                    items[i].readOnly = true;
-                    items[i].value = ""
-                }
+                beachname.readOnly = true;
                 checkbox.disabled = true;
                 submit.disabled = true;
                 submit.innerText = "Please Wait"
@@ -42,22 +37,14 @@ define([
                 beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
                 beaches.fetch( {
                     success: function( collection, response, options) {
+                        beachname.readOnly = false;
                         checkbox.disabled = false;
                         submit.disabled = false;
-                for (i in items)
-                {
-                    items[i].readOnly = false;
-                    items[i].value = ""
-                }
                         submit.innerText = "Submit"
                         item = collection.models[0].attributes
-                        console.log(item)
                         $( "#beachname")[0].beachName = item.beachName
                         $( "#beachname")[0].beachID = item._id
                         $( "#beachname").val(item.beachName);
-                        $( "#city").val(item.city);
-                        $( "#state").val(item.state);
-                        $("#country").val(item.country);
                     },
                     failure: function( collection, response, options) {
                         $('#content').html("An error has occured.");                    
@@ -66,36 +53,32 @@ define([
               })
             } else
             {
-                for ( i in items)
-                {
-                    items[i].readOnly = false;
-                    items[i].value = ""
-                }
+                    beachname.readOnly = false;
+                    beachname.value = ""
             }
-        },
-        updateWeight: function(events) {
-            var temp = events.target.innerHTML
-            events.target.innerHTML = $("#weightbtn")[0].innerHTML
-            $("#weightbtn")[0].innerHTML = temp;
-        },
-        updateArea: function(events) {
-            var temp = events.target.innerHTML
-            console.log(events.target.innerHTML)
-            console.log($("#weightbtn")[0].innerHTML)
-            events.target.innerHTML = $("#areabtn")[0].innerHTML
-            $("#areabtn")[0].innerHTML = temp;
-        },
-        submit: function(events) {
+    },
+        // The difference between multiple report and normal report is that multiple report sends an array of objects while report sends an array with a string
+        expand: function(events) {
+            id = events.currentTarget.id
+            console.log(id)
+            console.log($("#block_"+id).is(":visible"))
+                if ($("#block_"+id).is(":visible"))
             {
+                $("#block_"+id).slideUp(750)
+                $("#"+id).animate({color: "black"},750)
+
+            } else
+            {
+                $("#block_"+id).slideDown(750)
+                $("#"+id).animate({color: "#3AF"}, 750)
+            }
+
+        },
+        submit: function()
+        {
             if ($("#beachname")[0].beachName != $("#beachname").val().toUpperCase())
             {
-                alert("Please select a beach from the dropdown list")
-            } else if ($('input[name=a]:checked')[0] == undefined || $('input[name=b]:checked')[0] == undefined)
-            {
-                alert("Please fill in beach description data")
-            } else if ($("#weightval").val() == "" || $("#areaval").val() == "" || $("#volunteersval").val() == "" ) 
-            {
-                alert("Please provide a cleanup summary")
+                alert("You must enter a location")
             } else
             {
             var items = []
@@ -107,65 +90,26 @@ define([
                     items.push({name:$("#item_name"+i)[0].innerHTML,value:val});
                 }
             }
-                env = ($('#L_' + $('input[name=a]:checked')[0].id)[0].innerText);
-                type = ($('#L_' + $('input[name=b]:checked')[0].id)[0].innerText);
-            var weight = $("#weightval").val()+$("#weightbtn")[0].innerText;
-            var area = ($("#areaval").val()+$("#areabtn")[0].innerText )
-            surveyModel = new SurveyModel.Model();
-            var input = {
-                beachID:$("#beachname")[0].beachID,
-                environment: env,
-                beachType: type,
-                date:$("#date").val(), 
-                weight:weight,
-                area:area,
-                volunteers:parseInt($("#volunteersval").val()),
-                bags:parseInt($("#bagsval").val()),
-                notes:$("#notes").val(),
-                items: items,
-                localConcern:$("#localConcern").val(),
-                peculiarItems:$("#peculiarItems").val(),
-                injuredAnimals:$("#injuredAnimals").val(),
-                hazardousDebris:$("#hazardousDebris").val(),
-                created: new Date()
+          var d = new Date();
+          var input = {
+            items:items,
+            beachID: $("#beachname")[0].beachID, 
+            cleaned: document.getElementById("cleaned").checked,
+            comments: $("#comments").val(),
+            created: new Date()
             }
-
-            surveyModel.save(input,{
+            reportModel = new ReportModel.Model();
+            reportModel.save(input,{
                     success: function (res) {
-                        //Backbone.history.navigate('', { trigger: true });
-                        alert("Your survey has been submitted")
+                        alert("Your report has been submitted")
+                      Backbone.history.navigate('#', { trigger: true });
                         console.log(res.toJSON());
-                        Backbone.history.navigate('#', { trigger: true });
                     },
                     error: function (err) {
                         console.log("err")
                     }
                 });
-        }
-        }
-
-        },
-        expand: function(events) {
-            id = events.currentTarget.id
-            if ($("#block_"+id).is(":visible"))
-            {
-                $("#block_"+id).slideUp(750)
-                if (id.length == 1)
-                {
-                    $("#"+id).animate({color: "black"},750)
-                } else
-                {
-                    $("#"+id).animate({color: "gray"},750)
-                }
-
-            } else
-            {
-                $('body').animate({
-                    scrollTop: $("#"+id).offset().top
-                },750)
-                    $("#"+id).animate({color: "#3AF"}, 750)
-                    $("#block_"+id).slideDown(750 )
-            }
+         }
         },
         tickerpos: function(events) {
             $("#text"+events.currentTarget.id).val(Number($("#text"+events.currentTarget.id).val())+1);
@@ -176,19 +120,14 @@ define([
                 $("#text"+events.currentTarget.id).val(Number($("#text"+events.currentTarget.id).val())-1);
             }
         },
-
-        replaceField: function(events) {
-            $("#text"+events.target.parentElement.className).val(events.currentTarget.innerText);
-        },
         // redirect is used on successful create or update.
         initialize: function (options) {
             this.render();
         },
-        
         render: function () {
             var items =[
                 {header: "Most Likely To Find Items",
-                id: "items_a",
+                id: "a",
                 data:
                 [
                     { name: "Cigarette Butts"},
@@ -202,7 +141,7 @@ define([
                     { name: "Forks, Knives, Spoons"}
                 ]},
                 {header: "Packaging Materials",
-                id: "items_b",
+                id: "b",
                 data:
                     [
                     { name: "Motor Oil/ Lubricant Bottles"},
@@ -213,7 +152,7 @@ define([
                     { name: "Tobacco Packaging/ Wrap"}
                 ]},
                 {header: "Personal Hygiene",
-                id: "items_c",
+                id: "c",
                 data:
                 [
                     { name: "Condoms"},
@@ -231,7 +170,7 @@ define([
                     { name: "Straws/Stirrers"}
                 ]},
                 {header: "Fishing Gear",
-                id: "items_d",
+                id: "d",
                 data:
                 [
                     { name: "Crab/Lobster/Fish Traps"},
@@ -243,7 +182,7 @@ define([
 
                 ]},
                 {header: "Other Trash",
-                id: "items_e",
+                id: "e",
                 data:
                 [
                     { name: "Balloons"},
@@ -252,7 +191,7 @@ define([
 
                 ]},
                 {header: "Tiny Trash",
-                id: "items_f",
+                id: "f",
                 data:
                 [
                     { name: "Plastic Pieces < 2.5cm"},
@@ -270,13 +209,12 @@ define([
                         id++;
                     }
                 }
-                console.log(id)
-            this.$el.html( _.template( survey, {items:items} ) );
+            this.$el.html( _.template( multipleReport, {items:items} ) );
             return this;
-        },
+        },        
         
     });
     
-    return SurveyView;
+    return MultipleReportView;
     
 });

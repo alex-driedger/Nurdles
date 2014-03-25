@@ -109,12 +109,18 @@ var _self = {
         app.put( "/api/survey/:id", router.survey.update );
         app.delete( "/api/survey/:id", router.survey.delete );
         app.get("/api/survey/:id", router.survey.retrieveOne);
+        
+        app.post("/api/report", router.report.create);
+        app.get("/api/report", router.report.retrieveAll);
+        app.delete( "/api/report/:id", router.report.delete );
+        app.get( "/api/report/:id", router.report.retrieveOne );
 
         app.post( "/api/beach", router.beach.prepareDatabase );
         app.get( "/api/beach", router.beach.retrieveAll );
         app.post( "/api/beach/create", router.beach.create)
         app.get( "/api/beach/lat=:lat/lon=:lon/amount=:amount", router.beach.getClosest );
         app.get( "/api/beach/:id/recent/surveys", router.beach.recentSurveys );
+        app.get( "/api/beach/:id/recent/reports", router.beach.recentReports );
         app.get( "/api/beach/:id/recent/rates", router.beach.recentRates );
         app.get( "/api/beach/:id", router.beach.retrieveOne );
         app.get( "/api/beach/id/:attribute/:data", router.beach.find );

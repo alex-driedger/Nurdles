@@ -36,7 +36,10 @@ define([
 	  	 initialize: function( models, options ) {
 		  	if (options != undefined)
 		  	{
-		  		if (options.update != undefined)
+		  		if (options.request != undefined)
+		  		{
+		  			this.url = '/api/beach/forecast/'+options.lat+"/"+options.lon
+		  		} else if (options.update != undefined)
 		  		{
 		  			this.url = '/api/beach/update/' + options.id
 		  		} else if (options.beachID != undefined)

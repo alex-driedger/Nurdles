@@ -6,6 +6,8 @@ define([
     'routers/LoginRouter',
     'routers/HomepageRouter',    
     'routers/RateRouter',
+    'routers/ReportRouter',
+    'routers/MultipleReportRouter',
     'routers/SurveyRouter',
     'routers/InfoRouter',
     'routers/BeachRouter',
@@ -13,7 +15,7 @@ define([
     'routers/SearchRouter',
     'routers/AdminRouter',
     'jquerycookie'
-], function ($, _, Backbone, SignUpRouter, LoginRouter, HomepageRouter, RateRouter, SurveyRouter, InfoRouter, BeachRouter, MapRouter, SearchRouter, AdminRouter, jQueryCookie) {
+], function ($, _, Backbone, SignUpRouter, LoginRouter, HomepageRouter, RateRouter, ReportRouter, MultipleReportRouter, SurveyRouter, InfoRouter, BeachRouter, MapRouter, SearchRouter, AdminRouter, jQueryCookie) {
     
     var app = {
         
@@ -28,6 +30,8 @@ define([
             new HomepageRouter();
             new MapRouter();
             new RateRouter();         
+            new ReportRouter();
+            new MultipleReportRouter();
             new SurveyRouter();
             new InfoRouter();
             new BeachRouter();
