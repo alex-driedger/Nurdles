@@ -23,10 +23,12 @@ define([
 	  		if (options.sendLink != undefined)
 	  		{
 	  			this.url = '/api/survey/link/' + options.surveyID+"/username/" + options.username
-	  		} else if (options.surveyID != undefined)
+	  		} 
+	  		else if (options.surveyID != undefined)
 	  		{
 	  			this.url = '/api/survey/'+options.surveyID
-	  		} else
+	  		} 
+	  		else
 	  		{
 	  			this.url = 'api/survey/'+options.id+"/"+options.start+"/"+options.end
 	  		}
