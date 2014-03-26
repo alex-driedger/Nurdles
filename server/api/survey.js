@@ -1,5 +1,7 @@
 var path = require( 'path' ),
     mongoose = require( 'mongoose' ),
+    survey = require( path.join( __dirname, '..', 'models', 'survey' ) ),
+    Survey = mongoose.model( 'Survey' ),
     _ = require( 'underscore' );
     beach = require( path.join( __dirname, '..', 'models', 'beach' ) ),
     Beach = mongoose.model('Beach')
