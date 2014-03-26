@@ -12,7 +12,7 @@ define([
         tagName   : 'div',
         className : '',
         events:  {
-            'click #searchByCoord' : 'searchByLocation'
+            'click #search' : 'searchByLocation'
         },
         searchByLocation: function (options) {
                 beaches = new BeachModel.Collection([], {lat: $('#lat').val(),lon: $('#lon').val(), amount: 1});

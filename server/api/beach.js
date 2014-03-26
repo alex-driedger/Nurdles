@@ -4,12 +4,13 @@ var path = require( 'path' ),
     Beach = mongoose.model( 'Beach' ),
     survey = require( path.join( __dirname, '..', 'models', 'survey' ) ),
     Survey = mongoose.model( 'Survey' ),
+    report = require( path.join( __dirname, '..', 'models', 'report' ) ),
+    Report = mongoose.model( 'Report' ),
     rate = require( path.join( __dirname, '..', 'models', 'rate' ) ),
     Rate = mongoose.model( 'Rate' ),
     parseXlsx = require('excel'),
     beachDataPath = path.join(__dirname, '..', 'beachData', 'Ontario_Beaches_Sample_List.xlsx'),
     _ = require( 'underscore' );
-    https = require('https')
 
 var self = {
     prepareDatabase: function (req, res)
@@ -21,41 +22,14 @@ var self = {
                 console.log("ERROR");
             } else
             {
-                // CREATE A LIST OF EVERY BEACH IN THE FILE
-                var properties = []
-                var updates = []
-                // i = 0 would be the headers, we don't want the headers
-                for (i = 1; i < data.length; i++)
+            function callback (updates)
                 {
-                    properties.push(
+                    // If updates[i] is null, then it means it doesn't exist so create it
+                    for (i in updates)
                     {
-                        beachID:data[i][0].trim(),
-                        beachName:data[i][1].toUpperCase(),
-                        city:data[i][2].toUpperCase(),
-                        state:data[i][3].toUpperCase(),
-                        country:"N/A",
-                        lat:data[i][4],
-                        lon:data[i][5],
-                        created: new Date(),
-                        lastUpdated: new Date()
-                    })
-                }
-                // OBTAIN THE LIST OF EVERY BEACH
-                Beach.find(function(err, data)
-                {
-                    var id1 = []
-                    // We want to compare ID so extract the ID and store it in a var
-                    for ( i in data)
-                    {
-                        id1.push(data[i].beachID)
-                    }
-                    // For every beachID in the excel file
-                    for (i in properties)
-                    {
-                        // If the beachID does not exist in the database
-                        if (id1.indexOf(parseInt(properties[i].beachID)) == -1)
+                        if (updates[i] == null)
                         {
-                            // save it
+                            // var properties is defined after this function sooo it might be safer to pass it in as a variable
                             beach = new Beach( properties[i] );
                             beach.save( function ( err, beach, numberAffected ) {
                                 if( null === err ) {
@@ -67,7 +41,38 @@ var self = {
                             });
                         }
                     }
-                })
+                }
+                var properties = []
+                var updates = []
+                // i = 0 would be the headers, we don't want the headers
+                for (i = 1; i < data.length; i++)
+                {
+                    properties.push(
+                    {
+                        beachID:data[i][0],
+                        beachName:data[i][1].toUpperCase(),
+                        city:data[i][2].toUpperCase(),
+                        state:data[i][3].toUpperCase(),
+                        country:"N/A",
+                        lat:data[i][4],
+                        lon:data[i][5],
+                        created: new Date()
+                    })
+                    Beach.findOne({beachID: data[i][0]}, function ( err, beachCollection ) {
+                        if( null === err ) {
+                            // Push the result of the search to updates (If it is not found, it's null)
+                            updates.push(beachCollection)
+                            // At the end of the loop, callback
+                            if (updates.length == data.length-1)
+                            {
+                                callback(updates)
+                            }
+                        } else {
+                            res.send( 500, err );
+                        }
+                    });
+                    // Check if this beach already exists 
+                }
             }
         });
 
@@ -106,27 +111,15 @@ var self = {
 
     create: function( req, res ) {
            properties = {};
-           Beach.find(function(err, beachCollection)
-           {
-            var ID = []
-            for(i in beachCollection)
-            {
-                ID.push(beachCollection[i].beachID)
-            }
-            if (ID != [])
-            {
-                ID = (Math.max.apply(Math,ID))+1
-            } else
-            {
-                ID = 1;
-            }
-            console.log(ID)
+
         // Simple validation example, checks that a property 
         // exists and is of the right type. Deeper validation 
         // would, for example, validate that a field is an email address.
         // In most cases, we would also reject the creation if invalid 
         // data is included, here we just ignore it.
-        properties.beachID = ID;
+        if( _.has( req.body, 'beachID') && _.isNumber( req.body.beachID ) ) {
+            properties.beachID = req.body.beachID;
+        }
         if( _.has( req.body, 'beachName') && _.isString( req.body.beachName ) ) {
             properties.beachName = req.body.beachName;
         }
@@ -134,18 +127,6 @@ var self = {
             tmpDate = new Date( req.body.created );
             if( _.isDate( tmpDate ) ) {
                 properties.created = tmpDate;
-            }
-        }
-        if( _.has( req.body, 'lastUpdated') ) {
-            tmpDate = new Date( req.body.lastUpdated );
-            if( _.isDate( tmpDate ) ) {
-                properties.lastUpdated = tmpDate;
-            }
-        }
-        if( _.has( req.body, 'lastUpdated') && _.has(req.body,'created') ) {
-            tmpDate = new Date( req.body.created );
-            if( _.isDate( tmpDate ) ) {
-                properties.lastUpdated = tmpDate;
             }
         }
         if( _.has( req.body, 'lat') && _.isNumber( req.body.lat ) ) {
@@ -163,8 +144,15 @@ var self = {
         if( _.has( req.body, 'country') && _.isString( req.body.country ) ) {
             properties.country = req.body.country;
         }
+        if( _.has( req.body, 'lastUpdated') && _.isString( req.body.lastUpdated ) ) {
+            properties.lastUpdated = req.body.lastUpdated;
+        }
+        if( _.has( req.body, 'address') && _.isString( req.body.address) ) {
+            properties.address = req.body.address;
+        }
 
         beach = new Beach( properties );
+
         beach.save( function ( err, beach, numberAffected ) {
             if( null === err ) {
                 res.send( beach );
@@ -172,33 +160,22 @@ var self = {
                 res.send( 500, err );
             }
         });
-    })
     },
 
     retrieveAll: function( req, res ) {
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
-                console.log(beachCollection)
-                res.send(beachCollection)
-                //Beach.remove(function(err,res){console.log(res)})
-
-            } else {
-                res.send( 500, err );
-            }
-        });
-    },
-        deleteAll: function( req, res ) {
-        Beach.find( function ( err, beachCollection ) {
-            if( null === err ) {
+                console.log('hi')
+                //res.send(beachCollection)
                 Beach.remove(function(err,res){console.log(res)})
 
             } else {
                 res.send( 500, err );
             }
         });
-    },    
+    },
     getClosest: function (req, res) {
-        // THIS IS FROM http://www.movable-type.co.uk/scripts/latlong.html 
+        // THIS IS OFF http://www.movable-type.co.uk/scripts/latlong.html 
         // THIS IS THE HAVERSINE FORMULA USED TO CALCULATE THE DISTANCE BETWEEN 2 POINTS ON A MAP
         /** Converts numeric degrees to radians */
         if (typeof(Number.prototype.toRad) === "undefined") {
@@ -236,45 +213,24 @@ var self = {
                         temp = beachCollection[index]
                         temp.distance = distances[index]
                         temp.beachID = "ID"
+                        console.log(temp.distance)
                         collections.push(beachCollection[index])
                         collections[i].distance = distances[index]
                         beachCollection.splice(index,1)
                         distances.splice(index,1)
                     }
-                    var surveys = []
-                    var rates = []
                     res.send(collections)
             } else {
                 res.send( 500, err );
             }
         });
 
-    },
-    getForecast: function (req, res)
-    {
-        var optionsget = {
-            host : 'api.wunderground.com', // here only the domain name
-            // (no http/https !)
-            path : '/api/6093813dfdfae42b/forecast/q/'+req.params.lat+','+req.params.lon+'.json', // the rest of the url with parameters if needed
-            method : 'GET' // do GET
-        };
-        var request = https.request(optionsget, function(response) {
-               response.on('data', function(data) {
-                if(JSON.parse(data.toString()).response.error)
-                {
-                    res.send({message: JSON.parse(data.toString()).response.error.description})
-                } else
-                {
-                    res.send(data.toString())
-                }
-                });
-        });
-        request.end();
-    },
+},
+
     retrieveOne: function( req, res ) {
         Beach.findOne( { _id:req.params.id }, function( err, beach ) {
             if( null === err ) {
-                res.send(beach)
+                res.send( beach );
             } else {
                 res.send( 500, err );
             }
@@ -283,55 +239,50 @@ var self = {
 
     update: function( req, res ) {
         // First find the existing document.
-        properties = {}
-            if (req.body.beachName != '')
-            {
-                properties.beachName = req.body.beachName
-            }
-             if (req.body.city != '')
-            {
-                properties.city = req.body.city
-            }
-             if (req.body.state != '')
-            {
-                properties.state = req.body.state
-            }
-             if (req.body.country != '')
-            {
-                properties.country = req.body.country
-            }
-             if (req.body.lat != null)
-            {
-                properties.lat = req.body.lat
-            }
-            if (req.body.lon != null)
-            {
-                properties.lon = req.body.lon
-            }
-        Beach.update({_id: req.params.id}, properties,  function ( err, numAffected, updatedBeach ) {
+        Beach.findOne( { _id:req.params.id }, function( err, beach ) {
             if( null === err ) {
-                Beach.findOne({_id: req.params.id}, function (err, newBeach)
-                {
-                    console.log(newBeach)
-                    res.send(newBeach)
-                })
+                // Test that the document was found.
+                if( null === beach ) {
+                    // Document was not found, send 404 - Not Found
+                    res.send( 404 );
+                } else {
+                    // Update existing document with properties from the request,
+                    // or with the existing value if the property is not in the request.
+                    beach.beachID = req.body.beachID|| beach.beachID;
+                    beach.beachName = req.body.beachName || beach.beachName;
+                    beach.created = req.body.created || beach.created;
+                    beach.lat = req.body.lat || beach.lat;
+                    beach.lastUpdated = req.body.lastUpdated || beach.lastUpdated;
+                    beach.lon = req.body.lon || beach.lon;
+                    beach.city = req.body.city || beach.city;
+                    beach.state = req.body.state || beach.state;
+                    beach.country = req.body.country || beach.country;
+
+                    beach.save( function ( err, updatedBeach ) {
+                        if( null === err ) {
+                            res.send( updatedBeach );
+                        } else {
+                            res.send( 500, err );
+                        }                
+                    });                    
+                }
             } else {
-                console.log(err)
+                // An error occured retrieving the document.
                 res.send( 500, err );
-            }                
-        });       
+            }
+        });
     },    
 
-    destroy: function( req, res ) {
+    delete: function( req, res ) {
          Beach.remove( { _id:req.params.id }, function( err) {
             if( null === err ) {
-                console.log("HAX")
-                res.send({message: "Success"});
+                res.send( 200 );
             } else {
                 res.send( 500, err );
             }
          });
     },
+
     recentSurveys: function( req, res ) {
         Survey.find( {beachID:req.params.id } )
             .sort({'created': -1})
@@ -344,6 +295,19 @@ var self = {
             }
          });
     }, 
+
+    recentReports: function( req, res ) {
+        Report.find( {beachID:req.params.id } )
+            .sort({'created': -1})
+            .limit(5)
+            .exec (function( err, reports ) {
+            if( null === err ) {
+                res.send( reports );
+            } else {
+                res.send( 500, err );
+            }
+         });
+    },
     recentRates: function( req, res ) {
 
         var ratings = [0,0,0,0,0];

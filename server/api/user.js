@@ -1,6 +1,7 @@
 var path = require("path");
 var user = require(path.join(__dirname, "..", "models", "user"));
 var mongoose = require("mongoose")
+var nodemailer = require("nodemailer");
 var self = {
     create: function(req, res) {
         var User = mongoose.model('User')
@@ -26,6 +27,29 @@ var self = {
                     res.send(err)
                 } else
                 {
+                    // This method will send an email to nurdlestestmail@gmail.com
+                    /*var smtpTransport = nodemailer.createTransport("SMTP",{
+                        service: "Gmail",
+                        auth: {
+                            user: "nurdlestestmail@gmail.com",
+                            pass: "Nurdles1"
+                        }
+                    });
+                    var mailOptions = {
+                        from: "Nurdles <nurdlestestmail@gmail.com>", // sender address
+                        //  Send it to "username" 
+                        to: "nurdlestestmail@gmail.com, nurdlestestmail@gmail.com", // list of receivers
+                        subject: "USER CREATED - " + username, // Subject line
+                        text: "User created under username " + username, // plaintext body
+                        html: "<b>User created under username "+ username + "</b>" // html body
+                    }
+                    smtpTransport.sendMail(mailOptions, function(error, response){
+                        if(error){
+                            console.log(error);
+                        }else{
+                            console.log("Message sent: " + response.message);
+                        }
+                    })*/
                     res.send(user)
                 }
             });
@@ -39,18 +63,12 @@ var self = {
             res.send(data)
         })
     },
-    changePrivelages: function(req, res) {
+    upgrade: function(req, res) {
         var User = mongoose.model('User')
-                User.findOne({username: req.params.username}, function (err, data) {
-                    if (data == null)
-                    {
-                        res.send({updatedExisting: false})
-                    } else
-                    {
-                        data.admin = req.params.admin
-                        data.save()
-                        res.send(data)
-                    }
+
+                User.update({username: req.params.username}, {admin: true}, function (err, num, data)
+                {
+                    res.send(data)
                 })
 
     },

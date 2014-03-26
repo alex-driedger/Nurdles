@@ -124,12 +124,12 @@ define([
       else if (val == 1)
       {
         document.getElementById("IMG_RSRV").src="./images/BEACH_DIRTY.jpg"
-        $("#rating").html("Moderately Clean")
+        $("#rating").html("Dirty")
       }
       else
       {
         document.getElementById("IMG_RSRV").src="./images/BEACH_GG.jpg"
-        $("#rating").html("Dirty")
+        $("#rating").html("Really Dirty")
       }
     },
     initialize: function (options) {

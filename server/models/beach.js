@@ -19,8 +19,6 @@ module.exports = function (mongoose) {
         country: String,
         lat: Number,
         lon: Number,
-        lastUpdated: Date,
-        lastRating: Number,
         created: Date
 
         // , mixed : Mixed // Not implemented because mixed types should be used sparingly, if at all.

@@ -36,17 +36,27 @@ define([
             this.collection = options.collection
             this.render();
         },
+        // Get Rates is alot more complicated than the rest because we need to get an average rating, and we need to figure out how many days ago each thing was
+        // rather than just pulling in the date
+        getReports: function () {
+            returnStatement = [];
+            for (i in this.collection[0].attributes)
+            {
+                var date = new Date(this.collection[0].attributes[i].created)
+                returnStatement.push({html: ("Report Date : " + date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() + " at " + date.getHours() + ":" + date.getMinutes()), id: this.collection[0].attributes[i]._id})
+            }
+            return returnStatement
+        },
         getRates: function() {
             var returnStatement = [];
             var days = ["Today: ", "Yesterday: ", "2 Days Ago: " , "3 Days Ago: ", "4 Days Ago: "]
-            var ratings = this.collection[0].attributes.ratings
-            var totals = this.collection[0].attributes.total
+            var ratings = this.collection[1].attributes.ratings
+            var totals = this.collection[1].attributes.total
             for (i in totals)
             {
                 if (totals[i] > 0)
                 {
-                    var cleanliness = ["Clean", "Moderately Clean", "Dirty"]
-                    returnStatement.push({day: days[i], rating: cleanliness[Math.round(ratings[i]/totals[i])] + " based on " + totals[i] + " rating(s)"})
+                    returnStatement.push({day: days[i], rating: Math.floor(ratings[i]/totals[i]*50) + "/100 based on " + totals[i] + " rating(s)"})
                 } else
                 {
                     returnStatement.push({day: days[i], rating: "No data"})
@@ -57,54 +67,18 @@ define([
         },
         getSurveys: function() {
             returnStatement = [];
-            var attributes = this.collection[1].attributes
+            var attributes = this.collection[2].attributes
             for (i in attributes)
             {
-                var date = new Date(this.collection[1].attributes[i].created)
-                returnStatement.push({html: ("Survey Date : " + date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() + " at " + date.getHours() + ":" + date.getMinutes()), id: this.collection[1].attributes[i]._id})
+                var date = new Date(this.collection[2].attributes[i].created)
+                returnStatement.push({html: ("Survey Date : " + date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() + " at " + date.getHours() + ":" + date.getMinutes()), id: this.collection[2].attributes[i]._id})
             }
             return returnStatement
         },
         render: function () {
-            if (this.collection[3].models[0].attributes.message != undefined)
-            {
-                alert(this.collection[3].models[0].attributes.message)
-                high = "N/A"
-                low = "N/A"
-                conditions = "N/A"
-            } else
-            {
-                var high = this.collection[3].models[0].attributes.forecast.simpleforecast.forecastday[0].high.celsius
-                if (high == "")
-                {
-                    high = (this.collection[3].models[0].attributes.forecast.simpleforecast.forecastday[0].high.fahrenheit  -  32)*(5/9)
-                }
-                var low = this.collection[3].models[0].attributes.forecast.simpleforecast.forecastday[0].low.celsius
-                if (low == "")
-                {
-                    low = (this.collection[3].models[0].attributes.forecast.simpleforecast.forecastday[0].low.fahrenheit  -  32)*(5/9)
-                }
-                var conditions = this.collection[3].models[0].attributes.forecast.simpleforecast.forecastday[0].conditions
-            }
-                var attributes = this.collection[2].models[0].attributes
-                switch(attributes.lastRating)
-                {
-                    case 0:
-                        attributes.lastRating = "Clean"
-                        break
-                    case 1:
-                        attributes.lastRating = "Moderately Clean"
-                        break
-                    case 2:
-                        attributes.lastRating = "Dirty"
-                        break
-                    default:
-                        attributes.lastRating = "Unknown"
-                }
-                console.log(this.collection[3].models[0].attributes)
-                this.$el.html(_.template(infoTemplate, {conditions: conditions, high: high, low: low, beachInfo: attributes, ratesHTML: this.getRates(), surveysHTML: this.getSurveys()}));
-                return this;
-
+            var attributes = this.collection[3].models[0].attributes
+            this.$el.html(_.template(infoTemplate, {beachInfo: attributes, reportsHTML: this.getReports(), ratesHTML: this.getRates(), surveysHTML: this.getSurveys()}));
+            return this;
         },
         
     });

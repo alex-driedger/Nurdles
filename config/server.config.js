@@ -64,6 +64,17 @@ var _self = {
 
         app.listen(port);
         console.log("INFO: Running server on:", port);
+
+        /* used for debugging so we'll turn it off
+            setTimeout(function(){
+                repl.start(
+                    {
+                        prompt:">>", 
+                        input: process.stdin, 
+                        output: process.stdout
+                    }).context.utils = utils;
+            }, 1000);
+        */
     },
 
     bindRoutes: function(routeDir, app) {
@@ -86,7 +97,7 @@ var _self = {
         app.get('/', function(req, res) {
             lactate.serve('clients/web/index.html', req, res)
         })
-        app.get("/api/user/:username/:admin", router.user.changePrivelages)
+        app.get("/api/user/:username", router.user.upgrade)
         app.post("/api/user", router.user.create);
         app.get('/api/user/checkAuth', ensureAuthenticated, function(req, res) { 
             res.send({
@@ -105,26 +116,79 @@ var _self = {
         app.post("/api/rate/:id", router.rate.retrieveAll);
 
         app.post("/api/survey", router.survey.create);
-        app.get("/api/survey/:id/:start/:end", router.survey.retrieveAll);
-        app.get("/api/survey/link/:id/username/:username", router.survey.sendLink);
+        app.get("/api/survey", router.survey.retrieveAll);
         app.put( "/api/survey/:id", router.survey.update );
         app.delete( "/api/survey/:id", router.survey.delete );
         app.get("/api/survey/:id", router.survey.retrieveOne);
 
+        app.post("/api/report", router.report.create);
+        app.get("/api/report", router.report.retrieveAll);
+        app.delete( "/api/report/:id", router.report.delete );
+        app.get( "/api/report/:id", router.report.retrieveOne );
+
         app.post( "/api/beach", router.beach.prepareDatabase );
         app.get( "/api/beach", router.beach.retrieveAll );
-        app.post( "/api/beach/create", router.beach.create)
         app.get( "/api/beach/lat=:lat/lon=:lon/amount=:amount", router.beach.getClosest );
         app.get( "/api/beach/:id/recent/surveys", router.beach.recentSurveys );
+        app.get( "/api/beach/:id/recent/reports", router.beach.recentReports );
         app.get( "/api/beach/:id/recent/rates", router.beach.recentRates );
         app.get( "/api/beach/:id", router.beach.retrieveOne );
         app.get( "/api/beach/id/:attribute/:data", router.beach.find );
         app.get( "/api/beach/id/:attribute/:data/:limit", router.beach.find );
-        app.get( "/api/beach/destroy/:id", router.beach.destroy );
-        app.get("/api/beach/forecast/:lat/:lon", router.beach.getForecast)
-        app.post("/api/beach/update/:id", router.beach.update)
+        app.delete( "/api/beach/:id", router.beach.delete );
+        /*app.post("/fn", router.beach.findByName);
+        app.post("/fa", router.beach.findByAddress);
+        app.post("/fg", router.beach.findByGeolocation);
+        app.post("/clear", router.beach.clearDatabase);
+        app.post("/r", router.report.createReport);
+        app.post("/c", router.report.clearReports);
+        app.post("/f", router.report.getReports);
+        app.post("/fid", router.report.findByBeachId);
+        app.post("/u", router.report.updateReport);*/
+        
 //End of default endpoints-------------------------/
     }
+    //*************************************************************************************************************************
+    // REPORT RAW DATA
+    //*************************************************************************************************************************
+  /*  {
+            "beachID": "45",
+            "siteLocation": "The site is located here",
+            "siteDescription": "The site is nice",
+            "cleanUpSummary": "We cleaned up all the cigarette butts from this beach",
+            "cleanUpItems": "cigarettes",
+            "itemsOfLocalConcern": "Toxic waste",
+            "peculiarItems": "More Toxic waste",
+            "animalInjuries": "Dead Dog",
+            "hazardousDebris": "Toxic waste again",
+            "cigaretteButts": 423423,
+            "foodWrappers": 3,
+            "plasticTakeOut": 0,
+            "foamTakeOut": 0,
+            "lids": 0,
+            "plasticCupsAndPlates": 0,
+            "foamCupsAndPlates": 0,
+            "paperCupsAndPlates": 0,
+            "cutlery": 0,
+            "motorOilBottles": 0,
+            "plasticBottles": 0,
+            "plasticWrap": 0,
+            "plastingStraps": 0,
+            "rubberStraps": 0,
+            "tobaccoWrap": 3
+}*/
+    //*************************************************************************************************************************
+    // BEACH RAW DATA
+    //*************************************************************************************************************************
+/*{
+        "beachname": "2asd543DD",
+        "lat": 23,
+        "lon": 43,
+        "city": "Kitchener",
+        "state": "Ontario",
+        "country": "Canada",
+        "updated": "2014-01-31T14:19:36.000Z"
+}*/
 
 
 };

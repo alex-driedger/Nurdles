@@ -1,72 +1,14 @@
-<p id="home" class="home">&nbsp;<span style="font-size: 20px; line-height: 30px;" class="glyphicon glyphicon-user"></span> Admin</p><div class="home tab btn-group" style="padding: 0; margin-top: -6px;">
-    <button type="button" class="btn btn-default dropdown-toggle glyphicon glyphicon-th-list"  style="width: 100%; height: 100%; border-radius: 0; font-size: 18px; color: white; background-color: rgb(75,75,75); border: none;"data-toggle="dropdown">
-    </button>
-    <ul class="dropdown-menu pull-right" style="background-color: rgb(75,75,75); margin-right: -5px; width: 150px; margin-top: 0; padding: 0; border: 5px black solid; border-radius: 0;">
-      <li><a style="color: white;" href="#">Home</a></li>
-      <div style="border-top: 5px black solid;"/>
-      <li><a style="color: white;" href="#data">Data Access</a></li>
-      <div style="border-top: 5px black solid;"/>
-      <li><a style="color: white;" id="logout">logout</a></li>
-    </ul>
-</div>
+<p class="home">&nbsp;<span class="glyphicon glyphicon-picture"></span> Home</p><a type="button" class="home tab" href="#">Home</a><a type="button" id="logout" class="home tab"href="#login">Logout</a>
 
 <a type="button" class="btn btn-surveyButtons top_button" style="border-top: none;" id="a">Create Admin</a>
 <div class="block" id="block_a" >
         <input type="text" id="username" class="form-control FT" placeholder="Email"/>
-        <input type="password" id="password" class="form-control FT" placeholder="Password"/>
+        <input type="text" id="password" class="form-control FT" placeholder="Password"/>
         <button id="createAdmin" class="btn btn-primary FT">Create Administrator</button>
  </div>
-<a type="button" class="btn btn-surveyButtons top_button" id="b">Change Administrator Privelages</a>
+<a type="button" class="btn btn-surveyButtons top_button" id="b">Upgrade to Admin</a>
 <div class="block" id="block_b" >
         <input type="text" id="username2" class="form-control FT" placeholder="Email"/>
-        <button id="upgradeToAdmin" class="btn btn-primary twoButtons changeAdmin">Add Administrator Privelages</button>
-        <button id="removeAdmin" class="btn btn-primary twoButtons changeAdmin" >Remove Administrator Privelages</button>
+        <button id="upgradeToAdmin" class="btn btn-primary FT">Upgrade to Administrator</button>
  </div>
- <a type="button" class="btn btn-surveyButtons top_button" id="c">Add Beaches</a>
-<div class="block" id="block_c" >
-        <input type="text" id="beachName" class="form-control FT" placeholder="Beach Name"/>
-        <input type="text" id="city" class="form-control FT" placeholder="City"/>
-        <input type="text" id="state" class="form-control FT" placeholder="State"/>
-        <input type="text" id="country" class="form-control FT" placeholder="Country"/>
-        <input onkeypress='validate(event)' type="text" id="lat" class="form-control FT" placeholder="Latitude"/>
-        <input onkeypress='validate(event)' type="text" id="lon" class="form-control FT" placeholder="Longitude"/>
-        <button id="createBeach" class="btn btn-primary FT">Create Beach</button>
-</div>
- <a type="button" class="btn btn-surveyButtons top_button" id="d">Remove/Edit Beaches</a>
-<div class="block" id="block_d" style="border-top: 5px black solid;" >
-<%
-_.each(data, function( model ) {
-%>
-<div class="btn-admin-beach" id="title_<%= model.attributes._id %>" >
-    <div id="data_<%= model.attributes._id %>" style=" display: inline-block; height: 118px; color: #3AF; margin-left: 10px;">
-        <%= model.attributes.beachName %> (<%=model.attributes.beachID%>)
-        <div />
-        <span style="color: black; font-size: 75%; display: inline-block;"><span id="city_<%= model.attributes._id %>"><%= model.attributes.city %></span>, </span>
-        <span style="color: black; font-size: 75%; display: inline-block;"><span id="state_<%= model.attributes._id %>"><%= model.attributes.state %></span>, </span>
-        <span style="color: black; font-size: 75%; display: inline-block;"><span id="country_<%= model.attributes._id %>"><%= model.attributes.country %></span></span>
-        <span style="color: black; font-size: 75%; display: block; ">(<span id="lat_<%= model.attributes._id %>"><%= model.attributes.lat %></span>, <span id="lon_<%= model.attributes._id %>"><%= model.attributes.lon %></span>)</span>
-    </div>
-    <div style="display: inline-block;float: right; width: 200px">
-        <button id="delete_<%= model.attributes._id %>"class="btn btn-primary changeBeach" style="display: block; margin: 10px; width: 180px;"  >Delete Beach</button>
-        <button id="edit_<%= model.attributes._id %>"class="btn btn-primary changeBeach" style="display: block; margin: 10px;width: 180px;">Edit Beach</button>
-    </div>
-    <div id="editData_<%= model.attributes._id %>" style="display: none;">
-        <input type="text" id="edit_beachName_<%= model.attributes._id %>" class="form-control FT" placeholder="Beach Name"/>
-        <input type="text" id="edit_city_<%= model.attributes._id %>" class="form-control FT" placeholder="City"/>
-        <input type="text" id="edit_state_<%= model.attributes._id %>" class="form-control FT" placeholder="State"/>
-        <input type="text" id="edit_country_<%= model.attributes._id %>" class="form-control FT" placeholder="Country"/>
-        <input onkeypress='validate(event)' type="text" id="edit_lat_<%= model.attributes._id %>" class="form-control FT" placeholder="Latitude"/>
-        <input onkeypress='validate(event)' type="text" id="edit_lon_<%= model.attributes._id %>" class="form-control FT" placeholder="Longitude"/>
-        <button id="saveEdit_<%= model.attributes._id %>" class="btn btn-primary FT changeBeach" style="padding: 0; margin-left: 10px;">Save Edit</button>
-    </div>
-</div>
-<%
-});
-%>
-</div>
- <a type="button" class="btn btn-surveyButtons top_button" id="e">Import Beaches</a>
-<div class="block" id="block_e" >
-	<p style="width: 90%; text-align: center; margin-left: 5%;">Importing beaches imports data from the excel file. If a beach exists in the excel file but not in the database, it will create a beach. If a beach exists in both the file and the database, it will do nothing. If a beach exists in the database but not the excel file, it will also do nothing. This prevents beaches that are present in the database but not the file from being deleted. The beaches are tracked by beachID so you can have 2 beaches exactly the same as long as their beachID is different.</p>
-	<button id="import" class="btn btn-primary FT">Import Beaches</button>
-</div>
  <div style="border-top: 5px solid black;"/>

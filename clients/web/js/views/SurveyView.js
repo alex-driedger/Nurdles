@@ -84,21 +84,14 @@ define([
             $("#areabtn")[0].innerHTML = temp;
         },
         submit: function(events) {
-            val = $("#text0").val();
             {
             if ($("#beachname")[0].beachName != $("#beachname").val().toUpperCase())
             {
                 alert("Please select a beach from the dropdown list")
-            } else if ($('input[name=a]:checked')[0] == undefined || $('input[name=b]:checked')[0] == undefined)
-            {
-                alert("Please fill in beach description data")
-            } else if ($("#weightval").val() == "" || $("#areaval").val() == "" || $("#volunteersval").val() == "" || $("#date").val() == "") 
-            {
-                alert("Please provide a cleanup summary")
             } else
             {
             var items = []
-            for (i = 0; i < 40; i++)
+            for (i = 1; i < 40; i++)
             {
                 val = $("#text"+i).val();
                 if (val != 0)
@@ -106,16 +99,25 @@ define([
                     items.push({name:$("#item_name"+i)[0].innerHTML,value:val});
                 }
             }
-            console.log(new Date ($("#date").val()))
-                env = ($('#L_' + $('input[name=a]:checked')[0].id)[0].innerText);
-                type = ($('#L_' + $('input[name=b]:checked')[0].id)[0].innerText);
-            var weight = $("#weightval").val()+$("#weightbtn")[0].innerText;
-            var area = ($("#areaval").val()+$("#areabtn")[0].innerText )
+            var weight = $("#weightval").val()+""+$("#weightbtn")[0].innerText;
+            var area = ($("#areaval").val()+""+$("#areabtn")[0].innerText )
+            a = $('input[name=a]:checked')[0]
+            b = $('input[name=b]:checked')[0]
+            env = ""
+            method = ""
+            if (a != undefined)
+            {
+                env = ($('#L_' + a.id)[0].innerText);
+            }
+            if (b != undefined)
+            {
+                method = ($('#L_' + $('input[name=b]:checked')[0].id)[0].innerText);
+            }
             surveyModel = new SurveyModel.Model();
             var input = {
                 beachID:$("#beachname")[0].beachID,
                 environment: env,
-                beachType: type,
+                collectionMethod: method,
                 date:$("#date").val(), 
                 weight:weight,
                 area:area,
@@ -127,7 +129,7 @@ define([
                 peculiarItems:$("#peculiarItems").val(),
                 injuredAnimals:$("#injuredAnimals").val(),
                 hazardousDebris:$("#hazardousDebris").val(),
-                created: new Date ($("#date").val()),
+                created: new Date()
             }
 
             surveyModel.save(input,{
@@ -192,21 +194,21 @@ define([
                 data:
                 [
                     { name: "Cigarette Butts"},
-                    { name: "Food Wrappers (Candy/Chips etc..)"},
+                    { name: "Food Wrappers (Candy, Chips, etc..)"},
                     { name: "Take Out/ Away Containers (Plastic)"},
                     { name: "Take Out/ Away Containers (Foamed Plastic)"},
                     { name: "Plastic Caps/ Lids"},
                     { name: "Cups and Plates (Plastic)"},
                     { name: "Cups and Plates (Foamed Plastic)"},
                     { name: "Cups and Plates (Paper)"},
-                    { name: "Forks/Knives/Spoons"}
+                    { name: "Forks, Knives, Spoons"}
                 ]},
                 {header: "Packaging Materials",
                 id: "items_b",
                 data:
                     [
                     { name: "Motor Oil/ Lubricant Bottles"},
-                    { name: "Other Plastic Bottles (Milk/Bleach etc..)"},
+                    { name: "Other Plastic Bottles (Milk, Bleach, etc..)"},
                     { name: "Plastic Wrap/ Hard-Plastic Packaging"},
                     { name: "Strapping Bands (Plastic)"},
                     { name: "Strapping Bands (Rubber)"},
@@ -221,7 +223,7 @@ define([
                     { name: "Syringes"},
                     { name: "Tampons / Tampon Applicators"},
                     { name: "Toothbrush"},
-                    { name: "Forks/Knives/Spoons"},
+                    { name: "Forks, Knives, Spoons"},
                     { name: "Beverage Bottles (Plastic)"},
                     { name: "Beverage Bottles (Glass)"},
                     { name: "Plastic Grocery Bags"},
@@ -270,6 +272,7 @@ define([
                         id++;
                     }
                 }
+                console.log(id)
             this.$el.html( _.template( survey, {items:items} ) );
             return this;
         },
