@@ -20,7 +20,10 @@ define([
 	  initialize: function( models, options ) {
 	  	if (options != undefined)
 	  	{
-	  		if (options.surveyID != undefined)
+	  		if (options.sendLink != undefined)
+	  		{
+	  			this.url = '/api/survey/link/' + options.surveyID+"/username/" + options.username
+	  		} else if (options.surveyID != undefined)
 	  		{
 	  			this.url = '/api/survey/'+options.surveyID
 	  		} else

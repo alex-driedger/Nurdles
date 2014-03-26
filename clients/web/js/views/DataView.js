@@ -29,11 +29,35 @@ define([
         },
         // redirect is used on successful create or update.
         initialize: function (options) {
+            if (options != undefined)
+            {
+                this.collection = options.collection
+            }
             this.render();
+        },
+        getSurveyHTML: function() {
+            returnStatement = [];
+            console.log(this.collection.models)
+            var models = this.collection.models
+            for (i in models)
+            {
+                var date = new Date(models[i].attributes.created)
+                returnStatement.push({html: ("Survey Date : " + date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() + " at " + date.getHours() + ":" + ('0' + date.getMinutes()).slice(-2)), id: models[i].attributes._id})
+            }
+            console.log(returnStatement)
+            return returnStatement
         },
         
         render: function () {
-            this.$el.html(dataTemplate);
+            surveysHTML = []
+            console.log(this.collection)
+            if (this.collection != undefined)
+            {
+                console.log("hi")
+                surveysHTML = this.getSurveyHTML()
+            }
+                this.$el.html( _.template( dataTemplate, {surveysHTML: surveysHTML} ) );
+
             return this;
         },
         

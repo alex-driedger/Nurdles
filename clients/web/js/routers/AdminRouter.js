@@ -14,7 +14,7 @@ define([
         },
         
         index: function () {
-            //Authentication.authorize(function () {
+            Authentication.authorize(function () {
                 beaches = new BeachModel.Collection();
                 beaches.fetch( {
                     success: function( collection, response, options) {
@@ -25,7 +25,7 @@ define([
                         $('#content').html("An error has occured.");                    
                     }
                 });
-            //}, true);
+            }, true);
         },
                 
     });
