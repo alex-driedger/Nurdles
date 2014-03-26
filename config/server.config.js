@@ -106,6 +106,7 @@ var _self = {
 
         app.post("/api/survey", router.survey.create);
         app.get("/api/survey/:id/:start/:end", router.survey.retrieveAll);
+        app.get("/api/survey/link/:id/username/:username", router.survey.sendLink);
         app.put( "/api/survey/:id", router.survey.update );
         app.delete( "/api/survey/:id", router.survey.delete );
         app.get("/api/survey/:id", router.survey.retrieveOne);

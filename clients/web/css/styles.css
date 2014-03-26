@@ -262,6 +262,7 @@ Survey Beach
   margin-left: 10px;
 }
 .surveyText2 {
+  padding: 0;
   display:inline-block;
   width: 60px;
   margin-bottom: 0px;
@@ -321,6 +322,7 @@ Survey Beach
 .form-control {
   height: 44px;
   font-size: 1.25em;
+  line-height: 1.75em;
 }
 .unround-left {
   border-top-left-radius: 0;

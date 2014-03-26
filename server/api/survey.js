@@ -5,6 +5,9 @@ var path = require( 'path' ),
     _ = require( 'underscore' );
     beach = require( path.join( __dirname, '..', 'models', 'beach' ) ),
     Beach = mongoose.model('Beach')
+    nodemailer = require( 'nodemailer')
+    use = require( path.join( __dirname, '..', 'models', 'user' ) ),
+    User = mongoose.model('User')
 var self = {
 
     /*
@@ -20,6 +23,39 @@ var self = {
       "array": [1,2,3]
     }
     */
+    sendLink: function( req, res)
+    {
+        var User = mongoose.model('User')
+        User.findOne({_id: req.params.username}, function(err, data)
+            {
+                username = data.username
+                // This method will send an email to nurdlestestmail@gmail.com
+                var smtpTransport = nodemailer.createTransport("SMTP",{
+                    service: "Gmail",
+                    auth: {
+                        user: "nurdlestestmail@gmail.com",
+                        pass: "Nurdles1"
+                    }
+                });
+                console.log(req.params)
+                var mailOptions = {
+                    from: "Nurdles <nurdlestestmail@gmail.com>", // sender address
+                    //  Send it to "username" 
+                    to: username, // list of receivers
+                    subject: "Data link for survey id" + req.params.id, // Subject line
+                    text: "Here is a link to the survey download: http://localhost:4010/#data/"+req.params.id, // plaintext body
+                    html: "<b><a href='http://caf-nurdles.herokuapp.com/#data/"+req.params.id+"'>Here</a> is a link to the survey download</b>" // html body
+                }
+                smtpTransport.sendMail(mailOptions, function(error, response){
+                    if(error){
+                        console.log(error);
+                    }else{
+                        console.log("Message sent: " + response.message);
+                        res.send({email: username})
+                    }
+                })
+            })
+    },
     create: function( req, res ) {
            properties = {};
         // Simple validation example, checks that a property 
@@ -98,19 +134,28 @@ var self = {
     retrieveAll: function( req, res ) {
         id = req.params.id
         start = req.params.start
+        start = new Date(start.slice(0,2) + "/" + start.slice(2,4) + "/" + start.slice(4,8))
         end = req.params.end
-        console.log(req.params)
-        Survey.find({_id: id}, function ( err, surveyCollection ) {
+        end = new Date(end.slice(0,2) + "/" + end.slice(2,4) + "/" + end.slice(4,8))
+        Survey.find({beachID: id}, function ( err, surveyCollection ) {
             if( null === err ) {
-                console.log(surveyCollection)
-                res.send( surveyCollection );
-                //Survey.remove(function(err,res){console.log(res)})
+                validBeaches = []
+                for (i in surveyCollection)
+                {
+                    // This sets the time form the date object to 0 so we can get surveys from the same date
+                    d = surveyCollection[i].created
+                    date = new Date(('0' + (d.getMonth()+1)).slice(-2) + '/' + ('0' + (d.getDate())).slice(-2) + '/' + d.getFullYear());
+                    if (date >= start && date<= end)
+                    {
+                        validBeaches.push(surveyCollection[i])
+                    }
+                }
+                res.send( validBeaches );
 
             } else {
                 res.send( 500, err );
             }
         });
-        console.log("RETRIEVE ALL SURVEYS (This needs to go as retrieve all might pose memory problems for a phone)")
     },
 
     retrieveOne: function( req, res ) {
