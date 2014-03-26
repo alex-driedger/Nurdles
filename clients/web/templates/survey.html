@@ -62,11 +62,19 @@ input[type="radio"] {
 
 <a type="button" class="btn btn-surveyButtons mid_button" id="c">Cleanup Summary</a>
 <div class="block" id="block_c">
-    <h4 style="margin: 0; display: inline-block;">Date: </h4>
-<input style="display: inline-block; width: 200px" class="form-control" id="date"></input>
-<div/>
+    <form role="form">
+        <fieldset>
+            <label  style="font-size: 20px; margin-left: 4vw; display: inline;">Date</label>
+            <div class="form-group"style="display: inline">
+                <div class="input-group date form_datetime" style="margin-left: 5vw; height: 30px; display: inline;"  data-date-format="dd/mm/yyyy">
+                    <input id="date" class="form-control" style=" display: inline; width: 100px; height:30px"type="text"/>
+                    <span class="input-group-addon"style="display: inline;"><span class="glyphicon glyphicon-th"></span></span>
+                </div>
+            </div>
+        </fieldset>
+    </form>
 <script type="text/javascript">
-    $('input').datepicker({
+    $('.form_datetime').datetimepicker({
         todayBtn:  1,
         autoclose: 1,
         todayHighlight: 1,

@@ -20,13 +20,7 @@ define([
 	  initialize: function( models, options ) {
 	  	if (options != undefined)
 	  	{
-	  		if (options.surveyID != undefined)
-	  		{
-	  			this.url = '/api/survey/'+options.surveyID
-	  		} else
-	  		{
-	  			this.url = 'api/survey/'+options.id+"/"+options.start+"/"+options.end
-	  		}
+	  		this.url = '/api/survey/'+options.surveyID
 	  	}
 	  }
 	});

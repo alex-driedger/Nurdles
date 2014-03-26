@@ -10,14 +10,14 @@ define([
     var SearchRouter = Backbone.Router.extend({
         
         routes: {
-            'search'  : 'index',
+            'search'  : 'index'
         },
         
-        index: function (event) {
+        index: function () {
             Authentication.authorize(function () {
                 var searchView = new SearchView();
                 $('#content').html(searchView.el);
-                initializeAutocomplete(BeachModel, "beachname", "beachName", Infinity, "info")  
+                initializeAutocomplete(BeachModel, "beachname", "beachName", 100, true)  
             })
         },
                 
