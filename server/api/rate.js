@@ -41,7 +41,13 @@ var self = {
 
         rate.save( function ( err, rate, numberAffected ) {
             if( null === err ) {
-                res.send( rate );
+                Beach.findOne({_id: req.body.beachID}, function (err, beach)
+                    {
+                        beach.lastUpdated = req.body.created
+                        beach.lastRating = req.body.rating
+                        beach.save()
+                        res.send( rate );
+                    })
             } else {
                 res.send( 500, err );
             }

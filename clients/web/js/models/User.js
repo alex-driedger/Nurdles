@@ -22,7 +22,7 @@ define([
         initialize: function( models, options ) {
             if (options != undefined)
             {
-                this.url = "api/user/" + options.username
+                this.url = "api/user/" + options.username + "/" + options.admin
             }
         }
     });

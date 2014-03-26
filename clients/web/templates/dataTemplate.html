@@ -1,4 +1,4 @@
-<div id="header"style="width: 100%; border-style: solid; background-color: white; border-width: 5px; border-color:black; padding-bottom: 5px; margin-bottom: -5px;">
+<div id="header"style="position: fixed; width: 100%; border-style: solid; background-color: white; border-width: 5px; border-color:black; top: 0px;">
     <a type="button" class="btn back" id="RateCleanliness" onClick="history.go(-1);return true;"><span class="glyphicon glyphicon-chevron-left"></span><span> Search Surveys</span></a>
     <h4> Search Survey By Beach </h4>
     <input type="text" id="beachname" class="form-control FT" style="margin-left: 10px;" placeholder="Beach Name"/>
@@ -7,8 +7,8 @@
 <h4 style="width: calc(50% - 15px); display: inline-block;"> Start Date </h4><h4 style="width: calc(50% - 15px); display: inline-block;"> End Date </h4>
     <input id="startDate" class="form-control" style="width: calc(50% - 15px); display: inline-block; margin-left: 10px" value="01/01/2014" />
     <input id="endDate" class="form-control" style="width: calc(50% - 15px); margin-left: 10px; display: inline-block;"/>
-        <button style="margin: 20px" id="surveySearch" class="btn btn-primary FT2">Search</button>
-</div>
+
+        <button style="margin-left: 20px; margin-top: 20px;" id="surveySearch" class="btn btn-primary FT2">Search</button>
 <script>
    $(document).ready(function() {
         $("#startDate").datepicker();
@@ -17,8 +17,7 @@
         $("#endDate").datepicker();
     });
 </script>
-<% 
-    _.each( surveysHTML, function(survey) { %>
-        <a type="button" href="#survey/<%=survey.id%>" class="surveyLink btn" style="border: solid black 5px; height: 88px; font-size: 2em; line-height: calc(5px + 2em);"><%= survey.html%></a>
-    <% });
-%>
+
+
+<div id="data"></div>
+</div>

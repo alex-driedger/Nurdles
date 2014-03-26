@@ -16,7 +16,6 @@ define([
     // redirect is used on successful create or update.
     events: {
             // IF THE LOGIN BUTTON IS PRESSED, FIRE LOGIN FUNCTION
-            'click .btn-submit' : 'submit',
             'click .btn-view' : 'switchView'
         },
 
@@ -24,20 +23,6 @@ define([
     {
       $("#scroll1").toggle()
       $("#scroll2").toggle()
-    },
-    submit: function()
-    {
-                                         //************
-      beachModel = new BeachModel.Model();
-      beachModel.save({
-                success: function (res) {
-                  //Backbone.history.navigate('', { trigger: true });
-                    console.log(res.toJSON());
-                },
-                error: function (err, err2, err3) {
-                    console.log(err)
-                }
-            });
     },
     initialize: function (options) {
       this.collection = options.collection
@@ -49,8 +34,21 @@ define([
       for (i in this.collection.models)
       {
         attributes.push(this.collection.models[i].attributes)
+        switch(attributes[i].lastRating)
+        {
+          case 0:
+            attributes[i].lastRating = "Clean"
+            break
+          case 1:
+            attributes[i].lastRating = "Moderately Clean"
+            break
+          case 2:
+            attributes[i].lastRating = "Dirty"
+            break
+          default:
+            attributes[i].lastRating = "Unknown"
+        }
       }
-      console.log(this.collection.models)
         this.$el.html( _.template( beachTemplate, {attributes: attributes}) );
         return this;
     },

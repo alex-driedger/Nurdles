@@ -1,10 +1,48 @@
 /*
 ************************************************************
+ADMIN
+************************************************************
+*/
+.twoButtons {
+  width: calc(50% - 15px);
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  padding: 0;
+}
+.btn-admin-beach {
+  border-radius: 0%;
+  border: none;
+  font-size: 1.75em;
+  width: 100%;
+  border-bottom-width: 5px;
+  border-bottom-color: black;
+  border-bottom-style: solid;
+}
+
+/*
+************************************************************
 LOGIN
 ************************************************************
 */
 h5 {
   font-size: 2.25em;
+}
+/*
+************************************************************
+MAP
+************************************************************
+*/
+#map {
+position:absolute; 
+bottom:0;
+width: 100%;
+}
+#search {
+    position:absolute;
+    top:130px;
+    right:10px;
+    font-size:150%;
 }
 /*
 ************************************************************
@@ -16,29 +54,23 @@ HOMEPAGE
   font-size: 14px;
   line-height: 30px;
 }
-#map {
-position:absolute; 
-bottom:0;
-width: 100%;
-}
-
 .home {
   display: inline-block;
   border-radius: 0%;
-  font-size: 22px;
+  font-size: 25px;
   border-style: solid;
   border-width: 5px;
   border-color: black;
   background-color: rgb(75,75,75);
-  height: 44px;
-  width: 60%;
+  height: 50px;
+  width: 90%;
   color: white;
   text-align: left;
-  line-height: 33px;
+  line-height: 25px;
   margin: 0;
 }
 .tab {
-  width: 20%;
+  width: 10%;
   display: inline-block;
   text-align: center;
   border-left: none;
@@ -83,7 +115,7 @@ width: 100%;
   color: black;
 }
 h1 {
-  margin: 0 0 0 0;
+  margin: 0;
   font-size: 2.5em;
 }
 
@@ -222,8 +254,7 @@ Survey Beach
 }
 .surveyText {
   display:inline-block; 
-  width: 60%;
-  height: 44px;
+  width: 70%;
   font-size: 1.25em;
   min-width: 300px;
   margin-bottom: 0px;
@@ -294,6 +325,7 @@ Survey Beach
 .unround-left {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  padding: 0;
 }
 .dropdown-menu > li > a {
   height: 44px;
@@ -315,6 +347,9 @@ Beach Info
   border-top: none;
   color: #3AF;
   text-align: left;
+}
+.btn-infoButtons:hover {
+  color: #0971BC;
 }
 .surveyLink {
   border-radius: 0%;

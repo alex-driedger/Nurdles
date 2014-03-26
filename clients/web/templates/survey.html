@@ -13,7 +13,7 @@ function validate(event) {
 }
 </script>
 <a type="button" class="btn back" style="border-width: 5px; margin-bottom: -5px; border-style: solid;" href="#"><span class="glyphicon glyphicon-chevron-left"></span><span>Cleanup Helper</span></a>
-<a type="button" class="btn btn-surveyButtons top_button" id="a">Site Location (Required)</a>
+<a type="button" class="btn btn-surveyButtons top_button" id="a">Site Location</a>
 <div class="block" id="block_a" >
 	<div class="form-group">
         <input type="checkbox" id="checkbox" >  Use my current location</input>
@@ -23,7 +23,7 @@ function validate(event) {
         <input type="text" id="country" class="form-control FT" placeholder="Country"/>
     </div>
  </div>
-<a type="button" class="btn btn-surveyButtons mid_button" id="b">Site Description (Required)</a>
+<a type="button" class="btn btn-surveyButtons mid_button" id="b">Site Description</a>
 <div class="block" id="block_b" >
     <div style="display: inline-block; width: 200px; margin-left: 3%;">
         <label style="display: block;  font-size: 1.2em;">Type of environment :</label>
@@ -32,7 +32,10 @@ function validate(event) {
                 <input type="radio" id="radio1" name="a"><label id="L_radio1" for="radio1">Saltwater</label>
             </div>
             <div style="display: block;">
-                <input type="radio" id="radio2" name="a"><label id="L_radio2" for="radio2">Freshwater</label>
+                <input type="radio" id="radio2" name="a"><label id="L_radio2" for="radio2">Freshwater - Lake</label>
+            </div>
+            <div style="display: block;">
+                <input type="radio" id="radio2" name="a"><label id="L_radio2" for="radio2">Freshwater - River</label>
             </div>
             <div style="display: block;">
                 <input type="radio" id="radio3" name="a"><label id="L_radio3" for="radio3">Inland</label>
@@ -40,16 +43,13 @@ function validate(event) {
         </div>
     </div>
     <div style="display: inline-block; width: 220px; float:right; margin-right: 3%;">
-        <label style="display: block;  font-size: 1.2em;: orange;">Mode of Data Collection :</label>
+        <label style="display: block;  font-size: 1.2em;: orange;">Beach Type :</label>
         <div style="display: block;">
             <div style="display: block;">
-                <input type="radio" id="radio4" name="b"><label id="L_radio4" for="radio1">Beach/Shoreline</label>
+                <input type="radio" id="radio4" name="b"><label id="L_radio4" for="radio1">Predominately Sandy</label>
             </div>
             <div style="display: block;">
-                <input type="radio" id="radio5" name="b"><label id="L_radio5" for="radio2">Underwater</label>
-            </div>
-            <div style="display: block;">
-                <input type="radio" id="radio6" name="b"><label id="L_radio6" for="radio3">Watercraft</label>
+                <input type="radio" id="radio5" name="b"><label id="L_radio5" for="radio2">Predominately Rocky</label>
             </div>
         </div>
     </div>
@@ -60,21 +60,13 @@ input[type="radio"] {
 </style>
 </div>
 
-<a type="button" class="btn btn-surveyButtons mid_button" id="c">Cleanup Summary (Optional)</a>
+<a type="button" class="btn btn-surveyButtons mid_button" id="c">Cleanup Summary</a>
 <div class="block" id="block_c">
-    <form role="form">
-        <fieldset>
-            <label  style="font-size: 20px; margin-left: 4vw; display: inline;">Date</label>
-            <div class="form-group"style="display: inline">
-                <div class="input-group date form_datetime" style="margin-left: 5vw; height: 30px; display: inline;"  data-date-format="dd/mm/yyyy">
-                    <input id="date" class="form-control" style=" display: inline; width: 100px; height:30px"type="text"/>
-                    <span class="input-group-addon"style="display: inline;"><span class="glyphicon glyphicon-th"></span></span>
-                </div>
-            </div>
-        </fieldset>
-    </form>
+    <h4 style="margin: 0; display: inline-block;">Date: </h4>
+<input style="display: inline-block; width: 200px" class="form-control" id="date"></input>
+<div/>
 <script type="text/javascript">
-    $('.form_datetime').datetimepicker({
+    $('input').datepicker({
         todayBtn:  1,
         autoclose: 1,
         todayHighlight: 1,
@@ -82,9 +74,9 @@ input[type="radio"] {
         showMeridian: 1
     });
 </script>
-        <p class="form-control surveyText">Total Weight of Trash Collected</p>
+        <p class="form-control surveyText">Approx. Weight of Trash Collected</p>
         <div style="float:right">
-        <input onkeypress='validate(event)' id="weightval" class="form-control surveyText2" value="0"/>
+        <input onkeypress='validate(event)' id="weightval" class="form-control surveyText2"/>
         <div class="input-group-btn">
         <button type="button" id="weightbtn" class="form-control unround-left" data-toggle="dropdown">kg</button>
         <ul class="dropdown-menu pull-right">
@@ -92,23 +84,23 @@ input[type="radio"] {
         </ul>
       </div><!-- /btn-group -->
   </div>
-        <p class="form-control surveyText">Estimated Area Cleaned</p>
+        <p class="form-control surveyText">Approx. Area Cleaned</p>
         <div style="float:right">
-                <input onkeypress='validate(event)' id="areaval" class="form-control surveyText2" value="0"/>
+                <input onkeypress='validate(event)' id="areaval" class="form-control surveyText2"/>
               <div class="input-group-btn">
-        <button type="button" id="areabtn" class="form-control unround-left" data-toggle="dropdown">m<sup>2</sup></button>
+        <button type="button" id="areabtn" class="form-control unround-left" data-toggle="dropdown">m<sup style="pointer-events: none;">2</sup></button>
         <ul class="dropdown-menu pull-right" style="cursor: pointer">
-          <li class="area">mi<sup>2</sup></li>
-          <li class="area">km<sup>2</sup></li>
-          <li class="area">ft<sup>2</sup></li>
+          <li class="area">mi<sup style="pointer-events: none;">2</sup></li>
+          <li class="area">km<sup style="pointer-events: none;">2</sup></li>
+          <li class="area">ft<sup style="pointer-events: none;">2</sup></li>
         </ul>
     </div>
       </div><!-- /btn-group -->
         <p class="form-control surveyText">Number of Volunteers</p>
-            <input onkeypress='validate(event)' id="volunteersval" class="form-control surveyText3" value="0"/>
-        <p class="form-control surveyText">Total Number of Trash Bags Filled</p>
-            <input onkeypress='validate(event)' id="bagsval" class="form-control surveyText3" value="0"/>
-        <textarea id="notes" class="form-control FT" style="margin-top: 20px;" placeholder="Other Notes"/>
+            <input onkeypress='validate(event)' id="volunteersval" class="form-control surveyText3"/>
+        <p class="form-control surveyText">Total Number of Trash Bags Filled (optional)</p>
+            <input onkeypress='validate(event)' id="bagsval" class="form-control surveyText3"/>
+        <textarea id="notes" class="form-control FT" style="margin-top: 20px;" placeholder="Other Notes (optional)"/>
 </div>
 </div>
 <a type="button" class="btn btn-surveyButtons mid_button" id="d">Cleanup Tracker</a>
@@ -139,12 +131,12 @@ input[type="radio"] {
     <textarea rows="3" maxlength="500" type="text" id="localConcern" class="form-control FT2" />
 </div>
 
-<a type="button" class="btn btn-surveyButtons mid_button" id="f">Peculiar Item(s)</a>
+<a type="button" class="btn btn-surveyButtons mid_button" id="f">Peculiar Items</a>
 <div class="block" id="block_f" >
     <textarea rows="3" maxlength="500" type="text" id="peculiarItems" class="form-control FT2" />
 </div>
 
-<a type="button" class="btn btn-surveyButtons mid_button" id="g">Dead/Injured Animal</a>
+<a type="button" class="btn btn-surveyButtons mid_button" id="g">Dead/Injured Animals</a>
 <div class="block" id="block_g" >
     <textarea rows="3" maxlength="500" type="text" id="injuredAnimals" class="form-control FT2" />
 </div>

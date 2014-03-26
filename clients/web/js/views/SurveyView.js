@@ -80,6 +80,8 @@ define([
         },
         updateArea: function(events) {
             var temp = events.target.innerHTML
+            console.log(events.target.innerHTML)
+            console.log($("#weightbtn")[0].innerHTML)
             events.target.innerHTML = $("#areabtn")[0].innerHTML
             $("#areabtn")[0].innerHTML = temp;
         },
@@ -88,6 +90,12 @@ define([
             if ($("#beachname")[0].beachName != $("#beachname").val().toUpperCase())
             {
                 alert("Please select a beach from the dropdown list")
+            } else if ($('input[name=a]:checked')[0] == undefined || $('input[name=b]:checked')[0] == undefined)
+            {
+                alert("Please fill in beach description data")
+            } else if ($("#weightval").val() == "" || $("#areaval").val() == "" || $("#volunteersval").val() == "" ) 
+            {
+                alert("Please provide a cleanup summary")
             } else
             {
             var items = []
@@ -99,25 +107,15 @@ define([
                     items.push({name:$("#item_name"+i)[0].innerHTML,value:val});
                 }
             }
-            var weight = $("#weightval").val()+""+$("#weightbtn")[0].innerText;
-            var area = ($("#areaval").val()+""+$("#areabtn")[0].innerText )
-            a = $('input[name=a]:checked')[0]
-            b = $('input[name=b]:checked')[0]
-            env = ""
-            method = ""
-            if (a != undefined)
-            {
-                env = ($('#L_' + a.id)[0].innerText);
-            }
-            if (b != undefined)
-            {
-                method = ($('#L_' + $('input[name=b]:checked')[0].id)[0].innerText);
-            }
+                env = ($('#L_' + $('input[name=a]:checked')[0].id)[0].innerText);
+                type = ($('#L_' + $('input[name=b]:checked')[0].id)[0].innerText);
+            var weight = $("#weightval").val()+$("#weightbtn")[0].innerText;
+            var area = ($("#areaval").val()+$("#areabtn")[0].innerText )
             surveyModel = new SurveyModel.Model();
             var input = {
                 beachID:$("#beachname")[0].beachID,
                 environment: env,
-                collectionMethod: method,
+                beachType: type,
                 date:$("#date").val(), 
                 weight:weight,
                 area:area,
