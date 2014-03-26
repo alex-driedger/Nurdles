@@ -3,7 +3,8 @@ var path = require( 'path' ),
     survey = require( path.join( __dirname, '..', 'models', 'survey' ) ),
     Survey = mongoose.model( 'Survey' ),
     _ = require( 'underscore' );
-
+    beach = require( path.join( __dirname, '..', 'models', 'beach' ) ),
+    Beach = mongoose.model('Beach')
 var self = {
 
     /*
@@ -32,8 +33,8 @@ var self = {
         if( _.has( req.body, 'environment') && _.isString( req.body.environment ) ) {
             properties.environment = req.body.environment;
         }
-        if( _.has( req.body, 'collectionMethod') && _.isString( req.body.collectionMethod ) ) {
-            properties.collectionMethod = req.body.collectionMethod;
+        if( _.has( req.body, 'beachType') && _.isString( req.body.beachType ) ) {
+            properties.beachType = req.body.beachType;
         }
         if( _.has( req.body, 'date') ) {
             tmpDate = new Date( req.body.date );
@@ -78,7 +79,11 @@ var self = {
             properties.items = req.body.items;
         }
 
-
+        Beach.findOne({_id: req.body.beachID}, function (err, beach)
+        {
+            beach.lastUpdated = req.body.created
+            console.log(beach)
+        })
         survey = new Survey( properties );
 
         survey.save( function ( err, survey, numberAffected ) {
@@ -91,8 +96,13 @@ var self = {
     },
 
     retrieveAll: function( req, res ) {
-        Survey.find( function ( err, surveyCollection ) {
+        id = req.params.id
+        start = req.params.start
+        end = req.params.end
+        console.log(req.params)
+        Survey.find({_id: id}, function ( err, surveyCollection ) {
             if( null === err ) {
+                console.log(surveyCollection)
                 res.send( surveyCollection );
                 //Survey.remove(function(err,res){console.log(res)})
 
@@ -125,7 +135,7 @@ var self = {
                 } else {
                     // Update existing document with properties from the request,
                     // or with the existing value if the property is not in the request.
-                    survey.collectionMethod = req.body.collectionMethod || survey.collectionMethod; 
+                    survey.beachType = req.body.beachType || survey.beachType; 
                     survey.date = req.body.date || survey.date;
                     survey.weight = req.body.weight || survey.weight;
                     survey.area = req.body.area || survey.area;

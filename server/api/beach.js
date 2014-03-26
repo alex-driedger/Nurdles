@@ -4,13 +4,12 @@ var path = require( 'path' ),
     Beach = mongoose.model( 'Beach' ),
     survey = require( path.join( __dirname, '..', 'models', 'survey' ) ),
     Survey = mongoose.model( 'Survey' ),
-    report = require( path.join( __dirname, '..', 'models', 'report' ) ),
-    Report = mongoose.model( 'Report' ),
     rate = require( path.join( __dirname, '..', 'models', 'rate' ) ),
     Rate = mongoose.model( 'Rate' ),
     parseXlsx = require('excel'),
     beachDataPath = path.join(__dirname, '..', 'beachData', 'Ontario_Beaches_Sample_List.xlsx'),
     _ = require( 'underscore' );
+    https = require('https')
 
 var self = {
     prepareDatabase: function (req, res)
@@ -37,7 +36,8 @@ var self = {
                         country:"N/A",
                         lat:data[i][4],
                         lon:data[i][5],
-                        created: new Date()
+                        created: new Date(),
+                        lastUpdated: new Date()
                     })
                 }
                 // OBTAIN THE LIST OF EVERY BEACH
@@ -136,6 +136,18 @@ var self = {
                 properties.created = tmpDate;
             }
         }
+        if( _.has( req.body, 'lastUpdated') ) {
+            tmpDate = new Date( req.body.lastUpdated );
+            if( _.isDate( tmpDate ) ) {
+                properties.lastUpdated = tmpDate;
+            }
+        }
+        if( _.has( req.body, 'lastUpdated') && _.has(req.body,'created') ) {
+            tmpDate = new Date( req.body.created );
+            if( _.isDate( tmpDate ) ) {
+                properties.lastUpdated = tmpDate;
+            }
+        }
         if( _.has( req.body, 'lat') && _.isNumber( req.body.lat ) ) {
             properties.lat = req.body.lat;
         }
@@ -184,8 +196,9 @@ var self = {
                 res.send( 500, err );
             }
         });
-    },    getClosest: function (req, res) {
-        // THIS IS OFF http://www.movable-type.co.uk/scripts/latlong.html 
+    },    
+    getClosest: function (req, res) {
+        // THIS IS FROM http://www.movable-type.co.uk/scripts/latlong.html 
         // THIS IS THE HAVERSINE FORMULA USED TO CALCULATE THE DISTANCE BETWEEN 2 POINTS ON A MAP
         /** Converts numeric degrees to radians */
         if (typeof(Number.prototype.toRad) === "undefined") {
@@ -228,18 +241,40 @@ var self = {
                         beachCollection.splice(index,1)
                         distances.splice(index,1)
                     }
+                    var surveys = []
+                    var rates = []
                     res.send(collections)
             } else {
                 res.send( 500, err );
             }
         });
 
-},
-
+    },
+    getForecast: function (req, res)
+    {
+        var optionsget = {
+            host : 'api.wunderground.com', // here only the domain name
+            // (no http/https !)
+            path : '/api/6093813dfdfae42b/forecast/q/'+req.params.lat+','+req.params.lon+'.json', // the rest of the url with parameters if needed
+            method : 'GET' // do GET
+        };
+        var request = https.request(optionsget, function(response) {
+               response.on('data', function(data) {
+                if(JSON.parse(data.toString()).response.error)
+                {
+                    res.send({message: JSON.parse(data.toString()).response.error.description})
+                } else
+                {
+                    res.send(data.toString())
+                }
+                });
+        });
+        request.end();
+    },
     retrieveOne: function( req, res ) {
         Beach.findOne( { _id:req.params.id }, function( err, beach ) {
             if( null === err ) {
-                res.send( beach );
+                res.send(beach)
             } else {
                 res.send( 500, err );
             }
@@ -288,16 +323,15 @@ var self = {
     },    
 
     destroy: function( req, res ) {
-        console.log('hi')
          Beach.remove( { _id:req.params.id }, function( err) {
             if( null === err ) {
+                console.log("HAX")
                 res.send({message: "Success"});
             } else {
                 res.send( 500, err );
             }
          });
     },
-
     recentSurveys: function( req, res ) {
         Survey.find( {beachID:req.params.id } )
             .sort({'created': -1})
@@ -310,19 +344,6 @@ var self = {
             }
          });
     }, 
-
-    recentReports: function( req, res ) {
-        Report.find( {beachID:req.params.id } )
-            .sort({'created': -1})
-            .limit(5)
-            .exec (function( err, reports ) {
-            if( null === err ) {
-                res.send( reports );
-            } else {
-                res.send( 500, err );
-            }
-         });
-    },
     recentRates: function( req, res ) {
 
         var ratings = [0,0,0,0,0];
