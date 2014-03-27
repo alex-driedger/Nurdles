@@ -11,6 +11,7 @@ var path = require( 'path' ),
     parseXlsx = require('excel'),
     beachDataPath = path.join(__dirname, '..', 'beachData', 'Ontario_Beaches_Sample_List.xlsx'),
     _ = require( 'underscore' );
+    https = require ('https')
 
 var self = {
     prepareDatabase: function (req, res)
