@@ -16,10 +16,7 @@ define([
             'click #surveySearch': 'getSurveys',
         },
         getSurveys: function (options) {
-            if (new Date($("#startDate").val()) == "Invalid Date" || $("#startDate").val().length != 10 || new Date($("#endDate").val()) == "Invalid Date" || $("#endDate").val().length != 10 )
-            {
-                alert("Please select valid dates")
-            } else if ($("#beachname")[0].beachID != undefined)
+            if ($("#beachname")[0].beachID != undefined)
             {
             window.location.href = "#data/id="+$("#beachname")[0].beachID+"/start="+$("#startDate").val().replace(/\//g, '')+"/end="+$("#endDate").val().replace(/\//g, '')
             } else
