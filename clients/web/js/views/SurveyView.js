@@ -192,7 +192,7 @@ define([
                 data:
                 [
                     { name: "Cigarette Butts"},
-                    { name: "Food Wrappers (Candy/Chips etc..)"},
+                    { name: "Food Wrappers (Candy / Chips etc..)"},
                     { name: "Take Out/ Away Containers (Plastic)"},
                     { name: "Take Out/ Away Containers (Foamed Plastic)"},
                     { name: "Plastic Caps/ Lids"},
