@@ -27,7 +27,7 @@ define([
                     [-180, -180],
                     [180, 180]
                 ]
-            }).addControl(L.mapbox.geocoderControl('examples.map-9ijuk24y'));
+            })
             var features = [];
             // Create current location point
             features.push({
