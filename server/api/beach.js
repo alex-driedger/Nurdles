@@ -178,10 +178,8 @@ var self = {
     retrieveAll: function( req, res ) {
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
-                Beach.remove(function(err,res){console.log(res)})
-                Survey.remove(function(err,res){console.log(res)})
-                Rate.remove(function(err,res){console.log(res)})
 
+                Beach.find(function(err,data){res.send(data)})
             } else {
                 res.send( 500, err );
             }
