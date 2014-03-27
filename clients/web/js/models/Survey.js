@@ -3,6 +3,7 @@ define([
 	'underscore',
 	'backbone'
 ], function ($, _, Backbone) {
+
 	var Survey = Backbone.Model.extend({
 		idAttribute: "_id",
 	  urlRoot: '/api/survey',
@@ -19,18 +20,7 @@ define([
 	  initialize: function( models, options ) {
 	  	if (options != undefined)
 	  	{
-	  		if (options.sendLink != undefined)
-	  		{
-	  			this.url = '/api/survey/link/' + options.surveyID+"/username/" + options.username
-	  		} 
-	  		else if (options.surveyID != undefined)
-	  		{
-	  			this.url = '/api/survey/'+options.surveyID
-	  		} 
-	  		else
-	  		{
-	  			this.url = 'api/survey/'+options.id+"/"+options.start+"/"+options.end
-	  		}
+	  		this.url = '/api/survey/'+options.surveyID
 	  	}
 	  }
 	});
