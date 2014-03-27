@@ -29,11 +29,7 @@ require.config({
         backbone: {
             deps: ['underscore'],
             exports: 'Backbone'
-        },
-        
-        datetimepicker: {
-            deps: ['jquery']
-        },
+        }
     },
     
 });
