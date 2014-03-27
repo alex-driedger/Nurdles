@@ -40,6 +40,8 @@ var self = {
                         lastUpdated: new Date()
                     })
                 }
+                var total = 0;
+                var current = 0;
                 // OBTAIN THE LIST OF EVERY BEACH
                 Beach.find(function(err, data)
                 {
@@ -55,17 +57,26 @@ var self = {
                         // If the beachID does not exist in the database
                         if (id1.indexOf(parseInt(properties[i].beachID)) == -1)
                         {
+                            total++;
                             // save it
                             beach = new Beach( properties[i] );
                             beach.save( function ( err, beach, numberAffected ) {
                                 if( null === err ) {
                                     console.log(beach.beachName + " was created.")
-                                    res.send( beach );
+                                    current ++
+                                    if (current == total)
+                                    {
+                                        res.send({message:total + " beaches have been created."})
+                                    }
                                 } else {
                                     res.send( 500, err );
                                 }
                             });
                         }
+                    }
+                    if (total == 0)
+                    {
+                        res.send({message: "0 beaches have been created"})
                     }
                 })
             }

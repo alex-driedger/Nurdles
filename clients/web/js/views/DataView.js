@@ -44,17 +44,20 @@ define([
                 var date = new Date(models[i].attributes.created)
                 returnStatement.push({html: ("Survey Date : " + date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() + " at " + date.getHours() + ":" + ('0' + date.getMinutes()).slice(-2)), id: models[i].attributes._id})
             }
-            console.log(returnStatement)
             return returnStatement
         },
         
         render: function () {
             surveysHTML = []
-            console.log(this.collection)
             if (this.collection != undefined)
             {
-                console.log("hi")
-                surveysHTML = this.getSurveyHTML()
+                if (this.collection.models.length != 0)
+                {
+                    surveysHTML = this.getSurveyHTML()
+                } else
+                {
+                    alert("No surveys were found")
+                }
             }
                 this.$el.html( _.template( dataTemplate, {surveysHTML: surveysHTML} ) );
 

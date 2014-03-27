@@ -120,9 +120,11 @@ define([
                     lon: lon,
                     created: new Date()
                     });
-                            beachModel.save(null, {
+                beachModel.save(null, {
                     success: function (res) {
                         alert('Your beach has been created')
+                        // unshift adds to the start of the list
+                        // we unshift so that the admin can see the new beach right away
                         that.collection.models.unshift(res)
                         that.render()
                     },
@@ -137,12 +139,12 @@ define([
         },
         import: function()
         {
-            that = this
+        that = this
           beachModel = new BeachModel.Model();
           beachModel.save(null, {
                     success: function (res) {
-                        console.log(res)
-                        console.log(that.collection)
+                        alert(res.attributes.message)
+                        that.render();
                     },
                     error: function (err, err2, err3) {
                         console.log(err)
@@ -233,7 +235,6 @@ define([
         },
         
         render: function () {
-            console.log(this.collection.models)
             this.$el.html(_.template(adminTemplate,{data: this.collection.models}));
             return this;
         },
