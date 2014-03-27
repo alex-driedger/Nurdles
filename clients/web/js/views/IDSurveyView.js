@@ -4,7 +4,7 @@ define([
     'backbone',
     'text!templates/IDsurveyTemplate.html',
     'jquerycookie',
-    'models/survey'
+    'models/Survey'
 ], function ($, _, Backbone, IDsurveyTemplate, jQueryCookie, SurveyModel) {
     
     var IDSurveyView = Backbone.View.extend({
