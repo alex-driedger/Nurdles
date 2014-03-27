@@ -1,0 +1,1 @@
+ReportNurdles is Nurdles with report capabilites included. You can create and view reports the same way you create and view surveys.

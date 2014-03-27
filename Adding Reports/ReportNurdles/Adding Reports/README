@@ -1,0 +1,1 @@
+To add reports back into the app, in the folder containing this readme file are several other folders. Each one is titled based on where it's contents should be. (Ex. everything in the server/config file goes into the server/config file in the app). Some files will ask to be replaced, just hit accept and the app should be good to go.

@@ -1,0 +1,32 @@
+{
+  "name": "fillmeup",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "~3.3.5",
+    "express-resource": "*",
+    "ejs": "*",
+    "stylus": "*",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "passport-local-mongoose": "*",
+    "passport-http": "*",
+    "passport-http-bearer": "*",
+    "passport-oauth2-client-password": "*",
+    "oauth2orize": "*",
+    "connect": "*",
+    "uid2": "*",
+    "less": "*",
+    "nodemailer": "*",
+    "excel": "*",
+    "underscore": "~1.5.2",
+    "lactate": "~0.13.12",
+    "logfmt": "~0.20.0",
+    "jsdom": "*",
+    "jquery": "*"
+  }
+}

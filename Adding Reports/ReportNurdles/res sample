@@ -1,0 +1,81 @@
+module.exports = function (mongoose) {
+
+    var BeachSchema = new mongoose.Schema({
+        details: {
+            name : String,
+            lat: Number,
+            lon: Number,
+            address: {
+                city: String,
+                state: String,
+                country: String,
+            },
+            updated: Date
+        },
+        report: {
+            rating: Number,
+            siteLocation: String,
+            siteDescription: String,
+            cleanUpSummary: String,
+            cleanUpItems: String,
+            itemsOfLocalConcern: String,
+            peculiarItems: String,
+            animalInjuries: String,
+            hazardousDebris: String,
+        }
+    });
+
+    // Convenience method for creating
+    BeachSchema.statics.createBeach2 = function (name, lat, lon, city, state, country, updated, rating, siteLocation, siteDescription, cleanUpSummary, cleanUpItems, itemsOfLocalConcern, peculiarItems, animalInjuries, hazardousDebris)
+    {
+        var Beaches = mongoose.model('Beach')
+        Beaches.create({details.name: name, details.lat: lat, details.lon: lon, details.address.city: city, details.address.state: state, details.address.country: country, details.updated: updated, report.rating: rating, report.siteLocation: siteLocation, report.siteDescription: siteDescription, report.cleanUpSummary: cleanUpSummary, report.cleanUpItems: cleanUpItems, report.itemsOfLocalConcern: itemsOfLocalConcern, report.peculiarItems: peculiarItems, report.animalInjuries: animalInjuries, report.hazardousDebris: hazardousDebris}, function(err,newBeach)
+        {
+            Beach.find(function(err, beaches) {res.send(beaches)})
+        }
+    }
+    /*BeachSchema.statics.createBeach = function (name, cleanliness, res) {
+        var Beach = mongoose.model('Beach')
+        Beach.findOne({beachname: name},function (err,beach){
+            // If the beach does not exist, create it
+            if (beach == undefined)
+            {
+                // Sets the beach data based on what is entered
+                Beach.create({beachname: name, beachcleanliness: 0, calls: 0}, function (err, newbeach)
+                {
+                    // Return all docs after creating new doc
+                    Beach.find(function (err, beaches) {res.send(beaches)})
+                })
+            } else
+            {
+                // If the beach does exist, just send back the whole db
+                Beach.find(function (err, beaches) {res.send(beaches)})
+            }
+            })
+        }*/
+        BeachSchema.statics.CH_SiteLocation = function(name, city, state, country)
+        {
+            var Beaches = mongoose.model('Beach')
+            Beach.update({details.name: name}, {details.address.city: city, details.address.state: state, details.address.country: country}, function()
+            {
+                Beach.find(function(err,beaches) {res.send(beaches)})
+            })
+
+        }
+    /*BeachSchema.statics.updateBeach = function (name, cleanliness, res) {
+                // Find a beach
+                Beach.findOne({beachname: name},function (err,beach) {
+                // Add 1 to the calls and change cleanlines to an average based on how many inputs there are
+                    Beach.update({beachname: name},{beachcleanliness: ((beach.beachcleanliness*beach.calls+parseInt(cleanliness))/(beach.calls+1)), calls: (beach.calls+1)}, function ()
+                    {
+                        //return all docs after update
+                        Beach.find(function (err, beaches) {res.send(beaches)})
+                    })
+                })
+            }*/
+
+    var Beach = mongoose.model("Beach", BeachSchema);
+    
+    return Beach;
+    
+};

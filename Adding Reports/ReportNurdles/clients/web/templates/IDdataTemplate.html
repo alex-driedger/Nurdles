@@ -1,0 +1,8 @@
+<%
+	_.each( items, function( item ) { 
+		%>
+			<p> <%= item.name + " : " + item.value %> </p>
+		<%
+	});
+%>
+<a style="margin: 20px" id="download" class="btn btn-primary FT2">DOWNLOAD (.CSV)</a>

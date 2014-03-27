@@ -1,0 +1,21 @@
+<div id="header"style="position: fixed; width: 100%; border-style: solid; background-color: white; border-width: 5px; border-color:black; top: 0px;">
+    <a type="button" class="btn back" id="RateCleanliness" onClick="history.go(-1);return true;"><span class="glyphicon glyphicon-chevron-left"></span><span> Search</span></a>
+    	<h4> Search By Beach Name </h4>
+        <input type="text" id="beachname" class="form-control FT" style="margin-left: 10px;" placeholder="Beach Name"/>
+        <h4> Search By Coordinates </h4>
+        <div style="float: left; width: 220px; height: 100px;">
+        	<div>
+	        	<h4 style="display: inline-block; width: 80px; font-size: 1.25em;">Latitude:</h4>
+		        <input type="text" id="lat" class="form-control FT" style="margin: 0 10; width: 100px;text-align: center; padding: 0; display: inline-block;" value="0" />
+		    </div>
+		    <div>
+		        <h4 style="display: inline-block; width: 80px; font-size: 1.25em;">Longitude:</h4>
+		        <input type="text" id="lon" class="form-control FT" style="margin: 10; width: 100px; text-align: center; padding: 0; display: inline-block;" value="0" />
+		    </div>
+    	</div>
+    	<a type="button" id="searchByCoord" class="btn btn-primary" style="float: right; height: 88px; width: 200px; padding: 0; margin: 5px 20px; margin-left: 0; line-height: 88px;">Search By Coordinates</a>
+    </div>
+    <script> 
+    document.getElementById("container").style.top = $('#header').height()  + 10;
+    </script>
+    <div id="container" style="position: absolute; z-index: -1000;"></div>

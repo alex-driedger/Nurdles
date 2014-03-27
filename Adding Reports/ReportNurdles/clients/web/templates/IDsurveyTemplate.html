@@ -1,0 +1,9 @@
+<%
+	_.each( items, function( item ) { 
+		%>
+			<p> <%= item.name + " : " + item.value %> </p>
+		<%
+	});
+%>
+<a style="margin: 20px" id="download" class="btn btn-primary FT2">Send download Link</a>
+<p style="text-align: center;">(A link will be sent to the email address used to log into this app)</p>

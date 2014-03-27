@@ -1,0 +1,7 @@
+IMPORTANT
+HOW TO USE GIT STUFF
+git add .
+git commit
+git push
+git push heroku master
+Then heroku stuff

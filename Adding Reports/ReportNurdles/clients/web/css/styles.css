@@ -1,0 +1,376 @@
+/*
+************************************************************
+ADMIN
+************************************************************
+*/
+.twoButtons {
+  width: calc(50% - 15px);
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  padding: 0;
+}
+.btn-admin-beach {
+  border-radius: 0%;
+  border: none;
+  font-size: 1.75em;
+  width: 100%;
+  border-bottom-width: 5px;
+  border-bottom-color: black;
+  border-bottom-style: solid;
+}
+
+/*
+************************************************************
+LOGIN
+************************************************************
+*/
+h5 {
+  font-size: 2.25em;
+}
+/*
+************************************************************
+MAP
+************************************************************
+*/
+#map {
+position:absolute; 
+bottom:0;
+width: 100%;
+}
+#search {
+    position:absolute;
+    top:130px;
+    right:10px;
+    font-size:150%;
+}
+/*
+************************************************************
+HOMEPAGE
+************************************************************
+*/
+.btn-primary {
+  height: 44px;
+  font-size: 14px;
+  line-height: 30px;
+}
+.home {
+  display: inline-block;
+  border-radius: 0%;
+  font-size: 25px;
+  border-style: solid;
+  border-width: 5px;
+  border-color: black;
+  background-color: rgb(75,75,75);
+  height: 50px;
+  width: 90%;
+  color: white;
+  text-align: left;
+  line-height: 25px;
+  margin: 0;
+}
+.tab {
+  width: 10%;
+  display: inline-block;
+  text-align: center;
+  border-left: none;
+}
+.tab:hover {
+  color: white;
+  text-decoration: none;
+}
+.back
+{
+  border-radius: 0%;
+  font-size: 25px;
+  border-style: none;
+  border-bottom-style: solid;
+  border-bottom-width: 5px;
+  border-color: black;
+  background-color: rgb(75,75,75);
+  height: 50px;
+  width: 100%;
+  color: white;
+  text-align: left;
+  line-height: 25px;
+  margin: 0;
+}
+#titleBlock {
+  border-style: solid;
+  border-width: 5px;
+  border-top: 0vh;
+  border-bottom: 0vh;
+  border-color: black;
+  height: 160px;
+  margin: 0;
+}
+.btn-homepageButtons {
+  border-radius: 0%;
+  font-size: 2em;
+  width: 100%;
+  border-width: 5px;
+  border-color: black;
+  height: 100px;
+  line-height: 92px;
+  color: black;
+}
+h1 {
+  margin: 0;
+  font-size: 2.5em;
+}
+
+h2 {
+  margin-top: 40px;
+  margin-bottom: 0vh;
+  font-size: 2.5em;
+}
+/*
+************************************************************
+RATE CLEANLINESS
+************************************************************
+*/
+.border {
+  border-style: solid;
+  border-color: black;
+  border-width: 5px;
+  padding-bottom: 10px;
+}
+input[type="checkbox"] {
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-bottom: 10px; 
+}
+
+#IMG_RSRV {
+  display: block;
+  width: 400px;
+  height: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#rating{
+  margin: 20px auto 0 auto;
+  font-size: 2em;
+  text-align: center;
+  width: 80%;
+}
+#slider{
+  width: 90%;
+  margin: 50px auto 0 auto ;
+  background-color: rgba(100,100,100,0.5);
+  height: 44px;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border-bottom: 44px solid black; 
+    border-left: 22px solid transparent; 
+    border-right: 22px solid transparent;
+    height: 44px;
+    width: 44px;
+}
+.btn-submit {
+  border-width: 5px;
+  border-color: black;
+  background-color: white;
+  height: 44px;
+  width: 150px;
+  padding: 0 0 0 0;
+  margin: 20px;
+}
+.FT {
+  width: calc(100% - 20px);
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+.FT2 {
+  margin-left: 20px;
+  width: calc(100% - 40px);
+}
+
+/*
+************************************************************
+Report Debris
+************************************************************
+*/
+h4 {
+  font-size: 20px;
+  margin-left: 10px;
+}
+.caret {
+    border-left: 10px solid transparent;
+    border-right: 10px  solid transparent;
+    border-top: 20px solid #000000;
+}
+a:hover {
+ cursor:pointer;
+}
+.pull-right {
+  margin-right: 20px;
+}
+
+/*
+************************************************************
+Survey Beach
+************************************************************
+*/
+.area,.weight {
+  display: block;
+  height: 44px;
+  font-size: 1.5em;
+  line-height: 44px;
+}
+.area:hover,.weight:hover {
+  background-color: #bbb;
+}
+.btn-surveyButtons {
+  height: 75px;
+  border-radius: 0%;
+  font-size: 30px;
+  width: 100%;
+  border-width: 5px;
+  border-color: black;
+  color:black;
+  line-height: 60px;
+}
+.top_button {
+  border-bottom-width: 0;
+}
+.mid_button {
+  border-top-width: 5px;
+  border-bottom-width: 0;
+}
+.block {
+  border-right-width: 5px;
+  border-right-color: black;
+  border-right-style: solid;
+  border-left-width: 5px;
+  border-left-color: black;
+  border-left-style: solid;
+  padding: 0;
+  padding-bottom: 20px;
+  width: 100%;
+  display: none;
+}
+.surveyText {
+  display:inline-block; 
+  width: 70%;
+  font-size: 1.25em;
+  min-width: 300px;
+  margin-bottom: 0px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.surveyText2 {
+  padding: 0;
+  display:inline-block;
+  width: 60px;
+  margin-bottom: 0px;
+  margin-top: 10px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  text-align: center;
+}
+.surveyText3 {
+  display:inline-block;
+  width: 108px;
+  margin-bottom: 0px;
+  margin-top: 10px;
+  text-align: center;
+  float:right;
+}
+.dropdown-menu {
+  min-width: 100px;
+  text-align: center;
+}
+.btn-ticker {
+  display: inline-block;
+  color: #3AF;
+  height: 44px;
+  width: 44px;
+  font-size: 22px;
+  padding: 0 0 0 0;
+  border: 1px solid #cccccc;
+  margin: 20px 0;
+  float: right;
+}
+.pos {
+   margin-right: 10px;
+}
+
+.items {
+  display: inline-block;
+  border-radius: 0%;
+  font-size: 15px;
+  width: 40vw;
+  height: 44px;
+  text-align: left;
+  margin: 20px 0px;
+  margin-right: 0px;
+}
+.dropdown-header
+{
+  font-size: 1.5em;
+  color: black;
+}
+
+.input-group-btn {
+  display: inline-block;
+  width: 44px;
+  margin-top: 10px;
+}
+.form-control {
+  height: 44px;
+  font-size: 1.25em;
+}
+.unround-left {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 0;
+}
+.dropdown-menu > li > a {
+  height: 44px;
+  line-height:calc(44px - 1.428571429px);
+}
+/*
+************************************************************
+Beach Info
+************************************************************
+*/
+.btn-infoButtons {
+  border-radius: 0%;
+  border: none;
+  font-size: 1.5em;
+  width: 100%;
+  border-width: 5px;
+  border-color: black;
+  border-style: solid;
+  border-top: none;
+  color: #3AF;
+  text-align: left;
+}
+.btn-infoButtons:hover {
+  color: #0971BC;
+}
+.surveyLink {
+  border-radius: 0%;
+  border-style: solid;
+  border-width: 5px;
+  border-color: gray;
+  width: 100%;
+  height: 44px;
+  margin-bottom: -5px;
+  border-right: none;
+  border-left: none;
+}
+.btn-view {
+  border-radius: 0%;
+  font-size: 30px;
+  width: 50%;
+  border-width: 5px;
+  padding: -5px;
+  color: black;
+  border-style: solid;
+  border-color: black;
+  display: inline-block;
+}

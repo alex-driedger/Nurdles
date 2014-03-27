@@ -1,0 +1,97 @@
+module.exports = function (mongoose) {
+
+    var BeachSchema = new mongoose.Schema({
+        beachname : String,
+        yo: {
+            city: String,
+            street: String
+        },
+        beachcleanliness : Number,
+        calls: Number});
+
+    // Convenience method for creating
+
+    BeachSchema.statics.createBeach = function (newBeach, callback) {
+        var Beach = mongoose.model('Beach')
+        Beach.findOne({beachname: newBeach.beachname},function (err,beach){
+            // If the beach does not exist, create it
+            if (beach == undefined)
+            {
+                // Sets the beach data based on what is entered
+                Beach.create(newBeach, function (err, newbeach)
+                {
+                    // Return all docs after creating new doc
+                    Beach.find({}, callback)
+                })
+            } else
+            {
+                // If the beach does exist, just send back the whole db
+                Beach.find({}, callback)
+            }
+            })
+        }
+    BeachSchema.statics.updateBeach = function (name, cleanliness, res) {
+                Beach.findOne({beachname: name},function (err,beach) {
+                    console.log(beach.beachname)
+                // If the beach exists, update its data
+                // Add 1 to the calls and change cleanlines to an average based on how many inputs there are
+                    Beach.update({beachname: name},{beachcleanliness: ((beach.beachcleanliness*beach.calls+parseInt(cleanliness))/(beach.calls+1)), calls: (beach.calls+1)}, function ()
+                    {
+                        //return all docs after update
+                        Beach.find(function (err, beaches) {res.send(beaches)})
+                    })
+                })
+            }
+
+    var Beach = mongoose.model("Beach", BeachSchema);
+    
+    return Beach;
+    
+};
+var path = require("path");
+var beach = require(path.join(__dirname, "..", "models", "beach"));
+var mongoose = require("mongoose")
+var self = {
+    // Creates a new beach or updates and existing beacha
+    updateBeach: function(req, res) {
+        var Beach = mongoose.model('Beach')
+        console.log(req.body)
+        Beach.updateBeach(req.body.beachname, req.body.beachcleanliness, res)
+    },
+    createBeach: function(req, res) {
+        var Beach = mongoose.model('Beach')
+        console.log(req)
+        Beach.createBeach(req.body, function(err, beach) {
+            res.send(beach)
+        })
+    },
+
+    clearDatabase: function(req, res) {
+        var Beach = mongoose.model('Beach')
+        Beach.remove({},function(err,numAffected,raw)
+            {
+                console.log(numAffected)
+                 Beach.find(function (err, beaches) {
+                    res.send(beaches)
+                })
+            });
+    },
+
+    routeCallback: function(req, res, err, object) {
+        if (err) {
+            console.log(err);
+            res.send(null);
+        }
+        else {
+            req.login(object, function(err) {
+                if (err)
+                    console.log("ERROR:", err)
+                else {
+                    res.send(object);
+                }
+            });
+        }
+    }
+};
+
+module.exports = self;
