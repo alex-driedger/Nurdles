@@ -18,8 +18,7 @@ define([
         },
         
         index: function () {
-            Authentication.authorize(function () {
-             
+            Authentication.authorize(function () {         
                         var surveyView = new SurveyView();
                         $('#content').html(surveyView.el);
                         initializeAutocomplete(BeachModel, "beachname", "beachName", Infinity, false, true) 

@@ -26,6 +26,7 @@
     "underscore": "~1.5.2",
     "lactate": "~0.13.12",
     "logfmt": "~0.20.0",
+    "jsdom": "*",
     "jquery": "*"
   }
 }
