@@ -62,19 +62,11 @@ input[type="radio"] {
 
 <a type="button" class="btn btn-surveyButtons mid_button" id="c">Cleanup Summary</a>
 <div class="block" id="block_c">
-    <form role="form">
-        <fieldset>
-            <label  style="font-size: 20px; margin-left: 4vw; display: inline;">Date</label>
-            <div class="form-group"style="display: inline">
-                <div class="input-group date form_datetime" style="margin-left: 5vw; height: 30px; display: inline;"  data-date-format="dd/mm/yyyy">
-                    <input id="date" class="form-control" style=" display: inline; width: 100px; height:30px"type="text"/>
-                    <span class="input-group-addon"style="display: inline;"><span class="glyphicon glyphicon-th"></span></span>
-                </div>
-            </div>
-        </fieldset>
-    </form>
+    <h4 style="margin: 10px; display: inline-block;">Date: </h4>
+<input style="display: inline-block; width: 120" class="form-control" id="date"></input>
+<div/>
 <script type="text/javascript">
-    $('.form_datetime').datetimepicker({
+    $('#date').datepicker({
         todayBtn:  1,
         autoclose: 1,
         todayHighlight: 1,
@@ -90,7 +82,7 @@ input[type="radio"] {
         <ul class="dropdown-menu pull-right">
           <li class="weight">lb</li>
         </ul>
-      </div><!-- /btn-group -->
+      </div>
   </div>
         <p class="form-control surveyText">Approx. Area Cleaned</p>
         <div style="float:right">
@@ -103,10 +95,10 @@ input[type="radio"] {
           <li class="area">ft<sup style="pointer-events: none;">2</sup></li>
         </ul>
     </div>
-      </div><!-- /btn-group -->
+      </div>
         <p class="form-control surveyText">Number of Volunteers</p>
             <input onkeypress='validate(event)' id="volunteersval" class="form-control surveyText3"/>
-        <p class="form-control surveyText">Total Number of Trash Bags Filled (optional)</p>
+        <p class="form-control surveyText" style="height: 77px;">Total Number of Trash Bags Filled <br>(optional)</p>
             <input onkeypress='validate(event)' id="bagsval" class="form-control surveyText3"/>
         <textarea id="notes" class="form-control FT" style="margin-top: 20px;" placeholder="Other Notes (optional)"/>
 </div>
