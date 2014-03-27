@@ -310,6 +310,7 @@ var self = {
             }
          });
     }, 
+    //
     getForecast: function (req, res)
     {
         var optionsget = {
