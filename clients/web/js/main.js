@@ -10,7 +10,6 @@ require.config({
         jqueryui:       '../libs/jquery-ui/ui/jquery-ui',
         underscore:     '../libs/underscore/underscore',
         backbone:       '../libs/backbone/backbone',
-        datetimepicker: '../libs/bootstrap-datetimepicker/js/bootstrap-datetimepicker',
         moment:         '../libs/moment/moment.min',
         helpers:        'helpers',
         models:         'models',
