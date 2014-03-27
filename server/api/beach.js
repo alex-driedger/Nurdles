@@ -310,7 +310,27 @@ var self = {
             }
          });
     }, 
-
+    getForecast: function (req, res)
+    {
+        var optionsget = {
+            host : 'api.wunderground.com', // here only the domain name
+            // (no http/https !)
+            path : '/api/6093813dfdfae42b/forecast/q/'+req.params.lat+','+req.params.lon+'.json', // the rest of the url with parameters if needed
+            method : 'GET' // do GET
+        };
+        var request = https.request(optionsget, function(response) {
+               response.on('data', function(data) {
+                if(JSON.parse(data.toString()).response.error)
+                {
+                    res.send({message: JSON.parse(data.toString()).response.error.description})
+                } else
+                {
+                    res.send(data.toString())
+                }
+                });
+        });
+        request.end();
+    },
     recentReports: function( req, res ) {
         Report.find( {beachID:req.params.id } )
             .sort({'created': -1})
