@@ -34,8 +34,21 @@ define([
       for (i in this.collection.models)
       {
         attributes.push(this.collection.models[i].attributes)
+        switch(attributes[i].lastRating)
+         {
+           case 0:
+             attributes[i].lastRating = "Clean"
+             break
+           case 1:
+             attributes[i].lastRating = "Moderately Clean"
+             break
+           case 2:
+             attributes[i].lastRating = "Dirty"
+             break
+           default:
+             attributes[i].lastRating = "Unknown"
+         }
       }
-      console.log(this.collection.models)
         this.$el.html( _.template( beachTemplate, {attributes: attributes}) );
         return this;
     },

@@ -17,6 +17,7 @@ define([
 
         index: function (id) {
             Authentication.authorize(function () {
+                $('#content').html("<p style='display: block; font-size: 3em; text-align: center; line-height: 100vh;'>LOADING</p>");
                 var collections = []
                 beachRates = new BeachRateModel.Collection([], {
                     beachID: id

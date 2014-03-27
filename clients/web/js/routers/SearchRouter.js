@@ -13,11 +13,11 @@ define([
             'search'  : 'index'
         },
         
-        index: function () {
+        index: function (event) {
             Authentication.authorize(function () {
                 var searchView = new SearchView();
                 $('#content').html(searchView.el);
-                initializeAutocomplete(BeachModel, "beachname", "beachName", 100, true)  
+                initializeAutocomplete(BeachModel, "beachname", "beachName", Infinity, "info")
             })
         },
                 

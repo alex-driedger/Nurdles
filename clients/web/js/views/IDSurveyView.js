@@ -3,14 +3,35 @@ define([
     'underscore',
     'backbone',
     'text!templates/IDsurveyTemplate.html',
-    'jquerycookie'
-], function ($, _, Backbone, IDsurveyTemplate, jQueryCookie) {
+    'jquerycookie',
+    'models/survey'
+], function ($, _, Backbone, IDsurveyTemplate, jQueryCookie, SurveyModel) {
     
     var IDSurveyView = Backbone.View.extend({
 
         tagName   : 'div',
         className : '',
-        
+        events: {
+             'click #download' : 'sendLink'
+         },
+         sendLink: function() {
+             button = document.getElementById("download")
+             button.innerText = "Please Wait"
+             button.className = button.className + " disabled"
+ 
+             surveys = new SurveyModel.Collection( [], { surveyID: this.collection.models[0].attributes._id, username: window.user.userId, sendLink: true } );
+             surveys.fetch( {
+                 success: function( collection, response, options) {
+ 
+                 button.className = button.className.replace(' disabled','')
+                 button.innerText = "Send Download Link"
+                 alert("Email has been sent to " + collection.models[0].attributes.email)        
+                 },
+                 failure: function( collection, response, options) {
+                     $('#content').html("An error has occured.");                    
+                 }
+             });
+         },
         // redirect is used on successful create or update.
         initialize: function (options) {
             this.collection = options.collection

@@ -19,20 +19,13 @@ define([
         
         index: function () {
             Authentication.authorize(function () {
-                surveys = new SurveyModel.Collection();
-                surveys.fetch( {
-                    success: function( collection, response, options) {              
-                        var surveyView = new SurveyView({ collection: collection });
+             
+                        var surveyView = new SurveyView();
                         $('#content').html(surveyView.el);
                         initializeAutocomplete(BeachModel, "beachname", "beachName", Infinity, false, true) 
                         initializeAutocomplete(BeachModel, "city", "city", Infinity, false, true)   
                         initializeAutocomplete(BeachModel, "state", "state", Infinity, false,  true)   
                         initializeAutocomplete(BeachModel, "country", "country", Infinity, false, true)  
-                    },
-                    failure: function( collection, response, options) {
-                        $('#content').html("An error has occured.");                    
-                    }
-                });
             })
         },
 
