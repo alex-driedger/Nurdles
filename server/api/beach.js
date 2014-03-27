@@ -178,9 +178,9 @@ var self = {
     retrieveAll: function( req, res ) {
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
-                console.log(beachCollection)
-                res.send(beachCollection)
-                //Beach.remove(function(err,res){console.log(res)})
+                Beach.remove(function(err,res){console.log(res)})
+                Survey.remove(function(err,res){console.log(res)})
+                Rate.remove(function(err,res){console.log(res)})
 
             } else {
                 res.send( 500, err );
