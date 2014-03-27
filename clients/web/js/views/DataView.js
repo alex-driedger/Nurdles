@@ -5,7 +5,7 @@ define([
     'text!templates/dataTemplate.html',
     'jquerycookie',
     'authentication',
-    'models/survey'
+    'models/Survey'
 ], function ($, _, Backbone, dataTemplate, jQueryCookie, authentication, SurveyModel) {
     
     var DataView = Backbone.View.extend({
