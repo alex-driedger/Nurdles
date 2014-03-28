@@ -11,9 +11,9 @@ define([
         tagName   : 'div',
         className : '',
         events: {
-            'click #download' : 'prepareData'
+            'click #download' : 'download'
         },
-        prepareData: function() {
+        download: function() {
             var temp = this.collection.models[0].attributes
             var items = ""
             for (i in temp)
