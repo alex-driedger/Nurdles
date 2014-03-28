@@ -84,8 +84,7 @@ define([
                     input.beachID = collection.models[0].attributes._id
                     rateModel.save(input,{
                     success: function (res) {
-                      //Backbone.history.navigate('', { trigger: true });
-                        console.log(res.toJSON());
+                        Backbone.history.navigate('', { trigger: true });
                         alert("Your rating has been submitted")
                         Backbone.history.navigate('#', { trigger: true });
                     },

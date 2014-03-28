@@ -14,7 +14,7 @@ define([
         },
         
         index: function () {
-            Authentication.authorize(function () {
+           // Authentication.authorize(function () {
                 $('#content').html("<p style='display: block; font-size: 3em; text-align: center; line-height: 100vh;'>LOADING</p>");   
                 navigator.geolocation.getCurrentPosition(function (position)
                 {
@@ -28,7 +28,7 @@ define([
                         $('#content').html("An error has occured.");                    
                     }
                 });
-              })
+              //})
             })
         },
                 

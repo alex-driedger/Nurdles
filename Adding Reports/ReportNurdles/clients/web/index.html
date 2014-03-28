@@ -42,9 +42,13 @@ function validate(event) {
                 $( "#state").val(ui.item.state);
                 $("#country").val(ui.item.country);
             }
-            if (redirect != false)
+            if (redirect != undefined)
             {
-                window.location.href = "#"+redirect+"/" + ui.item.id;
+                if (redirect != false)
+                {
+                    console.log(redirect)
+                    window.location.href = "#"+redirect+"/" + ui.item.id;
+                }
             }
             return false;
           },
