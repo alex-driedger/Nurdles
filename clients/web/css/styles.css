@@ -19,6 +19,9 @@ ADMIN
   border-bottom-color: black;
   border-bottom-style: solid;
 }
+.disabled{
+  background-color: gray;
+}
 
 /*
 ************************************************************

@@ -103,7 +103,8 @@ define([
             {
             rateModel.save(input,{
                     success: function (res) {
-                      //Backbone.history.navigate('', { trigger: true });
+                      alert("Your report has been submitted")
+                      Backbone.history.navigate('', { trigger: true });
                         console.log(res.toJSON());
                     },
                     error: function (err) {

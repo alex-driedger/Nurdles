@@ -42,7 +42,7 @@ function validate(event) {
                 $( "#state").val(ui.item.state);
                 $("#country").val(ui.item.country);
             }
-            if (redirect != false)
+            if (redirect != false && redirect != undefined)
             {
                 window.location.href = "#"+redirect+"/" + ui.item.id;
             }

@@ -15,15 +15,8 @@ define([
     
     // redirect is used on successful create or update.
     events: {
-            // IF THE LOGIN BUTTON IS PRESSED, FIRE LOGIN FUNCTION
-            'click .btn-view' : 'switchView'
         },
 
-    switchView: function()
-    {
-      $("#scroll1").toggle()
-      $("#scroll2").toggle()
-    },
     initialize: function (options) {
       this.collection = options.collection
       this.render();

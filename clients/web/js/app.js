@@ -8,13 +8,12 @@ define([
     'routers/RateRouter',
     'routers/SurveyRouter',
     'routers/InfoRouter',
-    'routers/BeachRouter',
-    'routers/MapRouter',
+    'routers/StatusRouter',
     'routers/SearchRouter',
     'routers/AdminRouter',
     'routers/DataRouter',
     'jquerycookie'
-], function ($, _, Backbone, SignUpRouter, LoginRouter, HomepageRouter, RateRouter, SurveyRouter, InfoRouter, BeachRouter, MapRouter, SearchRouter, AdminRouter, DataRouter, jQueryCookie) {
+], function ($, _, Backbone, SignUpRouter, LoginRouter, HomepageRouter, RateRouter, SurveyRouter, InfoRouter, StatusRouter, SearchRouter, AdminRouter, DataRouter, jQueryCookie) {
     
     var app = {
         
@@ -27,11 +26,10 @@ define([
             // Core Homepage routers:
             new SignUpRouter();
             new HomepageRouter();
-            new MapRouter();
             new RateRouter();         
             new SurveyRouter();
             new InfoRouter();
-            new BeachRouter();
+            new StatusRouter();
             new SearchRouter();
             new AdminRouter()
             new LoginRouter();
