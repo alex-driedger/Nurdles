@@ -85,7 +85,7 @@ HOMEPAGE
   border-radius: 0%;
   font-size: 5vh;
   border-style: solid;
-  border-width: 5px;
+  border-width: 10px;
   border-color: black;
   background-color: rgb(75,75,75);
   height: 10%;
@@ -138,18 +138,25 @@ padding-bottom: 5px;
 }
 #titleBlock {
   border-style: solid;
-  border-width: 5px;
+  border-width: 10px;
   border-top: 0vh;
   border-bottom: 0vh;
   border-color: black;
   height: 30%;
   margin: 0;
 }
+.btn-homepageButtons:hover,
+.btn-homepageButtons:focus,
+.btn-homepageButtons:active
+{
+  color: white;
+  background-color: #428bca;
+}
 .btn-homepageButtons {
   border-radius: 0%;
   font-size: 2em;
   width: 100%;
-  border-width: 5px;
+  border-width: 10px;
   border-color: black;
   height: 20%;
   line-height: 20vh;
@@ -278,7 +285,7 @@ Survey Beach
   border-bottom-width: 0;
 }
 .mid_button {
-  border-top-width: 5px;
+  border-top-width: 10px;
   border-bottom-width: 0;
 }
 .block {
