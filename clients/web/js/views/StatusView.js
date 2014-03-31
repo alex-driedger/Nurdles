@@ -80,6 +80,7 @@ define([
                     },
                     properties: {
                         'marker-color': color,
+                        'marker-size:': 'large',
                         title: this.collection.models[i].attributes.beachName,
                         url: "#info/" + [this.collection.models[i].attributes._id]
                     }
