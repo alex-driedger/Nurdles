@@ -17,7 +17,7 @@ define([
             Authentication.authorize(function () {
                 var searchView = new SearchView();
                 $('#content').html(searchView.el);
-                initializeAutocomplete(BeachModel, "beachname", "beachName", Infinity, "info")  
+                initializeAutocomplete(BeachModel, "beachname", "beachName", Infinity, "info")
             })
         },
                 

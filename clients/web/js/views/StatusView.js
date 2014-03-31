@@ -5,8 +5,9 @@ define([
     'text!templates/statusTemplate.html',
     'text!templates/beachTemplate.html',
     'text!templates/mapTemplate.html',
+    'models/Beach',
     'jquerycookie',
-], function ($, _, Backbone, statusTemplate, beachTemplate, mapTemplate, jQueryCookie) {
+], function ($, _, Backbone, statusTemplate, beachTemplate, mapTemplate, BeachModel, jQueryCookie) {
 
     var StatusView = Backbone.View.extend({
 
@@ -16,7 +17,9 @@ define([
             'click #listButton': 'list'
         },
         map: function() {
-            document.getElementById("mapButton").className += " disabled"
+            document.getElementById("mapButton").className += " disabled";
+            document.getElementById("search").style.display = "none";
+            document.getElementById("back").style.width = "100%";
             document.getElementById("listButton").className = document.getElementById("listButton").className.replace(" disabled", "")
             $("#view").html(_.template(mapTemplate, {
                 attributes: this.attributes
@@ -24,6 +27,8 @@ define([
             this.renderMap();
         },
         list: function() {
+            document.getElementById("search").style.display = "inline-block";
+            document.getElementById("back").style.width = "80%";
             document.getElementById("listButton").className += " disabled"
             document.getElementById("mapButton").className = document.getElementById("mapButton").className.replace(" disabled", "")
             $("#view").html(_.template(beachTemplate, {
@@ -108,15 +113,24 @@ define([
             });
             // No repeating maps
             map.tileLayer.options.noWrap = true
-            $('#search').keyup(search);
-
-            function search() {
+            initializeAutocomplete(BeachModel, "searchMap", "beachName", 5, false, false, searchByName)
+            $("#searchMap").keyup(function()
+            {
+                if ($("#searchMap").val() == "")
+                {
+                    searchByName();
+                }
+            })
+            function searchByName() {
                 // get the value of the search input field
-                var searchString = $('#search').val().toLowerCase();
+                var searchString = $('#searchMap').val().toLowerCase();
                 // Set the filter based on show state 
                 map.featureLayer.setFilter(showState);
                 // Set the boundaries of the map as you search
-                map.fitBounds(map.featureLayer.getBounds())
+                if (map.featureLayer.getBounds()._northEast != undefined)
+                {
+                    map.fitBounds(map.featureLayer.getBounds())
+                }
                 // here we're simply comparing the 'state' property of each marker
                 // to the search string, seeing whether the former contains the latter.
                 function showState(feature) {

@@ -1,6 +1,5 @@
-<p id="home" class="home">&nbsp;<span style="font-size: 20px; line-height: 30px;" class="glyphicon glyphicon-user"></span> Admin</p><div class="home tab btn-group" style="padding: 0; margin-top: -6px;">
-    <button type="button" class="btn btn-default glyphicon glyphicon-th-list" data-toggle="dropdown">
-    </button>
+<div id="home" class="home btn-group">&nbsp;<span class="glyphicon glyphicon-user"></span> Admin</div><div class="home tab btn-group" style="padding: 0;" href="#admin">
+    <button type="button" class="btn btn-default glyphicon glyphicon-th" data-toggle="dropdown"></button>
     <ul class="dropdown-menu pull-right" style="background-color: rgb(75,75,75); margin-right: -5px; width: 150px; margin-top: 0; padding: 0; border: 5px black solid; border-radius: 0;">
       <li><a style="color: white;" href="#">Home</a></li>
       <div style="border-top: 5px black solid;"/>
@@ -9,7 +8,6 @@
       <li><a style="color: white;" id="logout">logout</a></li>
     </ul>
 </div>
-
 <a type="button" class="btn btn-surveyButtons top_button" style="border-top: none;" id="a">Create Admin</a>
 <div class="block" id="block_a" >
         <input type="text" id="username" class="form-control FT" placeholder="Email"/>
@@ -51,12 +49,12 @@ _.each(data, function( model ) {
         <button id="edit_<%= model.attributes._id %>"class="btn btn-primary changeBeach" style="display: block; margin: 10px;width: 180px;">Edit Beach</button>
     </div>
     <div id="editData_<%= model.attributes._id %>" style="display: none;">
-        <input type="text" id="edit_beachName_<%= model.attributes._id %>" class="form-control FT" placeholder="Beach Name"/>
-        <input type="text" id="edit_city_<%= model.attributes._id %>" class="form-control FT" placeholder="City"/>
-        <input type="text" id="edit_state_<%= model.attributes._id %>" class="form-control FT" placeholder="State"/>
-        <input type="text" id="edit_country_<%= model.attributes._id %>" class="form-control FT" placeholder="Country"/>
-        <input onkeypress='validate(event)' type="text" id="edit_lat_<%= model.attributes._id %>" class="form-control FT" placeholder="Latitude"/>
-        <input onkeypress='validate(event)' type="text" id="edit_lon_<%= model.attributes._id %>" class="form-control FT" placeholder="Longitude"/>
+        <input type="text" id="edit_beachName_<%= model.attributes._id %>" class="form-control FT" placeholder="Beach Name" value="<%= model.attributes.beachName %>"/>
+        <input type="text" id="edit_city_<%= model.attributes._id %>" class="form-control FT" placeholder="City" value="<%= model.attributes.city %>"/>
+        <input type="text" id="edit_state_<%= model.attributes._id %>" class="form-control FT" placeholder="State" value="<%= model.attributes.state %>"/>
+        <input type="text" id="edit_country_<%= model.attributes._id %>" class="form-control FT" placeholder="Country" value="<%= model.attributes.country %>"/>
+        <input onkeypress='validate(event)' type="text" id="edit_lat_<%= model.attributes._id %>" class="form-control FT" placeholder="Latitude" value="<%= model.attributes.lat%>"/>
+        <input onkeypress='validate(event)' type="text" id="edit_lon_<%= model.attributes._id %>" class="form-control FT" placeholder="Longitude" value="<%= model.attributes.lon %>"/>
         <button id="saveEdit_<%= model.attributes._id %>" class="btn btn-primary FT changeBeach" style="padding: 0; margin-left: 10px;">Save Edit</button>
     </div>
 </div>

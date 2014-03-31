@@ -23,24 +23,23 @@ function validate(event) {
 // This is this keycode of the key that was pressed
   var key = event.keyCode;
   // 48-57 is the keycode for 0-9 (for this keyboard atleast)
-
-  if (!(key >= 48 && key <= 57))
+  if (!(key >= 48 && key <= 57 || key == 46))
   {
     // If the key is not between 48-57 prevent the default action (Default action is inputting the character)
     event.preventDefault()
   }
 }
-        function initializeAutocomplete (BeachModel, inputId, attribute, limit, redirect, returnLocation) {
+        function initializeAutocomplete (BeachModel, inputId, attribute, limit, redirect, returnLocation, callback) {
           $( "#" + inputId ).autocomplete({
           select: function (event, ui) {
-            $( "#beachname").val(ui.item.beachName);
-            $( "#beachname")[0].beachName = ui.item.beachName
-            $( "#beachname")[0].beachID = ui.item.id
+            $( "#" + inputId).val(ui.item.beachName);
+            $( "#" + inputId)[0].beachName = ui.item.beachName
+            $( "#" + inputId)[0].beachID = ui.item.id
             if (returnLocation == true)
             {
-                $( "#city").val(ui.item.city);
-                $( "#state").val(ui.item.state);
-                $("#country").val(ui.item.country);
+                $( "#city" ).val(ui.item.city);
+                $( "#state" ).val(ui.item.state);
+                $( "#country" ).val(ui.item.country);
             }
             if (redirect != undefined)
             {
@@ -50,6 +49,7 @@ function validate(event) {
                     window.location.href = "#"+redirect+"/" + ui.item.id;
                 }
             }
+            callback()
             return false;
           },
           source: function(request, callback) {
