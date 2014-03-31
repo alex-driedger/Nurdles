@@ -40,6 +40,7 @@ define([
             document.getElementById("map").style.top = $("#header").height() + 10;
             var map = L.mapbox.map('map', 'examples.map-9ijuk24y', {
                 minZoom: 2,
+                zoomControl: false,
                 maxBounds: [
                     [-180, -180],
                     [180, 180]
@@ -80,7 +81,7 @@ define([
                     },
                     properties: {
                         'marker-color': color,
-                        'marker-size:': 'large',
+                        'marker-size': 'large',
                         title: this.collection.models[i].attributes.beachName,
                         url: "#info/" + [this.collection.models[i].attributes._id]
                     }

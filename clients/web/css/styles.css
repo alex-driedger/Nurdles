@@ -67,8 +67,7 @@ HOMEPAGE
   border-width: 5px;
   border-color: black;
   background-color: rgb(75,75,75);
-  height: 88px;
-  line-height: 78px;
+  height: 15%;
   width: 90%;
   color: white;
   text-align: left;
@@ -81,6 +80,20 @@ HOMEPAGE
 .tab:hover {
   color: white;
   text-decoration: none;
+}
+.home {
+  border-radius: 0%;
+  font-size: 5vh;
+  border-style: solid;
+  border-width: 5px;
+  border-color: black;
+  background-color: rgb(75,75,75);
+  height: 10%;
+  width: 90%;
+  color: white;
+  text-align: left;
+  line-height: 10vh;
+  margin: 0;
 }
 .back
 {
@@ -104,13 +117,17 @@ HOMEPAGE
 }
 .glyphicon-th
 {
-  border: none;
-  width: 100%;
-  border-radius: 0;
-  color: white;
-  line-height: 65px;
-  font-size: 25px;
-  background-color: rgb(75,75,75);
+border-radius: 0;
+border: none;
+margin-top: -1px;
+width: 100%;
+height: 100%;
+font-size: 5vh;
+padding: 0;
+color: white;
+background-color: rgb(75,75,75);
+padding-left: 5px;
+padding-bottom: 5px;
 }
 .glyphicon-th:hover,
 .glyphicon-th:focus,
@@ -125,7 +142,7 @@ HOMEPAGE
   border-top: 0vh;
   border-bottom: 0vh;
   border-color: black;
-  height: 160px;
+  height: 30%;
   margin: 0;
 }
 .btn-homepageButtons {
@@ -134,19 +151,19 @@ HOMEPAGE
   width: 100%;
   border-width: 5px;
   border-color: black;
-  height: 100px;
-  line-height: 92px;
+  height: 20%;
+  line-height: 20vh;
   color: black;
 }
 h1 {
-  margin: 0;
-  font-size: 2.5em;
+  margin: 0 0 0 0;
+  font-size: 5vh;
 }
 
 h2 {
-  margin-top: 40px;
+  margin-top: 10vh;
   margin-bottom: 0vh;
-  font-size: 2.5em;
+  font-size: 5vh;
 }
 /*
 ************************************************************
@@ -304,7 +321,7 @@ Survey Beach
   float:right;
 }
 .dropdown-menu {
-  min-width: 100px;
+  min-width: 300px;
   text-align: center;
 }
 .btn-ticker {
@@ -353,8 +370,11 @@ Survey Beach
   padding: 0;
 }
 .dropdown-menu > li > a {
-  height: 44px;
-  line-height:calc(44px - 1.428571429px);
+  height: 100px;
+  line-height:calc(100px - 1.428571429px);
+  color: white;
+  padding: 0;
+  font-size: 1.5em;
 }
 /*
 ************************************************************
