@@ -14,6 +14,7 @@ var path = require( 'path' ),
 var self = {
     prepareDatabase: function (req, res)
     {
+
         // Retrieve the beach data file
         parseXlsx(beachDataPath, function(err, data) {
             if(err)
@@ -34,6 +35,7 @@ var self = {
                         city:data[i][2].toUpperCase(),
                         state:data[i][3].toUpperCase(),
                         country:"N/A",
+                        // address:"N/A"
                         lat:data[i][4],
                         lon:data[i][5],
                         created: new Date(),
@@ -45,20 +47,37 @@ var self = {
                 // OBTAIN THE LIST OF EVERY BEACH
                 Beach.find(function(err, data)
                 {
-                    var id1 = []
+                    var name = []
+                    var lat = []
+                    var lon = []
+                    var beaches = {}
                     // We want to compare ID so extract the ID and store it in a var
                     for ( i in data)
                     {
-                        id1.push(data[i].beachID)
+                        name.push(data[i].beachName)
+                        lat.push(data[i].lat)
+                        lon.push(data[i].lon)
+                        if (beaches[data[i].beachName] == undefined)
+                        {
+
+                            beaches[data[i].beachName] = [data[i]];
+                        }   else
+                        {
+                            beaches[data[i].beachName].push(data[i])
+                        }
                     }
-                    // For every beachID in the excel file
+                    var keys = Object.keys(beaches)
+                    var propertyNames = []
                     for (i in properties)
                     {
-                        // If the beachID does not exist in the database
-                        if (id1.indexOf(parseInt(properties[i].beachID)) == -1)
+                        propertyNames.push(properties[i].beachName)
+                    }
+                    for (i in properties)
+                    {
+                        // if this is -1, then the beachName does not exist in the DB so create it
+                        if (keys.indexOf(properties[i].beachName) == -1)
                         {
                             total++;
-                            // save it
                             beach = new Beach( properties[i] );
                             beach.save( function ( err, beach, numberAffected ) {
                                 if( null === err ) {
@@ -72,6 +91,50 @@ var self = {
                                     res.send( 500, err );
                                 }
                             });
+                        } else
+                        {
+                            // If the beach is in the database
+                            var bool = false
+                            // This is the data so I would have 8 Spring Waters
+                            for (j in beaches[keys[i]])
+                            {
+                                // for every beach in the spring waters
+
+                                // If this is -1 then that beach only exists in the database so ignore it
+
+                                if (propertyNames.indexOf(beaches[keys[i]][j].beachName) != -1)
+                                {
+                                    // so if the beachname exists in the database AND in the file check if its
+                                    // lat and lon are the same
+
+
+                                    // If j is 8, then this part will be the same 8 times. 
+                                    if (properties[propertyNames.indexOf(beaches[keys[i]][j].beachName)].lat == beaches[keys[i]][j].lat && properties[propertyNames.indexOf(beaches[keys[i]][j].beachName)].lon == beaches[keys[i]][j].lon)
+                                    {
+                                        // If the beach is in both, and the lat/lon is the exact same, then update here
+                                        console.log("SAME")
+                                    } else
+                                    {
+                                        // we know the beachName exists in both the database and the properties. 
+                                        // However we also know that the lat and/or lon of this 
+                                        // beach is NOT the same. therefore we have to create it
+                                        total++;
+                                        beach = new Beach(properties[propertyNames.indexOf(beaches[keys[i]][j].beachName)]);
+                                        beach.save( function ( err, beach, numberAffected ) {
+                                            if( null === err ) {
+                                                console.log(beach.beachName + " was created.")
+                                                current ++;
+                                                if (current == total)
+                                                {
+                                                    res.send({message:total + " beaches have been created."})
+                                                }
+                                            } else {
+                                                res.send( 500, err );
+                                            }
+                                        });
+                                    }
+                                }
+                            }
                         }
                     }
                     if (total == 0)
@@ -171,9 +234,12 @@ var self = {
         if( _.has( req.body, 'state') && _.isString( req.body.state ) ) {
             properties.state = req.body.state;
         }
-        if( _.has( req.body, 'country') && _.isString( req.body.country ) ) {
+        /*if( _.has( req.body, 'country') && _.isString( req.body.country ) ) {
             properties.country = req.body.country;
         }
+        if( _.has( req.body, 'address') && _.isString( req.body.address ) ) {
+            properties.address = req.body.address;
+        }*/
 
         beach = new Beach( properties );
         beach.save( function ( err, beach, numberAffected ) {
@@ -250,8 +316,6 @@ var self = {
                         beachCollection.splice(index,1)
                         distances.splice(index,1)
                     }
-                    var surveys = []
-                    var rates = []
                     res.send(collections)
             } else {
                 res.send( 500, err );
@@ -309,6 +373,10 @@ var self = {
             {
                 properties.country = req.body.country
             }
+            /* if (req.body.address != '')
+            {
+                properties.address = req.body.address
+            }*/
              if (req.body.lat != null)
             {
                 properties.lat = req.body.lat
@@ -317,8 +385,10 @@ var self = {
             {
                 properties.lon = req.body.lon
             }
+            console.log(req.params)
         Beach.update({_id: req.params.id}, properties,  function ( err, numAffected, updatedBeach ) {
             if( null === err ) {
+                console.log(numAffected)
                 Beach.findOne({_id: req.params.id}, function (err, newBeach)
                 {
                     console.log(newBeach)
@@ -356,6 +426,8 @@ var self = {
     recentRates: function( req, res ) {
 
         var ratings = [0,0,0,0,0];
+        var averageSum = 0;
+        var averageTotal = 0;
         var total = [0,0,0,0,0];
         Rate.find( {beachID:req.params.id } )
             .sort({'created': -1})
@@ -363,6 +435,8 @@ var self = {
             if( null === err ) {
                 for (i in rates)
                 {
+                    averageTotal++;
+                    averageSum+=rates[i].rating
                     if (rates[i].created+5 < new Date().getTime()/1000/60/60/24)
                     {
                         break;
@@ -377,7 +451,8 @@ var self = {
                         }
                     }
                 }
-                res.send( {ratings: ratings, total: total} );
+                console.log(averageSum/averageTotal)
+                res.send( {ratings: ratings, total: total, average: Math.round(averageSum/averageTotal)} );
             } else {
                 res.send( 500, err );
             }

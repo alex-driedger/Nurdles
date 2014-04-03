@@ -31,6 +31,7 @@ define([
 
         },
         initialize: function (options) {
+            console.log(options)
             this.total = options.total
             this.id = options.id
             this.collection = options.collection
@@ -102,8 +103,22 @@ define([
                     default:
                         attributes.lastRating = "Unknown"
                 }
-                console.log(this.collection[3].models[0].attributes)
-                this.$el.html(_.template(infoTemplate, {conditions: conditions, high: high, low: low, beachInfo: attributes, ratesHTML: this.getRates(), surveysHTML: this.getSurveys()}));
+                var average = this.collection[0].attributes.average
+                switch(average)
+                {
+                    case 0:
+                        average = "Clean"
+                        break
+                    case 1:
+                        average = "Moderately Clean"
+                        break
+                    case 2:
+                        average = "Dirty"
+                        break
+                    default:
+                        average = "Unknown"
+                }
+                this.$el.html(_.template(infoTemplate, {average: average, conditions: conditions, high: high, low: low, beachInfo: attributes, ratesHTML: this.getRates(), surveysHTML: this.getSurveys()}));
                 return this;
 
         },

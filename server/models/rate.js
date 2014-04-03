@@ -15,7 +15,6 @@ module.exports = function (mongoose) {
         beachID: String,
         rating: Number,
         created: Date
-
         // , mixed : Mixed // Not implemented because mixed types should be used sparingly, if at all.
     });
 

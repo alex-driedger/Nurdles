@@ -6370,7 +6370,7 @@
                 var e = {
                     small: [20, 50],
                     medium: [30, 70],
-                    large: [35, 90]
+                    large: [105, 225]
                 }, i = t["marker-size"] || "medium",
                     n = t["marker-symbol"] ? "-" + t["marker-symbol"] : "",
                     o = (t["marker-color"] || "7e7e7e").replace("#", "");

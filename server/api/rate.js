@@ -45,7 +45,7 @@ var self = {
                     {
                         beach.lastUpdated = req.body.created
                         beach.lastRating = req.body.rating
-                        beach.save()
+                        beach.save();
                         res.send( rate );
                     })
             } else {

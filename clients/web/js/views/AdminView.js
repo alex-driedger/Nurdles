@@ -55,8 +55,8 @@ define([
             city = $("#edit_city_" + id).val().toUpperCase()
             state = $("#edit_state_" + id).val().toUpperCase()
             country = $("#edit_country_" + id).val().toUpperCase()
-            lat = parseInt($("#edit_lat_" + id).val())
-            lon = parseInt($("#edit_lon_" + id).val())
+            lat = parseFloat($("#edit_lat_" + id).val())
+            lon = parseFloat($("#edit_lon_" + id).val())
             if (beachName != "" || city != "" || state != "" || country != "" || lat != "" || lon != "")
             {
                 beachModel = new BeachModel.Model(
@@ -101,8 +101,8 @@ define([
             city = $("#city").val()
             state = $("#state").val()
             country = $("#country").val()
-            lat = parseInt($("#lat").val()) || ""
-            lon = parseInt($("#lon").val()) || ""
+            lat = parseFloat($("#lat").val()) || ""
+            lon = parseFloat($("#lon").val()) || ""
             if (beachName != "" && city != "" && state != "" && country != "" && lat != "" && lon != "")
             {
                 beachModel = new BeachModel.Model({

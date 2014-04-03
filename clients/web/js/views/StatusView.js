@@ -32,7 +32,7 @@ define([
             document.getElementById("listButton").className += " disabled"
             document.getElementById("mapButton").className = document.getElementById("mapButton").className.replace(" disabled", "")
             $("#view").html(_.template(beachTemplate, {
-                attributes: this.attributes
+                attributes: this.attributes.slice(0,50)
             }));
         },
         renderMap: function() {
@@ -62,7 +62,6 @@ define([
             });
             // create nearest 5 beaches
             for (i in this.collection.models) {
-                console.log(this.collection.models)
                 var color = "#000000"
                 var status = this.collection.models[i].attributes.lastRating
                 if (status == "Clean") {
@@ -167,7 +166,7 @@ define([
             }
             this.attributes = attributes
             this.$el.html(_.template(statusTemplate, {
-                attributes: attributes
+                attributes: attributes.slice(0,50)
             }));
             return this;
         },

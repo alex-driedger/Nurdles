@@ -52,7 +52,7 @@ ADMIN
   width: 42.5%;
   height: 75px;
   margin-left: 5%;
-  font-size: 15px;
+  font-size: 20px;
   padding: 0;
 }
 .btn-admin-beach {
@@ -179,7 +179,7 @@ padding-bottom: 5px;
   border-width: 5px;
   border-color: black;
   height: 20%;
-  line-height: 450%;
+  line-height: 550%;
   color: black;
 }
 h1 {
@@ -219,8 +219,8 @@ input[type="range"]::-webkit-slider-thumb {
     border-bottom: 44px solid black; 
     border-left: 22px solid transparent; 
     border-right: 22px solid transparent;
-    height: 5%;
-    width: 5%;
+    height: 44px;
+    width: 44px;
 }
 .btn-submit {
   border-width: 5px;
@@ -237,11 +237,6 @@ input[type="range"]::-webkit-slider-thumb {
 Report Debris
 ************************************************************
 */
-.caret {
-    border-left: 10px solid transparent;
-    border-right: 10px  solid transparent;
-    border-top: 20px solid #000000;
-}
 a:hover {
  cursor:pointer;
 }

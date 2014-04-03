@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="libs/datepicker/css/datepicker.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="css/styles.css" >
     <link rel="stylesheet" type="text/css" href="libs/jquery-ui/themes/base/jquery-ui.css"></link>
-    <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+    <script src='libs/mapbox/mapbox.js'></script>
+    <link href='libs/mapbox/mapbox.css' rel='stylesheet' />
     <!-- Load the app using main.js -->
     <script data-main="js/main" src="libs/require/require.js"></script>
 </head>
@@ -75,7 +75,7 @@ function validate(event) {
         // Now change the ui-autocomplete data by calling renderItem on it. If you return none
         .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
           // I have no idea how appendTo(ul) works. (I'm assuming every item in dropdown is a ul)
-          return $( "<li style='font-size: 5%;'>" ).append( "<a><span style='color: #3AF;'>" + item.beachName + "</span><br><span >City:  " + item.city + " | State: " + item.state + "</span></a>" ).appendTo( ul );
+          return $( "<li style='font-size: 3%;'>" ).append( "<a><span style='color: #3AF;'>" + item.beachName + "</span><br><span >City:  " + item.city + " | State: " + item.state + "</span></a>" ).appendTo( ul );
           };
     }
         </script>

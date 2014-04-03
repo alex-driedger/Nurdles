@@ -18,7 +18,7 @@ define([
                  $('#content').html("<p style='display: block; font-size: 15%; text-align: center; line-height: 100vh; margin: 0;'>LOADING</p>");   
                 navigator.geolocation.getCurrentPosition(function (position)
                 {
-                beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 50});
+                beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: Infinity});
                 beaches.fetch( {
                     success: function( collection, response, options) {
                         var statusView = new StatusView({ collection: collection, lat: position.coords.latitude, lon: position.coords.longitude});
@@ -28,6 +28,9 @@ define([
                         $('#content').html("An error has occured.");                    
                     }
                 });
+              }, function(err)
+              {
+                alert("Please enable geolocation")
               })
             })
         },
