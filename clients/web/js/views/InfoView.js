@@ -69,7 +69,7 @@ define([
             console.log(this.collection[3].models[0].attributes.forecast)
             if (this.collection[3].models[0].attributes.message != undefined)
             {
-                alert(this.collection[3].models[0].attributes.message)
+                alert("Unable to find temperature data for this location")
                 high = "N/A"
                 low = "N/A"
                 conditions = "N/A"

@@ -1,11 +1,11 @@
 <div class="border">
     <a type="button" class="btn back" id="Name" onClick="history.go(-1);return true;"><span class="glyphicon glyphicon-chevron-left"></span><span><%=beachInfo.beachName%></span></a>
-	    <h4 >Address: <%=beachInfo.address%>, <%=beachInfo.city%>, <%=beachInfo.state%>, <%=beachInfo.country%></h4> 
-        <h4 >Status : <%=beachInfo.lastRating%></h4>
-      <h4 >Last-Updated : <%=new Date(beachInfo.lastUpdated)%></h4>
-      <h4 >Groomed : NOT ADDED YET</h4>
-      <h4 >Temperature range: <%=high%>°C to <%=low%>°C </h4>
-      <h4 >Conditions: <%=conditions%></h4>
+	    <h5 >Address: <%=beachInfo.address%>, <%=beachInfo.city%>, <%=beachInfo.state%>, <%=beachInfo.country%></h5> 
+      <h5 >Status : <%=beachInfo.lastRating%></h5>
+      <h5 >Last-Updated : <%=new Date(beachInfo.lastUpdated)%></h5>
+      <h5 >Groomed : NOT ADDED YET</h5>
+      <h5 >Temperature range: <%=high%>°C to <%=low%>°C </h5>
+      <h5 >Conditions: <%=conditions%></h5>
 </div>
    	<div style="margin: 20px;">
 
@@ -13,7 +13,7 @@
 <div class="block" id="block_a" style="padding: 0 0 25px 0;">
           <% 
     _.each( ratesHTML, function(rate) { %>
-        <div class="surveyLink" style="color: black; text-align: center; line-height: 33px;"><%=rate.day%><%= rate.rating%></div>
+        <div class="surveyLink" style="color: black; text-align: center; margin-bottom: -5px;"><%=rate.day%><%= rate.rating%></div>
     <% });
 %>
 </div>
@@ -21,7 +21,7 @@
 <div class="block" id="block_b" style="padding: 0 0 25px 0;">
           <% 
     _.each( surveysHTML, function(survey) { %>
-        <a type="button" href="#survey/<%=survey.id%>" class="surveyLink btn"><%= survey.html%></a>
+        <a type="button" href="#survey/<%=survey.id%>"  style="margin-bottom: -5px;" class="surveyLink btn"><%= survey.html%></a>
     <% });
 %>
 </div>

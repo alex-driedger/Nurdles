@@ -19,9 +19,13 @@ define([
         
         // Define the events used when binding.
         events: {
-            'click #login-button' : 'login'
+            'click #login-button' : 'login',
+            'click #signUp-button' : 'signUp'
         },
-        
+        signUp: function (event)
+        {
+            Backbone.history.navigate('signUp', { trigger: true });
+        },
         login: function (event) {
             event.preventDefault();
             

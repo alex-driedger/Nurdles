@@ -1,12 +1,12 @@
-<div id="header"style="width: 100%; border-style: solid; background-color: white; border-width: 5px; border-color:black; z-index: 1000; top: 0px;">
-    <a type="button" id="back" class="btn back" style="width: 80%; display: inline-block;" id="Name" href="#"><span class="glyphicon glyphicon-chevron-left"></span><span> Beaches </span></a><a id="search" type="button" class="btn back" style="width: 20%; text-align: center; border-left: 5px black solid;" href="#search"><span  style="line-height: 68px; "class="glyphicon glyphicon-search"></span></a>
+<div id="header"style="width: 100%; border-style: solid; background-color: white; border-width: 5px; border-color:black; z-index: 1000;">
+    <a type="button" id="back" class="btn back" style="width: 80%; display: inline-block;" id="Name" href="#"><span class="glyphicon glyphicon-chevron-left"></span><span> Beaches </span></a><a id="search" type="button" class="btn back" style="width: 20%; text-align: center; border-left: 5px black solid;" href="#search"><span  style="line-height: 200%;"class="glyphicon glyphicon-search"></span></a>
     <a id="listButton" type="button" class="btn btn-view disabled" >List</a><a id="mapButton" type="button" class="btn btn-view">Map</a>
 </div>
 <div id="view">
 <%
 _.each(attributes, function( attribute ) {
 %>
-<a type="button" class="btn btn-infoButtons" href="#info/<%= attribute._id %>">
+<a type="button" class="btn btn-infoButtons" style="font-size: 5%;" href="#info/<%= attribute._id %>">
     <%= attribute.beachName %>
     <span style="color: black; font-size: 75%; display: block;"><%= attribute.city %>, <%= attribute.state %>, <%= attribute.country %></span>
     <span style="color: black; font-size: 75%; display: block; margin-top: 20px;"> Status - <%= attribute.lastRating %> </span>

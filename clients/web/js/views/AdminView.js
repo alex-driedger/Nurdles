@@ -81,12 +81,6 @@ define([
                             $("#country_" + id)[0].firstChild.data = attributes.country
                             $("#lat_" + id)[0].firstChild.data = attributes.lat
                             $("#lon_" + id)[0].firstChild.data = attributes.lon
-                            $("#edit_beachName_" + id).val("")
-                            $("#edit_city_" + id).val("")
-                            $("#edit_state_" + id).val("")
-                            $("#edit_country_" + id).val("")
-                            $("#edit_lat_" + id).val("")
-                            $("#edit_lon_" + id).val("")
                             $("#title_" + id).slideDown(500)
                         })
                     },
@@ -221,6 +215,7 @@ define([
 
             } else
             {
+                console.log($("#"+id).offset().top)
                 $('body').animate({
                     scrollTop: $("#"+id).offset().top
                 },750)

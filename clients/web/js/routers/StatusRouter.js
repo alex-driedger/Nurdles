@@ -15,10 +15,10 @@ define([
         
         index: function () {
             Authentication.authorize(function () {
-                $('#content').html("<p style='display: block; font-size: 3em; text-align: center; line-height: 100vh;'>LOADING</p>");   
+                 $('#content').html("<p style='display: block; font-size: 15%; text-align: center; line-height: 100vh; margin: 0;'>LOADING</p>");   
                 navigator.geolocation.getCurrentPosition(function (position)
                 {
-                beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 5});
+                beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 50});
                 beaches.fetch( {
                     success: function( collection, response, options) {
                         var statusView = new StatusView({ collection: collection, lat: position.coords.latitude, lon: position.coords.longitude});

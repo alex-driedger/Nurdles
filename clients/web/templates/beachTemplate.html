@@ -1,7 +1,8 @@
+
 <%
 _.each(attributes, function( attribute ) {
 %>
-<a type="button" class="btn btn-infoButtons" href="#info/<%= attribute._id %>">
+<a type="button" class="btn btn-infoButtons" style="font-size: 5%;" href="#info/<%= attribute._id %>">
     <%= attribute.beachName %>
     <span style="color: black; font-size: 75%; display: block;"><%= attribute.city %>, <%= attribute.state %>, <%= attribute.country %></span>
     <span style="color: black; font-size: 75%; display: block; margin-top: 20px;"> Status - <%= attribute.lastRating %> </span>
@@ -10,4 +11,3 @@ _.each(attributes, function( attribute ) {
 <%
 });
 %>
-<div id='map'></div>

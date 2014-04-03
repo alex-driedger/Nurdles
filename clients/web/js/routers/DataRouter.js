@@ -49,7 +49,8 @@ define([
                 surveys.fetch( {
                     success: function( collection, response, options) {              
                         var IDdataView = new IDDataView({ collection: collection, id: id });
-                        $('#content').html(IDdataView.el);             
+                        $('#content').html(IDdataView.el);
+                        IDdataView.download();
                     },
                     failure: function( collection, response, options) {
                         $('#content').html("An error has occured.");                    

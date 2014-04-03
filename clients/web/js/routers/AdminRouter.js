@@ -15,7 +15,7 @@ define([
         
         index: function () {
             Authentication.authorize(function () {
-                $('#content').html("<p style='display: block; font-size: 3em; text-align: center; line-height: 100vh;'>LOADING</p>");   
+                 $('#content').html("<p style='display: block; font-size: 15%; text-align: center; line-height: 100vh; margin: 0;'>LOADING</p>");   
                 beaches = new BeachModel.Collection();
                 beaches.fetch( {
                     success: function( collection, response, options) {

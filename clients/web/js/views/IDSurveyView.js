@@ -13,8 +13,25 @@ define([
         className : '',
         events: {
             'click #sendLink' : 'sendLink',
-            'click #download' : 'download'
         },
+        sendLink: function() {
+             button = document.getElementById("download")
+             button.innerText = "Please Wait"
+             button.className = button.className + " disabled"
+ 
+             surveys = new SurveyModel.Collection( [], { surveyID: this.collection.models[0].attributes._id, username: window.user.userId, sendLink: true } );
+             surveys.fetch( {
+                 success: function( collection, response, options) {
+ 
+                 button.className = button.className.replace(' disabled','')
+                 button.innerText = "Send Download Link"
+                 alert("Email has been sent to " + collection.models[0].attributes.email)        
+                },
+                 failure: function( collection, response, options) {
+                     $('#content').html("An error has occured.");                    
+                 }
+             });
+         },
         download: function() {
             var temp = this.collection.models[0].attributes
             var items = ""
@@ -34,12 +51,9 @@ define([
             }
             items = items.replace(/&gt;/g, ">")
             items = items.replace(/&lt;/g, "<")
-            console.log(items)
-            console.log(this.collection.models[0].attributes._id)
                 var a = document.getElementById("download")
                 a.href = 'data:attachment/csv,' + encodeURIComponent(items);
                 a.download = this.collection.models[0].attributes._id + '.csv';
-                document.body.appendChild(a);
         },
         // redirect is used on successful create or update.
         initialize: function (options) {

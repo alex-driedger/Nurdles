@@ -24,9 +24,11 @@ define([
     {
             var beachname = document.getElementById('beachname')
             var checkbox = document.getElementById("checkbox")
+            var checkboxVisual = document.getElementById("checkboxVisual")
             var submit = document.getElementById("submit")
             if (checkbox.checked)
             {
+              checkboxVisual.style.backgroundColor = "gray";
                 beachname.readOnly = true;
                 checkbox.disabled = true;
                 submit.disabled = true;
@@ -36,7 +38,6 @@ define([
                 beaches = new BeachModel.Collection([], {lat: position.coords.latitude,lon: position.coords.longitude, amount: 1});
                 beaches.fetch( {
                     success: function( collection, response, options) {
-                        beachname.readOnly = false;
                         checkbox.disabled = false;
                         submit.disabled = false;
                         submit.innerText = "Submit"
@@ -55,6 +56,7 @@ define([
               })
             } else
             {
+                                    checkboxVisual.style.backgroundColor = "white";
                     beachname.readOnly = false;
                     beachname.value = ""
             }
@@ -119,17 +121,17 @@ define([
       val = $("#slider").val()
       if (val == 0)
       {
-        document.getElementById("IMG_RSRV").src="./images/BEACH_CLEAN.jpg"
+        document.getElementById("IMG").src="./images/BEACH_CLEAN.jpg"
         $("#rating").html("Clean")
       }
       else if (val == 1)
       {
-        document.getElementById("IMG_RSRV").src="./images/BEACH_DIRTY.jpg"
+        document.getElementById("IMG").src="./images/BEACH_DIRTY.jpg"
         $("#rating").html("Moderately Clean")
       }
       else
       {
-        document.getElementById("IMG_RSRV").src="./images/BEACH_GG.jpg"
+        document.getElementById("IMG").src="./images/BEACH_GG.jpg"
         $("#rating").html("Dirty")
       }
     },

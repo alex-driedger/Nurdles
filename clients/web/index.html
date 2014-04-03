@@ -49,7 +49,10 @@ function validate(event) {
                     window.location.href = "#"+redirect+"/" + ui.item.id;
                 }
             }
-            callback()
+            if (callback)
+            {
+                callback()
+            }
             return false;
           },
           source: function(request, callback) {
@@ -72,7 +75,7 @@ function validate(event) {
         // Now change the ui-autocomplete data by calling renderItem on it. If you return none
         .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
           // I have no idea how appendTo(ul) works. (I'm assuming every item in dropdown is a ul)
-          return $( "<li>" ).append( "<a><span style='color: #3AF; text-transform: capitalize;'>" + item.beachName + "</span><br><span style='font-size: 0.75em'>City:  " + item.city + " | State: " + item.state + "</span></a>" ).appendTo( ul );
+          return $( "<li style='font-size: 5%;'>" ).append( "<a><span style='color: #3AF;'>" + item.beachName + "</span><br><span >City:  " + item.city + " | State: " + item.state + "</span></a>" ).appendTo( ul );
           };
     }
         </script>
@@ -82,6 +85,10 @@ function validate(event) {
         <script src="libs/bootstrap/dist/js/bootstrap.js"></script>
         <script src="libs/datepicker/js/bootstrap-datepicker.js"></script>
         <script src="libs/jquery-ui/ui/jquery-ui.js"></script>
+        <script>
+        $("body").css("font-size", $("body").height()*0.7)
+        $("body").css("height", $("body").height())
+        </script>
 </body>
 
 </html>

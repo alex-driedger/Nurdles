@@ -11,7 +11,6 @@ define([
         tagName   : 'div',
         className : '',
         events: {
-            'click #download' : 'download'
         },
         download: function() {
             var temp = this.collection.models[0].attributes
@@ -37,7 +36,6 @@ define([
                 var a = document.getElementById("download")
                 a.href = 'data:attachment/csv,' + encodeURIComponent(items);
                 a.download = this.collection.models[0].attributes._id + '.csv';
-                document.body.appendChild(a);
         },
         // redirect is used on successful create or update.
         initialize: function (options) {

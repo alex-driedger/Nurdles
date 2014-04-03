@@ -1,10 +1,10 @@
 <%
 	_.each( items, function( item ) { 
 		%>
-			<p> <%= item.name + " : " + item.value %> </p>
+			<p style="font-size: 4%; margin: 1%;"> <%= item.name + " : " + item.value %> </p>
 		<%
 	});
 %>
-<a style="margin: 20px" id="download" class="btn btn-primary FT2">DOWNLOAD (.CSV)</a>
-<a style="margin: 20px" id="sendLink" class="btn btn-primary FT2">Send download Link</a>
-<p style="text-align: center;">(A link will be sent to the email address used to log into this app)</p>
+<a style="font-size: 5%; height: 8%; line-height: 200%;" id="download" class="btn btn-primary FT2">DOWNLOAD (.CSV)</a>
+<a style="margin-top: 2%; font-size: 5%; height: 8%; line-height: 200%;" id="sendLink" class="btn btn-primary FT2">Send download Link</a>
+<p style="text-align: center; font-size: 5%;">(A link will be sent to the email address used to log into this app)</p>

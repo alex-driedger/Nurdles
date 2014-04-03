@@ -21,14 +21,31 @@ define([
             'click .weight' : 'updateWeight',
             'click .area' : 'updateArea',
             'click #submit' : 'submit',
-            'click #checkbox' : 'getNearestBeach'
+            'click #checkbox' : 'getNearestBeach',
+            'click input[type=radio]' : 'select'
+        },
+        select: function(events) {
+            for (i = 1; i <= 6; i ++)
+            {
+                document.getElementById("radioCheck"+i).style.color = "white"
+            }
+            if ($('input[name=a]:checked')[0] != undefined)
+            {
+                document.getElementById("radioCheck" + $('input[name=a]:checked')[0].id.slice(5,6)).style.color = "black"
+            }
+            if ($('input[name=b]:checked')[0] != undefined)
+            {
+                document.getElementById("radioCheck" + $('input[name=b]:checked')[0].id.slice(5,6)).style.color = "black"
+            }
         },
         getNearestBeach: function (events) {
+            var checkboxVisual = document.getElementById("checkboxVisual")
             var items = [document.getElementById('country'),document.getElementById('city'),document.getElementById('state'),document.getElementById('beachname')]
             var checkbox = document.getElementById("checkbox")
             var submit = document.getElementById("submit")
             if (checkbox.checked)
             {
+                checkboxVisual.style.backgroundColor = "gray";
                 for (i in items)
                 {
                     items[i].readOnly = true;
@@ -49,6 +66,7 @@ define([
                     items[i].readOnly = false;
                     items[i].value = ""
                 }
+
                         submit.innerText = "Submit"
                         item = collection.models[0].attributes
                         console.log(item)
@@ -58,6 +76,7 @@ define([
                         $( "#city").val(item.city);
                         $( "#state").val(item.state);
                         $("#country").val(item.country);
+
                     },
                     failure: function( collection, response, options) {
                         $('#content').html("An error has occured.");                    
@@ -66,6 +85,7 @@ define([
               })
             } else
             {
+                checkboxVisual.style.backgroundColor = "white";
                 for ( i in items)
                 {
                     items[i].readOnly = false;

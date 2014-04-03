@@ -34,7 +34,6 @@ define([
             $("#view").html(_.template(beachTemplate, {
                 attributes: this.attributes
             }));
-            console.log("LIST")
         },
         renderMap: function() {
             document.getElementById("map").style.top = $("#header").height() + 10;

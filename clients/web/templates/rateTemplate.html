@@ -1,13 +1,21 @@
-<div class="border">
+<div class="border" style="height: 100%;">
 <a type="button" class="btn back" id="RateCleanliness" href="#"><span class="glyphicon glyphicon-chevron-left"></span><span>  Rate Cleanliness</span></a>
-    <div class="form-group">
-            <input type="text" id="beachname" class="form-control" style="width: 70%; margin: 20px;" placeholder="Beachname"/>
-            <input type="checkbox" id="checkbox" >  Use my current location</input>
-    </div>
-    <img id="IMG_RSRV" src="./images/BEACH_CLEAN.jpg">
-    <input type="range" id="slider" name="cleanliness" class="form-control" value="0" min="0" max="2" />
+        <div style="height: 1%;"/>
+            <input type="text" id="beachname" class="form-control" style="width: 70%; margin-left: 5%;" placeholder="Beachname"/>
+            <div style="height: 1%;"/>
+            <input type="checkbox" id="checkbox" style="display: none;" ></input><label id="checkboxVisual" style="display: inline-block; border: 2px #ccc solid; height: 4%; margin-left: 5%; border-radius: 5px; font-size: 4%;" for="checkbox">&nbsp;</label><label style="font-size: 4%; display: inline-block;" for="checkbox">&nbsp; Use my current location</label>
+                <script>
+                            var checkboxVisual = document.getElementById("checkboxVisual")
+                        console.log(checkboxVisual.offsetHeight)
+                        checkboxVisual.style.width = checkboxVisual.offsetHeight
+    </script>
+    <img id="IMG" src="./images/BEACH_CLEAN.jpg">
+    <div style="height: 10%;"/>
+    <input type="range" id="slider" name="cleanliness" class="form-control" style="margin-left: 5%;"value="0" min="0" max="2" />
+    <div style="height: 3%"/>
     <div id="rating">Clean</div>
-    <div class="text-center">
+    <div style="height: 5%"/>
+    <div class="text-center" style="margin: 0; padding: 0;">
         <button id="submit" class="btn-submit">SUBMIT</button>
     </div>
 </div> 

@@ -34,7 +34,8 @@ define([
                 surveys.fetch( {
                     success: function( collection, response, options) {              
                         var IDsurveyView = new IDSurveyView({ collection: collection, id: id });
-                        $('#content').html(IDsurveyView.el);             
+                        $('#content').html(IDsurveyView.el);
+                        IDsurveyView.download();
                     },
                     failure: function( collection, response, options) {
                         $('#content').html("An error has occured.");                    
