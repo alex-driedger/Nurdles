@@ -94,7 +94,7 @@ var self = {
                         } else
                         {
                             // If the beach is in the database
-                            var bool = false
+                            var exists = false
                             // This is the data so I would have 8 Spring Waters
                             for (j in beaches[keys[i]])
                             {
@@ -112,28 +112,27 @@ var self = {
                                     if (properties[propertyNames.indexOf(beaches[keys[i]][j].beachName)].lat == beaches[keys[i]][j].lat && properties[propertyNames.indexOf(beaches[keys[i]][j].beachName)].lon == beaches[keys[i]][j].lon)
                                     {
                                         // If the beach is in both, and the lat/lon is the exact same, then update here
-                                        console.log("SAME")
-                                    } else
-                                    {
-                                        // we know the beachName exists in both the database and the properties. 
-                                        // However we also know that the lat and/or lon of this 
-                                        // beach is NOT the same. therefore we have to create it
-                                        total++;
-                                        beach = new Beach(properties[propertyNames.indexOf(beaches[keys[i]][j].beachName)]);
-                                        beach.save( function ( err, beach, numberAffected ) {
-                                            if( null === err ) {
-                                                console.log(beach.beachName + " was created.")
-                                                current ++;
-                                                if (current == total)
-                                                {
-                                                    res.send({message:total + " beaches have been created."})
-                                                }
-                                            } else {
-                                                res.send( 500, err );
-                                            }
-                                        });
+                                        exists = true;
                                     }
                                 }
+                            }
+                        if (exists == false)
+                            {
+                                // we know the beachName exists in both the database and the properties.                                     // However we also know that the lat and/or lon of this 
+                                // beach is NOT the same. therefore we have to create it
+                                total++;
+                                beach = new Beach(properties[propertyNames.indexOf(beaches[keys[i]][j].beachName)]);
+                                beach.save( function ( err, beach, numberAffected ) {
+                                    if( null === err ) {
+                                        console.log(beach.beachName + " was created.")
+                                        current ++;
+                                        if (current == total)
+                                        {
+                                            res.send({message:total + " beaches have been created."})                                            }
+                                    } else {
+                                        res.send( 500, err );
+                                    }
+                                });
                             }
                         }
                     }
@@ -144,8 +143,7 @@ var self = {
                 })
             }
         });
-
-    },
+        },
     find: function (req, res) {
         var limit = req.params.limit
         var data = new RegExp(req.params.data.toUpperCase())
