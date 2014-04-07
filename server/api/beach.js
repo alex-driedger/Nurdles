@@ -232,6 +232,9 @@ var self = {
         if( _.has( req.body, 'state') && _.isString( req.body.state ) ) {
             properties.state = req.body.state;
         }
+        if( _.has( req.body, 'groomed') && _.isString( req.body.groomed ) ) {
+            properties.groomed = req.body.groomed;
+        }
         /*if( _.has( req.body, 'country') && _.isString( req.body.country ) ) {
             properties.country = req.body.country;
         }
@@ -383,7 +386,10 @@ var self = {
             {
                 properties.lon = req.body.lon
             }
-            console.log(req.params)
+            if (req.body.groomed != '')
+            {
+                properties.groomed = req.body.groomed
+            }
         Beach.update({_id: req.params.id}, properties,  function ( err, numAffected, updatedBeach ) {
             if( null === err ) {
                 console.log(numAffected)
@@ -402,7 +408,6 @@ var self = {
     destroy: function( req, res ) {
          Beach.remove( { _id:req.params.id }, function( err) {
             if( null === err ) {
-                console.log("HAX")
                 res.send({message: "Success"});
             } else {
                 res.send( 500, err );
@@ -449,7 +454,6 @@ var self = {
                         }
                     }
                 }
-                console.log(averageSum/averageTotal)
                 res.send( {ratings: ratings, total: total, average: Math.round(averageSum/averageTotal)} );
             } else {
                 res.send( 500, err );

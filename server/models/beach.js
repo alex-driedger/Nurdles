@@ -17,13 +17,12 @@ module.exports = function (mongoose) {
         city: String,
         state: String,
         country: String,
-        // address: String,
         lat: Number,
         lon: Number,
         lastUpdated: Date,
         lastRating: Number,
-        created: Date
-
+        created: Date,
+        groomed: String
         // , mixed : Mixed // Not implemented because mixed types should be used sparingly, if at all.
     });
 

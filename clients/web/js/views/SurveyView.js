@@ -212,25 +212,25 @@ define([
                 data:
                 [
                     { name: "Cigarette Butts"},
-                    { name: "Food Wrappers (Candy/Chips etc..)"},
-                    { name: "Take Out/ Away Containers (Plastic)"},
-                    { name: "Take Out/ Away Containers (Foamed Plastic)"},
-                    { name: "Plastic Caps/ Lids"},
+                    { name: "Food Wrappers (Candy / Chips etc..)"},
+                    { name: "Take Out / Away Containers (Plastic)"},
+                    { name: "Take Out / Away Containers (Foamed Plastic)"},
+                    { name: "Plastic Caps / Lids"},
                     { name: "Cups and Plates (Plastic)"},
                     { name: "Cups and Plates (Foamed Plastic)"},
                     { name: "Cups and Plates (Paper)"},
-                    { name: "Forks/Knives/Spoons"}
+                    { name: "Forks / Knives / Spoons"}
                 ]},
                 {header: "Packaging Materials",
                 id: "items_b",
                 data:
                     [
-                    { name: "Motor Oil/ Lubricant Bottles"},
-                    { name: "Other Plastic Bottles (Milk/Bleach etc..)"},
-                    { name: "Plastic Wrap/ Hard-Plastic Packaging"},
+                    { name: "Motor Oil / Lubricant Bottles"},
+                    { name: "Other Plastic Bottles (Milk / Bleach etc..)"},
+                    { name: "Plastic Wrap / Hard-Plastic Packaging"},
                     { name: "Strapping Bands (Plastic)"},
                     { name: "Strapping Bands (Rubber)"},
-                    { name: "Tobacco Packaging/ Wrap"}
+                    { name: "Tobacco Packaging / Wrap"}
                 ]},
                 {header: "Personal Hygiene",
                 id: "items_c",
@@ -241,25 +241,25 @@ define([
                     { name: "Syringes"},
                     { name: "Tampons / Tampon Applicators"},
                     { name: "Toothbrush"},
-                    { name: "Forks/Knives/Spoons"},
+                    { name: "Forks / Knives / Spoons"},
                     { name: "Beverage Bottles (Plastic)"},
                     { name: "Beverage Bottles (Glass)"},
                     { name: "Plastic Grocery Bags"},
                     { name: "Other Plastic Bags"},
                     { name: "Paper Bags"},
                     { name: "Beverage Cans"},
-                    { name: "Straws/Stirrers"}
+                    { name: "Straws / Stirrers"}
                 ]},
                 {header: "Fishing Gear",
                 id: "items_d",
                 data:
                 [
-                    { name: "Crab/Lobster/Fish Traps"},
-                    { name: "Fishing Buoys/Floats"},
-                    { name: "Fishing Line (1 yard/meter = 1 piece)"},
-                    { name: "Fishing Net and Pieces < 1.5ft/50cm"},
-                    { name: "Fishing Net and Pieces > 1.5ft/50cm"},
-                    { name: "Rope (1 yard/meter = 1 piece"}
+                    { name: "Crab / Lobster / Fish Traps"},
+                    { name: "Fishing Buoys / Floats"},
+                    { name: "Fishing Line (1 yard / meter = 1 piece)"},
+                    { name: "Fishing Net and Pieces < 1.5ft / 50cm"},
+                    { name: "Fishing Net and Pieces > 1.5ft / 50cm"},
+                    { name: "Rope (1 yard / meter = 1 piece"}
 
                 ]},
                 {header: "Other Trash",

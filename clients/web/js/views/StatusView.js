@@ -36,7 +36,7 @@ define([
             }));
         },
         renderMap: function() {
-            document.getElementById("map").style.top = $("#header").height() + 10;
+            document.getElementById("map").style.top = $("#header").height();
             var map = L.mapbox.map('map', 'examples.map-9ijuk24y', {
                 minZoom: 2,
                 zoomControl: false,
@@ -56,7 +56,7 @@ define([
                 properties: {
                     'marker-color': '#3AF',
                     'marker-symbol': 'embassy',
-                    'marker-size': 'large',
+                    'custom-marker-size': [window.innerHeight/10, window.innerHeight/5],
                     title: "You are here"
                 }
             });
@@ -79,7 +79,7 @@ define([
                     },
                     properties: {
                         'marker-color': color,
-                        'marker-size': 'large',
+                        'custom-marker-size': [window.innerHeight/10, window.innerHeight/5],
                         title: this.collection.models[i].attributes.beachName,
                         url: "#info/" + [this.collection.models[i].attributes._id]
                     }

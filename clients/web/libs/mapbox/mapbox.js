@@ -6367,16 +6367,17 @@
 
             function i(t) {
                 t = t || {};
+                console.log(t)
                 var e = {
                     small: [20, 50],
                     medium: [30, 70],
                     large: [105, 225]
-                }, i = t["marker-size"] || "medium",
+                }, i = t["marker-size"] || "medium" ,
                     n = t["marker-symbol"] ? "-" + t["marker-symbol"] : "",
                     o = (t["marker-color"] || "7e7e7e").replace("#", "");
                 return L.icon({
                     iconUrl: s.base() + "marker/pin-" + i.charAt(0) + n + "+" + o + (L.Browser.retina ? "@2x" : "") + ".png",
-                    iconSize: e[i],
+                    iconSize: t["custom-marker-size"] || e[i],
                     iconAnchor: [e[i][0] / 2, e[i][1] / 2],
                     popupAnchor: [0, -e[i][1] / 2]
                 })

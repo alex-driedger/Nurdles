@@ -31,7 +31,6 @@ define([
 
         },
         initialize: function (options) {
-            console.log(options)
             this.total = options.total
             this.id = options.id
             this.collection = options.collection
