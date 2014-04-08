@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="css/styles.css" >
     <link rel="stylesheet" type="text/css" href="libs/jquery-ui/themes/base/jquery-ui.css"></link>
     <script src='libs/mapbox/mapbox.js'></script>
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
     <link href='libs/mapbox/mapbox.css' rel='stylesheet' />
     <!-- Load the app using main.js -->
     <script data-main="js/main" src="libs/require/require.js"></script>
@@ -51,7 +54,7 @@ function validate(event) {
             }
             if (callback)
             {
-                callback()
+                callback(ui.item.lat, ui.item.lon)
             }
             return false;
           },
@@ -62,7 +65,7 @@ function validate(event) {
                 var availableTags = [];
                 for (i in collection.models)
                 {
-                    availableTags.push({beachName: collection.models[i].attributes.beachName, city: collection.models[i].attributes.city, state: collection.models[i].attributes.state, country: collection.models[i].attributes.country, id: collection.models[i].attributes._id})
+                    availableTags.push({beachName: collection.models[i].attributes.beachName, city: collection.models[i].attributes.city, state: collection.models[i].attributes.state, country: collection.models[i].attributes.country, lat: collection.models[i].attributes.lat, lon: collection.models[i].attributes.lon, id: collection.models[i].attributes._id})
                 }
                 callback(availableTags)
                 },
@@ -88,6 +91,7 @@ function validate(event) {
         <script>
         $("body").css("font-size", $("body").height()*0.7)
         $("body").css("height", $("body").height())
+
         </script>
 </body>
 
