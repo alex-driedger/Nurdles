@@ -22,7 +22,7 @@ module.exports = function (mongoose) {
         lastUpdated: Date,
         lastRating: Number,
         created: Date,
-        groomed: String
+        grooming: String
         // , mixed : Mixed // Not implemented because mixed types should be used sparingly, if at all.
     });
 

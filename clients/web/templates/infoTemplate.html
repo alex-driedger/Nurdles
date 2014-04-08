@@ -1,9 +1,18 @@
 
-  <a type="button" class="btn back" id="Name" onClick="history.go(-1);return true;"><span class="glyphicon glyphicon-chevron-left"></span><span><%=beachInfo.beachName%></span></a>
+  <a type="button" class="btn back" id="Name" onClick="history.go(-1);return true;"><span id="chevron" class="glyphicon glyphicon-chevron-left"></span><span id="name" style=""><%=beachInfo.beachName%></span></a>
+  <script>
+
+while (document.getElementById("name").offsetWidth + document.getElementById("chevron").offsetWidth + 20 > document.getElementById("Name").offsetWidth)
+{
+  document.getElementById("name").innerText = document.getElementById("name").innerText.slice(0,-4)
+  document.getElementById("name").innerText+="..." 
+}
+
+  </script>
   <div style="border: 5px solid black; margin-top: -5px;">
-	    <h5 >Address: <%=beachInfo.address%>, <%=beachInfo.city%>, <%=beachInfo.state%>, <%=beachInfo.country%></h5> 
-      <h5 >Status : <%=beachInfo.lastRating%></h5>
+	    <h5 >Location: <%=beachInfo.state%>, <%=beachInfo.country%></h5> 
       <h5 >Coordinates : <%=beachInfo.lat%>, <%=beachInfo.lon%></h5>
+      <h5 >Status : <%=beachInfo.lastRating%></h5>
       <h5 > Historical Rating : <%=average%></h5>
       <h5 >Last-Updated : <%=new Date(beachInfo.lastUpdated)%></h5>
       <h5 >Groomed : NOT ADDED YET</h5>

@@ -26,6 +26,7 @@
         <input type="text" id="city" class="form-control FT" placeholder="City"/>
         <input type="text" id="state" class="form-control FT" placeholder="State"/>
         <input type="text" id="country" class="form-control FT" placeholder="Country"/>
+        <input type="text" id="grooming" class="form-control FT" placeholder="Grooming"/>
         <input onkeypress='validate(event)' type="text" id="lat" class="form-control FT" placeholder="Latitude"/>
         <input onkeypress='validate(event)' type="text" id="lon" class="form-control FT" placeholder="Longitude"/>
         <button id="createBeach" class="btn btn-primary FT">Create Beach</button>
@@ -36,23 +37,25 @@
 _.each(data, function( model ) {
 %>
 <div class="btn-admin-beach" id="title_<%= model.attributes._id %>" >
-    <div id="data_<%= model.attributes._id %>" style=" display: inline-block; height: 200px; color: #3AF; margin-left: 10px;">
+    <div id="data_<%= model.attributes._id %>" style=" font-size: 24px; display: inline-block; color: #3AF; margin-left: 10px;">
         <%= model.attributes.beachName %> (<%=model.attributes.beachID%>)
         <div />
-        <span style="color: black; font-size: 24px; display: inline-block;"><span id="city_<%= model.attributes._id %>"><%= model.attributes.city %></span>, </span>
-        <span style="color: black; font-size: 24px;; display: inline-block;"><span id="state_<%= model.attributes._id %>"><%= model.attributes.state %></span>, </span>
-        <span style="color: black; font-size: 24px; display: inline-block;"><span id="country_<%= model.attributes._id %>"><%= model.attributes.country %></span></span>
-        <span style="color: black; font-size: 24px; display: block; ">(<span id="lat_<%= model.attributes._id %>"><%= model.attributes.lat %></span>, <span id="lon_<%= model.attributes._id %>"><%= model.attributes.lon %></span>)</span>
+        <span style="color: black; font-size: 17px; display: inline-block;"><span id="city_<%= model.attributes._id %>"><%= model.attributes.city %></span>, </span>
+        <span style="color: black; font-size: 17px;; display: inline-block;"><span id="state_<%= model.attributes._id %>"><%= model.attributes.state %></span>, </span>
+        <span style="color: black; font-size: 17px; display: inline-block;"><span id="country_<%= model.attributes._id %>"><%= model.attributes.country %></span></span>
+        <span style="color: black; font-size: 17px; display: block;"><span id="grooming_<%= model.attributes._id %>"><%= model.attributes.grooming %></span></span>
+        <span style="color: black; font-size: 17px; display: block; ">(<span id="lat_<%= model.attributes._id %>"><%= model.attributes.lat %></span>, <span id="lon_<%= model.attributes._id %>"><%= model.attributes.lon %></span>)</span>
     </div>
     <div style="display: inline-block;float: right; width: 200px;">
-        <button id="delete_<%= model.attributes._id %>"class="btn btn-primary changeBeach" style="display: block; margin-bottom: 10px; margin-top: 5px; width: 180px; height: 90px;"  >Delete Beach</button>
-        <button id="edit_<%= model.attributes._id %>"class="btn btn-primary changeBeach" style="display: block; width: 180px; height: 90px;">Edit Beach</button>
+        <button id="delete_<%= model.attributes._id %>"class="btn btn-primary changeBeach" style="display: block; margin-bottom: 10px; margin-top: 5px; width: 180px; height: 50px;"  >Delete Beach</button>
+        <button id="edit_<%= model.attributes._id %>"class="btn btn-primary changeBeach" style="display: block; width: 180px; height: 50px;">Edit Beach</button>
     </div>
     <div id="editData_<%= model.attributes._id %>" style="display: none; padding-top: 30px;">
         <input type="text" id="edit_beachName_<%= model.attributes._id %>" class="form-control FT" placeholder="Beach Name" value="<%= model.attributes.beachName %>"/>
         <input type="text" id="edit_city_<%= model.attributes._id %>" class="form-control FT" placeholder="City" value="<%= model.attributes.city %>"/>
         <input type="text" id="edit_state_<%= model.attributes._id %>" class="form-control FT" placeholder="State" value="<%= model.attributes.state %>"/>
         <input type="text" id="edit_country_<%= model.attributes._id %>" class="form-control FT" placeholder="Country" value="<%= model.attributes.country %>"/>
+        <input type="text" id="edit_grooming_<%= model.attributes._id %>" class="form-control FT" placeholder="Grooming" value="<%= model.attributes.grooming %>"/>
         <input onkeypress='validate(event)' type="text" id="edit_lat_<%= model.attributes._id %>" class="form-control FT" placeholder="Latitude" value="<%= model.attributes.lat%>"/>
         <input onkeypress='validate(event)' type="text" id="edit_lon_<%= model.attributes._id %>" class="form-control FT" placeholder="Longitude" value="<%= model.attributes.lon %>"/>
         <button id="saveEdit_<%= model.attributes._id %>" class="btn btn-primary FT changeBeach">Save Edit</button>

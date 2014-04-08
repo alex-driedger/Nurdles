@@ -7,14 +7,13 @@ var path = require( 'path' ),
     rate = require( path.join( __dirname, '..', 'models', 'rate' ) ),
     Rate = mongoose.model( 'Rate' ),
     parseXlsx = require('excel'),
-    beachDataPath = path.join(__dirname, '..', 'beachData', 'Ontario_Beaches_Sample_List.xlsx'),
+    beachDataPath = path.join(__dirname, '..', 'beachData', 'Sample Beach List_4-3-2014.xlsx'),
     _ = require( 'underscore' );
     https = require('https')
 
 var self = {
     prepareDatabase: function (req, res)
     {
-
         // Retrieve the beach data file
         parseXlsx(beachDataPath, function(err, data) {
             if(err)
@@ -30,120 +29,152 @@ var self = {
                 {
                     properties.push(
                     {
-                        beachID:data[i][0].trim(),
+                        //beachID:"N/A",
                         beachName:data[i][1].toUpperCase(),
-                        city:data[i][2].toUpperCase(),
-                        state:data[i][3].toUpperCase(),
-                        country:"N/A",
+                        city:"N/A",
+                        state:data[i][10].toUpperCase(),
+                        country:data[i][11].toUpperCase(),
+                        grooming: data[i][9].toUpperCase(),
                         // address:"N/A"
-                        lat:data[i][4],
-                        lon:data[i][5],
+                        lat:parseFloat(data[i][12]),
+                        lon:parseFloat(data[i][13]),
                         created: new Date(),
                         lastUpdated: new Date()
                     })
                 }
-                var total = 0;
-                var current = 0;
                 // OBTAIN THE LIST OF EVERY BEACH
-                Beach.find(function(err, data)
+
+
+               /*for (i in properties)
                 {
-                    var name = []
-                    var lat = []
-                    var lon = []
-                    var beaches = {}
-                    // We want to compare ID so extract the ID and store it in a var
-                    for ( i in data)
-                    {
-                        name.push(data[i].beachName)
-                        lat.push(data[i].lat)
-                        lon.push(data[i].lon)
-                        if (beaches[data[i].beachName] == undefined)
-                        {
 
-                            beaches[data[i].beachName] = [data[i]];
-                        }   else
-                        {
-                            beaches[data[i].beachName].push(data[i])
+                    beach = new Beach( properties[i] );
+                    beach.save( function ( err, beach, numberAffected ) {
+                        if( null === err ) {
+                            console.log(beach)
+                        } else {
+                            console.log(err)
                         }
-                    }
-                    var keys = Object.keys(beaches)
-                    var propertyNames = []
-                    for (i in properties)
-                    {
-                        propertyNames.push(properties[i].beachName)
-                    }
-                    for (i in properties)
-                    {
-                        // if this is -1, then the beachName does not exist in the DB so create it
-                        if (keys.indexOf(properties[i].beachName) == -1)
-                        {
-                            total++;
-                            beach = new Beach( properties[i] );
-                            beach.save( function ( err, beach, numberAffected ) {
-                                if( null === err ) {
-                                    console.log(beach.beachName + " was created.")
-                                    current ++
-                                    if (current == total)
-                                    {
-                                        res.send({message:total + " beaches have been created."})
-                                    }
-                                } else {
-                                    res.send( 500, err );
-                                }
-                            });
-                        } else
-                        {
-                            // If the beach is in the database
-                            var exists = false
-                            // This is the data so I would have 8 Spring Waters
-                            for (j in beaches[keys[i]])
-                            {
-                                // for every beach in the spring waters
-
-                                // If this is -1 then that beach only exists in the database so ignore it
-
-                                if (propertyNames.indexOf(beaches[keys[i]][j].beachName) != -1)
-                                {
-                                    // so if the beachname exists in the database AND in the file check if its
-                                    // lat and lon are the same
+                    });
+                }*/
 
 
-                                    // If j is 8, then this part will be the same 8 times. 
-                                    if (properties[propertyNames.indexOf(beaches[keys[i]][j].beachName)].lat == beaches[keys[i]][j].lat && properties[propertyNames.indexOf(beaches[keys[i]][j].beachName)].lon == beaches[keys[i]][j].lon)
-                                    {
-                                        // If the beach is in both, and the lat/lon is the exact same, then update here
-                                        exists = true;
-                                    }
-                                }
-                            }
-                        if (exists == false)
-                            {
-                                // we know the beachName exists in both the database and the properties.                                     // However we also know that the lat and/or lon of this 
-                                // beach is NOT the same. therefore we have to create it
-                                total++;
-                                beach = new Beach(properties[propertyNames.indexOf(beaches[keys[i]][j].beachName)]);
-                                beach.save( function ( err, beach, numberAffected ) {
-                                    if( null === err ) {
-                                        console.log(beach.beachName + " was created.")
-                                        current ++;
-                                        if (current == total)
-                                        {
-                                            res.send({message:total + " beaches have been created."})                                            }
-                                    } else {
-                                        res.send( 500, err );
-                                    }
-                                });
-                            }
-                        }
-                    }
-                    if (total == 0)
-                    {
-                        res.send({message: "0 beaches have been created"})
-                    }
-                })
+/*Beach.find(function(err,data)
+    {
+        console.log(data)
+    })*/
+cur = 0;
+total = 0;
+possibleBeaches = []
+numUpdated = 0;
+numCreated = 0;
+function notcontains(data, array)
+{
+    for (i in array)
+    {
+        if (data == array[i])
+        {
+            return false
+        }
+
+    }
+    return true
+}
+
+Beach.find(function(err,data)
+{
+    // for every beach in our file
+    for (i in properties)
+    {
+        total++;
+        // Check if there is a beach in the database for each beach in the file
+        Beach.findOne({lat: properties[i].lat,lon: properties[i].lon}, function(err, beach)
+        {
+            if (beach != null)
+            {
+                // If a beach exists in the database with the files lat and lon, then add it to possible beaches
+                // if it doesn't it's null and doesn't get added
+                possibleBeaches.push(JSON.stringify([beach.lat, beach.lon]))
             }
-        });
-        },
+            cur ++;
+            if (total == cur)
+            {
+                cur = 0;
+                total = 0;
+                // For every beach in the file
+                for (j in properties)
+                {
+                    // if the beach in the file is NOT in the database 
+                    if (notcontains(JSON.stringify([properties[j].lat, properties[j].lon]),possibleBeaches))
+                    {
+                        total ++;
+                        beach = new Beach( properties[j] );
+                        beach.save( function ( err, beach, numberAffected ) {
+                            if( null === err ) {
+                                cur ++;
+                                numCreated ++;
+                                if (cur == total)
+                                {
+                                    res.send({message: numCreated + " beaches have been created. " + numUpdated + " beaches have been updated."})
+                                }
+                            } else {
+                                console.log(err)
+                            }
+                        });
+                    } else
+                    {
+                        // Here is where u update
+                    delete properties[j].created
+                    total++;
+                    Beach.update({lat: properties[j].lat, lon: properties[j].lon}, properties[j],  function ( err, numAffected, updated ) {
+                    if( null === err ) {
+                        cur ++;
+                        numUpdated++;
+                        if (cur == total)
+                        {
+                            res.send({message: numCreated + " beaches have been created. Up to " + numUpdated + " beaches have been updated."})
+                        }
+                    } else {
+                        console.log(err)
+                        res.send( 500, err );
+                    }                
+                });  
+                    }
+                }
+            }
+        })
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+
+        })
+            },
     find: function (req, res) {
         var limit = req.params.limit
         var data = new RegExp(req.params.data.toUpperCase())
@@ -178,29 +209,8 @@ var self = {
 
     create: function( req, res ) {
            properties = {};
-           Beach.find(function(err, beachCollection)
-           {
-            var ID = []
-            for(i in beachCollection)
-            {
-                ID.push(beachCollection[i].beachID)
-            }
-            if (ID != [])
-            {
-                ID = (Math.max.apply(Math,ID))+1
-            } else
-            {
-                ID = 1;
-            }
-            console.log(ID)
-        // Simple validation example, checks that a property 
-        // exists and is of the right type. Deeper validation 
-        // would, for example, validate that a field is an email address.
-        // In most cases, we would also reject the creation if invalid 
-        // data is included, here we just ignore it.
-        properties.beachID = ID;
         if( _.has( req.body, 'beachName') && _.isString( req.body.beachName ) ) {
-            properties.beachName = req.body.beachName;
+            properties.beachName = req.body.beachName.toUpperCase();
         }
         if( _.has( req.body, 'created') ) {
             tmpDate = new Date( req.body.created );
@@ -227,13 +237,13 @@ var self = {
             properties.lon = req.body.lon;
         }
         if( _.has( req.body, 'city') && _.isString( req.body.city ) ) {
-            properties.city = req.body.city;
+            properties.city = req.body.city.toUpperCase();
         }
         if( _.has( req.body, 'state') && _.isString( req.body.state ) ) {
-            properties.state = req.body.state;
+            properties.state = req.body.state.toUpperCase();
         }
-        if( _.has( req.body, 'groomed') && _.isString( req.body.groomed ) ) {
-            properties.groomed = req.body.groomed;
+        if( _.has( req.body, 'grooming') && _.isString( req.body.grooming ) ) {
+            properties.grooming = req.body.grooming.toUpperCase();
         }
         /*if( _.has( req.body, 'country') && _.isString( req.body.country ) ) {
             properties.country = req.body.country;
@@ -250,14 +260,13 @@ var self = {
                 res.send( 500, err );
             }
         });
-    })
     },
 
     retrieveAll: function( req, res ) {
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
 
-                Beach.find(function(err,data){res.send(data)})
+                res.send(beachCollection)
             } else {
                 res.send( 500, err );
             }
@@ -386,9 +395,9 @@ var self = {
             {
                 properties.lon = req.body.lon
             }
-            if (req.body.groomed != '')
+            if (req.body.grooming != '')
             {
-                properties.groomed = req.body.groomed
+                properties.grooming = req.body.grooming
             }
         Beach.update({_id: req.params.id}, properties,  function ( err, numAffected, updatedBeach ) {
             if( null === err ) {

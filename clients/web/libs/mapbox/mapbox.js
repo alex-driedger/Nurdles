@@ -6378,7 +6378,7 @@
                 return L.icon({
                     iconUrl: s.base() + "marker/pin-" + i.charAt(0) + n + "+" + o + (L.Browser.retina ? "@2x" : "") + ".png",
                     iconSize: t["custom-marker-size"] || e[i],
-                    iconAnchor: [e[i][0] / 2, e[i][1] / 2],
+                    iconAnchor: [t["custom-marker-size"][0] / 2, t["custom-marker-size"][1] / 2] || [e[i][0] / 2, e[i][1] / 2],
                     popupAnchor: [0, -e[i][1] / 2]
                 })
             }

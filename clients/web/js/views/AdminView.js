@@ -55,9 +55,10 @@ define([
             city = $("#edit_city_" + id).val().toUpperCase()
             state = $("#edit_state_" + id).val().toUpperCase()
             country = $("#edit_country_" + id).val().toUpperCase()
+            grooming = $("#edit_grooming_" + id).val().toUpperCase()
             lat = parseFloat($("#edit_lat_" + id).val())
             lon = parseFloat($("#edit_lon_" + id).val())
-            if (beachName != "" || city != "" || state != "" || country != "" || lat != "" || lon != "")
+            if (grooming != "" || beachName != "" || city != "" || state != "" || country != "" || lat != "" || lon != "")
             {
                 beachModel = new BeachModel.Model(
                 {
@@ -66,6 +67,7 @@ define([
                         city: city,
                         state: state,
                         country: country,
+                        grooming: grooming,
                         lat: lat,
                         lon: lon,
                         created: new Date()
@@ -79,6 +81,7 @@ define([
                             $("#city_" + id)[0].firstChild.data = attributes.city
                             $("#state_" + id)[0].firstChild.data = attributes.state
                             $("#country_" + id)[0].firstChild.data = attributes.country
+                            $("#grooming_" + id)[0].firstChild.data = attributes.grooming
                             $("#lat_" + id)[0].firstChild.data = attributes.lat
                             $("#lon_" + id)[0].firstChild.data = attributes.lon
                             $("#title_" + id).slideDown(500)
@@ -101,15 +104,17 @@ define([
             city = $("#city").val()
             state = $("#state").val()
             country = $("#country").val()
+            grooming = $("#grooming").val()
             lat = parseFloat($("#lat").val()) || ""
             lon = parseFloat($("#lon").val()) || ""
-            if (beachName != "" && city != "" && state != "" && country != "" && lat != "" && lon != "")
+            if (beachName != "" && grooming != ""  && city != "" && state != "" && country != "" && lat != "" && lon != "")
             {
                 beachModel = new BeachModel.Model({
                     beachName: beachName,
                     city: city,
                     state: state,
                     country: country,
+                    grooming: grooming,
                     lat: lat,
                     lon: lon,
                     created: new Date()
@@ -215,7 +220,6 @@ define([
 
             } else
             {
-                console.log($("#"+id).offset().top)
                 $('body').animate({
                     scrollTop: $("#"+id).offset().top
                 },750)
