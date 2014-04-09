@@ -139,8 +139,7 @@ define([
             alert("MARKER "+Math.round(events.latlng.lat)+"   ,   "+Math.round(events.latlng.lng))
         })
         $('*').click(function(e) {
- alert("DOCUMENT WAS CLICKED")
- console.log(e.target)
+alert(e.target.attributes.class.nodeValue)
 });
         },
         initialize: function (options) {
