@@ -135,9 +135,9 @@ define([
                 map.addLayer(markers);
         }
         $('*').click(function(e) {
-            alert("CLICKED")
             console.log(e.target.className)
         });
+        console.log(markers)
         },
         initialize: function (options) {
             this.lat = options.lat

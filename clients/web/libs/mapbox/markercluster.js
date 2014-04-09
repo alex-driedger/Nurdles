@@ -182,10 +182,15 @@
             })
         },
         _bindEvents: function () {
+            this.on("click", function()
+                {
+                    alert("SUP")
+                })
             var t = this._map,
                 e = this.options.spiderfyOnMaxZoom,
                 i = this.options.showCoverageOnHover,
                 n = this.options.zoomToBoundsOnClick;
+
             (e || n) && this.on("clusterclick", this._zoomOrSpiderfy, this), i && (this.on("clustermouseover", this._showCoverage, this), this.on("clustermouseout", this._hideCoverage, this), t.on("zoomend", this._hideCoverage, this))
         },
         _zoomOrSpiderfy: function (t) {
