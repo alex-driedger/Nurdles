@@ -81,7 +81,7 @@ define([
                     icon: L.mapbox.marker.icon({
                         'marker-color': color,
                         'marker-symbol': 'circle',
-                        'custom-marker-size': [window.innerWidth/10,window.innerHeight/4],
+                        'custom-marker-size': [window.innerWidth/9,window.innerHeight/3],
                         'title': this.collection.models[i].attributes.beachName,
                         'url': "#info/" + [this.collection.models[i].attributes._id]
                     }),
@@ -107,7 +107,6 @@ define([
                 marker.bindPopup(popupContent, {
                     closeButton: false,
                 })
-
             markers.addLayer(marker);
             map.addLayer(markers);
             markers.on('click', function (a) {
@@ -131,7 +130,14 @@ define([
                 });
                 map.addLayer(markers);
         }
-
+        map.on("click", function(events)
+        {
+            alert(Math.round(events.latlng.lat)+"   ,   "+Math.round(events.latlng.lng))
+        })
+        markers.on("click", function(events)
+        {
+            alert("MARKER "+Math.round(events.latlng.lat)+"   ,   "+Math.round(events.latlng.lng))
+        })
 
         },
         initialize: function (options) {
