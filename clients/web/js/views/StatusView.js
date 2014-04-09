@@ -39,23 +39,31 @@ define([
             document.getElementById("map").style.top = $("#header").height();
 
             var map = L.mapbox.map('map', 'examples.map-9ijuk24y', {
+                // Even though it says min zoom, this is really the max zoom-out. 0 being the highest.
                 minZoom: 1,
+                // Base location
                 center: [45,-83],
+                // Base zoom
                 zoom: 5,
+                // No zoom buttons
                 zoomControl: false,
+                // Make it easier to tap 
                 tapTolerance: 30,
+                // Limit how far you can scroll to 1 map
                 maxBounds: [
                     [-180, -180],
                     [180, 180]
                 ]
             })
-
-
-            var markers = new L.MarkerClusterGroup();
-
-
+            // Prevent having a bunch of maps together
+            map.tileLayer.options.noWrap = true
+            // This unclusters everything at zoom level 1
+            var markers = new L.MarkerClusterGroup({
+                disableClusteringAtZoom: 12
+            });
 
             for (i in this.collection.models) {
+                // Set color of marker
                 var color = "#39f"
                 var status = this.collection.models[i].attributes.lastRating
                 if (status == "Clean") {
@@ -66,7 +74,7 @@ define([
                     color = "#E42217"
                 }
 
-
+                // Create markers
                 var title = this.collection.models[i].attributes.beachName
                 var marker = L.marker(new L.LatLng(this.collection.models[i].attributes.lat, this.collection.models[i].attributes.lon), {
                     icon: L.mapbox.marker.icon({
@@ -99,11 +107,13 @@ define([
                 }
             })
             function searchByName(lat, lon) {
-                map.panTo(new L.LatLng(lat, lon))
+                map.removeLayer(markers);
                 map.setZoom(12)
-            }
+                map.panTo([lat, lon])
+                map.addLayer(markers);
+        }
 
-            map.tileLayer.options.noWrap = true
+
         },
         initialize: function (options) {
             this.lat = options.lat

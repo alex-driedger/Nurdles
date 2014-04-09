@@ -58,7 +58,7 @@ function validate(event) {
             }
             return false;
           },
-          source: function(request, callback) {
+          source: function(request, callbackList) {
             beaches = new BeachModel.Collection([],{ attribute: attribute, data: $( "#" + inputId ).val(), limit: limit});
             beaches.fetch( {
                 success: function( collection, response, options) {
@@ -67,7 +67,7 @@ function validate(event) {
                 {
                     availableTags.push({beachName: collection.models[i].attributes.beachName, city: collection.models[i].attributes.city, state: collection.models[i].attributes.state, country: collection.models[i].attributes.country, lat: collection.models[i].attributes.lat, lon: collection.models[i].attributes.lon, id: collection.models[i].attributes._id})
                 }
-                callback(availableTags)
+                callbackList(availableTags)
                 },
                 failure: function( collection, response, options) {
                     $('#content').html("An error has occured.");                    
