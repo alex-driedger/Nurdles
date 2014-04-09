@@ -62,6 +62,8 @@ define([
             var markers = new L.MarkerClusterGroup({
                 disableClusteringAtZoom: 12,
             });
+
+
                 var marker = L.marker([this.lat,this.lon], {
                     icon: L.mapbox.marker.icon({
                         'marker-color': "#3AF",
@@ -74,6 +76,8 @@ define([
                 marker.bindPopup(popupContent, {
                     closeButton: false,
                 })
+
+
 
             markers.addLayer(marker);
             for (i in this.collection.models) {
@@ -88,7 +92,6 @@ define([
                     color = "#E42217"
                 }
                 // Create markers
-                var title = this.collection.models[i].attributes.beachName
                 var marker = L.marker(new L.LatLng(this.collection.models[i].attributes.lat, this.collection.models[i].attributes.lon), {
                     icon: L.mapbox.marker.icon({
                         'marker-color': color,
@@ -98,15 +101,17 @@ define([
                         'url': "#info/" + [this.collection.models[i].attributes._id]
                     }),
                 });
-                marker.on("click",function(e)
-                {
-                    alert("CLICKED")
-                    console.log(e)
-                })
+
+                var popupContent = '<a style="text-align: center; font-size: 22px; display: block;" href="#info/' + this.collection.models[i].attributes._id + '">' + this.collection.models[i].attributes.beachName + '</a>';
+                marker.bindPopup(popupContent, {
+                    closeButton: false
+                });
 
 
                 markers.addLayer(marker);
             }
+
+
             map.addLayer(markers);
             markers.on('click', function (a) {
                 map.panTo(a.layer.getLatLng())
@@ -129,11 +134,8 @@ define([
                 });
                 map.addLayer(markers);
         }
-        map.on("click", function(events)
-        {
-            alert(Math.round(events.latlng.lat)+"   ,   "+Math.round(events.latlng.lng))
-        })
         $('*').click(function(e) {
+            alert("CLICKED")
             console.log(e.target.className)
         });
         },
