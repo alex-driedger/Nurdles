@@ -182,10 +182,6 @@
             })
         },
         _bindEvents: function () {
-            this.on("click", function()
-                {
-                    alert("SUP")
-                })
             var t = this._map,
                 e = this.options.spiderfyOnMaxZoom,
                 i = this.options.showCoverageOnHover,
