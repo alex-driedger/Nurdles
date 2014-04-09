@@ -62,8 +62,6 @@ define([
             var markers = new L.MarkerClusterGroup({
                 disableClusteringAtZoom: 12,
             });
-
-
                 var marker = L.marker([this.lat,this.lon], {
                     icon: L.mapbox.marker.icon({
                         'marker-color': "#3AF",
@@ -76,8 +74,6 @@ define([
                 marker.bindPopup(popupContent, {
                     closeButton: false,
                 })
-
-
 
             markers.addLayer(marker);
             for (i in this.collection.models) {
@@ -92,6 +88,7 @@ define([
                     color = "#E42217"
                 }
                 // Create markers
+                var title = this.collection.models[i].attributes.beachName
                 var marker = L.marker(new L.LatLng(this.collection.models[i].attributes.lat, this.collection.models[i].attributes.lon), {
                     icon: L.mapbox.marker.icon({
                         'marker-color': color,
@@ -110,8 +107,6 @@ define([
 
                 markers.addLayer(marker);
             }
-
-
             map.addLayer(markers);
             markers.on('click', function (a) {
                 map.panTo(a.layer.getLatLng())
@@ -134,10 +129,6 @@ define([
                 });
                 map.addLayer(markers);
         }
-        $('*').click(function(e) {
-            console.log(e.target.className)
-        });
-        console.log(markers)
         },
         initialize: function (options) {
             this.lat = options.lat
