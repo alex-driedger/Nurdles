@@ -2014,6 +2014,7 @@
                         })
                          if (this._popup != undefined && this._popup._isOpen == false)
                         {
+                            alert(this._popup._isOpen)
                                 console.log(this.openPopup())
                         }
                     },
