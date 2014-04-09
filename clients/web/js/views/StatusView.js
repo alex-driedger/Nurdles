@@ -62,39 +62,6 @@ define([
             var markers = new L.MarkerClusterGroup({
                 disableClusteringAtZoom: 12,
             });
-
-            for (i in this.collection.models) {
-                // Set color of marker
-                var color = "#3AF"
-                var status = this.collection.models[i].attributes.lastRating
-                if (status == "Clean") {
-                    color = "#347C17"
-                } else if (status == "Moderately Clean") {
-                    color = "#FBB917"
-                } else if (status == "Dirty") {
-                    color = "#E42217"
-                }
-
-                // Create markers
-                var title = this.collection.models[i].attributes.beachName
-                var marker = L.marker(new L.LatLng(this.collection.models[i].attributes.lat, this.collection.models[i].attributes.lon), {
-                    icon: L.mapbox.marker.icon({
-                        'marker-color': color,
-                        'marker-symbol': 'circle',
-                        'custom-marker-size': [window.innerWidth/9,window.innerHeight/3],
-                        'title': this.collection.models[i].attributes.beachName,
-                        'url': "#info/" + [this.collection.models[i].attributes._id]
-                    }),
-                });
-
-                var popupContent = '<a style="text-align: center; font-size: 22px; display: block;" href="#info/' + this.collection.models[i].attributes._id + '">' + this.collection.models[i].attributes.beachName + '</a>';
-                marker.bindPopup(popupContent, {
-                    closeButton: false
-                });
-
-
-                markers.addLayer(marker);
-            }
                 var marker = L.marker([this.lat,this.lon], {
                     icon: L.mapbox.marker.icon({
                         'marker-color': "#3AF",
@@ -107,7 +74,39 @@ define([
                 marker.bindPopup(popupContent, {
                     closeButton: false,
                 })
+
             markers.addLayer(marker);
+            for (i in this.collection.models) {
+                // Set color of marker
+                var color = "#3AF"
+                var status = this.collection.models[i].attributes.lastRating
+                if (status == "Clean") {
+                    color = "#347C17"
+                } else if (status == "Moderately Clean") {
+                    color = "#FBB917"
+                } else if (status == "Dirty") {
+                    color = "#E42217"
+                }
+                // Create markers
+                var title = this.collection.models[i].attributes.beachName
+                var marker = L.marker(new L.LatLng(this.collection.models[i].attributes.lat, this.collection.models[i].attributes.lon), {
+                    icon: L.mapbox.marker.icon({
+                        'marker-color': color,
+                        'marker-symbol': 'circle',
+                        'custom-marker-size': [window.innerWidth/9,window.innerHeight/3],
+                        'title': this.collection.models[i].attributes.beachName,
+                        'url': "#info/" + [this.collection.models[i].attributes._id]
+                    }),
+                });
+                marker.on("click",function(e)
+                {
+                    alert("CLICKED")
+                    console.log(e)
+                })
+
+
+                markers.addLayer(marker);
+            }
             map.addLayer(markers);
             markers.on('click', function (a) {
                 map.panTo(a.layer.getLatLng())
@@ -134,6 +133,9 @@ define([
         {
             alert(Math.round(events.latlng.lat)+"   ,   "+Math.round(events.latlng.lng))
         })
+        $('*').click(function(e) {
+            console.log(e.target.className)
+        });
         },
         initialize: function (options) {
             this.lat = options.lat
