@@ -138,8 +138,9 @@ define([
         {
             alert("MARKER "+Math.round(events.latlng.lat)+"   ,   "+Math.round(events.latlng.lng))
         })
-        $(document).click(function() {
+        $('*').click(function(e) {
  alert("DOCUMENT WAS CLICKED")
+ console.log(e.target)
 });
         },
         initialize: function (options) {
