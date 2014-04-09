@@ -134,13 +134,6 @@ define([
         {
             alert(Math.round(events.latlng.lat)+"   ,   "+Math.round(events.latlng.lng))
         })
-        markers.on("click", function(events)
-        {
-            alert("MARKER "+Math.round(events.latlng.lat)+"   ,   "+Math.round(events.latlng.lng))
-        })
-        $('*').click(function(e) {
-alert(e.target.attributes.class.nodeValue)
-});
         },
         initialize: function (options) {
             this.lat = options.lat

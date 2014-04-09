@@ -2201,6 +2201,7 @@
                         return this._popup && this._popup._close(), this
                     },
                     togglePopup: function () {
+                        alert("CLICKED")
                         return this._popup && (this._popup._isOpen ? this.closePopup() : this.openPopup()), this
                     },
                     bindPopup: function (t, e) {
