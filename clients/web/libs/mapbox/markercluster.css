@@ -49,20 +49,19 @@
 
 .marker-cluster {
 	background-clip: padding-box;
-	border-radius: 20px;
+	border-radius: 50%;
 	}
 .marker-cluster div {
-	width: 30px;
-	height: 30px;
-	margin-left: 5px;
-	margin-top: 5px;
-
+	width: 15vh;
+	height: 15vh;
+	margin-left: 2.5vh;
+	margin-top: 2.5vh;
 	text-align: center;
-	border-radius: 15px;
-	font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+	border-radius: 50%;
+	font: 6vh "Helvetica Neue", Arial, Helvetica, sans-serif;
 	}
 .marker-cluster span {
-	line-height: 30px;
+	line-height: 15vh;
 	}
 Window size: 1391 x 955
 Viewport size: 1391 x 883

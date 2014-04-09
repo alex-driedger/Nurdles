@@ -60,7 +60,7 @@ define([
             map.tileLayer.options.noWrap = true
             // This unclusters everything at zoom level 1
             var markers = new L.MarkerClusterGroup({
-                disableClusteringAtZoom: 12
+                disableClusteringAtZoom: 12,
             });
 
             for (i in this.collection.models) {
@@ -81,7 +81,7 @@ define([
                     icon: L.mapbox.marker.icon({
                         'marker-color': color,
                         'marker-symbol': 'circle',
-                        'marker-size': 'large',
+                        'custom-marker-size': [window.innerWidth/10,window.innerHeight/4],
                         'title': this.collection.models[i].attributes.beachName,
                         'url': "#info/" + [this.collection.models[i].attributes._id]
                     }),
@@ -99,6 +99,7 @@ define([
                     icon: L.mapbox.marker.icon({
                         'marker-color': "#3AF",
                         'marker-symbol': 'building',
+                        'custom-marker-size': [window.innerWidth/10,window.innerHeight/4]
                     }),
                 });
 
