@@ -37,14 +37,15 @@ define([
         },
         renderMap: function () {
             document.getElementById("map").style.top = $("#header").height();
-
+            that = this
+            console.log(this.lat)
             var map = L.mapbox.map('map', 'examples.map-9ijuk24y', {
                 // Even though it says min zoom, this is really the max zoom-out. 0 being the highest.
                 minZoom: 1,
                 // Base location
-                center: [45,-83],
+                center: [that.lat, that.lon],
                 // Base zoom
-                zoom: 5,
+                zoom: 12,
                 // No zoom buttons
                 zoomControl: false,
                 // Make it easier to tap 
@@ -64,7 +65,7 @@ define([
 
             for (i in this.collection.models) {
                 // Set color of marker
-                var color = "#39f"
+                var color = "#3AF"
                 var status = this.collection.models[i].attributes.lastRating
                 if (status == "Clean") {
                     color = "#347C17"
@@ -94,6 +95,19 @@ define([
 
                 markers.addLayer(marker);
             }
+                var marker = L.marker([this.lat,this.lon], {
+                    icon: L.mapbox.marker.icon({
+                        'marker-color': "#3AF",
+                        'marker-symbol': 'building',
+                    }),
+                });
+
+                var popupContent = '<p style="text-align: center; font-size: 22px;">You Are Here</p>';
+                marker.bindPopup(popupContent, {
+                    closeButton: false,
+                })
+
+            markers.addLayer(marker);
             map.addLayer(markers);
             markers.on('click', function (a) {
                 map.panTo(a.layer.getLatLng())
@@ -108,8 +122,12 @@ define([
             })
             function searchByName(lat, lon) {
                 map.removeLayer(markers);
-                map.setZoom(12)
+                map.setZoom(12, false)
                 map.panTo([lat, lon])
+
+                map.on('zoomend', function() {
+                   map.panTo([lat, lon])
+                });
                 map.addLayer(markers);
         }
 
