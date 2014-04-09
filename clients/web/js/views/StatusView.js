@@ -99,7 +99,7 @@ define([
                     icon: L.mapbox.marker.icon({
                         'marker-color': "#3AF",
                         'marker-symbol': 'building',
-                        'custom-marker-size': [window.innerWidth/10,window.innerHeight/4]
+                        'custom-marker-size': [window.innerWidth/9,window.innerHeight/3]
                     }),
                 });
 
@@ -138,7 +138,9 @@ define([
         {
             alert("MARKER "+Math.round(events.latlng.lat)+"   ,   "+Math.round(events.latlng.lng))
         })
-
+        $(document).click(function() {
+ alert("DOCUMENT WAS CLICKED")
+});
         },
         initialize: function (options) {
             this.lat = options.lat

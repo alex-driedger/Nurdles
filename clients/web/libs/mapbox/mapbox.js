@@ -6374,18 +6374,21 @@
                 }, i = t["marker-size"] || "medium" ,
                     n = t["marker-symbol"] ? "-" + t["marker-symbol"] : "",
                     o = (t["marker-color"] || "7e7e7e").replace("#", "");
-                                        if (t["custom-marker-size"] != undefined)
+                     if (t["custom-marker-size"] != undefined)
                     {
-                        var iconAnchor = [t["custom-marker-size"][0] / 2, t["custom-marker-size"][1] / 2]
+                        var iconAnchor = [t["custom-marker-size"][0] / 2, t["custom-marker-size"][1] /2]
+                        var popupAnchor = [0, -t["custom-marker-size"][1]/2]
                     } else
                     {
                         var iconAnchor = [e[i][0] / 2, e[i][1] / 2]
+                        var popupAnchor = [0, -e[i][1] / 2]
                     }
+
                 return L.icon({
                     iconUrl: s.base() + "marker/pin-" + i.charAt(0) + n + "+" + o + (L.Browser.retina ? "@2x" : "") + ".png",
                     iconSize: t["custom-marker-size"] || e[i],
                     iconAnchor: iconAnchor,
-                    popupAnchor: [0, -e[i][1] / 2]
+                    popupAnchor: popupAnchor
                 })
             }
 
