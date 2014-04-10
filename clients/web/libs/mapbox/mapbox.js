@@ -2008,14 +2008,12 @@
                     },
                     _onMouseClick: function (t) {
                         var e = this.dragging && this.dragging.moved();
-                         if (this._popup != undefined && this._popup._isOpen == false)
+                         if (this._popup != undefined)
                         {
-                            alert("FIRED")
                             s.DomEvent.stopPropagation(t)
-                            console.log(this.openPopup())
+                            this.openPopup()
+                            
                         }
-                        alert((this.dragging && this.dragging._enabled || !this._map.dragging || !this._map.dragging.moved()))
-
                         if (this.unspiderfy != undefined)
                         {
                         this.fire(t.type, {
@@ -2023,7 +2021,6 @@
                             latlng: this._latlng
                         })
                             s.DomEvent.stopPropagation(t), e
-                            console.log("CLUSTER")
                         }
                     },
                     _onKeyPress: function (t) {
