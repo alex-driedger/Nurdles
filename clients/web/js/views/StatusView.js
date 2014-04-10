@@ -58,9 +58,7 @@ define([
             // Prevent having a bunch of maps together
             map.tileLayer.options.noWrap = true
             // This unclusters everything at zoom level 1
-            var markers = new L.MarkerClusterGroup({
-                disableClusteringAtZoom: 15
-            });
+            var markers = new L.MarkerClusterGroup();
                 var marker = L.marker([this.lat,this.lon], {
                     icon: L.mapbox.marker.icon({
                         'marker-color': "#3AF",
