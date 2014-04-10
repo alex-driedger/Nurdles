@@ -10,18 +10,21 @@
   </div>
 <a type="button" class="btn btn-surveyButtons top_button" style="margin-top: -5px;" id="a">Create Admin</a>
 <div class="block" id="block_a" >
+    <div class="blockGap"/>
         <input type="text" id="username" class="form-control FT" placeholder="Email"/>
         <input type="password" id="password" class="form-control FT" placeholder="Password"/>
         <button id="createAdmin" class="btn btn-primary FT">Create Administrator</button>
  </div>
 <a type="button" class="btn btn-surveyButtons top_button" id="b">Change Administrator Privelages</a>
 <div class="block" id="block_b" >
+    <div class="blockGap"/>
         <input type="text" id="username2" class="form-control FT" placeholder="Email"/>
         <button id="upgradeToAdmin" class="btn btn-primary twoButtons changeAdmin">Add Admin Privelages</button><button id="removeAdmin" class="btn btn-primary twoButtons changeAdmin" >Remove Admin Privelages</button>
         <div style="height: 5%"/>
  </div>
  <a type="button" class="btn btn-surveyButtons top_button" id="c">Add Beaches</a>
 <div class="block" id="block_c" >
+    <div class="blockGap"/>
         <input type="text" id="beachName" class="form-control FT" placeholder="Beach Name"/>
         <input type="text" id="city" class="form-control FT" placeholder="City"/>
         <input type="text" id="state" class="form-control FT" placeholder="State"/>
@@ -33,6 +36,7 @@
 </div>
  <a type="button" class="btn btn-surveyButtons top_button" id="d">Remove/Edit Beaches</a>
 <div class="block" id="block_d" style="border-top: 5px black solid;" >
+    <div class="blockGap"/>
 <%
 _.each(data, function( model ) {
     if (model.attributes != undefined)
@@ -71,6 +75,7 @@ _.each(data, function( model ) {
 </div>
  <a type="button" class="btn btn-surveyButtons top_button" id="e">Import Beaches</a>
 <div class="block" id="block_e" >
+    <div class="blockGap"/>
 	<p style="width: 90%; text-align: center; font-size: 25px; margin-left: 5%;">Importing takes data from the excel file and updates any beaches with the same latitude and longitude in the database, with the beaches in the excel file. These updates occur based on latitude and longitude, and because of this, it is impossible to update the latitude and longitude of a beach using import (Has to be manually deleted then you can call import or create it manually). Import creates any beaches that are in the excel file but not in the db with the same lat/long</p>
 	<button id="import" class="btn btn-primary FT">Import Beaches</button>
 </div>

@@ -1099,8 +1099,12 @@
                     setView: function (t, e) {
                         return e = e === n ? this.getZoom() : e, this._resetView(s.latLng(t), this._limitZoom(e)), this
                     },
-                    setZoom: function (t, e) {
-                        return this._loaded ? this.setView(this.getCenter(), t, {
+                    setZoom: function (t, e, z) {
+                        if (z == undefined)
+                        {
+                            z = this.getCenter();
+                        }
+                        return this._loaded ? this.setView(z, t, {
                             zoom: e
                         }) : (this._zoom = this._limitZoom(t), this)
                     },

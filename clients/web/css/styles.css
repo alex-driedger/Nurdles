@@ -76,9 +76,9 @@ MAP
 #map {
 position:absolute; 
 bottom:0;
-margin-top: 9px;
 width: 100%;
 background-color: black;
+border: 5px solid black;
 }
 #searchMap {
     position:absolute;
@@ -134,8 +134,9 @@ home
   text-align: left;
 }
 .back:hover {
-  background-color: #428bca;
   color: white;
+  box-shadow: inset 0px 0px 5px black;
+  background-color: rgb(50,50,50);
 }
 .glyphicon-th
 {
@@ -154,7 +155,7 @@ background-color: rgb(75,75,75);
 .glyphicon-th:active
 {
   color: white;
-  background-color: #428bca;
+  background-color: rgb(50,50,50);
 }
 #titleBlock {
   border-style: solid;
@@ -168,8 +169,8 @@ background-color: rgb(75,75,75);
 .btn-homepageButtons:focus,
 .btn-homepageButtons:active
 {
-  color: white;
-  background-color: #428bca;
+  background-color: rgb(230,230,230);
+  box-shadow: inset 0px 0px 5px black;
 }
 .btn-homepageButtons {
   border-radius: 0%;
@@ -239,6 +240,7 @@ Report Debris
 */
 a:hover {
  cursor:pointer;
+ text-decoration: none;
 }
 
 /*
@@ -313,7 +315,8 @@ Survey Beach
   line-height: 44px;
 }
 .area:hover,.weight:hover {
-  background-color: #bbb;
+   box-shadow: inset 0px 0px 5px black;
+  background-color: rgb(50,50,50);
 }
 .btn-surveyButtons {
   line-height: 410%;
@@ -323,6 +326,10 @@ Survey Beach
   border-width: 5px;
   border-color: black;
   color:black;
+}
+.btn-surveyButtons:hover {
+  box-shadow: inset 0px 0px 5px black;
+  background-color: rgb(235,235,235)
 }
 .top_button {
   border-bottom-width: 0;
@@ -406,7 +413,6 @@ Survey Beach
   display: inline-block;
   border-radius: 0%;
   min-height: 44px;
-  font-size: 17px;
   width: 30%;
   margin-top: 10px;
   margin-left: 10px;
@@ -434,6 +440,11 @@ Survey Beach
   padding: 0 20px;
   font-size: 300%;
 }
+.dropdown-menu > li > a:hover {
+  background-color: rgb(50,50,50);
+  box-shadow: inset 0 0 10px black;
+}
+
 /*
 ************************************************************
 Beach Info
@@ -456,7 +467,9 @@ h5 {
   text-align: left;
 }
 .btn-infoButtons:hover {
-  color: #0971BC;
+  color: #428bca;
+  box-shadow: inset 0px 0px 5px black;
+  background-color: rgb(235,235,235);
 }
 .surveyLink {
   border-radius: 0%;
@@ -479,4 +492,8 @@ h5 {
   height: 10%;
   color: black;
   display: inline-block;
+}
+.btn-view:hover {
+  box-shadow: inset 0px 0px 5px black;
+  background-color: rgb(235,235,235);
 }

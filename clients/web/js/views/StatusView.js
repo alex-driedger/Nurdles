@@ -58,12 +58,14 @@ define([
             // Prevent having a bunch of maps together
             map.tileLayer.options.noWrap = true
             // This unclusters everything at zoom level 1
-            var markers = new L.MarkerClusterGroup();
+            var markers = new L.MarkerClusterGroup({
+                disableClusteringAtZoom: 15
+            });
                 var marker = L.marker([this.lat,this.lon], {
                     icon: L.mapbox.marker.icon({
                         'marker-color': "#3AF",
                         'marker-symbol': 'building',
-                        'custom-marker-size': [window.innerWidth/9,window.innerHeight/3]
+                        'custom-marker-size': [window.innerWidth/9,window.innerHeight/4.5]
                     }),
                 });
 
@@ -91,7 +93,7 @@ define([
                     icon: L.mapbox.marker.icon({
                         'marker-color': color,
                         'marker-symbol': 'circle',
-                        'custom-marker-size': [window.innerWidth/9,window.innerHeight/3],
+                        'custom-marker-size': [window.innerWidth/9,window.innerHeight/4.5],
                         'title': this.collection.models[i].attributes.beachName,
                         'url': "#info/" + [this.collection.models[i].attributes._id]
                     }),
@@ -118,12 +120,7 @@ define([
             })
             function searchByName(lat, lon) {
                 map.removeLayer(markers);
-                map.setZoom(12, false)
-                map.panTo([lat, lon])
-
-                map.on('zoomend', function() {
-                   map.panTo([lat, lon])
-                });
+                map.setZoom(15, true, new L.latLng(lat,lon))
                 map.addLayer(markers);
         }
         },
@@ -151,8 +148,6 @@ define([
                 default:
                     attributes[i].lastRating = "Unknown"
                 }
-                d = new Date(attributes[i].lastUpdated)
-                attributes[i].lastUpdated = d.getMonth()+ 1 + "-" + d.getDate() + "-" + d.getFullYear()
             }
             this.attributes = attributes
             this.$el.html(_.template(statusTemplate, {

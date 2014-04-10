@@ -22,7 +22,7 @@ define([
                 beaches.fetch( {
                     success: function( collection, response, options) {
                         var statusView = new StatusView({ collection: collection, lat: position.coords.latitude, lon:  position.coords.longitude});
-                        $('#content').html(statusView.el);                
+                        $('#content').html(statusView.el);
                     },
                     failure: function( collection, response, options) {
                         $('#content').html("An error has occured.");                    
