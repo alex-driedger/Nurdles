@@ -7,10 +7,6 @@
 _.each(attributes, function( attribute ) {
 %>
 <a type="button" class="btn btn-infoButtons" style="font-size: 5%;" href="#info/<%= attribute._id %>">
-    <%= attribute.beachName %>
-    <span style="color: black; font-size: 75%; display: block; margin: 0;"><%= attribute.city %>, <%= attribute.state %>, <%= attribute.country %></span>
-    <span style="color: black; font-size: 75%; display: block; margin: 20px 0;"> Status - <%= attribute.lastRating %> </span>
-    <span style="color: black; font-size: 75%; display: block; margin: 0;"> Last Updated - <%= new Date(attribute.lastUpdated) %> </span>
 </a>
 <%
 });
