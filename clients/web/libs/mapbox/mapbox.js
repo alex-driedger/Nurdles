@@ -2014,6 +2014,7 @@
                             this.openPopup()
                             
                         }
+                        alert(e)
                         if (this.unspiderfy != undefined)
                         {
                         this.fire(t.type, {
