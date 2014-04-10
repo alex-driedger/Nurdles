@@ -2011,12 +2011,10 @@
                         }
                     },
                     _onMouseClick: function (t) {
-                        var e = this.dragging && this.dragging.moved();
                          if (this._popup != undefined)
                         {
                             s.DomEvent.stopPropagation(t)
                             this.openPopup()
-                            
                         }
                         if (this.unspiderfy != undefined)
                         {
@@ -2024,7 +2022,7 @@
                             originalEvent: t,
                             latlng: this._latlng
                         })
-                            s.DomEvent.stopPropagation(t), e
+                            s.DomEvent.stopPropagation(t)
                         }
                     },
                     _onKeyPress: function (t) {
