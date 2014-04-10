@@ -143,6 +143,9 @@ define([
           beachModel.save(null, {
                     success: function (res) {
                         alert(res.attributes.message)
+                        console.log(that.collection.models)
+                        console.log(res.attributes.data)
+                        that.collection.models = res.attributes.data
                         that.render();
                     },
                     error: function (err, err2, err3) {
@@ -234,6 +237,7 @@ define([
         },
         
         render: function () {
+            console.log(this.collection.models)
             this.$el.html(_.template(adminTemplate,{data: this.collection.models}));
             return this;
         },

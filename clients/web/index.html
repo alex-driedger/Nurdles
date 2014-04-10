@@ -25,7 +25,8 @@ function validate(event) {
 // This is this keycode of the key that was pressed
   var key = event.keyCode;
   // 48-57 is the keycode for 0-9 (for this keyboard atleast)
-  if (!(key >= 48 && key <= 57 || key == 46))
+  console.log(key)
+  if (!(key >= 48 && key <= 57 || key == 46 || key == 45))
   {
     // If the key is not between 48-57 prevent the default action (Default action is inputting the character)
     event.preventDefault()

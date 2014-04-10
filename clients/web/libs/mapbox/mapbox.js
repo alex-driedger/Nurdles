@@ -3165,8 +3165,6 @@
                         return e
                     },
                     _filterClick: function (t, e) {
-                        alert(n && n > 100 && 1e3 > n || t.target._simulatedClick && !t._simulated ? (s.DomEvent.stop(t), void 0) : (s.DomEvent._lastClick = i, e(t))
-)
                         var i = t.timeStamp || t.originalEvent.timeStamp,
                             n = s.DomEvent._lastClick && i - s.DomEvent._lastClick;
                         return n && n > 100 && 1e3 > n || t.target._simulatedClick && !t._simulated ? (s.DomEvent.stop(t), void 0) : (s.DomEvent._lastClick = i, e(t))

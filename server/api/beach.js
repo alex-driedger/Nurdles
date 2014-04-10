@@ -115,7 +115,11 @@ Beach.find(function(err,data)
                                 numCreated ++;
                                 if (cur == total)
                                 {
-                                    res.send({message: numCreated + " beaches have been created. " + numUpdated + " beaches have been updated."})
+                                    Beach.find(function(err, data)
+                                    {
+                                        res.send({message: numCreated + " beaches have been created. " + numUpdated + " beaches have been updated.", data: data})
+
+                                    })
                                 }
                             } else {
                                 console.log(err)
@@ -132,7 +136,10 @@ Beach.find(function(err,data)
                         numUpdated++;
                         if (cur == total)
                         {
-                            res.send({message: numCreated + " beaches have been created. Up to " + numUpdated + " beaches have been updated."})
+                            Beach.find(function(err, data)
+                            {
+                                res.send({message: numCreated + " beaches have been created. " + numUpdated + " beaches have been updated.", data: data})
+                            })
                         }
                     } else {
                         console.log(err)
@@ -265,7 +272,6 @@ Beach.find(function(err,data)
     retrieveAll: function( req, res ) {
         Beach.find( function ( err, beachCollection ) {
             if( null === err ) {
-
                 res.send(beachCollection)
             } else {
                 res.send( 500, err );

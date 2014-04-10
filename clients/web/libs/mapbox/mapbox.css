@@ -394,7 +394,6 @@
 .map-tooltip .close,
 .mapbox-icon {
   opacity: .75;
-  background-image:url(./images/icons-000000.png);
   background-repeat:no-repeat;
   background-size:26px 260px;
   }

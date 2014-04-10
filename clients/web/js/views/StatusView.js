@@ -38,7 +38,6 @@ define([
         renderMap: function () {
             document.getElementById("map").style.top = $("#header").height();
             that = this
-            console.log(this.lat)
             var map = L.mapbox.map('map', 'examples.map-9ijuk24y', {
                 // Even though it says min zoom, this is really the max zoom-out. 0 being the highest.
                 minZoom: 1,
@@ -59,9 +58,7 @@ define([
             // Prevent having a bunch of maps together
             map.tileLayer.options.noWrap = true
             // This unclusters everything at zoom level 1
-            var markers = new L.MarkerClusterGroup({
-                disableClusteringAtZoom: 12,
-            });
+            var markers = new L.MarkerClusterGroup();
                 var marker = L.marker([this.lat,this.lon], {
                     icon: L.mapbox.marker.icon({
                         'marker-color': "#3AF",
@@ -70,7 +67,7 @@ define([
                     }),
                 });
 
-                var popupContent = '<p style="text-align: center; font-size: 22px;">You Are Here</p>';
+                var popupContent = '<p style="text-align: center; font-size: 25px;">You Are Here</p>';
                 marker.bindPopup(popupContent, {
                     closeButton: false,
                 })
@@ -99,8 +96,7 @@ define([
                         'url': "#info/" + [this.collection.models[i].attributes._id]
                     }),
                 });
-
-                var popupContent = '<a style="text-align: center; font-size: 22px; display: block;" href="#info/' + this.collection.models[i].attributes._id + '">' + this.collection.models[i].attributes.beachName + '</a>';
+                var popupContent = '<a style="text-align: center; font-size: 25px; display: block;" href="#info/' + this.collection.models[i].attributes._id + '">' + this.collection.models[i].attributes.beachName + '</a>';
                 marker.bindPopup(popupContent, {
                     closeButton: false
                 });
