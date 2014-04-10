@@ -70,7 +70,8 @@ define([
                         grooming: grooming,
                         lat: lat,
                         lon: lon,
-                        created: new Date()
+                        created: new Date(),
+                        lastUpdated: new Date()
                 })
                 beachModel.save(null, {
                     success: function (res) {
@@ -117,7 +118,8 @@ define([
                     grooming: grooming,
                     lat: lat,
                     lon: lon,
-                    created: new Date()
+                    created: new Date(),
+                    lastUpdated: new Date()
                     });
                 beachModel.save(null, {
                     success: function (res) {

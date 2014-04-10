@@ -151,6 +151,8 @@ define([
                 default:
                     attributes[i].lastRating = "Unknown"
                 }
+                d = new Date(attributes[i].lastUpdated)
+                attributes[i].lastUpdated = d.getMonth()+ 1 + "-" + d.getDate() + "-" + d.getFullYear()
             }
             this.attributes = attributes
             this.$el.html(_.template(statusTemplate, {
