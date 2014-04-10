@@ -2,3 +2,17 @@
     <a type="button" id="back" class="btn back" style="width: 80%; display: inline-block; border:none; border-bottom: 5px solid black;" id="Name" href="#"><span class="glyphicon glyphicon-chevron-left"></span><span> Beaches </span></a><a id="search" type="button" class="btn back" style="width: 20%; text-align: center; border-top: none; border-right: none;" href="#search">&nbsp;<span class="glyphicon glyphicon-search"></span>&nbsp;</a>
     <a id="listButton" type="button" class="btn btn-view disabled" >List</a><a id="mapButton" type="button" class="btn btn-view">Map</a>
 </div>
+<div id="view">
+<%
+_.each(attributes, function( attribute ) {
+%>
+<a type="button" class="btn btn-infoButtons" style="font-size: 5%;" href="#info/<%= attribute._id %>">
+    <%= attribute.beachName %>
+    <span style="color: black; font-size: 75%; display: block; margin: 0;"><%= attribute.city %>, <%= attribute.state %>, <%= attribute.country %></span>
+    <span style="color: black; font-size: 75%; display: block; margin: 20px 0;"> Status - <%= attribute.lastRating %> </span>
+    <span style="color: black; font-size: 75%; display: block; margin: 0;"> Last Updated - <%= new Date(attribute.lastUpdated) %> </span>
+</a>
+<%
+});
+%>
+</div>
