@@ -2014,13 +2014,11 @@
                             s.DomEvent.stopPropagation(t)
                             console.log(this.openPopup())
                         }
-                        /*
-                        (this.dragging && this.dragging._enabled || !this._map.dragging || !this._map.dragging.moved())
-                        */
+                        alert((this.dragging && this.dragging._enabled || !this._map.dragging || !this._map.dragging.moved()))
+
                         if (this.unspiderfy != undefined)
                         {
-                            alert((this.dragging && this.dragging._enabled || !this._map.dragging || !this._map.dragging.moved()))
-                            this.fire(t.type, {
+                        this.fire(t.type, {
                             originalEvent: t,
                             latlng: this._latlng
                         })
