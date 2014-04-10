@@ -1368,6 +1368,7 @@
                         }, this, !1, this._container)
                     },
                     _onMouseClick: function (t) {
+                        alert("9")
                         !this._loaded || !t._simulated && (this.dragging && this.dragging.moved() || this.boxZoom && this.boxZoom.moved()) || s.DomEvent._skipped(t) || (this.fire("preclick"), this._fireMouseEvent(t))
                     },
                     _fireMouseEvent: function (t) {
@@ -2007,6 +2008,7 @@
                         }
                     },
                     _onMouseClick: function (t) {
+                        alert("10")
                         var e = this.dragging && this.dragging.moved();
                          if (this._popup != undefined)
                         {
@@ -2433,6 +2435,7 @@
                         }
                     },
                     _onMouseClick: function (t) {
+                        alert("TEST 1")
                         this._map.dragging && this._map.dragging.moved() || this._fireMouseEvent(t)
                     },
                     _fireMouseEvent: function (t) {
@@ -2596,6 +2599,7 @@
                         this.options.clickable && (this._map.on("mousemove", this._onMouseMove, this), this._map.on("click", this._onClick, this))
                     },
                     _onClick: function (t) {
+                        alert("2")
                         this._containsPoint(t.layerPoint) && this.fire("click", t)
                     },
                     _onMouseMove: function (t) {
@@ -3166,6 +3170,7 @@
                         return e
                     },
                     _filterClick: function (t, e) {
+                        alert("3")
                         var i = t.timeStamp || t.originalEvent.timeStamp,
                             n = s.DomEvent._lastClick && i - s.DomEvent._lastClick;
                         return n && n > 100 && 1e3 > n || t.target._simulatedClick && !t._simulated ? (s.DomEvent.stop(t), void 0) : (s.DomEvent._lastClick = i, e(t))
@@ -3326,6 +3331,7 @@
                         this._map.off("dblclick", this._onDoubleClick, this)
                     },
                     _onDoubleClick: function (t) {
+                        alert("4")
                         var e = this._map,
                             i = e.getZoom() + (t.originalEvent.shiftKey ? -1 : 1);
                         "center" === e.options.doubleClickZoom ? e.setZoom(i) : e.setZoomAround(t.containerPoint, i)
@@ -3982,6 +3988,7 @@
                         return r.appendChild(n), n
                     },
                     _onInputClick: function () {
+                        alert("5")
                         var t, e, i, n = this._form.getElementsByTagName("input"),
                             o = n.length;
                         for (this._handlingClick = !0, t = 0; o > t; t++) e = n[t], i = this._layers[e.layerId], e.checked && !this._map.hasLayer(i.layer) ? this._map.addLayer(i.layer) : !e.checked && this._map.hasLayer(i.layer) && this._map.removeLayer(i.layer);
@@ -6004,6 +6011,7 @@
                         window.top.location.href = t
                     },
                     _click: function (t) {
+                        alert("6")
                         var e = this._template("location", t.data);
                         if (this.options.location && e && 0 === e.search(/^https?:/)) return this._navigateTo(this._template("location", t.data));
                         if (this.options.pinnable) {
@@ -6100,6 +6108,7 @@
                         }
                     },
                     _click: function (t) {
+                        alert("7")
                         this.getData(t.latlng, L.bind(function (e) {
                             this.fire("click", {
                                 latLng: t.latlng,
@@ -6473,6 +6482,7 @@
                         return this._sharing ? (L.DomEvent.preventDefault(t), L.DomUtil.removeClass(this._modal, "active"), this._content.innerHTML = "", this._sharing = null, void 0) : void 0
                     },
                     _shareClick: function (t) {
+                        alert("8")
                         if (L.DomEvent.stop(t), this._sharing) return this._clickOut(t);
                         var e = this._tilejson || this._map._tilejson || {}, i = encodeURIComponent(this.options.url || e.webpage || window.location),
                             n = encodeURIComponent(e.name),
