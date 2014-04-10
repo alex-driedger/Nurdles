@@ -88,6 +88,7 @@ define([
                     color = "#E42217"
                 }
                 // Create markers
+                // FOR TOMORROW CHECK MAPBOX AND SEARCH FOR ALERT
                 var title = this.collection.models[i].attributes.beachName
                 var marker = L.marker(new L.LatLng(this.collection.models[i].attributes.lat, this.collection.models[i].attributes.lon), {
                     icon: L.mapbox.marker.icon({

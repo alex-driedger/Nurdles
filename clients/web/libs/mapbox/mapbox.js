@@ -2008,14 +2008,24 @@
                     },
                     _onMouseClick: function (t) {
                         var e = this.dragging && this.dragging.moved();
-                        (this.hasEventListeners(t.type) || e) && s.DomEvent.stopPropagation(t), e || (this.dragging && this.dragging._enabled || !this._map.dragging || !this._map.dragging.moved()) && this.fire(t.type, {
+                         if (this._popup != undefined && this._popup._isOpen == false)
+                        {
+                            alert("FIRED")
+                            s.DomEvent.stopPropagation(t)
+                            console.log(this.openPopup())
+                        }
+                        /*
+                        (this.dragging && this.dragging._enabled || !this._map.dragging || !this._map.dragging.moved())
+                        */
+                        if (this.unspiderfy != undefined)
+                        {
+                            alert((this.dragging && this.dragging._enabled || !this._map.dragging || !this._map.dragging.moved()))
+                            this.fire(t.type, {
                             originalEvent: t,
                             latlng: this._latlng
                         })
-                         if (this._popup != undefined && this._popup._isOpen == false)
-                        {
-                            alert(this._popup._isOpen)
-                                console.log(this.openPopup())
+                            s.DomEvent.stopPropagation(t), e
+                            console.log("CLUSTER")
                         }
                     },
                     _onKeyPress: function (t) {
