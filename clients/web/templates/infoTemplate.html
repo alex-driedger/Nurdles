@@ -32,7 +32,13 @@ while (document.getElementById("name").offsetWidth + document.getElementById("ch
 </div>
       <a type="button" class="btn btn-surveyButtons mid_button" id="b">Latest Survey Results</a>
 <div class="block" id="block_b" >
-          <% 
+          <%
+          if (surveysHTML.length == 0)
+            {
+               %>
+              <div class="surveyLink" style="color: black; text-align: center; margin-bottom: -5px;">No surveys have been submitted</div>
+              <%
+            }
     _.each( surveysHTML, function(survey) { %>
         <a type="button" href="#survey/<%=survey.id%>"  style="margin-bottom: -5px;" class="surveyLink btn"><%= survey.html%></a>
     <% });

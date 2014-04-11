@@ -20,6 +20,7 @@ define([
             document.getElementById("mapButton").className += " disabled";
             document.getElementById("search").style.display = "none";
             document.getElementById("back").style.width = "100%";
+            document.getElementById("mapButton").className = document.getElementById("mapButton").className.replace(" hover", "")
             document.getElementById("listButton").className = document.getElementById("listButton").className.replace(" disabled", "")
             $("#view").html(_.template(mapTemplate, {
                 attributes: this.attributes
@@ -30,6 +31,7 @@ define([
             document.getElementById("search").style.display = "inline-block";
             document.getElementById("back").style.width = "80%";
             document.getElementById("listButton").className += " disabled"
+            document.getElementById("listButton").className = document.getElementById("listButton").className.replace(" hover", "")
             document.getElementById("mapButton").className = document.getElementById("mapButton").className.replace(" disabled", "")
             $("#view").html(_.template(beachTemplate, {
                 attributes: this.attributes.slice(0, 50)

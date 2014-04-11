@@ -260,6 +260,7 @@ Survey Beach
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
   margin-left: -1px;
+  cursor: pointer;
 }
 .radioboxVisual {
   display: inline-block;
@@ -273,6 +274,7 @@ Survey Beach
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
   margin-left: -1px;
+  cursor: pointer;
 }
 .right {
   float: right;
@@ -292,6 +294,7 @@ Survey Beach
   border-bottom-left-radius: 5px;
   border-top-left-radius: 5px;
   color: white;
+  cursor: pointer;
 }
 .checkboxCheck {
   display: inline-block;
@@ -307,6 +310,7 @@ Survey Beach
   border-bottom-left-radius: 5px;
   border-top-left-radius: 5px;
   color: white;
+  cursor: pointer;
 }
 .area,.weight {
   display: block;
@@ -493,7 +497,7 @@ h5 {
   color: black;
   display: inline-block;
 }
-.btn-view:hover {
+.hover:hover {
   box-shadow: inset 0px 0px 5px black;
   background-color: rgb(235,235,235);
 }
