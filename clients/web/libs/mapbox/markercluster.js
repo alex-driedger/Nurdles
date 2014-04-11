@@ -156,7 +156,6 @@
                 for (var a = this._maxZoom; a >= 0 && s[a].removeObject(t, o.project(t.getLatLng(), a)); a--);
             var h, _ = t.__parent,
                 u = _._markers;
-                alert("18")
             for (this._arraySplice(u, t); _ && (_._childCount--, !(_._zoom < 0));) e && _._childCount <= 1 ? (h = _._markers[0] === t ? _._markers[1] : _._markers[0], n[_._zoom].removeObject(_, o.project(_._cLatLng, _._zoom)), s[_._zoom].addObject(h, o.project(h.getLatLng(), _._zoom)), this._arraySplice(_.__parent._childClusters, _), _.__parent._markers.push(h), h.__parent = _.__parent, _._icon && (r.removeLayer(_), i || r.addLayer(h))) : (_._recalculateBounds(), i && _._icon || _._updateIcon()), _ = _.__parent;
             delete t.__parent
         },
@@ -192,7 +191,6 @@
             (e || n) && this.on("clusterclick", this._zoomOrSpiderfy, this), i && (this.on("clustermouseover", this._showCoverage, this), this.on("clustermouseout", this._hideCoverage, this), t.on("zoomend", this._hideCoverage, this))
         },
         _zoomOrSpiderfy: function (t) {
-            alert("12")
             var e = this._map;
             e.getMaxZoom() === e.getZoom() ? this.options.spiderfyOnMaxZoom && t.layer.spiderfy() : this.options.zoomToBoundsOnClick && t.layer.zoomToBounds(), t.originalEvent && 13 === t.originalEvent.keyCode && e._container.focus()
         },
@@ -201,7 +199,6 @@
             this._inZoomAnimation || (this._shownPolygon && e.removeLayer(this._shownPolygon), t.layer.getChildCount() > 2 && t.layer !== this._spiderfied && (this._shownPolygon = new L.Polygon(t.layer.getConvexHull(), this.options.polygonOptions), e.addLayer(this._shownPolygon)))
         },
         _hideCoverage: function () {
-            alert("17")
             this._shownPolygon && (this._map.removeLayer(this._shownPolygon), this._shownPolygon = null)
         },
         _unbindEvents: function () {
@@ -209,7 +206,6 @@
                 e = this.options.showCoverageOnHover,
                 i = this.options.zoomToBoundsOnClick,
                 n = this._map;
-                alert("13")
             (t || i) && this.off("clusterclick", this._zoomOrSpiderfy, this), e && (this.off("clustermouseover", this._showCoverage, this), this.off("clustermouseout", this._hideCoverage, this), n.off("zoomend", this._hideCoverage, this))
         },
         _zoomEnd: function () {
@@ -441,6 +437,7 @@
             this._backupLatlng && (this.setLatLng(this._backupLatlng), delete this._backupLatlng)
         },
         _recursivelyRemoveChildrenFromMap: function (t, e, i) {
+            alert("REMOVE")
             var n, s;
             this._recursively(t, -1, e - 1, function (t) {
                 for (s = t._markers.length - 1; s >= 0; s--) n = t._markers[s], i && i.contains(n._latlng) || (t._group._featureGroup.removeLayer(n), n.setOpacity && n.setOpacity(1))
@@ -667,11 +664,9 @@
     }), L.MarkerClusterGroup.include({
         _spiderfied: null,
         _spiderfierOnAdd: function () {
-            alert("14")
             this._map.on("click", this._unspiderfyWrapper, this), this._map.options.zoomAnimation && this._map.on("zoomstart", this._unspiderfyZoomStart, this), this._map.on("zoomend", this._noanimationUnspiderfy, this), L.Path.SVG && !L.Browser.touch && this._map._initPathRoot()
         },
         _spiderfierOnRemove: function () {
-            alert("15")
             this._map.off("click", this._unspiderfyWrapper, this), this._map.off("zoomstart", this._unspiderfyZoomStart, this), this._map.off("zoomanim", this._unspiderfyZoomAnim, this), this._unspiderfy()
         },
         _unspiderfyZoomStart: function () {
@@ -681,7 +676,6 @@
             L.DomUtil.hasClass(this._map._mapPane, "leaflet-touching") || (this._map.off("zoomanim", this._unspiderfyZoomAnim, this), this._unspiderfy(t))
         },
         _unspiderfyWrapper: function () {
-            alert("16")
             this._unspiderfy()
         },
         _unspiderfy: function (t) {
