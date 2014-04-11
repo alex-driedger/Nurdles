@@ -437,7 +437,6 @@
             this._backupLatlng && (this.setLatLng(this._backupLatlng), delete this._backupLatlng)
         },
         _recursivelyRemoveChildrenFromMap: function (t, e, i) {
-            alert("REMOVE")
             var n, s;
             this._recursively(t, -1, e - 1, function (t) {
                 for (s = t._markers.length - 1; s >= 0; s--) n = t._markers[s], i && i.contains(n._latlng) || (t._group._featureGroup.removeLayer(n), n.setOpacity && n.setOpacity(1))
