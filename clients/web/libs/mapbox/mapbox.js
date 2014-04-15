@@ -598,17 +598,31 @@
                     fireEvent: function (t, e) {
                         // For clusters, this is always false
                         if (!this.hasEventListeners(t)) return this;
+
                         var i, n, o, r, l, h = s.Util.extend({}, e, {
                                 type: t,
                                 target: this
                             }),
                             u = this[a];
                         if (u[t])
-                            for (i = u[t].slice(), n = 0, o = i.length; o > n; n++) i[n].action.call(i[n].context, h);
+                        {
+                            for (i = u[t].slice(), n = 0, o = i.length; o > n; n++)
+                                {
+                                    if (t == "clusterclick")
+                                    {
+                                        alert("THIS WAS FIRED")
+                                        console.log(i[n].action)
+                                    }
+                                    i[n].action.call(i[n].context, h);
+                                }
+                        }
                         r = u[t + "_idx"];
                         for (l in r)
                             if (i = r[l].slice())
-                                for (n = 0, o = i.length; o > n; n++) i[n].action.call(i[n].context, h);
+                                for (n = 0, o = i.length; o > n; n++)
+                                    {
+                                        i[n].action.call(i[n].context, h);
+                                    }
                         return this
                     },
                     addOneTimeEventListener: function (t, e, i) {
