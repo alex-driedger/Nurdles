@@ -119,7 +119,7 @@ define([
     slider: function()
     {
       val = parseInt($("#slider").val()/1000)
-      console.log(val)
+      alert(val)
       if (val == 0)
       {
         document.getElementById("IMG").src="./images/BEACH_CLEAN.jpg"

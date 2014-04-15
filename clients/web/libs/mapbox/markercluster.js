@@ -167,7 +167,8 @@
             return !1
         },
         _propagateEvent: function (t) {
-            if (t.layer instanceof L.MarkerCluster) {
+            if (t.layer instanceof L.MarkerCluster && t.type == "click") {
+                alert(t.originalEvent && this._isOrIsParent(t.layer._icon, t.originalEvent.relatedTarget))
                 if (t.originalEvent && this._isOrIsParent(t.layer._icon, t.originalEvent.relatedTarget)) return;
                 t.type = "cluster" + t.type
             }
