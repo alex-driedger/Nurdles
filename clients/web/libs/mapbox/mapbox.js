@@ -1173,6 +1173,7 @@
                     },
                     removeLayer: function (t) {
                         var e = s.stamp(t);
+                        alert("REMOVE LAYER")
                         return this._layers[e] ? (this._loaded && t.onRemove(this), delete this._layers[e], this._loaded && this.fire("layerremove", {
                             layer: t
                         }), this._zoomBoundLayers[e] && (delete this._zoomBoundLayers[e], this._updateZoomLevels()), this.options.zoomAnimation && s.TileLayer && t instanceof s.TileLayer && (this._tileLayersNum--, this._tileLayersToLoad--, t.off("load", this._onTileLayerLoad, this)), this) : this
@@ -1959,7 +1960,6 @@
                         return t.addLayer(this), this
                     },
                     onRemove: function (t) {
-                        alert("REMOVE")
                         this.dragging && this.dragging.disable(), this._removeIcon(), this._removeShadow(), this.fire("remove"), t.off({
                             viewreset: this.update,
                             zoomanim: this._animateZoom
