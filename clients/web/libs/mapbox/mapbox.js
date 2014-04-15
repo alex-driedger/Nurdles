@@ -2037,15 +2037,19 @@
                             u = this[a];
                         if (u[t])
                             {
-                                alert("1")
                                 for (i = u[t].slice(), n = 0, o = i.length; o > n; n++) i[n].action.call(i[n].context, h);
                             }
                         r = u[t + "_idx"];
                         for (l in r)
                             if (i = r[l].slice())
                             {
-                                alert("2")
-                                for (n = 0, o = i.length; o > n; n++) i[n].action.call(i[n].context, h);
+                                for (n = 0, o = i.length; o > n; n++)
+                                {
+                                    alert(n)
+                                    console.log(i[n])
+                                    console.log(h)
+                                    i[n].action.call(i[n].context, h);
+                                }
                             }
                         return this
                     },
