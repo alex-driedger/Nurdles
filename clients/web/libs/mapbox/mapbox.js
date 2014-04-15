@@ -1959,7 +1959,8 @@
                         return t.addLayer(this), this
                     },
                     onRemove: function (t) {
-                        this.dragging && this.dragging.disable(), this._removeShadow(), this.fire("remove"), t.off({
+                        alert("REMOVE")
+                        this.dragging && this.dragging.disable(), this._removeIcon(), this._removeShadow(), this.fire("remove"), t.off({
                             viewreset: this.update,
                             zoomanim: this._animateZoom
                         }, this), this._map = null
@@ -1992,7 +1993,7 @@
                             n = i ? "leaflet-zoom-animated" : "leaflet-zoom-hide",
                             o = t.icon.createIcon(this._icon),
                             a = !1;
-                        o !== this._icon && (this._icon, a = !0, t.title && (o.title = t.title), t.alt && (o.alt = t.alt)), s.DomUtil.addClass(o, n), t.keyboard && (o.tabIndex = "0"), this._icon = o, this._initInteraction(), t.riseOnHover && s.DomEvent.on(o, "mouseover", this._bringToFront, this).on(o, "mouseout", this._resetZIndex, this);
+                        o !== this._icon && (this._icon && this._removeIcon(), a = !0, t.title && (o.title = t.title), t.alt && (o.alt = t.alt)), s.DomUtil.addClass(o, n), t.keyboard && (o.tabIndex = "0"), this._icon = o, this._initInteraction(), t.riseOnHover && s.DomEvent.on(o, "mouseover", this._bringToFront, this).on(o, "mouseout", this._resetZIndex, this);
                         var r = t.icon.createShadow(this._shadow),
                             l = !1;
                         r !== this._shadow && (this._removeShadow(), l = !0), r && s.DomUtil.addClass(r, n), this._shadow = r, t.opacity < 1 && this._updateOpacity();
@@ -2000,7 +2001,6 @@
                         a && h.markerPane.appendChild(this._icon), r && l && h.shadowPane.appendChild(this._shadow)
                     },
                     _removeIcon: function (t) {
-                        // REMOVE ICON WAS NOT CALLED :OOOOOOO
                         this.options.riseOnHover && s.DomEvent.off(this._icon, "mouseover", this._bringToFront).off(this._icon, "mouseout", this._resetZIndex), this._map._panes.markerPane.removeChild(this._icon), this._icon = null
                     },
                     _removeShadow: function () {
