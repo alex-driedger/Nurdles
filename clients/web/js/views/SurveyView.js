@@ -25,9 +25,9 @@ define([
             'click input[type=radio]' : 'select'
         },
         select: function(events) {
-            for (i = 1; i <= 6; i ++)
+            for (i = 1; i <= 5; i ++)
             {
-                document.getElementById("radioCheck"+i).style.color = "white"
+                document.getElementById("radioCheck"+i).style.color = "rgba(0,0,0,0)"
             }
             if ($('input[name=a]:checked')[0] != undefined)
             {
@@ -85,7 +85,7 @@ define([
               })
             } else
             {
-                checkboxVisual.style.backgroundColor = "white";
+                checkboxVisual.style.backgroundColor = "rgba(0,0,0,0)";
                 for ( i in items)
                 {
                     items[i].readOnly = false;

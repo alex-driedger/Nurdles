@@ -595,12 +595,8 @@
                     clearAllEventListeners: function () {
                         return delete this[a], this
                     },
-                    fireEvent: function (t, e, TEST) {
-                        if (TEST == "TEST")
-                        {
-                            alert((!this.hasEventListeners(t)))
-                        }
-
+                    fireEvent: function (t, e) {
+                        // For clusters, this is always false
                         if (!this.hasEventListeners(t)) return this;
                         var i, n, o, r, l, h = s.Util.extend({}, e, {
                                 type: t,
@@ -2023,13 +2019,35 @@
                         }
                         if (this.unspiderfy != undefined)
                         {
-                            alert("CLICKED")
-                        this.fire(t.type, {
+                        this._fireEvent(t.type, {
                             originalEvent: t,
                             latlng: this._latlng
-                        }, "TEST")
+                        })
                             s.DomEvent.stopPropagation(t)
                         }
+                    },
+                    _fireEvent: function (t, e) {
+                        alert("FireEvent " + (!this.hasEventListeners(t)))
+                        // For clusters, this is always false
+                        if (!this.hasEventListeners(t)) return this;
+                        var i, n, o, r, l, h = s.Util.extend({}, e, {
+                                type: t,
+                                target: this
+                            }),
+                            u = this[a];
+                        if (u[t])
+                            {
+                                alert("1")
+                                for (i = u[t].slice(), n = 0, o = i.length; o > n; n++) i[n].action.call(i[n].context, h);
+                            }
+                        r = u[t + "_idx"];
+                        for (l in r)
+                            if (i = r[l].slice())
+                            {
+                                alert("2")
+                                for (n = 0, o = i.length; o > n; n++) i[n].action.call(i[n].context, h);
+                            }
+                        return this
                     },
                     _onKeyPress: function (t) {
                         13 === t.keyCode && this.fire("click", {

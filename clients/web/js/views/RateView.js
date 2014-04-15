@@ -73,7 +73,7 @@ define([
       rateModel = new RateModel.Model();
       var input = {
           beachID:$("#beachname")[0].beachID,
-          rating: parseInt($("#slider").val()),
+          rating: parseInt($("#slider").val()/1000),
           created: new Date()
             }
             if (checkbox)
@@ -118,7 +118,8 @@ define([
     },
     slider: function()
     {
-      val = $("#slider").val()
+      val = parseInt($("#slider").val()/1000)
+      console.log(val)
       if (val == 0)
       {
         document.getElementById("IMG").src="./images/BEACH_CLEAN.jpg"

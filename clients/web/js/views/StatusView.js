@@ -65,7 +65,7 @@ define([
                     icon: L.mapbox.marker.icon({
                         'marker-color': "#3AF",
                         'marker-symbol': 'building',
-                        'custom-marker-size': [window.innerWidth/9,window.innerHeight/3]
+                        'custom-marker-size': [window.innerHeight/9,window.innerHeight/4.5]
                     }),
                 });
 
@@ -93,7 +93,7 @@ define([
                     icon: L.mapbox.marker.icon({
                         'marker-color': color,
                         'marker-symbol': 'circle',
-                        'custom-marker-size': [window.innerWidth/9,window.innerHeight/3],
+                        'custom-marker-size': [window.innerHeight/9,window.innerHeight/4.5],
                         'title': this.collection.models[i].attributes.beachName,
                         'url': "#info/" + [this.collection.models[i].attributes._id]
                     }),

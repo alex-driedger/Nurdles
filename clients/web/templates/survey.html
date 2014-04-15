@@ -16,7 +16,7 @@ function validate(event) {
 <a type="button" class="btn btn-surveyButtons top_button" id="a">Site Location</a>
 <div class="block" id="block_a" style="padding-bottom: 0;" >
     <div class="blockGap"/>
-    <input type="checkbox" id="checkbox" style="display: none;" ></input><label id="checkboxVisual" style="display: inline-block; border: 2px #ccc solid; height: 44px; width: 44px; margin-left: 5%; border-radius: 5px; font-size: 25px;" for="checkbox">&nbsp;</label><label style="font-size: 17px; line-height: 44px; margin-bottom: 10px; display: inline-block;" for="checkbox">&nbsp; Use my current location</label>
+    <input type="checkbox" id="checkbox" style="display: none;" ></input><label id="checkboxVisual" style="display: inline-block; border: 2px #ccc solid; height: 44px; width: 44px; margin-left: 5%; border-radius: 5px; font-size: 25px;" for="checkbox">&nbsp;</label><label style="font-size: 20px; line-height: 44px; margin-bottom: 10px; display: inline-block;" for="checkbox">&nbsp; Use my current location</label>
         <input type="text" id="beachname" class="form-control FT" placeholder="Beach Name"/>
         <input type="text" id="city" class="form-control FT" placeholder="City"/>
         <input type="text" id="state" class="form-control FT" placeholder="State"/>
@@ -24,46 +24,38 @@ function validate(event) {
         <div style="height: 20px;"/>
  </div>
 <a type="button" class="btn btn-surveyButtons mid_button" id="b">Site Description</a>
-<div class="block" id="block_b" style="font-size: 17px;" >
+<div class="block" id="block_b" style="font-size: 25px;" >
     <div class="blockGap"/>
-    <div style="width: 50%; margin: 0; text-align: center; display: inline-block;"> Beach Type:</div><div style=" width: 50%; margin: 0; text-align: center; display: inline-block;">Environment Type: </div>
+    <div style="text-align: center;"> Beach Type:</div>
 <div style="display: block;">
-<div style=" width: 100%;">
-    <div style="display: inline-block; margin-left: 1%; margin-top: 30px; width: 40%;">
+    <div style="display: inline-block; margin-left: 1%; margin-top: 30px; width: 98%;">
         <input type="radio" id="radio1" name="a" style="display: none;"></input>
         <label id="radioCheck1" class="radioboxCheck" for="radio1">✓</label>
         <label id="L_radio1" for="radio1" class="radioboxVisual" for="radio1">Saltwater</label>
     </div>
-    <div style="float: right; display: inline-block; margin-right: 1%; margin-top: 30px; width: 40%;">
-        <input type="radio" id="radio2" name="b" style="display: none;"></input>
-        <label id="radioCheck2" class="radioboxCheck" for="radio2">✓</label>
-        <label id="L_radio2" for="radio2" class="radioboxVisual" for="radio2">Predominately Sandy</label>
-    </div>
-</div>
-    <div style="display: inline-block; margin-left: 1%; width: 40%;">
+    <div style="display: inline-block; margin-left: 1%; width: 98%;">
         <input type="radio" id="radio3" name="a" style="display: none;"></input>
         <label id="radioCheck3" class="radioboxCheck" for="radio3">✓</label>
         <label id="L_radio3" for="radio3" class="radioboxVisual" for="radio3">Freshwater - Lake</label>
     </div>
-    
-    <div style="display: inline-block; margin-right: 1%; float: right; width: 40%;">
-        <input type="radio" id="radio4" name="b" style="display: none;"></input>
-        <label id="radioCheck4" class="radioboxCheck" for="radio4">✓</label>
-        <label id="L_radio4" for="radio4" class="radioboxVisual" for="radio4">Predominately Rocky</label>
-    </div>
-<div/>
-    <div style="display: inline-block; margin-left: 1%; width: 40%;">
+
+    <div style="display: inline-block; margin-left: 1%; width: 98%;">
         <input type="radio" id="radio5" name="a" style="display: none;"></input>
         <label id="radioCheck5" class="radioboxCheck" for="radio5">✓</label>
         <label id="L_radio5" for="radio5" class="radioboxVisual" for="radio5">Freshwater - River</label>
     </div>
-<div/>
-    <div style="display: inline-block; margin-left: 1%; width: 40%;">
-        <input type="radio" id="radio6" name="a" style="display: none;"></input>
-        <label id="radioCheck6" class="radioboxCheck" for="radio6">✓</label>
-        <label id="L_radio6" for="radio6" class="radioboxVisual" for="radio6">Inland</label>
+    <div style="text-align: center;"> Environment Type:</div>
+    <div style="display: inline-block; margin-left: 1%; margin-top: 30px; width: 98%;">
+        <input type="radio" id="radio2" name="b" style="display: none;"></input>
+        <label id="radioCheck2" class="radioboxCheck" for="radio2">✓</label>
+        <label id="L_radio2" for="radio2" class="radioboxVisual" for="radio2">Predominately Sandy</label>
     </div>
-
+    
+    <div style="display: inline-block; margin-left: 1%; width: 98%;">
+        <input type="radio" id="radio4" name="b" style="display: none;"></input>
+        <label id="radioCheck4" class="radioboxCheck" for="radio4">✓</label>
+        <label id="L_radio4" for="radio4" class="radioboxVisual" for="radio4">Predominately Rocky</label>
+    </div>
 </div>
 </div>
 
@@ -90,31 +82,31 @@ function validate(event) {
  fontSize:"35px"
 });
 </script>
-<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 17px;">Approximate Weight of Trash Collected</p>
+<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 25px;">Approximate Weight of Trash Collected</p>
 <input onkeypress='validate(event)' id="weightval" class="form-control surveyText2"/>
     <div class="input-group-btn">
         <button type="button" id="weightbtn" class="form-control unround-left" style="height: 75px; font-size: 25px;" data-toggle="dropdown">lb</button>
-        <ul class="dropdown-menu dropdown2 pull-right" style="cursor: pointer">
+        <ul class="dropdown-menu dropdown3 pull-right" style="cursor: pointer">
           <li class="weight">kg</li>
 
         </ul>
     </div> 
 
-<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 17px;">Approximate Area Cleaned</p>
+<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 25px;">Approximate Area Cleaned</p>
 <input onkeypress='validate(event)' id="areaval" class="form-control surveyText2"/>
     <div class="input-group-btn">
         <button type="button" id="areabtn" class="form-control unround-left" style="height: 75px; font-size: 25px;" data-toggle="dropdown">m<sup style="pointer-events: none;">2</sup></button>
-        <ul class="dropdown-menu dropdown2 pull-right" style="cursor: pointer">
+        <ul class="dropdown-menu dropdown3 pull-right" style="cursor: pointer">
           <li class="area">mi<sup style="pointer-events: none;">2</sup></li>
-          <div style="border-top: 1px #ccc solid; width: 80%; margin: 0 auto;"/>
+          <div style="border: 1px #ccc solid; width: 80%; margin: 0 auto;"/>
           <li class="area">km<sup style="pointer-events: none;">2</sup></li>
-          <div style="border-top: 1px #ccc solid; width: 80%; margin: 0 auto;"/>
+          <div style="border: 1px #ccc solid; width: 80%; margin: 0 auto;"/>
           <li class="area">ft<sup style="pointer-events: none;">2</sup></li>
         </ul>
     </div> 
-<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 17px;">Number of Volunteers</p>
+<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 25px;">Number of Volunteers</p>
  <input onkeypress='validate(event)' id="volunteersval" style="width: 25%; border-radius: 4px;" class="form-control surveyText2"/>  
-<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 17px;">Total Number of Trash Bags Filled (optional)</p>
+<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 25px;">Total Number of Trash Bags Filled (optional)</p>
  <input onkeypress='validate(event)' id="bagsval" style="width: 25%; border-radius: 4px;" class="form-control surveyText2"/>  
 <textarea class="form-control FT" id="notes" style="height: 150px; margin-bottom: 0;" placeholder="Other notes"></textarea>
 <div style="height: 20px;"/>
@@ -130,9 +122,9 @@ function validate(event) {
                     _.each( itemList.data, function( item ) { %>
                         <div style="border-width: 5px; border-style: solid; margin-bottom: -5px; border-color: rgb(200,200,200);">
                             <p id="item_name<%= item.id %>"class="items" role="presentation"><%= item.name %></p>
-                                <a id="<%= item.id %>" type="button" class="btn btn-ticker pos"><span style="line-height:33px; z-index: -1000" class="glyphicon glyphicon-plus"></span></a>
-                                <input onkeypress='validate(event)' maxlength="4" style="display:inline; width: 70px; height: 44px; float: right; border-style: none; text-align: center; font-size: 33px; margin-top: 10px; padding: 0;" id="text<%= item.id %>" type="text" value="0"/>
-                                <a id="<%= item.id %>" type="button" class="btn btn-ticker neg"><span style="line-height:33px; z-index: -1000;" class="glyphicon glyphicon-minus"></span></a>
+                                <a id="<%= item.id %>" type="button" class="btn btn-ticker pos"><span style="line-height:70px; z-index: -1000" class="glyphicon glyphicon-plus"></span></a>
+                                <input onkeypress='validate(event)' maxlength="4" style="display:inline; width: 70px; height: 90px; float: right; border-style: none; text-align: center; font-size: 33px; margin-top: 10px; padding: 0;" id="text<%= item.id %>" type="text" value="0"/>
+                                <a id="<%= item.id %>" type="button" class="btn btn-ticker neg"><span style="line-height:70px; z-index: -1000;" class="glyphicon glyphicon-minus"></span></a>
                         </div>
                     <% })
                     %>
