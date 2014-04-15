@@ -608,11 +608,6 @@
                         {
                             for (i = u[t].slice(), n = 0, o = i.length; o > n; n++)
                                 {
-                                    if (t == "clusterclick")
-                                    {
-                                        alert("THIS WAS FIRED")
-                                        console.log(i[n].action)
-                                    }
                                     i[n].action.call(i[n].context, h);
                                 }
                         }
@@ -1240,6 +1235,9 @@
                     getMaxZoom: function () {
                         return this.options.maxZoom === n ? this._layersMaxZoom === n ? 1 / 0 : this._layersMaxZoom : this.options.maxZoom
                     },
+                    getMaxZoom2: function () {
+                        return this.options.maxZoom === n ? this._layersMaxZoom === n ? 1 / 0 : this._layersMaxZoom : this.options.maxZoom
+                    },
                     getBoundsZoom: function (t, e, i) {
                         t = s.latLngBounds(t);
                         var n, o = this.getMinZoom() - (e ? 1 : 0),
@@ -1518,8 +1516,9 @@
                         attribution: "",
                         zoomOffset: 0,
                         opacity: 1,
-                        unloadInvisibleTiles: s.Browser.mobile,
-                        updateWhenIdle: s.Browser.mobile
+                        reuseTiles: true,
+                        unloadInvisibleTiles: false,
+                        updateWhenIdle: false
                     },
                     initialize: function (t, e) {
                         e = s.setOptions(this, e), e.detectRetina && s.Browser.retina && e.maxZoom > 0 && (e.tileSize = Math.floor(e.tileSize / 2), e.zoomOffset++, e.minZoom > 0 && e.minZoom--, this.options.maxZoom--), e.bounds && (e.bounds = s.latLngBounds(e.bounds)), this._url = t;
@@ -2001,6 +2000,7 @@
                         a && h.markerPane.appendChild(this._icon), r && l && h.shadowPane.appendChild(this._shadow)
                     },
                     _removeIcon: function () {
+                        alert("REMOVE ICON")
                         this.options.riseOnHover && s.DomEvent.off(this._icon, "mouseover", this._bringToFront).off(this._icon, "mouseout", this._resetZIndex), this._map._panes.markerPane.removeChild(this._icon), this._icon = null
                     },
                     _removeShadow: function () {
@@ -4038,6 +4038,7 @@
                     }
                 }), s.Map.include({
                     setView: function (t, e, i) {
+                        // Something here is not removing stuff
                         if (e = e === n ? this._zoom : this._limitZoom(e), t = this._limitCenter(s.latLng(t), e, this.options.maxBounds), i = i || {}, this._panAnim && this._panAnim.stop(), this._loaded && !i.reset && i !== !0) {
                             i.animate !== n && (i.zoom = s.extend({
                                 animate: i.animate
@@ -4098,7 +4099,7 @@
                     }
                 }), s.Map.mergeOptions({
                     zoomAnimation: !0,
-                    zoomAnimationThreshold: 4
+                    zoomAnimationThreshold: 10
                 }), s.DomUtil.TRANSITION && s.Map.addInitHook(function () {
                     this._zoomAnimated = this.options.zoomAnimation && s.DomUtil.TRANSITION && s.Browser.any3d && !s.Browser.android23 && !s.Browser.mobileOpera, this._zoomAnimated && s.DomEvent.on(this._mapPane, s.DomUtil.TRANSITION_END, this._catchTransitionEnd, this)
                 }), s.Map.include(s.DomUtil.TRANSITION ? {
@@ -4109,6 +4110,7 @@
                         return !this._container.getElementsByClassName("leaflet-zoom-animated").length
                     },
                     _tryAnimatedZoom: function (t, e, i) {
+
                         if (this._animatingZoom) return !0;
                         if (i = i || {}, !this._zoomAnimated || i.animate === !1 || this._nothingToAnimate() || Math.abs(e - this._zoom) > this.options.zoomAnimationThreshold) return !1;
                         var n = this.getZoomScale(e),
@@ -6214,6 +6216,7 @@
                     var e = L.DomUtil.create("a", "mapbox-info-toggle mapbox-icon mapbox-icon-info", this._container);
                     e.href = "#", L.DomEvent.addListener(e, "click", this._showInfo, this), L.DomEvent.disableClickPropagation(this._container);
                     for (var i in t._layers) t._layers[i].getAttribution && this.addInfo(t._layers[i].getAttribution());
+                    // This adds an event listener to the thing and calls the remove
                     return t.on("layeradd", this._onLayerAdd, this).on("layerremove", this._onLayerRemove, this), this._update(), this._container
                 },
                 onRemove: function (t) {

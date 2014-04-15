@@ -136,7 +136,6 @@
             this._needsClustering = [], this._map.on("zoomend", this._zoomEnd, this), this._map.on("moveend", this._moveEnd, this), this._spiderfierOnAdd && this._spiderfierOnAdd(), this._bindEvents(), this._zoom = this._map.getZoom(), this._currentShownBounds = this._getExpandedVisibleBounds(), this._topClusterLevel._recursivelyAddChildrenToMap(null, this._zoom, this._currentShownBounds)
         },
         onRemove: function (t) {
-                        console.log('REMOVED')
             t.off("zoomend", this._zoomEnd, this), t.off("moveend", this._moveEnd, this), this._unbindEvents(), this._map._mapPane.className = this._map._mapPane.className.replace(" leaflet-cluster-anim", ""), this._spiderfierOnRemove && this._spiderfierOnRemove(), this._hideCoverage(), this._featureGroup.onRemove(t), this._nonPointGroup.onRemove(t), this._featureGroup.clearLayers(), this._map = null
         },
         getVisibleParent: function (t) {
@@ -168,7 +167,6 @@
         },
         _propagateEvent: function (t) {
             if (t.layer instanceof L.MarkerCluster && t.type == "click") {
-                alert(t.originalEvent && this._isOrIsParent(t.layer._icon, t.originalEvent.relatedTarget))
                 if (t.originalEvent && this._isOrIsParent(t.layer._icon, t.originalEvent.relatedTarget)) return;
                 t.type = "cluster" + t.type
             }
@@ -193,6 +191,8 @@
         },
         _zoomOrSpiderfy: function (t) {
             var e = this._map;
+            // e.getMaxZoom never changes in our case, however somewhere in here a function is being called
+            // t.layer.zoomtobounds is being called
             e.getMaxZoom() === e.getZoom() ? this.options.spiderfyOnMaxZoom && t.layer.spiderfy() : this.options.zoomToBoundsOnClick && t.layer.zoomToBounds(), t.originalEvent && 13 === t.originalEvent.keyCode && e._container.focus()
         },
         _showCoverage: function (t) {
@@ -361,13 +361,14 @@
             return this._childCount
         },
         zoomToBounds: function () {
+            // The zoom is called, but somewhere a remove function is not being called
             for (var t, e = this._childClusters.slice(), i = this._group._map, n = i.getBoundsZoom(this._bounds), s = this._zoom + 1, r = i.getZoom(); e.length > 0 && n > s;) {
                 s++;
                 var o = [];
                 for (t = 0; t < e.length; t++) o = o.concat(e[t]._childClusters);
                 e = o
             }
-            n > s ? this._group._map.setView(this._latlng, s) : r >= n ? this._group._map.setView(this._latlng, r + 1) : this._group._map.fitBounds(this._bounds)
+            this._group._map.setView(this._latlng, s)        
         },
         getBounds: function () {
             var t = new L.LatLngBounds;
