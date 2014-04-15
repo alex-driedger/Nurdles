@@ -1999,8 +1999,8 @@
                         var h = this._map._panes;
                         a && h.markerPane.appendChild(this._icon), r && l && h.shadowPane.appendChild(this._shadow)
                     },
-                    _removeIcon: function () {
-                        alert("REMOVE ICON")
+                    _removeIcon: function (t) {
+                        alert("REMOVE")
                         this.options.riseOnHover && s.DomEvent.off(this._icon, "mouseover", this._bringToFront).off(this._icon, "mouseout", this._resetZIndex), this._map._panes.markerPane.removeChild(this._icon), this._icon = null
                     },
                     _removeShadow: function () {
