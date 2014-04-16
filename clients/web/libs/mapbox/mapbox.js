@@ -1356,7 +1356,7 @@
                             var a = !this._loaded;
                             this._loaded = !0, a && (this.fire("load"), this.eachLayer(this._layerAdd, this)), this.fire("viewreset", {
                                 hard: !i
-                            }), this.fire("move"), (o || n) && this.fire("zoomend") && this.zoomIn(), this.fire("moveend", {
+                            }), this.fire("move"), (o || n) && this.fire("zoomend") && this.zoomOut(), this.fire("moveend", {
                                 hard: !i
                             })
                         }
