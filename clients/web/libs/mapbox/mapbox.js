@@ -1339,15 +1339,27 @@
                         for (var e = 0, i = t.length; i > e; e++) this.addLayer(t[e])
                     },
                     _resetView: function (t, e, i, n, bugFix) {
-                        console.log(bugFix)
-                        var o = this._zoom !== e;
-                        n || (this.fire("movestart"), o && this.fire("zoomstart")), this._zoom = e, this._initialCenter = t, this._initialTopLeftPoint = this._getNewTopLeftPoint(t), i ? this._initialTopLeftPoint._add(this._getMapPanePos()) : s.DomUtil.setPosition(this._mapPane, new s.Point(0, 0)), this._tileLayersToLoad = this._tileLayersNum;
-                        var a = !this._loaded;
-                        this._loaded = !0, a && (this.fire("load"), this.eachLayer(this._layerAdd, this)), this.fire("viewreset", {
-                            hard: !i
-                        }), this.fire("move"), (o || n) && this.fire("zoomend"), this.fire("moveend", {
-                            hard: !i
-                        })
+                        if (bugFix == undefined)
+                        {
+                            var o = this._zoom !== e;
+                            n || (this.fire("movestart"), o && this.fire("zoomstart")), this._zoom = e, this._initialCenter = t, this._initialTopLeftPoint = this._getNewTopLeftPoint(t), i ? this._initialTopLeftPoint._add(this._getMapPanePos()) : s.DomUtil.setPosition(this._mapPane, new s.Point(0, 0)), this._tileLayersToLoad = this._tileLayersNum;
+                            var a = !this._loaded;
+                            this._loaded = !0, a && (this.fire("load"), this.eachLayer(this._layerAdd, this)), this.fire("viewreset", {
+                                hard: !i
+                            }), this.fire("move"), (o || n) && this.fire("zoomend"), this.fire("moveend", {
+                                hard: !i
+                            })
+                        } else
+                        {
+                            var o = this._zoom !== e;
+                            n || (this.fire("movestart"), o && this.fire("zoomstart")), this._zoom = e, this._initialCenter = t, this._initialTopLeftPoint = this._getNewTopLeftPoint(t), i ? this._initialTopLeftPoint._add(this._getMapPanePos()) : s.DomUtil.setPosition(this._mapPane, new s.Point(0, 0)), this._tileLayersToLoad = this._tileLayersNum;
+                            var a = !this._loaded;
+                            this._loaded = !0, a && (this.fire("load"), this.eachLayer(this._layerAdd, this)), this.fire("viewreset", {
+                                hard: !i
+                            }), this.fire("move"), (o || n) && this.fire("zoomend") && this.zoomIn(), this.fire("moveend", {
+                                hard: !i
+                            })
+                        }
                     },
                     _rawPanBy: function (t) {
                         s.DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(t))

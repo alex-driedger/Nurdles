@@ -368,7 +368,7 @@
                 for (t = 0; t < e.length; t++) o = o.concat(e[t]._childClusters);
                 e = o
             }
-            this._group._map._resetView(this._latlng, s, undefined, undefined, "BUGFIX")
+            this._group._map._resetView(this._latlng, s-1, true, true, "BUGFIX")
         },
         getBounds: function () {
             var t = new L.LatLngBounds;
