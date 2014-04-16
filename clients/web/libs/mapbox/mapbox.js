@@ -1106,17 +1106,17 @@
                             reset: !0
                         }), this._handlers = [], this._layers = {}, this._zoomBoundLayers = {}, this._tileLayersNum = 0, this.callInitHooks(), this._addLayers(e.layers)
                     },
-                    setView: function (t, e) {
+                    setView: function (t, e, z, bugFix) {
                         return e = e === n ? this.getZoom() : e, this._resetView(s.latLng(t), this._limitZoom(e)), this
                     },
-                    setZoom: function (t, e, z) {
+                    setZoom: function (t, e, z, bugFix) {
                         if (z == undefined)
                         {
                             z = this.getCenter();
                         }
                         return this._loaded ? this.setView(z, t, {
                             zoom: e
-                        }) : (this._zoom = this._limitZoom(t), this)
+                        }, bugFix) : (this._zoom = this._limitZoom(t), this)
                     },
                     zoomIn: function (t, e) {
                         return this.setZoom(this._zoom + (t || 1), e)
@@ -1338,7 +1338,8 @@
                         t = t ? s.Util.isArray(t) ? t : [t] : [];
                         for (var e = 0, i = t.length; i > e; e++) this.addLayer(t[e])
                     },
-                    _resetView: function (t, e, i, n) {
+                    _resetView: function (t, e, i, n, bugFix) {
+                        console.log(bugFix)
                         var o = this._zoom !== e;
                         n || (this.fire("movestart"), o && this.fire("zoomstart")), this._zoom = e, this._initialCenter = t, this._initialTopLeftPoint = this._getNewTopLeftPoint(t), i ? this._initialTopLeftPoint._add(this._getMapPanePos()) : s.DomUtil.setPosition(this._mapPane, new s.Point(0, 0)), this._tileLayersToLoad = this._tileLayersNum;
                         var a = !this._loaded;
@@ -4051,7 +4052,7 @@
                         s.DomEvent.off(this._el, s.DomUtil.TRANSITION_END, this._onTransitionEnd, this), this._inProgress && (this._inProgress = !1, this._el.style[s.DomUtil.TRANSITION] = "", this._el._leaflet_pos = this._newPos, clearInterval(this._stepTimer), this.fire("step").fire("end"))
                     }
                 }), s.Map.include({
-                    setView: function (t, e, i) {
+                    setView: function (t, e, i, bugFix) {
                         // Something here is not removing stuff
                         if (e = e === n ? this._zoom : this._limitZoom(e), t = this._limitCenter(s.latLng(t), e, this.options.maxBounds), i = i || {}, this._panAnim && this._panAnim.stop(), this._loaded && !i.reset && i !== !0) {
                             i.animate !== n && (i.zoom = s.extend({
@@ -4062,7 +4063,7 @@
                             var o = this._zoom !== e ? this._tryAnimatedZoom && this._tryAnimatedZoom(t, e, i.zoom) : this._tryAnimatedPan(t, i.pan);
                             if (o) return clearTimeout(this._sizeTimer), this
                         }
-                        return this._resetView(t, e), this
+                        return this._resetView(t, e, undefined, undefined, bugFix), this
                     },
                     panBy: function (t, e) {
                         if (t = s.point(t).round(), e = e || {}, !t.x && !t.y) return this;
