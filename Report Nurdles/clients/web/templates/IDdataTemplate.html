@@ -1,0 +1,8 @@
+<%
+	_.each( items, function( item ) { 
+		%>
+			<p style="font-size: 5%;"> <%= item.name + " : " + item.value %> </p>
+		<%
+	});
+%>
+<a style="font-size: 5%; height: 8%; margin-bottom: 5%; line-height: 200%;" id="download" class="btn btn-primary FT2">DOWNLOAD (.CSV)</a>

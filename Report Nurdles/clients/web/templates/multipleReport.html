@@ -1,0 +1,33 @@
+    <a type="button" class="btn back" id="RateCleanliness" onClick="history.go(-1);return true;"><span class="glyphicon glyphicon-chevron-left"></span><span>  Report Multiple Debris</span></a>
+    <input type="text" id="beachname" class="form-control FT" style="margin-top: 20px;" placeholder="Beachname"></input>
+<input type="checkbox" id="checkbox" style="display: none;" ></input><label id="checkboxVisual" style="display: inline-block; border: 2px #ccc solid; height: 44px; width: 44px; margin-left: 5%; border-radius: 5px; font-size: 25px;" for="checkbox">&nbsp;</label><label style="font-size: 20px; line-height: 44px; margin-bottom: 10px; display: inline-block;" for="checkbox">&nbsp; Use my current location</label>
+<h4>Additional Comments</h4>
+    <textarea rows="2" maxlength="500" type="text" id="comments" class="form-control FT" style="margin-top: 10px; margin-bottom: 10px;"></textarea>
+<input type="checkbox" id="cleaned" style="display: none;" ></input><label id="checkboxVisual2" style="display: inline-block; border: 2px #ccc solid; height: 44px; width: 44px; margin-left: 5%; border-radius: 5px; font-size: 25px;" for="cleaned">&nbsp;</label><label style="font-size: 20px; line-height: 44px; margin-bottom: 10px; display: inline-block;" for="cleaned">&nbsp; Items have been cleaned</label>
+    <button id="submit" class="btn btn-submit" style="margin-top: 10px; margin-bottom: 10px">Submit</button>
+</div>
+<script>
+    document.getElementById("scroll").style.marginTop = $("#header").height();
+</script>
+<div id="scroll" style="font-size: 5%;">
+        <ul style="padding: 0 0 0 0; margin-bottom: 0px;">
+            <%
+                _.each( items, function( itemList ) { %>
+                    <a type="button" class="btn btn-surveyButtons top_button" style="border-right: none; border-left: none;  font-size: 100%; "id="<%=itemList.id%>"><%=itemList.header%></a>
+                    <div class="block" id="block_<%=itemList.id%>" style="padding: 0px; border-left: none; border-right: none;">
+                    <%
+                    _.each( itemList.data, function( item ) { %>
+                        <div style="border-width: 5px; border-style: solid; margin-bottom: -5px; border-color: rgb(200,200,200);">
+                            <p id="item_name<%= item.id %>"class="items" role="presentation"><%= item.name %></p>
+                                <a id="<%= item.id %>" type="button" class="btn btn-ticker pos"><span style="line-height:70px; z-index: -1000" class="glyphicon glyphicon-plus"></span></a>
+                                <input onkeypress='validate(event)' maxlength="4" style="display:inline; width: 70px; height: 90px; float: right; border-style: none; text-align: center; font-size: 33px; margin-top: 10px; padding: 0;" id="text<%= item.id %>" type="text" value="0"/>
+                                <a id="<%= item.id %>" type="button" class="btn btn-ticker neg"><span style="line-height:70px; z-index: -1000;" class="glyphicon glyphicon-minus"></span></a>
+                        </div>
+                    <% })
+                    %>
+                    <div style="height: 20px;"/>
+                </div>
+                <% });
+            %>            
+        </ul>
+</div>

@@ -1,0 +1,26 @@
+
+    <a type="button" class="btn back" id="RateCleanliness" href="#"><span class="glyphicon glyphicon-chevron-left"></span><span> Search Surveys</span></a>
+    <h4> Search Survey By Beach </h4>
+    <input type="text" id="beachname" class="form-control FT" style="margin-left: 5%; font-size: 5%;" placeholder="Beach Name"/>
+<script>
+</script>
+<h4 style="width: calc(50% - 15px); margin-left: 10px; display: inline-block;"> Start Date </h4><h4 style="margin-left: 10px;width: calc(50% - 15px); display: inline-block;"> End Date </h4>
+    <input id="startDate" class="form-control" style="height: 75px; width: 42.5%; display: inline-block; margin-left: 5%; cursor: pointer;" value="01/01/2014"readonly="readonly"/><input id="endDate" class="form-control" style="height: 75px; width: 42.5%; margin-left: 5%; display: inline-block; cursor: pointer;" readonly="readonly"/>
+        <button style="display: block; margin: 10 auto; margin-top :5%; height: 10%; width: 90%; font-size: 5%;" id="surveySearch" class="btn btn-primary">Search</button>
+
+<script>
+   $(document).ready(function() {
+        $("#startDate").datepicker();
+    });
+      $(document).ready(function() {
+        $("#endDate").datepicker();
+    });
+          $('div.ui-datepicker').css({
+  fontSize:"35px",
+});
+</script>
+<% 
+    _.each( surveysHTML, function(survey) { %>
+        <a type="button" href="#survey/<%=survey.id%>" class="surveyLink btn" style="border: solid black 5px; height: 88px; font-size: 5%; margin-bottom: -5px;"><%= survey.html%></a>
+    <% });
+%>

@@ -1,0 +1,82 @@
+<div class="home btn-group">&nbsp;<span class="glyphicon glyphicon-user" style="font-size: 75%;"></span> Admin</div><div class="tab btn-group">
+    <button type="button" class="btn btn-default glyphicon glyphicon-th" data-toggle="dropdown"></button>
+    <ul class="dropdown-menu dropdown2 pull-right">
+      <li><a  href="#">Home</a></li>
+      <div style="border-top: 5px black solid;"/>
+      <li><a href="#data">Data Access</a></li>
+      <div style="border-top: 5px black solid;"/>
+      <li><a id="logout">Logout</a></li>
+    </ul>
+  </div>
+<a type="button" class="btn btn-surveyButtons top_button" style="margin-top: -5px;" id="a">Create Admin</a>
+<div class="block" id="block_a" >
+    <div class="blockGap"/>
+        <input type="text" id="username" class="form-control FT" placeholder="Email"/>
+        <input type="password" id="password" class="form-control FT" placeholder="Password"/>
+        <button id="createAdmin" class="btn btn-primary FT">Create Administrator</button>
+ </div>
+<a type="button" class="btn btn-surveyButtons top_button" id="b">Change Administrator Privelages</a>
+<div class="block" id="block_b" >
+    <div class="blockGap"/>
+        <input type="text" id="username2" class="form-control FT" placeholder="Email"/>
+        <button id="upgradeToAdmin" class="btn btn-primary twoButtons changeAdmin">Add Admin Privelages</button><button id="removeAdmin" class="btn btn-primary twoButtons changeAdmin" >Remove Admin Privelages</button>
+        <div style="height: 5%"/>
+ </div>
+ <a type="button" class="btn btn-surveyButtons top_button" id="c">Add Beaches</a>
+<div class="block" id="block_c" >
+    <div class="blockGap"/>
+        <input type="text" id="beachName" class="form-control FT" placeholder="Beach Name"/>
+        <input type="text" id="city" class="form-control FT" placeholder="City"/>
+        <input type="text" id="state" class="form-control FT" placeholder="State"/>
+        <input type="text" id="country" class="form-control FT" placeholder="Country"/>
+        <input type="text" id="grooming" class="form-control FT" placeholder="Grooming"/>
+        <input onkeypress='validate(event)' type="text" id="lat" class="form-control FT" placeholder="Latitude"/>
+        <input onkeypress='validate(event)' type="text" id="lon" class="form-control FT" placeholder="Longitude"/>
+        <button id="createBeach" class="btn btn-primary FT">Create Beach</button>
+</div>
+ <a type="button" class="btn btn-surveyButtons top_button" id="d">Remove/Edit Beaches</a>
+<div class="block" id="block_d" style="border-top: 5px black solid;" >
+    <div class="blockGap"/>
+<%
+_.each(data, function( model ) {
+    if (model.attributes != undefined)
+        {
+            model = model.attributes
+        }
+%>
+<div class="btn-admin-beach" id="title_<%= model._id %>" >
+    <div id="data_<%= model._id %>" style=" font-size: 24px; display: inline-block; color: #3AF; margin-left: 10px;">
+        <%= model.beachName %>
+        <div />
+        <span style="color: black; font-size: 17px; display: inline-block;"><span id="city_<%= model._id %>"><%= model.city %></span>, </span>
+        <span style="color: black; font-size: 17px;; display: inline-block;"><span id="state_<%= model._id %>"><%= model.state %></span>, </span>
+        <span style="color: black; font-size: 17px; display: inline-block;"><span id="country_<%= model._id %>"><%= model.country %></span></span>
+        <span style="color: black; font-size: 17px; display: block;"><span id="grooming_<%= model._id %>"><%= model.grooming %></span></span>
+        <span style="color: black; font-size: 17px; display: block; ">(<span id="lat_<%= model._id %>"><%= model.lat %></span>, <span id="lon_<%= model._id %>"><%= model.lon %></span>)</span>
+    </div>
+    <div style="display: inline-block;float: right; width: 200px;">
+        <button id="delete_<%= model._id %>"class="btn btn-primary changeBeach" style="display: block; margin-bottom: 10px; margin-top: 5px; width: 180px; height: 50px;"  >Delete Beach</button>
+        <button id="edit_<%= model._id %>"class="btn btn-primary changeBeach" style="display: block; width: 180px; height: 50px;">Edit Beach</button>
+    </div>
+    <div id="editData_<%= model._id %>" style="display: none; padding-top: 30px;">
+        <input type="text" id="edit_beachName_<%= model._id %>" class="form-control FT" placeholder="Beach Name" value="<%= model.beachName %>"/>
+        <input type="text" id="edit_city_<%= model._id %>" class="form-control FT" placeholder="City" value="<%= model.city %>"/>
+        <input type="text" id="edit_state_<%= model._id %>" class="form-control FT" placeholder="State" value="<%= model.state %>"/>
+        <input type="text" id="edit_country_<%= model._id %>" class="form-control FT" placeholder="Country" value="<%= model.country %>"/>
+        <input type="text" id="edit_grooming_<%= model._id %>" class="form-control FT" placeholder="Grooming" value="<%= model.grooming %>"/>
+        <input onkeypress='validate(event)' type="text" id="edit_lat_<%= model._id %>" class="form-control FT" placeholder="Latitude" value="<%= model.lat%>"/>
+        <input onkeypress='validate(event)' type="text" id="edit_lon_<%= model._id %>" class="form-control FT" placeholder="Longitude" value="<%= model.lon %>"/>
+        <button id="saveEdit_<%= model._id %>" class="btn btn-primary FT changeBeach">Save Edit</button>
+    </div>
+</div>
+<%
+});
+%>
+</div>
+ <a type="button" class="btn btn-surveyButtons top_button" id="e">Import Beaches</a>
+<div class="block" id="block_e" >
+    <div class="blockGap"/>
+	<p style="width: 90%; text-align: center; font-size: 25px; margin-left: 5%;">Importing takes data from the excel file and updates any beaches with the same latitude and longitude in the database, with the beaches in the excel file. These updates occur based on latitude and longitude, and because of this, it is impossible to update the latitude and longitude of a beach using import (Has to be manually deleted then you can call import or create it manually). Import creates any beaches that are in the excel file but not in the db with the same lat/long</p>
+	<button id="import" class="btn btn-primary FT">Import Beaches</button>
+</div>
+<div style="border-bottom: 5px solid black;"/>

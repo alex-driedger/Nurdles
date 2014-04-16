@@ -1,0 +1,13 @@
+    <a type="button" class="btn back" id="RateCleanliness" onClick="history.go(-1);return true;"><span class="glyphicon glyphicon-chevron-left"></span><span> Search</span></a>
+    	<h4 style="margin: 10px;"> Search By Beach Name </h4>
+        <input type="text" id="beachname" class="form-control FT" style="" placeholder="Beach Name"/>
+        <h4 style="margin: 10px;"> Search By Coordinates </h4>
+        <div style="font-size: 25px;">
+	        	<h4 style="display: block; width: 30%; font-size: 1.25em;margin: 10px;">Latitude:</h4>
+                <input onkeypress='validate(event)' type="text" id="lat" class="form-control FT" style="display: inline-block;" value="0" />
+                <div/>
+		        <h4 style="display: block; width: 30%; font-size: 1.25em; margin: 10px; margin-top: 0;">Longitude:</h4>
+		        <input onkeypress='validate(event)' type="text" id="lon" class="form-control FT" style="display: inline-block;" value="0" />
+
+    	</div>
+    	<a type="button" id="searchByCoord" class="btn btn-primary FT" style="line-height: 250%;">Search By Coordinates</a>

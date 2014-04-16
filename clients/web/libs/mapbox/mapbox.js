@@ -616,7 +616,7 @@
                             if (i = r[l].slice())
                                 for (n = 0, o = i.length; o > n; n++)
                                     {
-                                        i[n].action.call(i[n].context, h);
+                                            i[n].action.call(i[n].context, h);
                                     }
                         return this
                     },
@@ -1172,8 +1172,8 @@
                         return this._layers[e] ? this : (this._layers[e] = t, !t.options || isNaN(t.options.maxZoom) && isNaN(t.options.minZoom) || (this._zoomBoundLayers[e] = t, this._updateZoomLevels()), this.options.zoomAnimation && s.TileLayer && t instanceof s.TileLayer && (this._tileLayersNum++, this._tileLayersToLoad++, t.on("load", this._onTileLayerLoad, this)), this._loaded && this._layerAdd(t), this)
                     },
                     removeLayer: function (t) {
+                        // Not this
                         var e = s.stamp(t);
-                        alert("REMOVE LAYER")
                         return this._layers[e] ? (this._loaded && t.onRemove(this), delete this._layers[e], this._loaded && this.fire("layerremove", {
                             layer: t
                         }), this._zoomBoundLayers[e] && (delete this._zoomBoundLayers[e], this._updateZoomLevels()), this.options.zoomAnimation && s.TileLayer && t instanceof s.TileLayer && (this._tileLayersNum--, this._tileLayersToLoad--, t.off("load", this._onTileLayerLoad, this)), this) : this
@@ -2261,6 +2261,7 @@
                     },
                     removeLayer: function (t) {
                         var e = t in this._layers ? t : this.getLayerId(t);
+                        // Not this
                         return this._map && this._layers[e] && this._map.removeLayer(this._layers[e]), delete this._layers[e], this
                     },
                     hasLayer: function (t) {
@@ -2278,6 +2279,7 @@
                         this._map = t, this.eachLayer(t.addLayer, t)
                     },
                     onRemove: function (t) {
+                        // Not this
                         this.eachLayer(t.removeLayer, t), this._map = null
                     },
                     addTo: function (t) {
@@ -2314,7 +2316,19 @@
                         }))
                     },
                     removeLayer: function (t) {
-                        return this.hasLayer(t) ? (t in this._layers && (t = this._layers[t]), t.off(s.FeatureGroup.EVENTS, this._propagateEvent, this), s.LayerGroup.prototype.removeLayer.call(this, t), this._popupContent && this.invoke("unbindPopup"), this.fire("layerremove", {
+                        // This was called twice. Once because of the click and once because of the cluster
+                        // THERFORE SOMETHING INSIDE HERE IS NOT WOKRING
+                        // This is called both times however, s.LayerGroup.prototype.removeLayer was not called
+                        //alert(this.hasLayer(t))
+                        // this.hasLayer(t) is false on the glitched call. It should be true
+                            // 27 is called TWICE instead of what was supposed to be called 
+                        return this.hasLayer(t) ? (t in this._layers && 
+                            (t = this._layers[t]),
+                            t.off(s.FeatureGroup.EVENTS,
+                            this._propagateEvent, this),
+                            s.LayerGroup.prototype.removeLayer.call(this, t),
+                            this._popupContent && this.invoke("unbindPopup"),
+                            this.fire("layerremove", {
                             layer: t
                         })) : this
                     },

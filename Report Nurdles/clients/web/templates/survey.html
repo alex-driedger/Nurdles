@@ -1,0 +1,168 @@
+<script>
+// FUNCTION TO CHECK IF THE INPUT IS A NUMBER
+// Receives an onkeypress event
+function validate(event) {
+// This is this keycode of the key that was pressed
+  var key = event.keyCode;
+  // 48-57 is the keycode for 0-9 (for this keyboard atleast)
+  if (!(key >= 48 && key <= 57))
+  {
+    // If the key is not between 48-57 prevent the default action (Default action is inputting the character)
+    event.preventDefault()
+  }
+}
+</script>
+<a type="button" class="btn back" style="margin-bottom: -5px; border: solid 5px black;" href="#"><span class="glyphicon glyphicon-chevron-left"></span><span>Cleanup Helper</span></a>
+<a type="button" class="btn btn-surveyButtons top_button" id="a">Site Location</a>
+<div class="block" id="block_a" style="padding-bottom: 0;" >
+    <div class="blockGap"/>
+    <input type="checkbox" id="checkbox" style="display: none;" ></input><label id="checkboxVisual" style="display: inline-block; border: 2px #ccc solid; height: 44px; width: 44px; margin-left: 5%; border-radius: 5px; font-size: 25px;" for="checkbox">&nbsp;</label><label style="font-size: 20px; line-height: 44px; margin-bottom: 10px; display: inline-block;" for="checkbox">&nbsp; Use my current location</label>
+        <input type="text" id="beachname" class="form-control FT" placeholder="Beach Name"/>
+        <input type="text" id="city" class="form-control FT" placeholder="City"/>
+        <input type="text" id="state" class="form-control FT" placeholder="State"/>
+        <input type="text" id="country" class="form-control FT" style="margin-bottom: 0;" placeholder="Country"/>
+        <div style="height: 20px;"/>
+ </div>
+<a type="button" class="btn btn-surveyButtons mid_button" id="b">Site Description</a>
+<div class="block" id="block_b" style="font-size: 25px;" >
+    <div class="blockGap"/>
+    <div style="text-align: center;"> Beach Type:</div>
+<div style="display: block;">
+    <div style="display: inline-block; margin-left: 1%; margin-top: 30px; width: 98%;">
+        <input type="radio" id="radio1" name="a" style="display: none;"></input>
+        <label id="radioCheck1" class="radioboxCheck" for="radio1">✓</label>
+        <label id="L_radio1" for="radio1" class="radioboxVisual" for="radio1">Saltwater</label>
+    </div>
+    <div style="display: inline-block; margin-left: 1%; width: 98%;">
+        <input type="radio" id="radio3" name="a" style="display: none;"></input>
+        <label id="radioCheck3" class="radioboxCheck" for="radio3">✓</label>
+        <label id="L_radio3" for="radio3" class="radioboxVisual" for="radio3">Freshwater - Lake</label>
+    </div>
+
+    <div style="display: inline-block; margin-left: 1%; width: 98%;">
+        <input type="radio" id="radio5" name="a" style="display: none;"></input>
+        <label id="radioCheck5" class="radioboxCheck" for="radio5">✓</label>
+        <label id="L_radio5" for="radio5" class="radioboxVisual" for="radio5">Freshwater - River</label>
+    </div>
+    <div style="text-align: center;"> Environment Type:</div>
+    <div style="display: inline-block; margin-left: 1%; margin-top: 30px; width: 98%;">
+        <input type="radio" id="radio2" name="b" style="display: none;"></input>
+        <label id="radioCheck2" class="radioboxCheck" for="radio2">✓</label>
+        <label id="L_radio2" for="radio2" class="radioboxVisual" for="radio2">Predominately Sandy</label>
+    </div>
+    
+    <div style="display: inline-block; margin-left: 1%; width: 98%;">
+        <input type="radio" id="radio4" name="b" style="display: none;"></input>
+        <label id="radioCheck4" class="radioboxCheck" for="radio4">✓</label>
+        <label id="L_radio4" for="radio4" class="radioboxVisual" for="radio4">Predominately Rocky</label>
+    </div>
+</div>
+</div>
+
+
+
+
+
+<a type="button" class="btn btn-surveyButtons mid_button" id="c">Cleanup Summary</a>
+<div class="block" id="block_c" style="font-size: 17px;">
+    <div class="blockGap"/>
+
+    <h4 style="margin: 10px; display: inline-block; font-size: 25px;">Date: </h4>
+<input style="width: 40%;" class="form-control FT" id="date"></input>
+<div/>
+<script type="text/javascript">
+    $('#date').datepicker({
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        forceParse: 0,
+        showMeridian: 1
+    });
+    $('div.ui-datepicker').css({
+ fontSize:"35px"
+});
+</script>
+<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 25px;">Approximate Weight of Trash Collected</p>
+<input onkeypress='validate(event)' id="weightval" class="form-control surveyText2"/>
+    <div class="input-group-btn">
+        <button type="button" id="weightbtn" class="form-control unround-left" style="height: 75px; font-size: 25px;" data-toggle="dropdown">lb</button>
+        <ul class="dropdown-menu dropdown3 pull-right" style="cursor: pointer">
+          <li class="weight">kg</li>
+
+        </ul>
+    </div> 
+
+<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 25px;">Approximate Area Cleaned</p>
+<input onkeypress='validate(event)' id="areaval" class="form-control surveyText2"/>
+    <div class="input-group-btn">
+        <button type="button" id="areabtn" class="form-control unround-left" style="height: 75px; font-size: 25px;" data-toggle="dropdown">m<sup style="pointer-events: none;">2</sup></button>
+        <ul class="dropdown-menu dropdown3 pull-right" style="cursor: pointer">
+          <li class="area">mi<sup style="pointer-events: none;">2</sup></li>
+          <div style="border: 1px #ccc solid; width: 80%; margin: 0 auto;"/>
+          <li class="area">km<sup style="pointer-events: none;">2</sup></li>
+          <div style="border: 1px #ccc solid; width: 80%; margin: 0 auto;"/>
+          <li class="area">ft<sup style="pointer-events: none;">2</sup></li>
+        </ul>
+    </div> 
+<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 25px;">Number of Volunteers</p>
+ <input onkeypress='validate(event)' id="volunteersval" style="width: 25%; border-radius: 4px;" class="form-control surveyText2"/>  
+<p class="form-control FT" style="width: 60%; display: inline-block; font-size: 25px;">Total Number of Trash Bags Filled (optional)</p>
+ <input onkeypress='validate(event)' id="bagsval" style="width: 25%; border-radius: 4px;" class="form-control surveyText2"/>  
+<textarea class="form-control FT" id="notes" style="height: 150px; margin-bottom: 0;" placeholder="Other notes"></textarea>
+<div style="height: 20px;"/>
+</div>
+<a type="button" class="btn btn-surveyButtons mid_button" id="d">Cleanup Tracker</a>
+<div class="block" style="padding: 0; font-size: 5%" id="block_d">
+        <ul style="padding: 0 0 0 0; margin-bottom: 0px;">
+            <%
+                _.each( items, function( itemList ) { %>
+                    <a type="button" class="btn btn-surveyButtons top_button" style="border-right: none; border-left: none; border-color: gray; font-size: 100%; color: gray;"id="<%=itemList.id%>"><%=itemList.header%></a>
+                    <div class="block" id="block_<%=itemList.id%>" style="padding: 0px; border-left: none; border-right: none;">
+                    <%
+                    _.each( itemList.data, function( item ) { %>
+                        <div style="border-width: 5px; border-style: solid; margin-bottom: -5px; border-color: rgb(200,200,200);">
+                            <p id="item_name<%= item.id %>"class="items" role="presentation"><%= item.name %></p>
+                                <a id="<%= item.id %>" type="button" class="btn btn-ticker pos"><span style="line-height:70px; z-index: -1000" class="glyphicon glyphicon-plus"></span></a>
+                                <input onkeypress='validate(event)' maxlength="4" style="display:inline; width: 70px; height: 90px; float: right; border-style: none; text-align: center; font-size: 33px; margin-top: 10px; padding: 0;" id="text<%= item.id %>" type="text" value="0"/>
+                                <a id="<%= item.id %>" type="button" class="btn btn-ticker neg"><span style="line-height:70px; z-index: -1000;" class="glyphicon glyphicon-minus"></span></a>
+                        </div>
+                    <% })
+                    %>
+                    <div style="height: 20px;"/>
+                </div>
+                <% });
+            %>            
+        </ul>
+</div>
+<script>
+</script>
+<a type="button" class="btn btn-surveyButtons mid_button" id="e">Items of Local Concern</a>
+<div class="block" id="block_e" >
+    <div class="blockGap"/>
+    <textarea rows="3" maxlength="500" type="text" id="localConcern" class="form-control FT2" />
+    <div style="height: 20px;"/>
+</div>
+
+<a type="button" class="btn btn-surveyButtons mid_button" id="f">Peculiar Items</a>
+<div class="block" id="block_f" >
+    <div class="blockGap"/>
+    <textarea rows="3" maxlength="500" type="text" id="peculiarItems" class="form-control FT2" />
+    <div style="height: 20px;"/>
+</div>
+
+<a type="button" class="btn btn-surveyButtons mid_button" id="g">Dead/Injured Animals</a>
+<div class="block" id="block_g" >
+    <div class="blockGap"/>
+    <textarea rows="3" maxlength="500" type="text" id="injuredAnimals" class="form-control FT2" />
+    <div style="height: 20px;"/>
+</div>
+<a type="button" class="btn btn-surveyButtons mid_button" id="h">Hazardous Debris</a>
+<div class="block" id="block_h">
+    <div class="blockGap"/>
+    <textarea rows="3" maxlength="500" type="text" id="hazardousDebris" class="form-control FT2" />
+    <div style="height: 20px;"/>
+</div>
+<div style="margin-bottom: 3vh; border-top-style:solid; border-top-width: 5px; border-color: black;"/>
+<button type="button" id="submit" class="btn btn-submit">Report</button>
+<div style="height: 5%;"/>
+

@@ -1,0 +1,57 @@
+
+  <a type="button" class="btn back" id="Name" onClick="history.go(-1);return true;"><span id="chevron" class="glyphicon glyphicon-chevron-left"></span><span id="name" style=""><%=beachInfo.beachName%></span></a>
+  <script>
+
+while (document.getElementById("name").offsetWidth + document.getElementById("chevron").offsetWidth + 20 > document.getElementById("Name").offsetWidth)
+{
+  document.getElementById("name").innerText = document.getElementById("name").innerText.slice(0,-4)
+  document.getElementById("name").innerText+="..." 
+}
+
+  </script>
+  <div style="border: 5px solid black; margin-top: -5px;">
+	    <h5 >Location: <%=beachInfo.state%>, <%=beachInfo.country%></h5> 
+      <h5 >Coordinates : <%=beachInfo.lat%>, <%=beachInfo.lon%></h5>
+      <h5 >Status : <%=beachInfo.lastRating%></h5>
+      <h5 > Historical Rating : <%=average%></h5>
+      <h5 >Last-Updated : <%=new Date(beachInfo.lastUpdated)%></h5>
+      <h5 >Groomed : NOT ADDED YET</h5>
+      <h5 >Temperature range: <%=high%>°C to <%=low%>°C </h5>
+      <h5 >Conditions: <%=conditions%></h5>
+</div>
+   	<div style="margin: 20px;">
+
+   		<a type="button" class="btn btn-surveyButtons mid_button" id="a">Past Cleanliness Ratings</a>
+<div class="block" id="block_a" >
+          <% 
+    _.each( ratesHTML, function(rate) { %>
+        <div class="surveyLink" style="color: black; text-align: center; margin-bottom: -5px;"><%=rate.day%><%= rate.rating%></div>
+    <% });
+%>
+</div>
+      <a type="button" class="btn btn-surveyButtons mid_button" id="b">Latest Survey Results</a>
+<div class="block" id="block_b" >
+          <%
+          if (surveysHTML.length == 0)
+            {
+               %>
+              <div class="surveyLink" style="color: black; text-align: center; margin-bottom: -5px;">No surveys have been submitted</div>
+              <%
+            }
+    _.each( surveysHTML, function(survey) { %>
+        <a type="button" href="#survey/<%=survey.id%>"  style="margin-bottom: -5px;" class="surveyLink btn"><%= survey.html%></a>
+    <% });
+%>
+</div>
+<a type="button" class="btn btn-surveyButtons mid_button" id="c">Latest Reports</a>
+<div class="block" id="block_c" >
+          <% 
+    _.each(reportsHTML, function(report) { %>
+        <a type="button" href="#report/<%=report.id%>"  style="margin-bottom: -5px;" class="surveyLink btn"><%= report.html%></a> <% });
+%>
+
+</div>
+   		<div style="border-top-style: solid; border-top-width: 5px; border-top-color: black;"></div>
+
+
+

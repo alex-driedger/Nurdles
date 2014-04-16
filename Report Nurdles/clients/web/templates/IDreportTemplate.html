@@ -1,0 +1,15 @@
+<div style="font-size: 5%;"><%
+	_.each( items, function( item ) { 
+		if (item.name == "image")
+		{
+			%>
+				<image style="width: 100%;" src="<%=item.value %>"/>
+			<%
+		} else
+		{
+			%>
+				<p> <%= item.name + " : " + item.value %> </p>
+			<%
+		}
+	});
+%>            

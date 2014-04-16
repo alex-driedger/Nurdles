@@ -1,0 +1,25 @@
+
+<a type="button" class="btn back" id="ReportDebris" href="#"><span class="glyphicon glyphicon-chevron-left"></span><span>  Report Debris</span></a>
+<h4>Photo</h5>
+
+
+	<div id="IMG_RSRV" style="border: 5px solid black; width: 80%; height: 190px; margin: 10px auto;">
+				<h4 style="margin: 0; position: absolute; display: block; width: calc(80% - 5px); height: 185px; text-align: center; line-height: 190px;z-index: -1000;">Choose A Picture</h4>
+		<input id="inputFileToLoad" type="file" style="display: none;"/>
+		<image id="image" style="width:100%; height: 100%; ">
+	</div>
+<script>
+$("#image").click(function () {
+    $("#inputFileToLoad").trigger('click');
+});
+</script>
+
+<h4>Beach Name</h4>
+<input type="text" id="beachname" class="form-control FT2" style="margin-bottom: 10px;" />
+<input type="checkbox" id="checkbox" style="display: none;" ></input><label id="checkboxVisual" style="display: inline-block; border: 2px #ccc solid; height: 44px; width: 44px; margin-left: 5%; border-radius: 5px; font-size: 25px;" for="checkbox">&nbsp;</label><label style="font-size: 20px; line-height: 44px; margin-bottom: 10px; display: inline-block;" for="checkbox">&nbsp; Use my current location</label>
+<h4 style="margin-bottom: 10px;">Item</h4>
+<input type="text" id="item" class="form-control FT2" style="margin-bottom: 10px;" />
+<h4 style="margin-bottom: 10px;">Additional Comments (optional)</h4>
+<textarea rows="3" id="comments" class="form-control FT2" />
+<button type="button" id="submit" style="font-size: 5%; width: 20%; margin-top: 10px; margin-bottom: 5%;" class="btn btn-submit">Submit</button>
+<a class="pull-right" style="margin-right: 20px; margin-top: 32px; font-size: 5%;" href="#multipleReport">Report Multiple Debris</a>

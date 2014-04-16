@@ -1,0 +1,508 @@
+
+/*
+************************************************************
+LOGIN
+form-control
+FT2
+************************************************************
+*/
+body, h4, div, input, button {
+  margin: 0;
+  padding: 0;
+}
+h4 {
+  padding: 0;
+  font-size: 5%;
+  margin-left: 1%;
+}
+.form-control {
+  height: 10%;
+  font-size: 5%;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+textarea {
+   resize: none;
+}
+.FT {
+  width: 90%;
+  height: 75px;
+  margin-bottom: 20px;
+  font-size: 25px;
+  margin-left: 5%;
+}
+.FT2 {
+  width: 90%;
+  margin-left: 5%;
+}
+
+.FT2-button {
+  height: 10%;
+  font-size: 5%;
+}
+/*
+************************************************************
+ADMIN
+************************************************************
+*/
+.changeBeach {
+  font-size: 75%;
+}
+.twoButtons {
+  width: 42.5%;
+  height: 75px;
+  margin-left: 5%;
+  font-size: 20px;
+  padding: 0;
+}
+.btn-admin-beach {
+  border-radius: 0%;
+  border: none;
+  font-size: 32px;
+  width: 100%;
+  border-bottom-width: 5px;
+  border-bottom-color: black;
+  border-bottom-style: solid;
+}
+.disabled{
+  background-color: gray;
+}
+
+/*
+************************************************************
+MAP
+************************************************************
+*/
+#map {
+position:absolute; 
+bottom:0;
+width: 100%;
+background-color: black;
+border: 5px solid black;
+}
+#searchMap {
+    position:absolute;
+    top:23%;
+    left:2%;
+    font-size:5%;
+    border-radius: 4px;
+}
+/*
+************************************************************
+HOME
+home
+************************************************************
+*/
+.btn-primary {
+  line-height: 5%;
+}
+
+.tab {
+  border-radius: 0%;
+  font-size: 5%;
+  line-height: 250%;
+  border: solid 5px black;
+  border-left: none;
+  background-color: rgb(75,75,75);
+  height: 10%;
+  width: 10%;
+  color: white;
+  text-align: centre;
+}
+.home {
+  border-radius: 0%;
+  font-size: 8%;
+  border-style: solid;
+  border-width: 5px;
+  border-color: black;
+  background-color: rgb(75,75,75);
+  height: 10%;
+  width: 90%;
+  color: white;
+  text-align: left;
+}
+.back {
+  border-radius: 0%;
+  font-size: 8%;
+  line-height: 125%;
+  border: 5px black solid;
+  background-color: rgb(75,75,75);
+  height: 10%;
+  width: 100%;
+  padding: 0;
+  color: white;
+  text-align: left;
+}
+.back:hover {
+  color: white;
+  box-shadow: inset 0px 0px 5px black;
+  background-color: rgb(50,50,50);
+}
+.glyphicon-th
+{
+border-radius: 0;
+border: none;
+margin-top: -1px;
+width: 100%;
+height: 100%;
+font-size: 1em;
+padding: 0;
+color: white;
+background-color: rgb(75,75,75);
+}
+.glyphicon-th:hover,
+.glyphicon-th:focus,
+.glyphicon-th:active
+{
+  color: white;
+  background-color: rgb(50,50,50);
+}
+#titleBlock {
+  border-style: solid;
+  border-width: 5px;
+  border-top: 0;
+  border-bottom: 0;
+  border-color: black;
+  height: 20%;
+}
+.btn-homepageButtons:hover,
+.btn-homepageButtons:focus,
+.btn-homepageButtons:active
+{
+  background-color: rgb(230,230,230);
+  box-shadow: inset 0px 0px 5px black;
+}
+.btn-homepageButtons {
+  border-radius: 0%;
+  font-size: 5%;
+  width: 100%;
+  border-width: 5px;
+  border-color: black;
+  height: 17.5%;
+  line-height: 450%;
+  color: black;
+}
+h1 {
+  margin: 0;
+  font-size: 7.5%;
+  line-height: 100%;
+}
+/*
+************************************************************
+RATE CLEANLINESS
+************************************************************
+*/
+.border {
+  border-style: solid;
+  border-color: black;
+  border-width: 5px;
+}
+
+#IMG {
+  display: block;
+  width: 60%;
+  height: 30%;
+  margin: 0 auto;
+}
+
+#rating{  
+  font-size: 5%;
+  text-align: center;
+}
+#slider{
+  width: 90%;
+  background-color: rgba(100,100,100,0.5);
+  height: 5%;
+}
+#slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border-bottom: 5vh solid black; 
+    border-left: 2.5vh solid transparent; 
+    border-right: 2.5vh solid transparent;
+    height: 5vh;
+    width: 5vh;
+}
+.btn-submit {
+  border-width: 5px;
+  border-color: black;
+  background-color: white;
+  height: 10%;
+  width: 90%;
+  margin-left: 5%;
+  font-size: 5%;
+  padding: 0;
+}
+
+/*
+************************************************************
+Report Debris
+************************************************************
+*/
+a:hover {
+ cursor:pointer;
+ text-decoration: none;
+}
+
+/*
+************************************************************
+Survey Beach
+************************************************************
+*/
+.checkboxVisual {
+  display: inline-block;
+  margin-bottom: 20px;
+  border: 1px #ccc solid;
+  height: 75px;
+  font-size: 25px;
+  line-height: 75px;
+  text-align: center;
+  width: 270px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  margin-left: -1px;
+  cursor: pointer;
+}
+.radioboxVisual {
+  display: inline-block;
+  margin-bottom: 20px;
+  border: 1px #ccc solid;
+  height: 70px;
+  text-align: center;
+  width: 80%;
+  padding: 0;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  margin-left: -1px;
+  cursor: pointer;
+}
+.right {
+  float: right;
+  margin-right: 1%;
+}
+
+.radioboxCheck {
+  float: left;
+  display: inline-block;
+  margin-bottom: 20px;
+  border: 1px #ccc solid;
+  height: 70px;
+  width: 20%;
+  text-align: center;
+  font-size: 20px;
+  line-height: 70px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  color: rgba(0,0,0,0);
+  cursor: pointer;
+}
+.checkboxCheck {
+  display: inline-block;
+  margin-bottom: 20px;
+  border: 1px #ccc solid;
+  height: 75px;
+  margin-left: 5%;
+  width: 10%;
+  text-align: center;
+  font-size: 25px;
+  line-height: 75px;
+  padding: 0 10px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  color: rgb(0,0,0,0);
+  cursor: pointer;
+}
+.area,.weight {
+  display: block;
+  height: 44px;
+  font-size: 1.5em;
+  line-height: 44px;
+}
+.area:hover,.weight:hover {
+   box-shadow: inset 0px 0px 5px black;
+  background-color: rgb(50,50,50);
+}
+.btn-surveyButtons {
+  line-height: 410%;
+  border-radius: 0%;
+  font-size: 5%;
+  width: 100%;
+  border-width: 5px;
+  border-color: black;
+  color:black;
+}
+.btn-surveyButtons:hover {
+  box-shadow: inset 0px 0px 5px black;
+  background-color: rgb(235,235,235)
+}
+.top_button {
+  border-bottom-width: 0;
+}
+.mid_button {
+  border-top-width: 5px;
+  border-bottom-width: 0;
+}
+.block {
+  border-right-width: 5px;
+  border-right-color: black;
+  border-right-style: solid;
+  border-left-width: 5px;
+  border-left-color: black;
+  border-left-style: solid;
+  padding: 0;
+  width: 100%;
+  display: none;
+}
+.blockGap {
+  border-top: 5px solid black;
+  margin-bottom: 20px;
+}
+.surveyText {
+  display:inline-block; 
+  width: 70%;
+}
+.surveyText2 {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px;
+  display:inline-block;
+  width: 15%;
+  margin-left: 5%;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  text-align: center;
+  height: 75px;
+  font-size: 25px;
+}
+.surveyText3 {
+  display:inline-block;
+  width: 108px;
+  text-align: center;
+  float:right;
+}
+
+.dropdown2 {
+  text-align: center;
+  background-color: rgb(75,75,75);
+  margin-right: -5px;
+  margin-top: 0;
+  padding: 0;
+  border: 5px black solid;
+  border-radius: 0;
+}
+.dropdown3 {
+  text-align: center;
+}
+.dropdown3 > li {
+    background-color: white;
+}
+.dropdown3 > li:hover {
+  background-color: rgb(230,230,230);
+  box-shadow: none;
+}
+
+.dropdown2 > li > a {
+  line-height: 200%;
+  color: white;
+  padding: 0 20px;
+  font-size: 300%;
+}
+.dropdown2 > li > a:hover {
+  background-color: rgb(50,50,50);
+  box-shadow: inset 0 0 10px black;
+}
+.area, .weight {
+  height: 75px;
+  line-height: 75px;
+}
+.btn-ticker {
+  display: inline-block;
+  color: #3AF;
+  height: 90px;
+  width: 90px;
+  font-size: 50px;
+  padding: 0;
+  border: 1px solid #cccccc;
+  float: right;
+  margin-top: 10px;
+}
+.pos {
+  margin-right: 10px;
+}
+.items {
+  display: inline-block;
+  border-radius: 0%;
+  min-height: 90px;
+  width: calc(100% - 300px);
+  margin-top: 10px;
+  margin-left: 10px;
+  text-align: left;
+}
+.dropdown-header
+{
+  font-size: 1.5em;
+  color: black;
+}
+
+.input-group-btn {
+  margin-bottom: 20px;
+  width: 10%;
+  display: inline-block;
+}
+.unround-left {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 0;
+}
+
+/*
+************************************************************
+Beach Info
+************************************************************
+*/
+h5 {
+  font-size: 5%;
+  margin-left: 1%;
+}
+.btn-infoButtons {
+  border-radius: 0%;
+  border: none;
+  font-size: 1.5em;
+  width: 100%;
+  border-width: 5px;
+  border-color: black;
+  border-style: solid;
+  border-top: none;
+  color: #3AF;
+  text-align: left;
+}
+.btn-infoButtons:hover {
+  color: #428bca;
+  box-shadow: inset 0px 0px 5px black;
+  background-color: rgb(235,235,235);
+}
+.surveyLink {
+  border-radius: 0%;
+  border-style: solid;
+  border-width: 5px;
+  border-color: gray;
+  width: 100%;
+  font-size: 25px;
+  line-height: 62.5px;
+  height: 75px;
+  border-right: none;
+  border-left: none;
+}
+.btn-view {
+  padding: 0;
+  border-radius: 0%;
+  font-size: 8%;
+  width: 50%;
+  border: 5px solid rgb(75,75,75);
+  height: 10%;
+  color: black;
+  display: inline-block;
+}
+.hover:hover {
+  box-shadow: inset 0px 0px 5px black;
+  background-color: rgb(235,235,235);
+}
