@@ -138,7 +138,7 @@
                                 }).toJSON = n;
                                 try {
                                     l = "0" === r(0) && "0" === r(new Number) && '""' == r(new String) && r(a) === s && r(s) === s && r() === s && "1" === r(n) && "[1]" == r([n]) && "[null]" == r([s]) && "null" == r(null) && "[null,null,null]" == r([s, a, null]) && r({
-                                        a: [n, !0, !1, null, "\x00\b\n\f\r	"]
+                                        a: [n, !0, !1, null, "\x00\b\n\f\r  "]
                                     }) == o && "1" === r(null, n) && "[\n 1,\n 2\n]" == r([1, 2], null, 1) && '"-271821-04-20T00:00:00.000Z"' == r(new Date(-864e13)) && '"+275760-09-13T00:00:00.000Z"' == r(new Date(864e13)) && '"-000001-01-01T00:00:00.000Z"' == r(new Date(-621987552e5)) && '"1969-12-31T23:59:59.999Z"' == r(new Date(-1))
                                 } catch (c) {
                                     l = !1
@@ -154,7 +154,7 @@
                                     var d = 5 == n.a.length && 1 === n.a[0];
                                     if (d) {
                                         try {
-                                            d = !p('"	"')
+                                            d = !p('"   "')
                                         } catch (c) {}
                                         if (d) try {
                                             d = 1 !== p("01")
@@ -327,7 +327,7 @@
                                 34: '"',
                                 47: "/",
                                 98: "\b",
-                                116: "	",
+                                116: "  ",
                                 110: "\n",
                                 102: "\f",
                                 114: "\r"
@@ -616,7 +616,7 @@
                             if (i = r[l].slice())
                                 for (n = 0, o = i.length; o > n; n++)
                                     {
-                                            i[n].action.call(i[n].context, h);
+                                        i[n].action.call(i[n].context, h);
                                     }
                         return this
                     },
@@ -1106,17 +1106,17 @@
                             reset: !0
                         }), this._handlers = [], this._layers = {}, this._zoomBoundLayers = {}, this._tileLayersNum = 0, this.callInitHooks(), this._addLayers(e.layers)
                     },
-                    setView: function (t, e, z, bugFix) {
+                    setView: function (t, e) {
                         return e = e === n ? this.getZoom() : e, this._resetView(s.latLng(t), this._limitZoom(e)), this
                     },
-                    setZoom: function (t, e, z, bugFix) {
+                    setZoom: function (t, e, z) {
                         if (z == undefined)
                         {
                             z = this.getCenter();
                         }
                         return this._loaded ? this.setView(z, t, {
                             zoom: e
-                        }, bugFix) : (this._zoom = this._limitZoom(t), this)
+                        }) : (this._zoom = this._limitZoom(t), this)
                     },
                     zoomIn: function (t, e) {
                         return this.setZoom(this._zoom + (t || 1), e)
@@ -1338,28 +1338,15 @@
                         t = t ? s.Util.isArray(t) ? t : [t] : [];
                         for (var e = 0, i = t.length; i > e; e++) this.addLayer(t[e])
                     },
-                    _resetView: function (t, e, i, n, bugFix) {
-                        if (bugFix == undefined)
-                        {
-                            var o = this._zoom !== e;
-                            n || (this.fire("movestart"), o && this.fire("zoomstart")), this._zoom = e, this._initialCenter = t, this._initialTopLeftPoint = this._getNewTopLeftPoint(t), i ? this._initialTopLeftPoint._add(this._getMapPanePos()) : s.DomUtil.setPosition(this._mapPane, new s.Point(0, 0)), this._tileLayersToLoad = this._tileLayersNum;
-                            var a = !this._loaded;
-                            this._loaded = !0, a && (this.fire("load"), this.eachLayer(this._layerAdd, this)), this.fire("viewreset", {
-                                hard: !i
-                            }), this.fire("move"), (o || n) && this.fire("zoomend"), this.fire("moveend", {
-                                hard: !i
-                            })
-                        } else
-                        {
-                            var o = this._zoom !== e;
-                            n || (this.fire("movestart"), o && this.fire("zoomstart")), this._zoom = e, this._initialCenter = t, this._initialTopLeftPoint = this._getNewTopLeftPoint(t), i ? this._initialTopLeftPoint._add(this._getMapPanePos()) : s.DomUtil.setPosition(this._mapPane, new s.Point(0, 0)), this._tileLayersToLoad = this._tileLayersNum;
-                            var a = !this._loaded;
-                            this._loaded = !0, a && (this.fire("load"), this.eachLayer(this._layerAdd, this)), this.fire("viewreset", {
-                                hard: !i
-                            }), this.fire("move"), (o || n) && this.fire("zoomend") && this.zoomOut(), this.fire("moveend", {
-                                hard: !i
-                            })
-                        }
+                    _resetView: function (t, e, i, n) {
+                        var o = this._zoom !== e;
+                        n || (this.fire("movestart"), o && this.fire("zoomstart")), this._zoom = e, this._initialCenter = t, this._initialTopLeftPoint = this._getNewTopLeftPoint(t), i ? this._initialTopLeftPoint._add(this._getMapPanePos()) : s.DomUtil.setPosition(this._mapPane, new s.Point(0, 0)), this._tileLayersToLoad = this._tileLayersNum;
+                        var a = !this._loaded;
+                        this._loaded = !0, a && (this.fire("load"), this.eachLayer(this._layerAdd, this)), this.fire("viewreset", {
+                            hard: !i
+                        }), this.fire("move"), (o || n) && this.fire("zoomend"), this.fire("moveend", {
+                            hard: !i
+                        })
                     },
                     _rawPanBy: function (t) {
                         s.DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(t))
@@ -4064,7 +4051,7 @@
                         s.DomEvent.off(this._el, s.DomUtil.TRANSITION_END, this._onTransitionEnd, this), this._inProgress && (this._inProgress = !1, this._el.style[s.DomUtil.TRANSITION] = "", this._el._leaflet_pos = this._newPos, clearInterval(this._stepTimer), this.fire("step").fire("end"))
                     }
                 }), s.Map.include({
-                    setView: function (t, e, i, bugFix) {
+                    setView: function (t, e, i) {
                         // Something here is not removing stuff
                         if (e = e === n ? this._zoom : this._limitZoom(e), t = this._limitCenter(s.latLng(t), e, this.options.maxBounds), i = i || {}, this._panAnim && this._panAnim.stop(), this._loaded && !i.reset && i !== !0) {
                             i.animate !== n && (i.zoom = s.extend({
@@ -4075,7 +4062,7 @@
                             var o = this._zoom !== e ? this._tryAnimatedZoom && this._tryAnimatedZoom(t, e, i.zoom) : this._tryAnimatedPan(t, i.pan);
                             if (o) return clearTimeout(this._sizeTimer), this
                         }
-                        return this._resetView(t, e, undefined, undefined, bugFix), this
+                        return this._resetView(t, e), this
                     },
                     panBy: function (t, e) {
                         if (t = s.point(t).round(), e = e || {}, !t.x && !t.y) return this;
