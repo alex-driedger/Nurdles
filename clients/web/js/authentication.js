@@ -8,7 +8,7 @@ define([
     var Authentication = {
         
         authorize: function (callback, admin) {
-            /*
+            
             if (!window.user) {
                 console.log("Unauthorized - Please sign in")
                 return Backbone.history.navigate('login', { trigger: true });
@@ -20,7 +20,7 @@ define([
                     console.log("Unauthorized - You are not an admin")
                     return Backbone.history.navigate('login',{trigger: true});
                 }
-            }*/
+            }
             return callback();
         },
         
