@@ -437,7 +437,19 @@ Beach.find(function(err,data)
     destroy: function( req, res ) {
          Beach.remove( { _id:req.params.id }, function( err) {
             if( null === err ) {
+                Survey.remove( { beachID:req.params.id }, function( err) {
+            if( null === err ) {
+                Rate.remove( { beachID:req.params.id }, function( err) {
+            if( null === err ) {
                 res.send({message: "Success"});
+            } else {
+                res.send( 500, err );
+            }
+         });
+            } else {
+                res.send( 500, err );
+            }
+         });
             } else {
                 res.send( 500, err );
             }

@@ -24,7 +24,6 @@ define([
                 alert("Please select a beach")
             }
         },
-        // redirect is used on successful create or update.
         initialize: function (options) {
             if (options != undefined)
             {

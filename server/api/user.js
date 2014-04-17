@@ -3,6 +3,9 @@ var user = require(path.join(__dirname, "..", "models", "user"));
 var mongoose = require("mongoose")
 var self = {
     create: function(req, res) {
+        // Basically checks if the email exists, checks if it's a valid email, checks if it's an admin or not
+        // then create it.
+        // the check method is not perfect, you can get away with things like test@test.com@@@@@test
         var User = mongoose.model('User')
         var username = req.body.username.toLowerCase()
         var atpos=username.indexOf("@");
@@ -12,8 +15,6 @@ var self = {
             res.send({ObjectId: "", message:"Invalid Email"})
         } else
         {
-            // The reason I am doing it this way rather than admin = req.body.admin is because its probably more secure than sending a 
-            // admin=false on the client side for normal users
             admin = false;
             if (req.body.admin != undefined)
             {
@@ -59,9 +60,7 @@ var self = {
         var user = req.user;
         returnedUser.userId = user._id;
         returnedUser.admin = user.admin
-
         res.statusCode = 200;
-        console.log(user)
         res.send(returnedUser);
     },
 
@@ -72,7 +71,6 @@ var self = {
 
     routeCallback: function(req, res, err, object) {
         if (err) {
-            console.log(err);
             res.send(null);
         }
         else {

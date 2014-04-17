@@ -13,14 +13,12 @@ define([
         className : '',
 
         events: {
-            // IF THE LOGIN BUTTON IS PRESSED, FIRE LOGIN FUNCTION
             'click #submit' : 'submit',
             'click #back' : 'back'
         },
         back: function() {
             Backbone.history.navigate('login', { trigger: true });
         },
-        // redirect is used on successful create or update.
         submit: function() {
             username = document.getElementById("username").value
             password = document.getElementById("password").value

@@ -86,8 +86,6 @@ define([
                     input.beachID = collection.models[0].attributes._id
                     rateModel.save(input,{
                     success: function (res) {
-                      //Backbone.history.navigate('', { trigger: true });
-                        console.log(res.toJSON());
                         alert("Your rating has been submitted")
                         Backbone.history.navigate('#', { trigger: true });
                     },
@@ -107,7 +105,6 @@ define([
                     success: function (res) {
                       alert("Your report has been submitted")
                       Backbone.history.navigate('', { trigger: true });
-                        console.log(res.toJSON());
                     },
                     error: function (err) {
                         console.log("err")
@@ -119,7 +116,6 @@ define([
     slider: function()
     {
       val = parseInt($("#slider").val()/1000)
-      alert(val)
       if (val == 0)
       {
         document.getElementById("IMG").src="./images/BEACH_CLEAN.jpg"

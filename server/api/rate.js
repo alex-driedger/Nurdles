@@ -5,28 +5,8 @@ var path = require( 'path' ),
     _ = require( 'underscore' );
 
 var self = {
-
-    /*
-    Sample data:
-
-    { 
-      "string": "This is a sample string.",
-      "number": 1,
-      "date": "Tue Feb 11 2014 13:59:04 GMT-0500 (EST)",
-      "buffer": "ASDF3R234SDF3432DSR324R23WEFD234RSDF23WE",
-      "bool": true,
-      "objectId": "507f1f77bcf86cd799439011",
-      "array": [1,2,3]
-    }
-    */
     create: function( req, res ) {
            properties = {};
-
-        // Simple validation example, checks that a property 
-        // exists and is of the right type. Deeper validation 
-        // would, for example, validate that a field is an email address.
-        // In most cases, we would also reject the creation if invalid 
-        // data is included, here we just ignore it.
         if( _.has( req.body, 'beachID') && _.isString( req.body.beachID ) ) {
             properties.beachID = req.body.beachID;
         }
@@ -36,9 +16,7 @@ var self = {
         if( _.has( req.body, 'created') && _.isString( req.body.created ) ) {
             properties.created = req.body.created;
         }
-
         rate = new Rate( properties );
-
         rate.save( function ( err, rate, numberAffected ) {
             if( null === err ) {
                 Beach.findOne({_id: req.body.beachID}, function (err, beach)
@@ -58,8 +36,6 @@ var self = {
         Rate.find( function ( err, rateCollection ) {
             if( null === err ) {
                 res.send( rateCollection );
-                //Rate.remove(function(err,res){console.log(res)})
-
             } else {
                 res.send( 500, err );
             }

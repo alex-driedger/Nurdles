@@ -26,7 +26,6 @@ define([
                 });
 
         },
-        // redirect is used on successful create or update.
         initialize: function (options) {
             this.render();
         },
@@ -35,7 +34,6 @@ define([
             var attributes = []
             if (this.collection != undefined)
             {
-                // THIS IS WHERE U DO THE LAT LON LOCATION STUFF
                 for (i in this.collection.models)
                 {
                     attributes.push(this.collection.models[i].attributes)

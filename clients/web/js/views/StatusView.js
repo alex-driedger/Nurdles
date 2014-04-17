@@ -38,6 +38,8 @@ define([
             }));
         },
         renderMap: function () {
+            // WARNING: Marker clustering is not working properly. If a cluster is clicked near the edge
+            // of the map, the cluster will open, but not spread. 
             document.getElementById("map").style.top = $("#header").height();
             that = this
             var map = L.mapbox.map('map', 'examples.map-9ijuk24y', {
@@ -87,7 +89,6 @@ define([
                     color = "#E42217"
                 }
                 // Create markers
-                // FOR TOMORROW CHECK MAPBOX AND SEARCH FOR ALERT
                 var title = this.collection.models[i].attributes.beachName
                 var marker = L.marker(new L.LatLng(this.collection.models[i].attributes.lat, this.collection.models[i].attributes.lon), {
                     icon: L.mapbox.marker.icon({

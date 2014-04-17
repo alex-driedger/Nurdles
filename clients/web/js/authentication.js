@@ -8,8 +8,8 @@ define([
     var Authentication = {
         
         authorize: function (callback, admin) {
-            
-            /*if (!window.user) {
+            /*
+            if (!window.user) {
                 console.log("Unauthorized - Please sign in")
                 return Backbone.history.navigate('login', { trigger: true });
             }

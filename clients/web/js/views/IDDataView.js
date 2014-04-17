@@ -37,7 +37,6 @@ define([
                 a.href = 'data:attachment/csv,' + encodeURIComponent(items);
                 a.download = this.collection.models[0].attributes._id + '.csv';
         },
-        // redirect is used on successful create or update.
         initialize: function (options) {
             this.collection = options.collection
             this.render();

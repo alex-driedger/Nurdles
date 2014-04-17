@@ -28,16 +28,20 @@ function validate(event) {
   console.log(key)
   if (!(key >= 48 && key <= 57 || key == 46 || key == 45))
   {
-    // If the key is not between 48-57 prevent the default action (Default action is inputting the character)
+    // If the key is not between 48-57 or 45-46 prevent the default action (Default action is inputting the character)
     event.preventDefault()
   }
 }
+// AUTOCOMPLETE
         function initializeAutocomplete (BeachModel, inputId, attribute, limit, redirect, returnLocation, callback) {
+            // Initialize autocomplete on inputId
           $( "#" + inputId ).autocomplete({
+            // Once a beach is selected do the following
           select: function (event, ui) {
             $( "#" + inputId).val(ui.item.beachName);
             $( "#" + inputId)[0].beachName = ui.item.beachName
             $( "#" + inputId)[0].beachID = ui.item.id
+            // if we want to also fill in city state and country...
             if (returnLocation == true)
             {
                 $( "#city" ).val(ui.item.city);
@@ -48,7 +52,6 @@ function validate(event) {
             {
                 if (redirect != false)
                 {
-                    console.log(redirect)
                     window.location.href = "#"+redirect+"/" + ui.item.id;
                 }
             }
@@ -59,12 +62,14 @@ function validate(event) {
             return false;
           },
           source: function(request, callbackList) {
+            // This is where we choose what data the autocomplete list will have
             beaches = new BeachModel.Collection([],{ attribute: attribute, data: $( "#" + inputId ).val(), limit: limit});
             beaches.fetch( {
                 success: function( collection, response, options) {
                 var availableTags = [];
                 for (i in collection.models)
                 {
+                    // This is every possible tag within the limit
                     availableTags.push({beachName: collection.models[i].attributes.beachName, city: collection.models[i].attributes.city, state: collection.models[i].attributes.state, country: collection.models[i].attributes.country, lat: collection.models[i].attributes.lat, lon: collection.models[i].attributes.lon, id: collection.models[i].attributes._id})
                 }
                 callbackList(availableTags)
@@ -75,9 +80,8 @@ function validate(event) {
             });
           } 
         })
-        // Now change the ui-autocomplete data by calling renderItem on it. If you return none
+        // Change what the autocomplete looks like
         .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-          // I have no idea how appendTo(ul) works. (I'm assuming every item in dropdown is a ul)
           return $( "<li style='font-size: 3%;'>" ).append( "<a><span style='color: #3AF;'>" + item.beachName + "</span><br><span >City:  " + item.city + " | State: " + item.state + "</span></a>" ).appendTo( ul );
           };
     }
@@ -89,9 +93,8 @@ function validate(event) {
         <script src="libs/jquery-ui/ui/jquery-ui.js"></script>
 
         <script>
+        // WARNING THE SIZING IN THIS APP IS PRIMARILY BASED ON THE BODY HEIGHT.
         $("body").css("font-size", $("body").height()*0.7)
-        $("body").css("height", $("body").height())
-
         </script>
 </body>
 

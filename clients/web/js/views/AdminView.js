@@ -145,8 +145,6 @@ define([
           beachModel.save(null, {
                     success: function (res) {
                         alert(res.attributes.message)
-                        console.log(that.collection.models)
-                        console.log(res.attributes.data)
                         that.collection.models = res.attributes.data
                         that.render();
                     },

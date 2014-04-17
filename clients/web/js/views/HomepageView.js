@@ -17,7 +17,6 @@ define([
         logout: function () {
             authentication.logout()
         },
-        // redirect is used on successful create or update.
         initialize: function (options) {
             this.render();
         },

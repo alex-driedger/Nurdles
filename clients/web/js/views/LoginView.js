@@ -12,12 +12,10 @@ define([
         tagName   : 'div',
         className : '',
         
-        // redirect is used on successful create or update.
         initialize: function (options) {
             this.render();
         },
         
-        // Define the events used when binding.
         events: {
             'click #login-button' : 'login',
             'click #signUp-button' : 'signUp'

@@ -9,25 +9,12 @@ var path = require( 'path' ),
     use = require( path.join( __dirname, '..', 'models', 'user' ) ),
     User = mongoose.model('User')
 var self = {
-
-    /*
-    Sample data:
-
-    { 
-      "string": "This is a sample string.",
-      "number": 1,
-      "date": "Tue Feb 11 2014 13:59:04 GMT-0500 (EST)",
-      "buffer": "ASDF3R234SDF3432DSR324R23WEFD234RSDF23WE",
-      "bool": true,
-      "objectId": "507f1f77bcf86cd799439011",
-      "array": [1,2,3]
-    }
-    */
     sendLink: function( req, res)
     {
         var User = mongoose.model('User')
         User.findOne({_id: req.params.username}, function(err, data)
             {
+                // target email
                 username = data.username
                 // This method will send an email to nurdlestestmail@gmail.com
                 var smtpTransport = nodemailer.createTransport("SMTP",{
@@ -37,10 +24,9 @@ var self = {
                         pass: "Nurdles1"
                     }
                 });
-                console.log(req.params)
                 var mailOptions = {
                     from: "Nurdles <nurdlestestmail@gmail.com>", // sender address
-                    //  Send it to "username" 
+                    //  Send it to "username" which should be another email
                     to: username, // list of receivers
                     subject: "Data link for survey id" + req.params.id, // Subject line
                     text: "Here is a link to the survey download: http://localhost:4010/#data/"+req.params.id, // plaintext body
@@ -58,11 +44,6 @@ var self = {
     },
     create: function( req, res ) {
            properties = {};
-        // Simple validation example, checks that a property 
-        // exists and is of the right type. Deeper validation 
-        // would, for example, validate that a field is an email address.
-        // In most cases, we would also reject the creation if invalid 
-        // data is included, here we just ignore it.
         if( _.has( req.body, 'beachID') && _.isString( req.body.beachID ) ) {
             properties.beachID = req.body.beachID;
         }
@@ -166,7 +147,6 @@ var self = {
                 res.send( 500, err );
             }
         });
-        console.log("A SINGLE SURVEY WAS ACQUIRED")
     },
 
     update: function( req, res ) {

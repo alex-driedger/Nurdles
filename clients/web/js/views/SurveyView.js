@@ -14,7 +14,6 @@ define([
         className : 'survey',
 
         events: {
-            // IF THE LOGIN BUTTON IS PRESSED, FIRE LOGIN FUNCTION
             'click .btn-surveyButtons' : 'expand',
             'click .pos' : 'tickerpos',
             'click .neg' : 'tickerneg',

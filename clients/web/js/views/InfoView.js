@@ -12,10 +12,8 @@ define([
         className : '',
         
         events: {
-            // IF THE LOGIN BUTTON IS PRESSED, FIRE LOGIN FUNCTION
             'click .btn-surveyButtons' : 'expand'
         },
-        // redirect is used on successful create or update.
                 expand: function(events) {
             id = events.currentTarget.id
                 if ($("#block_"+id).is(":visible"))
