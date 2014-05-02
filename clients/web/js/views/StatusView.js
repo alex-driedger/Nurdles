@@ -50,7 +50,7 @@ define([
                 // Base zoom
                 zoom: 12,
                 // No zoom buttons
-                zoomControl: false,
+                zoomControl: true,
                 // Make it easier to tap 
                 tapTolerance: 30,
                 // Limit how far you can scroll to 1 map
@@ -59,6 +59,8 @@ define([
                     [180, 180]
                 ]
             })
+            map.zoomControl.setPosition('topright');
+
             // Prevent having a bunch of maps together
             map.tileLayer.options.noWrap = true
             // This unclusters everything at zoom level 1
