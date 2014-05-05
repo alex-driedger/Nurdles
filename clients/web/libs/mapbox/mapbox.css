@@ -240,7 +240,8 @@
 .leaflet-control-zoom-out {
   display:block;
   content:'';
-  text-indent:-999em;
+  /*text-indent:-999em;*/
+  text-align: center;
   }
 
 .leaflet-control-layers .leaflet-control-layers-list,
