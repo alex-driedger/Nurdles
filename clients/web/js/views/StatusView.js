@@ -42,7 +42,7 @@ define([
             // of the map, the cluster will open, but not spread. 
             document.getElementById("map").style.top = $("#header").height();
             that = this
-            var map = L.mapbox.map('map', 'examples.map-9ijuk24y', {
+            var map = L.mapbox.map('map', 'examples.map-i86nkdio', {
                 // Even though it says min zoom, this is really the max zoom-out. 0 being the highest.
                 minZoom: 1,
                 // Base location
@@ -122,7 +122,7 @@ define([
                 map.removeLayer(markers);
                 map.setZoom(15, true, new L.latLng(lat,lon))
                 map.addLayer(markers);
-        }
+            }
         },
         initialize: function (options) {
             this.lat = options.lat
