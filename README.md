@@ -1,7 +1,7 @@
 Nurdles
 ==============
 
-Nurdles is an app used to display beach reports/surveys/ratings about a beach's cleanliness.
+Nurdles is a web/mobile app for managing volunteer-collected beach cleanup data (including surveys, reports and ratings). Nurdles' beach survey form is consistent with the Ocean Conservancy's Ocean Trash Data Form.
 
 IMPORTANT: The sizing of this app is different. In clients/web/index.html it says
 
