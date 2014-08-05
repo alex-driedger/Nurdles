@@ -1,7 +1,7 @@
 Nurdles
 ==============
 
-Nurdles is an app used to display beach reports/surveys/ratings about a beaches cleanliness.
+Nurdles is an app used to display beach reports/surveys/ratings about a beach's cleanliness.
 
 IMPORTANT: The sizing of this app is different. In clients/web/index.html it says
 
