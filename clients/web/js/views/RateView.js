@@ -123,12 +123,12 @@ define([
       }
       else if (val == 1)
       {
-        document.getElementById("IMG").src="./images/BEACH_DIRTY.jpg"
+        document.getElementById("IMG").src="./images/BEACH_MODERATE.jpg"
         $("#rating").html("Moderately Clean")
       }
       else
       {
-        document.getElementById("IMG").src="./images/BEACH_GG.jpg"
+        document.getElementById("IMG").src="./images/BEACH_DIRTY.jpg"
         $("#rating").html("Dirty")
       }
     },
